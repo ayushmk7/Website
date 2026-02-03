@@ -21,7 +21,7 @@ export const projects: Project[] = [
   },
   {
     title: "COGnitiveStudy",
-    description: "Cognitive study platform with backend API, frontend interface, and AI features.",
+    description: "A study platform that records your lectures and gives you a summary of the lecture with notes with backend API, frontend interface, and AI features.",
     tags: ["Hono", "Next.js", "React", "TypeScript", "Drizzle ORM", "LangChain", "OpenAI"],
     websiteUrl: "https://cog-nitive.vercel.app",
     githubUrl: "https://github.com/ayushmk7/COGnitiveStudy"
@@ -38,12 +38,6 @@ export const projects: Project[] = [
     tags: ["Astro", "TypeScript", "Vite", "WebExtension APIs"],
     websiteUrl: "https://your-site-sense.vercel.app",
     githubUrl: "https://github.com/ayushmk7/SiteSense"
-  },
-  {
-    title: "ModelArchitectureTest",
-    description: "Testing model ModelArchitecture.",
-    tags: ["Python", "PyTorch", "Research"],
-    githubUrl: "https://github.com/ayushmk7/NASA_ML_ModelArchitecture"
   },
   {
     title: "Taskpilot",
