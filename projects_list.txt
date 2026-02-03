@@ -1,0 +1,102 @@
+ClassicFocus
+Description: A retro Macintosh System 6/7-themed Pomodoro timer.
+Tags: React, TypeScript, Vite, TailwindCSS, Zustand
+Website: https://classicfocus.vercel.app
+GitHub: https://github.com/ayushmk7/ClassicFocus
+
+COGnitiveStudy
+Description: Cognitive study platform with backend API, frontend interface, and AI features.
+Tags: Hono, Next.js, React, TypeScript, Drizzle ORM, LangChain, OpenAI
+Website: https://cog-nitive.vercel.app
+GitHub: https://github.com/ayushmk7/COGnitiveStudy
+
+Inferno
+Description: Scalable backend service for hosting and serving ML models via REST APIs using Flask, RabbitMQ, MongoDB, and Docker.
+Tags: Python, Flask, TensorFlow, PyTorch, Celery, Redis, MongoDB, Kubernetes
+GitHub: https://github.com/ayushmk7/Inferno
+
+Taskpilot
+Description: Comprehensive task management platform built with Django REST Framework and React.
+Tags: Django, Python, React, TypeScript, Material-UI, Socket.io, React Query
+GitHub: https://github.com/ayushmk7/TaskPilot
+
+SiteSense
+Description: Browser extension that evaluates privacy policies and extension permissions using Claude-powered analysis.
+Tags: Astro, TypeScript, Vite, WebExtension APIs
+Website: https://your-site-sense.vercel.app
+GitHub: https://github.com/ayushmk7/SiteSense
+
+mkrl
+Description: TinyURL clone with React frontend and FastAPI backend, horizontally scaled and open sourced.
+Tags: FastAPI, Python, React, TypeScript, Vite, Radix UI
+Website: https://mkrl.vercel.app
+GitHub: https://github.com/ayushmk7/mkrl
+
+MkLearns
+Description: TurboLearn AI - Next.js app that transforms learning material into structured study content using AI.
+Tags: Next.js, React, TypeScript
+GitHub: https://github.com/ayushmk7/MkLearns
+
+CompVis
+Description: Face Mesh Detection app tracking 468 facial landmarks in real-time.
+Tags: Python, OpenCV, MediaPipe, NumPy, Next.js, React, TensorFlow.js
+GitHub: https://github.com/ayushmk7/FaceDetection
+
+Photos_Tin
+Description: React Native / Expo application for photo management and display following the actions of tinder.
+Tags: React Native, Expo
+GitHub: https://github.com/ayushmk7/Photos_Tin
+
+Scrape_for_Sponsor
+Description: Scrapes restaurant data from annarbor.org for CLAWS club sponsorship committee.
+Tags: Python, AgentQL, Playwright
+GitHub: https://github.com/ayushmk7/SponsorScrape
+
+Instagram-CLI
+Description: CLI version for instagram where it shows ur chats without the distraction of stories and reels.
+Tags: TypeScript, React, Ink, Node.js
+GitHub: https://github.com/ayushmk7/CLI_Instagram.git
+
+instagram-unliker
+Description: Script to remove Instagram likes, with 2FA support and automation for macOS.
+Tags: Python
+GitHub: https://github.com/ayushmk7/Unliker_Instagram.git
+
+SMS_Classifier_Ayush
+Description: SMS spam detection model using PyTorch and Unity Sentis integration.
+Tags: Python, PyTorch, Pandas, scikit-learn
+GitHub: https://github.com/ayushmk7/SMSClassifier
+
+2d to 3d image modelling
+Description: Uses NeRF to change 2d images to 3d models using AI and prediction modelling.
+Tags: Python, AI/ML, NeRF
+GitHub: https://github.com/ayushmk7/3DModelling.git
+
+ModelArchitectureTest
+Description: Testing model ModelArchitecture.
+Tags: Python, PyTorch, Research
+GitHub: https://github.com/ayushmk7/NASA_ML_ModelArchitecture
+
+Portfolio Website
+Description: My current portfolio website.
+Tags: Astro, React, TypeScript, TailwindCSS
+Website: https://ayushmadhav.com
+GitHub: https://github.com/ayushmk7/Website
+
+Project Names (Ranked by Impressiveness):
+1. Inferno
+2. 2d to 3d image modelling
+3. COGnitiveStudy
+4. CompVis
+5. SiteSense
+6. ModelArchitectureTest
+7. Taskpilot
+8. MkLearns
+9. SMS_Classifier_Ayush
+10. Instagram-CLI
+11. ClassicFocus
+12. mkrl
+13. Photos_Tin
+14. Scrape_for_Sponsor
+15. instagram-unliker
+16. Portfolio Website
