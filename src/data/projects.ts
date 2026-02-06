@@ -15,8 +15,8 @@ export const projects: Project[] = [
   },
   {
     title: "2D to 3D Image Modelling",
-    description: "Uses NeRF to change 2d images to 3d models using AI and prediction modelling.",
-    tags: ["Python", "AI/ML", "NeRF"],
+    description: "A NeRF-based 3D reconstruction tool that trains a model on multi-view images and renders novel views of the scene.",
+    tags: ["Python", "AI/ML", "Neural Radiance Fields (NeRF)"],
     githubUrl: "https://github.com/ayushmk7/3DModelling.git"
   },
   {
