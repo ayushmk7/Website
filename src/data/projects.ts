@@ -14,7 +14,7 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/ayushmk7/Inferno"
   },
   {
-    title: "2d to 3d image modelling",
+    title: "2D to 3D Image Modelling",
     description: "Uses NeRF to change 2d images to 3d models using AI and prediction modelling.",
     tags: ["Python", "AI/ML", "NeRF"],
     githubUrl: "https://github.com/ayushmk7/3DModelling.git"
