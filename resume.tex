@@ -1,0 +1,180 @@
+%-------------------------
+% Resume in Latex
+% Author : Ayush Madhav Kumar
+% One Page ATS Safe
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{multicol}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Tight margins
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.6in}
+\addtolength{\textwidth}{1.25in}
+\addtolength{\topmargin}{-0.75in}
+\addtolength{\textheight}{1.55in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-6pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\titlerule \vspace{-6pt}]
+
+\pdfgentounicode=1
+
+%-------------------------
+% Commands
+\newcommand{\resumeItem}[1]{\item\small{#1}}
+
+\newcommand{\resumeSubheading}[4]{
+  \item
+  \textbf{#1} \hfill \textbf{\small #2} \\
+  \textit{\small #3} \hfill \textit{\small #4}
+  \vspace{-2pt}
+}
+
+\newcommand{\resumeProjectHeading}[1]{
+  \item \textbf{#1}
+  \vspace{-2pt}
+}
+
+\renewcommand\labelitemi{$\bullet$}
+
+\newcommand{\resumeSubHeadingListStart}{
+  \begin{itemize}[leftmargin=0in,label={},itemsep=2pt,topsep=0pt]
+}
+
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+
+\newcommand{\resumeItemListStart}{
+  \begin{itemize}[noitemsep,topsep=0pt,leftmargin=0.15in]
+}
+
+\newcommand{\resumeItemListEnd}{\end{itemize}}
+
+%-------------------------------------------
+\begin{document}
+
+\begin{center}
+  {\fontsize{24}{26}\selectfont \scshape Ayush Madhav Kumar} \\[2pt]
+  {\Large {Ann Arbor, Michigan}} \\[2pt]
+\makebox[\textwidth]{%
+\href{https://ayushmadhav.com}{ayushmadhav.com} {$|$}
+\href{mailto:contactayushmadhav@gmail.com}{contactayushmadhav@gmail.com} {$|$}
+\href{https://www.linkedin.com/in/ayushmk/}{linkedin.com/in/ayushmk} {$|$}
+\href{https://github.com/ayushmk7}{github.com/ayushmk7}
+}
+
+\end{center}
+
+
+
+%-----------EDUCATION-----------
+\section{Education}
+\resumeSubHeadingListStart
+\resumeSubheading
+  {University of Michigan, College of Engineering}{Aug 2025 -- May 2028}
+  {Bachelor of Science in Computer Science; Minor in Business and Mathematics}{Ann Arbor, Michigan}
+
+\resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+\resumeSubHeadingListStart
+
+\resumeSubheading
+  {NASA CLAWS}{September 2025 -- Present}
+  {Artificial Intelligence Engineer}{Ann Arbor, Michigan}
+\resumeItemListStart
+  \resumeItem{Engineering, a dual inference AI assistant for NASA SUITS and RASC AL challenges, integrating lightweight transformers (TinyBERT) on Jetson Orin Nano via ONNX Runtime for sub 350 ms inference, including troubleshooting deployments}
+  \resumeItem{Designing an edge cloud architecture that routes inference based on query complexity, latency, and network state}
+  \resumeItem{Implementing DSPy based orchestration and Pydantic validated NLP pipelines within Unity Inference Engine}
+  \resumeItem{Integrating WebSockets and Whisper based preprocessing to synchronize telemetry in high noise environments}
+\resumeItemListEnd
+
+\resumeSubheading
+  {Patch}{June 2025 -- August 2025}
+  {2025 Cohort Founder}{Dublin, Ireland}
+\resumeItemListStart
+  \resumeItem{Built a startup in 7 weeks as part of the Patch Summer Accelerator, leading end to end technical full stack development}
+  \resumeItem{Offsited at Stripe Dublin and Developed the mobile frontend using React Native, optimizing UI responsiveness and UX}
+  \resumeItem{Implemented a scalable backend with Django and PostgreSQL to manage health data, authentication, and notifications}
+\resumeItemListEnd
+
+\resumeSubheading
+  {GIIT Solutions}{June 2024 -- July 2024, April 2025}
+  {Associate Software Intern}{Remote}
+  \resumeItemListStart
+    \resumeItem{Maintained CI/CD pipelines on AWS, automating deployments across 12+ microservices and improving reliability by 28\%}
+    \resumeItem{Developed Python scripts to streamline backend processes, reducing manual overhead by 40\% and saving 15+ hours weekly}
+    \resumeItem{Collaborated with senior devs to optimize cloud infrastructure, achieving 35\% cost reduction through resource management}
+    \resumeItem{Deployed cloud native solutions with AWS CI/CD tools, improving system scalability and achieving 99.7\% uptime}
+  \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+%-----------PROJECTS-----------
+\section{Projects/Contributions}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+{\textbf{Cactus (YC S25)} $|$ \emph{Core Contributor}} $|$\emph{C++, ARM SIMD, ONNX, Flutter, React Native, Kotlin}{}
+\resumeItemListStart
+  \resumeItem{Contributing to an open source mobile AI inference engine optimized for smartphones and low power devices}
+  \resumeItem{Implementing ARM specific SIMD kernels for matrix multiplication and attention mechanisms with KV cache quantization}
+  \resumeItem{Developing zero copy computation graphs for efficient on device transformer inference with sub 50ms time to first token}
+  \resumeItem{Building OpenAI compatible FFI APIs for cross platform SDK integration across Flutter, React Native, and Kotlin}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{Machine Learning Model Serving Microservice}} $|$ \emph{Python, Flask, RabbitMQ, MongoDB, Docker}{}
+\resumeItemListStart
+\resumeItem{Developed a backend microservice to host ML models through Flask REST APIs, for model loading, inference, health checks}
+\resumeItem{Handled inference requests using RabbitMQ for scalable task queuing, enabling reliable processing of high-volume workloads}
+\resumeItem{Persisted model outputs and user queries in MongoDB for analytics and logging, and containerized the system using Docker}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{NeRF Based 3D Modelling}} $|$ \emph{Neural Radiance Fields, Machine Learning, PyTorch, Computer Vision}{}
+\resumeItemListStart
+  \resumeItem{ Built an end-to-end Neural Radiance Fields (NeRF) pipeline for photorealistic 3D reconstruction from multi-view images.}
+  \resumeItem{Implemented volumetric ray marching, positional encoding, and differentiable density/color prediction for view synthesis.}
+  \resumeItem{Designed a modular training pipeline with configurable hyperparameters to support multiple 3D reconstruction datasets.}
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+\resumeItemListStart
+  \resumeItem{\textbf{Programming Languages:} Python, JavaScript, TypeScript, Java, C, C++, C sharp, Ruby, PHP, SQL, HTML, CSS}
+  \resumeItem{\textbf{AI and ML:} PyTorch, TensorFlow, JAX, HuggingFace Transformers, ONNX Runtime, Scikit learn, OpenAI APIs, LLMs, NLP, Computer Vision, Reinforcement Learning, Edge AI deployment, Model optimization}
+  \resumeItem{\textbf{Software Development:} React, Next.js, React Native, Node.js, Django, Flask, FastAPI, REST, GraphQL, Flutter, Dart, WebSockets, Progressive Web Apps, Vue, Git, GitHub, GitHub Actions, GitLab, APIs}
+  \resumeItem{\textbf{Databases and Data Engineering:} MongoDB, PostgreSQL, Redis, MySQL, Data modeling, ETL pipelines}
+  \resumeItem{\textbf{DevOps and Cloud Infrastructure:} Docker, Kubernetes, CI CD pipelines, RabbitMQ, Linux, AWS EC2, AWS Lambda, AWS S3, Google Cloud, Edge deployment, Serverless architecture, Scalable ML inference orchestration}
+  \resumeItem{\textbf{Cybersecurity:} Nmap automation, PCAP forensics, TLS protocol analysis, API and web vulnerability analysis, reverse engineering, YARA based malware triage, cryptographic weakness detection, AWS IAM and S3 security}
+\resumeItem{\textbf{Core Computer Science:} Data Structures, Algorithms, Time and Space Complexity Analysis, Object Oriented Design, Memory Management, Concurrency and Multithreading, Operating Systems Basics}
+\resumeItemListEnd
+\end{document}
