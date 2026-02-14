@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { projects } from '../data/projects';
 import { Github, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 
+function getProjectsPerRow() {
+  if (typeof window === 'undefined') return 3;
+  const w = window.innerWidth;
+  if (w >= 1024) return 3;
+  if (w >= 768) return 2;
+  return 1;
+}
+
 export default function ProjectsList() {
   const [showAll, setShowAll] = useState(false);
-  const displayedProjects = showAll ? projects : projects.slice(0, 3);
+  const [perRow, setPerRow] = useState(3);
+  useEffect(() => {
+    const update = () => setPerRow(getProjectsPerRow());
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+  const initialCount = perRow;
+  const displayedProjects = showAll ? projects : projects.slice(0, initialCount);
 
   return (
     <div className="space-y-12">
@@ -12,16 +28,15 @@ export default function ProjectsList() {
         {displayedProjects.map((project, index) => (
           <div 
             key={index}
-            className="border-2 border-foreground p-6 hover:border-blue-600 transition-colors duration-200 relative group flex flex-col bg-background"
+            className="border-2 border-foreground rounded-2xl p-6 hover:border-blue-600 transition-colors duration-200 relative group flex flex-col bg-background"
           >
-            {/* Project Links - Top Right */}
             <div className="absolute top-4 right-4 flex gap-2">
               {project.websiteUrl && (
                 <a
                   href={project.websiteUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 border border-foreground hover:bg-foreground hover:text-background transition-colors duration-200"
+                  className="p-2 rounded-lg border border-foreground hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors duration-200"
                   aria-label={`Visit ${project.title} website`}
                 >
                   <ExternalLink className="w-4 h-4" />
@@ -32,7 +47,7 @@ export default function ProjectsList() {
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 border border-foreground hover:bg-foreground hover:text-background transition-colors duration-200"
+                  className="p-2 rounded-lg border border-foreground hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors duration-200"
                   aria-label={`View ${project.title} on GitHub`}
                 >
                   <Github className="w-4 h-4" />
@@ -47,7 +62,7 @@ export default function ProjectsList() {
               {project.tags.map((tag, tagIndex) => (
                 <span 
                   key={tagIndex}
-                  className="px-3 py-1 text-sm border border-foreground bg-background font-mono"
+                  className="px-3 py-1 text-sm rounded-full border border-foreground bg-background font-mono"
                 >
                   {tag}
                 </span>
@@ -60,7 +75,7 @@ export default function ProjectsList() {
       <div className="flex justify-center">
         <button
           onClick={() => setShowAll(!showAll)}
-          className="group flex items-center gap-2 px-6 py-3 border-2 border-foreground bg-background hover:bg-foreground hover:text-background transition-all duration-200 text-lg font-medium"
+          className="group flex items-center gap-2 px-6 py-3 rounded-2xl border-2 border-foreground bg-background hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-all duration-200 text-lg font-medium"
         >
           {showAll ? (
             <>

@@ -90,12 +90,6 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/ayushmk7/SponsorScrape"
   },
   {
-    title: "instagram-unliker",
-    description: "Script to remove Instagram likes, with 2FA support and automation for macOS.",
-    tags: ["Python"],
-    githubUrl: "https://github.com/ayushmk7/Unliker_Instagram.git"
-  },
-  {
     title: "Portfolio Website",
     description: "My current portfolio website.",
     tags: ["Astro", "React", "TypeScript", "TailwindCSS"],

@@ -70,6 +70,10 @@
     --sidebar-ring: oklch(0.439 0 0);
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     @apply border-border;
   }
@@ -100,5 +104,9 @@
   
   p, input {
     @apply font-normal;
+  }
+
+  #resume {
+    scroll-margin-top: 0;
   }
 }

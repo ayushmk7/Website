@@ -26,7 +26,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       onClick={toggleTheme}
       className={cn(
-        "p-3 border-2 border-foreground bg-background hover:bg-foreground hover:text-background transition-colors duration-200",
+        "p-3 rounded-lg border-2 border-foreground bg-background hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors duration-200",
         className
       )}
       aria-label="Toggle theme"
@@ -35,4 +35,3 @@ export function ThemeToggle({ className }: { className?: string }) {
     </button>
   )
 }
-
