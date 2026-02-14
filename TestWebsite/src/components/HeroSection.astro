@@ -1,0 +1,48 @@
+---
+import { SocialLinks } from './SocialLinks';
+
+const name = "Ayush Madhav Kumar";
+const aboutMe = [
+  "Passionate software developer with experience in modern web technologies and machine learning. I love building innovative solutions that solve real-world problems.",
+  "Currently focused on cybersecurity and exploring the intersection of AI and cybersecurity. Always eager to talk to people, learn new technologies and contribute to open source projects."
+];
+---
+
+<section class="min-h-screen flex flex-col justify-center items-center px-4 md:px-8">
+  <div class="max-w-2xl mx-auto text-center">
+    <div class="w-32 h-3 bg-blue-600 rounded-full mx-auto mb-6"></div>
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 text-foreground">
+      {name}
+    </h1>
+    <div class="space-y-4 text-lg md:text-xl mb-8">
+      {aboutMe.map((paragraph) => (
+        <p class="text-foreground font-normal leading-relaxed">
+          {paragraph}
+        </p>
+      ))}
+    </div>
+    <div class="flex justify-center mb-12">
+      <SocialLinks client:load />
+    </div>
+    <nav class="flex justify-center gap-4 mb-8" aria-label="Jump to section">
+      <a
+        href="#resume"
+        class="px-6 py-3 rounded-2xl border-2 border-foreground bg-background hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors duration-200 text-lg font-medium"
+      >
+        Resume
+      </a>
+      <a
+        href="#projects"
+        class="px-6 py-3 rounded-2xl border-2 border-foreground bg-background hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors duration-200 text-lg font-medium"
+      >
+        Projects
+      </a>
+    </nav>
+    <a href="#resume" class="flex flex-col items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity" aria-label="Scroll to resume">
+      <span class="text-foreground text-sm animate-bounce">Scroll</span>
+      <svg class="w-5 h-5 text-foreground animate-bounce" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9l6 6 6-6"/>
+      </svg>
+    </a>
+  </div>
+</section>
