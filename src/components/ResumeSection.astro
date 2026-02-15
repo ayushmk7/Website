@@ -171,30 +171,54 @@ const SKILL_CATEGORY_LABELS: Record<string, string> = {
     </article>
 
     <article
-      class="w-full bg-background border-4 border-black dark:border-white rounded-3xl p-6 md:p-8 shadow-lg"
+      class="skills-article w-full bg-background border-4 border-black dark:border-white rounded-3xl p-6 md:p-8 shadow-lg"
       aria-labelledby="skills-heading"
     >
-      <div class="flex items-center gap-3 mb-6" id="skills-heading">
-        <div class="p-2 bg-blue-600 rounded-lg shrink-0" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-          </svg>
-        </div>
-        <h2 class="text-2xl md:text-3xl font-medium">Technical Skills</h2>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {Object.entries(resumeData.skills).map(([key, skills]) => (
-          <div class="border-2 border-black dark:border-white rounded-2xl p-5">
-            <h3 class="text-lg font-medium mb-3">{SKILL_CATEGORY_LABELS[key] ?? key}</h3>
-            <div class="flex flex-wrap gap-2">
-              {skills.map((skill) => (
-                <span class="rounded-full px-3 py-1 text-sm border-2 border-black dark:border-white">
-                  {skill}
-                </span>
-              ))}
+      <button
+        type="button"
+        class="skills-trigger w-full flex flex-row items-center mb-0 text-left cursor-pointer rounded-lg transition-colors"
+        id="skills-heading"
+        aria-expanded="false"
+        aria-controls="skills-content"
+      >
+        <span class="skills-trigger-heading flex-1 min-w-0">
+          <span class="skills-trigger-heading-inner flex items-center gap-3">
+            <div class="p-2 bg-blue-600 rounded-lg shrink-0" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
             </div>
-          </div>
-        ))}
+            <h2 class="text-2xl md:text-3xl font-medium">Technical Skills</h2>
+          </span>
+        </span>
+        <span class="skills-expand-hint flex items-center gap-1 shrink-0">
+          <span class="text-foreground text-sm animate-bounce">Expand</span>
+          <svg class="w-5 h-5 text-foreground animate-bounce" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </span>
+        <span class="skills-collapse-hint flex items-center gap-1 shrink-0">
+          <span class="text-foreground text-sm">Collapse</span>
+          <svg class="w-5 h-5 text-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 15l-6-6-6 6"/>
+          </svg>
+        </span>
+      </button>
+      <div id="skills-content" class="skills-content" role="region" aria-labelledby="skills-heading">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {Object.entries(resumeData.skills).map(([key, skills]) => (
+            <div class="border-2 border-black dark:border-white rounded-2xl p-5">
+              <h3 class="text-lg font-medium mb-3">{SKILL_CATEGORY_LABELS[key] ?? key}</h3>
+              <div class="flex flex-wrap gap-2">
+                {skills.map((skill) => (
+                  <span class="rounded-full px-3 py-1 text-sm border-2 border-black dark:border-white">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </article>
 
@@ -224,3 +248,101 @@ const SKILL_CATEGORY_LABELS: Record<string, string> = {
     )}
   </div>
 </section>
+
+<style>
+  .skills-article .skills-trigger {
+    position: relative;
+    margin-bottom: 0;
+    align-items: center;
+  }
+
+  .skills-article .skills-trigger-heading {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    min-height: 2.75rem;
+  }
+
+  .skills-article .skills-trigger-heading-inner {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: left 0.9s ease, transform 0.9s ease;
+  }
+
+  .skills-article.is-expanded .skills-trigger-heading-inner {
+    left: 0;
+    transform: translateX(0);
+  }
+
+  .skills-article .skills-expand-hint {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .skills-article.is-expanded .skills-trigger {
+    margin-bottom: 1.5rem;
+  }
+
+  .skills-article.is-expanded .skills-expand-hint {
+    position: static;
+    transform: none;
+    display: none;
+  }
+
+  .skills-article .skills-collapse-hint {
+    display: none;
+  }
+
+  .skills-article.is-expanded .skills-collapse-hint {
+    display: flex;
+    margin-left: auto;
+  }
+
+  .skills-article .skills-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.35s ease-out, opacity 0.3s ease-out;
+  }
+
+  .skills-article .skills-content > * {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .skills-article.is-expanded .skills-content {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+</style>
+
+<script>
+  const SKILLS_STORAGE_KEY = 'resume-skills-expanded';
+
+  function initSkillsCollapse() {
+    const article = document.querySelector('.skills-article');
+    const trigger = document.querySelector('.skills-trigger');
+    if (!article || !trigger) return;
+
+    const expanded = sessionStorage.getItem(SKILLS_STORAGE_KEY) === 'true';
+    if (expanded) {
+      article.classList.add('is-expanded');
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+
+    trigger.addEventListener('click', () => {
+      const isExpanded = article.classList.toggle('is-expanded');
+      trigger.setAttribute('aria-expanded', String(isExpanded));
+      sessionStorage.setItem(SKILLS_STORAGE_KEY, String(isExpanded));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSkillsCollapse);
+  } else {
+    initSkillsCollapse();
+  }
+</script>
