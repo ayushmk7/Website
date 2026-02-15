@@ -64,7 +64,6 @@ export default function Projects() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12">
-      {/* Header */}
       <div className="text-center mb-10">
         <div className="w-16 h-1 bg-blue-600 mx-auto mb-4 rounded-full"></div>
         <h1 className="text-3xl md:text-4xl lg:text-5xl tracking-tight mb-3">
@@ -75,7 +74,6 @@ export default function Projects() {
         </p>
       </div>
 
-      {/* Featured Projects */}
       <section className="mb-10">
         <h2 className="text-2xl md:text-3xl mb-6">
           Featured Projects
@@ -86,7 +84,6 @@ export default function Projects() {
               key={index}
               className="bg-background border-4 border-black dark:border-white rounded-3xl p-7 md:p-8 hover:border-blue-600 hover:shadow-xl transition-all duration-300 relative group"
             >
-              {/* Project Links - Top Right */}
               <div className="absolute top-6 right-6 flex gap-2">
                 <a
                   href={project.websiteUrl}
@@ -132,7 +129,6 @@ export default function Projects() {
         </div>
       </section>
 
-      {/* All Projects */}
       <section>
         <h2 className="text-2xl md:text-3xl mb-6">
           More Projects
@@ -143,7 +139,6 @@ export default function Projects() {
               key={index}
               className="border-2 border-black dark:border-white rounded-2xl p-6 hover:border-blue-600 hover:shadow-lg transition-all duration-300 relative bg-background"
             >
-              {/* Project Links - Top Right */}
               <div className="absolute top-4 right-4 flex gap-2">
                 <a
                   href={project.websiteUrl}

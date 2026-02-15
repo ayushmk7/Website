@@ -26,7 +26,7 @@ export default function ProjectsList() {
     <div className="space-y-12">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {displayedProjects.map((project, index) => (
-          <div 
+          <div
             key={index}
             className="border-2 border-foreground rounded-2xl p-6 hover:border-blue-600 transition-colors duration-200 relative group flex flex-col bg-background"
           >
@@ -57,10 +57,10 @@ export default function ProjectsList() {
 
             <h3 className="text-xl font-bold mb-3 pr-20">{project.title}</h3>
             <p className="text-muted-foreground mb-6 flex-grow">{project.description}</p>
-            
+
             <div className="flex flex-wrap gap-2 mt-auto">
               {project.tags.map((tag, tagIndex) => (
-                <span 
+                <span
                   key={tagIndex}
                   className="px-3 py-1 text-sm rounded-full border border-foreground bg-background font-mono"
                 >

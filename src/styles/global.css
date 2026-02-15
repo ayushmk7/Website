@@ -101,7 +101,7 @@
   h4, label, button {
     @apply font-medium;
   }
-  
+
   p, input {
     @apply font-normal;
   }

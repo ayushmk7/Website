@@ -4,7 +4,7 @@ import { ExternalLink } from 'lucide-react';
 export default function ResumePreview() {
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [resumeUrl] = useState("/resume.pdf");
-  
+
   const [Modules, setModules] = useState<{
     Document: any;
     Page: any;
@@ -14,7 +14,7 @@ export default function ResumePreview() {
     import('react-pdf').then((module) => {
       const { pdfjs, Document, Page } = module;
       pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-      
+
       setModules({ Document, Page });
     });
   }, []);
@@ -22,7 +22,7 @@ export default function ResumePreview() {
   const onRefChange = useCallback((node: HTMLDivElement | null) => {
     if (node) {
       setContainerWidth(node.clientWidth);
-      
+
       const resizeObserver = new ResizeObserver((entries) => {
         for (const entry of entries) {
           if (entry.contentBoxSize) {
@@ -30,9 +30,9 @@ export default function ResumePreview() {
           }
         }
       });
-      
+
       resizeObserver.observe(node);
-      
+
       return () => {
         resizeObserver.disconnect();
       };
@@ -51,8 +51,7 @@ export default function ResumePreview() {
 
   return (
     <div className="border-2 border-foreground rounded-2xl bg-white relative group flex flex-col bg-gray-100">
-      
-      <div 
+      <div
         className="w-full flex justify-center items-start bg-white min-h-[600px]"
         ref={onRefChange}
       >
@@ -71,8 +70,8 @@ export default function ResumePreview() {
               </div>
             }
           >
-            <Page 
-              pageNumber={1} 
+            <Page
+              pageNumber={1}
               width={Math.max(containerWidth - 4, 100)}
               renderTextLayer={false}
               renderAnnotationLayer={false}

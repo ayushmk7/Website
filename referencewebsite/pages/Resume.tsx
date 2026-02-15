@@ -61,7 +61,6 @@ export default function Resume() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12">
-      {/* Header */}
       <div className="text-center mb-10">
         <div className="w-16 h-1 bg-blue-600 mx-auto mb-4 rounded-full"></div>
         <h1 className="text-3xl md:text-4xl lg:text-5xl tracking-tight mb-3">
@@ -73,7 +72,6 @@ export default function Resume() {
       </div>
 
       <div className="space-y-6">
-        {/* Experience Section */}
         <section className="bg-background border-4 border-black dark:border-white rounded-3xl p-6 md:p-8 shadow-lg">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2 bg-blue-600 rounded-xl">
@@ -81,7 +79,7 @@ export default function Resume() {
             </div>
             <h2 className="text-2xl md:text-3xl">Experience</h2>
           </div>
-          
+
           <div className="space-y-6">
             {resumeData.experience.map((job, index) => (
               <div
@@ -111,7 +109,6 @@ export default function Resume() {
           </div>
         </section>
 
-        {/* Education Section */}
         <section className="bg-background border-4 border-black dark:border-white rounded-3xl p-6 md:p-8 shadow-lg">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2 bg-blue-600 rounded-xl">
@@ -119,7 +116,7 @@ export default function Resume() {
             </div>
             <h2 className="text-2xl md:text-3xl">Education</h2>
           </div>
-          
+
           <div className="space-y-6">
             {resumeData.education.map((edu, index) => (
               <div
@@ -147,7 +144,6 @@ export default function Resume() {
           </div>
         </section>
 
-        {/* Skills Section */}
         <section className="bg-background border-4 border-black dark:border-white rounded-3xl p-6 md:p-8 shadow-lg">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2 bg-blue-600 rounded-xl">
@@ -155,7 +151,7 @@ export default function Resume() {
             </div>
             <h2 className="text-2xl md:text-3xl">Skills</h2>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="border-2 border-black dark:border-white rounded-2xl p-5">
               <h3 className="text-lg mb-3">Languages</h3>
@@ -215,7 +211,6 @@ export default function Resume() {
           </div>
         </section>
 
-        {/* Certifications Section */}
         <section className="bg-background border-4 border-black dark:border-white rounded-3xl p-6 md:p-8 shadow-lg">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2 bg-blue-600 rounded-xl">
@@ -223,7 +218,7 @@ export default function Resume() {
             </div>
             <h2 className="text-2xl md:text-3xl">Certifications</h2>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {resumeData.certifications.map((cert, index) => (
               <div

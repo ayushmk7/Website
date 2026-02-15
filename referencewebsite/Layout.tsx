@@ -24,7 +24,7 @@ export default function Layout() {
       url: "https://github.com/yourusername",
     },
     {
-      name: "LinkedIn", 
+      name: "LinkedIn",
       icon: Linkedin,
       url: "https://linkedin.com/in/yourprofile",
     },
@@ -37,18 +37,14 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Fixed Header */}
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b-2 border-black dark:border-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            {/* Name */}
             <NavLink to="/" className="text-xl md:text-2xl tracking-tight hover:text-blue-600 transition-colors">
               AYUSH MADHAV KUMAR
             </NavLink>
 
-            {/* Navigation + Social + Theme */}
             <div className="flex items-center gap-4">
-              {/* Navigation Links */}
               <nav className="hidden md:flex items-center gap-1">
                 <NavLink
                   to="/"
@@ -89,7 +85,6 @@ export default function Layout() {
                 </NavLink>
               </nav>
 
-              {/* Social Icons */}
               <div className="hidden sm:flex items-center gap-2">
                 {socialLinks.map((link, index) => (
                   <a
@@ -104,7 +99,6 @@ export default function Layout() {
                   </a>
                 ))}
 
-                {/* Theme Toggle Button */}
                 <button
                   onClick={toggleTheme}
                   className="p-2 border-2 border-black dark:border-white bg-background hover:bg-foreground hover:text-background transition-all duration-300 rounded-xl"
@@ -116,7 +110,6 @@ export default function Layout() {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
           <nav className="flex md:hidden items-center gap-1 mt-3 border-t-2 border-black dark:border-white pt-3">
             <NavLink
               to="/"
@@ -157,7 +150,6 @@ export default function Layout() {
             </NavLink>
           </nav>
 
-          {/* Mobile Social Icons */}
           <div className="flex sm:hidden items-center justify-center gap-2 mt-3">
             {socialLinks.map((link, index) => (
               <a
@@ -172,7 +164,6 @@ export default function Layout() {
               </a>
             ))}
 
-            {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
               className="p-2 border-2 border-black dark:border-white bg-background hover:bg-foreground hover:text-background transition-all duration-300 rounded-xl"
@@ -184,7 +175,6 @@ export default function Layout() {
         </div>
       </header>
 
-      {/* Page Content */}
       <main>
         <Outlet />
       </main>

@@ -37,7 +37,7 @@ export function SocialLinks({ className }: SocialLinksProps) {
 
   return (
     <div className={cn("flex justify-center gap-4", className)}>
-      <div 
+      <div
         className="relative"
         onMouseEnter={() => setShowEmailTooltip(true)}
         onMouseLeave={() => setShowEmailTooltip(false)}
