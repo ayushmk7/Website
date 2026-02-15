@@ -16,7 +16,7 @@ export function SocialLinks({ className }: SocialLinksProps) {
     {
       name: "GitHub",
       icon: Github,
-      url: "https://github.com/FriedOkra1",
+      url: "https://github.com/ayushmk7",
     },
     {
       name: "LinkedIn",
