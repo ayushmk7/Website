@@ -5,6 +5,7 @@
       "company": "Cactus (YC S25)",
       "period": "Jan 2026 – Present",
       "location": "Ann Arbor, Michigan",
+      "url": "https://cactuscompute.com/",
       "achievements": [
         "Contributing to an open source mobile AI inference engine optimized for smartphones and low power devices",
         "Implementing ARM specific SIMD kernels for matrix multiplication and attention mechanisms with KV cache quantization",
@@ -17,6 +18,7 @@
       "company": "NASA CLAWS",
       "period": "September 2025 – Present",
       "location": "Ann Arbor, Michigan",
+      "url": "https://claws.engin.umich.edu/",
       "achievements": [
         "Engineering a dual inference AI assistant for NASA SUITS and RASC AL challenges, integrating lightweight transformers (TinyBERT) on Jetson Orin Nano via ONNX Runtime for sub 350 ms inference, including troubleshooting deployments",
         "Designing an edge cloud architecture that routes inference based on query complexity, latency, and network state",
@@ -29,6 +31,7 @@
       "company": "Patch",
       "period": "June 2025 – August 2025",
       "location": "Dublin, Ireland",
+      "url": "https://www.joinpatch.org/",
       "achievements": [
         "Built a startup in 7 weeks as part of the Patch Summer Accelerator, leading end to end technical full stack development",
         "Offsited at Stripe Dublin and developed the mobile frontend using React Native, optimizing UI responsiveness and UX",
@@ -40,6 +43,7 @@
       "company": "GIIT Solutions",
       "period": "June 2024 – July 2024, April 2025",
       "location": "Remote",
+      "url": "https://giitsolutions.com/",
       "achievements": [
         "Maintained CI/CD pipelines on AWS, automating deployments across 12+ microservices and improving reliability by 28%",
         "Developed Python scripts to streamline backend processes, reducing manual overhead by 40% and saving 15+ hours weekly",
