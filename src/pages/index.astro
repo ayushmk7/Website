@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/HeroSection.astro';
 import ResumeSection from '../components/ResumeSection.astro';
 import ProjectsSection from '../components/ProjectsSection.astro';
+import ContactFooter from '../components/ContactFooter';
 ---
 
 <Layout title="Ayush Madhav">
@@ -11,6 +12,7 @@ import ProjectsSection from '../components/ProjectsSection.astro';
     <div class="max-w-7xl mx-auto p-4 md:p-8 space-y-12">
       <ResumeSection />
       <ProjectsSection />
+      <ContactFooter client:load />
     </div>
   </div>
 </Layout>
