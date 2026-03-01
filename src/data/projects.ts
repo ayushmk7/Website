@@ -18,6 +18,7 @@ export const projects: Project[] = [
     title: "Domain Portfolio Manager",
     description: "An AI chat agent that manages your domain portfolio and DNS through natural language. Add domains, run bulk DNS updates, and query history—powered by Cloudflare Workers, Durable Objects, and Workflows.",
     tags: ["React", "TypeScript", "Vite", "TailwindCSS", "Cloudflare Workers", "Durable Objects", "Workflows", "Workers AI", "PostgreSQL", "Vercel", "Firebase", "Vectorize"],
+    websiteUrl: "domain-portfolio-manager-eta.vercel.app",
     githubUrl: "https://github.com/ayushmk7/cf_ai_DomainPortfolioManager"
   },
   {
