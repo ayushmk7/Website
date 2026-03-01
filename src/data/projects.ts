@@ -14,6 +14,18 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/ayushmk7/Inferno"
   },
   {
+    title: "PreReq",
+    description: "[Hackathon Project , Top 5 at Oracle's Michigan AI+Business Hackathon]AI-powered concept readiness platform that lets instructors upload course data and see how well students understand prerequisites via interactive dashboards and DAGs, with personalized student reports and an AI chat.",
+    tags: ["React", "FastAPI", "PostgreSQL", "OpenAI"],
+    githubUrl: "https://github.com/ayushmk7/PreReq"
+  },
+  {
+    title: "Domain Portfolio Manager",
+    description: "An AI chat agent that manages your domain portfolio and DNS through natural language. Add domains, run bulk DNS updates, and query history—powered by Cloudflare Workers, Durable Objects, and Workflows.",
+    tags: ["React", "TypeScript", "Vite", "TailwindCSS", "Cloudflare Workers", "Durable Objects", "Workflows", "Workers AI", "PostgreSQL", "Vercel", "Firebase", "Vectorize"],
+    githubUrl: "https://github.com/ayushmk7/cf_ai_DomainPortfolioManager"
+  },
+  {
     title: "2D to 3D Image Modelling",
     description: "A NeRF-based 3D reconstruction tool that trains a model on multi-view images and renders novel views of the scene.",
     tags: ["Python", "AI/ML", "Neural Radiance Fields (NeRF)"],
