@@ -34,6 +34,13 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/ayushmk7/PreReq"
   },
   {
+    title: "SiteSense",
+    description: "[ Winner at Anthropic Claude Hackathon UMich ]Browser extension that evaluates privacy policies and extension permissions using Claude-powered analysis.",
+    tags: ["Astro", "TypeScript", "Vite", "WebExtension APIs"],
+    websiteUrl: "https://your-site-sense.vercel.app",
+    githubUrl: "https://github.com/ayushmk7/SiteSense"
+  },
+  {
     title: "COGnitiveStudy",
     description: "A study platform that records your lectures and gives you a summary of the lecture with notes with backend API, frontend interface, and AI features.",
     tags: ["Hono", "Next.js", "React", "TypeScript", "Drizzle ORM", "LangChain", "OpenAI"],
@@ -46,13 +53,7 @@ export const projects: Project[] = [
     tags: ["Python", "OpenCV", "MediaPipe", "NumPy", "Next.js", "React", "TensorFlow.js"],
     githubUrl: "https://github.com/ayushmk7/FaceDetection"
   },
-  {
-    title: "SiteSense",
-    description: "Browser extension that evaluates privacy policies and extension permissions using Claude-powered analysis.",
-    tags: ["Astro", "TypeScript", "Vite", "WebExtension APIs"],
-    websiteUrl: "https://your-site-sense.vercel.app",
-    githubUrl: "https://github.com/ayushmk7/SiteSense"
-  },
+ 
   {
     title: "Taskpilot",
     description: "Comprehensive task management platform built with Django REST Framework and React.",
