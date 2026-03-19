@@ -3,7 +3,7 @@ import { ExternalLink } from 'lucide-react';
 
 export default function ResumePreview() {
   const [containerWidth, setContainerWidth] = useState<number>(0);
-  const [resumeUrl] = useState("/resume.pdf");
+  const [resumeUrl] = useState("/AyushMadhavResume.pdf");
 
   const [Modules, setModules] = useState<{
     Document: any;
