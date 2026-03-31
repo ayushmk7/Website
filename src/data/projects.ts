@@ -36,9 +36,15 @@ export const projects: Project[] = [
   {
     title: "SaveSurance",
     description: "[Winner at MLH Revolution UC Hackathon for best use of ElevenLabs] SaveSurance is a full-stack app that runs multimodal bill parsing and a dual-path backend pipeline so patients get structured line items, savings signals, financial-aid screening, and editable PDF appeal packets with SSE status and a WebSocket call assistant—not a generic LLM chat.",
-    tags: ["React", "FastAPI", "PostgreSQL", "Redis", "Gemini API", "ElevenLabs", "Deepgram", "AI Agents and Workflows"],
+    tags: ["React", "FastAPI", "PostgreSQL", "Redis", "Gemini API", "ElevenLabs", "Deepgram", "AI Workflows", "Firebase"],
     githubUrl: "https://github.com/UAgarwal7/SaveSurance",
     websiteUrl: "https://savesurance.tech",
+  },
+  {
+    title: "ConceptPilot",
+    description: "[Overall 1st Prize at Red Bull Kappa Theta Pi Hackathon for Education track] ConceptPilot turns exam results and concept maps into readiness insights: it maps how students stand on each concept, groups strugglers, and gives instructors dashboards, traces, and suggestions with an interactive concept graph so you can see dependencies and gaps at a glance.",
+    tags: ["FASTAPI", "Next.js", "PostreSQL", "Alembic", "Anthropic API", "NetworkX"],
+    githubUrl: "https://github.com/ayushmk7/ConceptPilot",
   },
   {
     title: "SiteSense",
