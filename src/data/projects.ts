@@ -34,6 +34,13 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/ayushmk7/PreReq"
   },
   {
+    title: "SaveSurance",
+    description: "[Winner at MLH Revolution UC Hackathon for best use of ElevenLabs] SaveSurance is a full-stack app that runs multimodal bill parsing and a dual-path backend pipeline so patients get structured line items, savings signals, financial-aid screening, and editable PDF appeal packets with SSE status and a WebSocket call assistant—not a generic LLM chat.",
+    tags: ["React", "FastAPI", "PostgreSQL", "Redis", "Gemini API", "ElevenLabs", "Deepgram", "AI Agents and Workflows"],
+    githubUrl: "https://github.com/UAgarwal7/SaveSurance",
+    websiteUrl: "https://savesurance.tech",
+  },
+  {
     title: "SiteSense",
     description: "[ Winner at Anthropic Claude Hackathon UMich ]Browser extension that evaluates privacy policies and extension permissions using Claude-powered analysis.",
     tags: ["Astro", "TypeScript", "Vite", "WebExtension APIs"],
