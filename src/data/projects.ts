@@ -34,6 +34,14 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/ayushmk7/PreReq"
   },
   {
+    title: "GhostWatch",
+    description:
+      "2nd Prize at the Jaseci Hackathon for Jac-powered security and PR review: verified GitHub webhooks run graph walkers to map the codebase, score dependency and blast-radius impact, and surface risk in a web control room.",
+    tags: ["Jac", "GitHub", "Security", "Graph Analysis", "Static Analysis"],
+    githubUrl: "https://github.com/ayushmk7/GhostWatch",
+  },
+  
+  {
     title: "SaveSurance",
     description: "[Winner at MLH Revolution UC Hackathon for best use of ElevenLabs] SaveSurance is a full-stack app that runs multimodal bill parsing and a dual-path backend pipeline so patients get structured line items, savings signals, financial-aid screening, and editable PDF appeal packets with SSE status and a WebSocket call assistant—not a generic LLM chat.",
     tags: ["React", "FastAPI", "PostgreSQL", "Redis", "Gemini API", "ElevenLabs", "Deepgram", "AI Workflows", "Firebase"],
