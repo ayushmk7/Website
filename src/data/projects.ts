@@ -62,11 +62,11 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/ayushmk7/SiteSense"
   },
   {
-    title: "Domain Portfolio Manager",
-    description: "An AI chat agent that manages your domain portfolio and DNS through natural language. Add domains, run bulk DNS updates, and query history—powered by Cloudflare Workers, Durable Objects, and Workflows.",
-    tags: ["React", "TypeScript", "Vite", "TailwindCSS", "Cloudflare Workers", "Durable Objects", "Workflows", "Workers AI", "PostgreSQL", "Vercel", "Firebase", "Vectorize"],
-    websiteUrl: "https://domain-portfolio-manager-eta.vercel.app",
-    githubUrl: "https://github.com/ayushmk7/cf_ai_DomainPortfolioManager"
+    title: "ML Reads",
+    description: "A minimal Next.js website that recommends five machine learning papers from arXiv each day. Browse deterministic daily reads with paper titles, authors, summaries, categories, published dates, abstract links, and PDF links.",
+    tags: ["Next.js", "React", "TypeScript", "arXiv", "fast-xml-parser", "ESLint", "Vitest"],
+    websiteUrl: "https://mlreads.vercel.app",
+    githubUrl: "https://github.com/ayushmk7/MLReads"
   },
   {
     title: "COGnitiveStudy",
