@@ -1,6 +1,28 @@
 {
   "experience": [
     {
+      "title": "Software Engineering Intern",
+      "company": "Jaseci Labs",
+      "period": "May 2026 – Present",
+      "location": "Ann Arbor, Michigan",
+      "achievements": [
+        "Engineering a domain-specialized coding agent for the Jac programming language, fine tuning Gemma 4 26B with Unsloth and 4-bit QLoRA on an object-spatial superset of Python where general-purpose models lack usable priors",
+        "Architecting a multi-recipe synthetic data pipeline with Python-to-Jac parallel translation, adversarial DPO negatives, evol-instruct, and self-distillation, targeting 300k+ examples verified behind a compiler and unit-test hard-gate",
+        "Designing a four-stage training curriculum spanning core SFT, debugging and reasoning, DPO alignment, and multi-turn agentic data to prevent Python-pattern fallback and lock in idiomatic walker, node, and edge constructs"
+      ]
+    },
+    {
+      "title": "Professor Misc. (Temp.) / Student Researcher",
+      "company": "Pathways for Open Source Ecosystems (POSE) Research",
+      "period": "May 2026 – Present",
+      "location": "Ann Arbor, Michigan",
+      "achievements": [
+        "Part of NSF Phase I POSE research ($300K) to grow an open-source ecosystem around the data spatial Jac language",
+        "Enhancing the project's digital infrastructure, documentation site, CI, and contributor onboarding tooling to lower the barrier to entry for new developers and grow an active, distributed Jac contributor community",
+        "Authoring tutorials, code samples, and educational materials, and analyzing developer feedback and usage telemetry to refine onboarding workflows and inform governance models for long-term ecosystem sustainability"
+      ]
+    },
+    {
       "title": "Core Contributor",
       "company": "Cactus (YC S25)",
       "period": "Jan 2026 – Present",
@@ -11,31 +33,6 @@
         "Implementing ARM specific SIMD kernels for matrix multiplication and attention mechanisms with KV cache quantization",
         "Developing zero copy computation graphs for efficient on device transformer inference with sub 50ms time to first token",
         "Building OpenAI compatible FFI APIs for cross platform SDK integration across Flutter, React Native, and Kotlin"
-      ]
-    },
-    {
-      "title": "Artificial Intelligence Engineer",
-      "company": "NASA CLAWS",
-      "period": "September 2025 – Present",
-      "location": "Ann Arbor, Michigan",
-      "url": "https://claws.engin.umich.edu/",
-      "achievements": [
-        "Engineering a dual inference AI assistant for NASA SUITS and RASC AL challenges, integrating lightweight transformers (TinyBERT) on Jetson Orin Nano via ONNX Runtime for sub 350 ms inference, including troubleshooting deployments",
-        "Designing an edge cloud architecture that routes inference based on query complexity, latency, and network state",
-        "Implementing DSPy based orchestration and Pydantic validated NLP pipelines within Unity Inference Engine",
-        "Integrating WebSockets and Whisper based preprocessing to synchronize telemetry in high noise environments"
-      ]
-    },
-    {
-      "title": "2025 Cohort Founder",
-      "company": "Patch",
-      "period": "June 2025 – August 2025",
-      "location": "Dublin, Ireland",
-      "url": "https://www.joinpatch.org/",
-      "achievements": [
-        "Built a startup in 7 weeks as part of the Patch Summer Accelerator, leading end to end technical full stack development",
-        "Offsited at Stripe Dublin and developed the mobile frontend using React Native, optimizing UI responsiveness and UX",
-        "Implemented a scalable backend with Django and PostgreSQL to manage health data, authentication, and notifications"
       ]
     },
     {
@@ -54,21 +51,23 @@
   ],
   "education": [
     {
-      "degree": "Bachelor of Science in Computer Science; Minor in Business and Mathematics",
+      "degree": "Bachelor of Science in Computer Science; Minor in Mathematics",
       "institution": "University of Michigan, College of Engineering",
       "url": "https://www.engin.umich.edu/",
-      "period": "Aug 2025 – May 2028",
+      "period": "Aug 2025 – Dec 2028",
       "location": "Ann Arbor, Michigan"
-    },
-    {
-      "degree": "High School Diploma; 3.9 GPA",
-      "institution": "Douglas Community School",
-      "url": "https://www.dcscork.ie/",
-      "period": "March 2023 – June 2025",
-      "location": "Cork, Ireland"
     }
   ],
   "projects": [
+    {
+      "title": "NASA SUITS Challenge",
+      "technologies": "AI Lead; Python, PyTorch, A*/JPS, Unity",
+      "achievements": [
+        "Built autonomous lunar-EVA navigation with A*/Jump Point Search planners over a 3-layer occupancy grid, 17-ray LiDAR fusion, PD heading control with curvature lookahead, and RSSI trilateration via inverse log-distance modeling",
+        "Designed PyTorch obstacle detection models, a temporal ResidualBeamCNN and a BEV cross-attention transformer with learnable query embeddings, served in real time behind a hot-swappable multi-backend inference framework",
+        "Engineered the voice pipeline, streaming 16 kHz PCM over WebSocket to a faster-whisper and a neural intent classifier"
+      ]
+    },
     {
       "title": "Machine Learning Model Serving Microservice",
       "technologies": "Python, Flask, RabbitMQ, MongoDB, Docker",
@@ -78,26 +77,15 @@
         "Handled inference requests using RabbitMQ for scalable task queuing, enabling reliable processing of high-volume workloads",
         "Persisted model outputs and user queries in MongoDB for analytics and logging, and containerized the system using Docker"
       ]
-    },
-    {
-      "title": "NeRF Based 3D Modelling",
-      "technologies": "Neural Radiance Fields, Machine Learning, PyTorch, Computer Vision",
-      "githubUrl": "https://github.com/ayushmk7/3DModelling.git",
-      "achievements": [
-        "Built an end-to-end Neural Radiance Fields (NeRF) pipeline for photorealistic 3D reconstruction from multi-view images",
-        "Implemented volumetric ray marching, positional encoding, and differentiable density/color prediction for view synthesis",
-        "Designed a modular training pipeline with configurable hyperparameters to support multiple 3D reconstruction datasets"
-      ]
     }
   ],
   "skills": {
-    "programmingLanguages": ["Python", "JavaScript", "TypeScript", "Java", "C", "C++", "C#", "Ruby", "PHP", "SQL", "HTML", "CSS"],
-    "aiMl": ["PyTorch", "TensorFlow", "JAX", "HuggingFace Transformers", "ONNX Runtime", "Scikit-learn", "OpenAI APIs", "LLMs", "NLP", "Computer Vision", "Reinforcement Learning", "Edge AI deployment", "Model optimization"],
-    "softwareDevelopment": ["React", "Next.js", "React Native", "Node.js", "Django", "Flask", "FastAPI", "REST", "GraphQL", "Flutter", "Dart", "WebSockets", "Progressive Web Apps", "Vue", "Git", "GitHub", "GitHub Actions", "GitLab", "APIs"],
-    "databases": ["MongoDB", "PostgreSQL", "Redis", "MySQL", "Data modeling", "ETL pipelines"],
-    "devOps": ["Docker", "Kubernetes", "CI/CD pipelines", "RabbitMQ", "Linux", "AWS EC2", "AWS Lambda", "AWS S3", "Google Cloud", "Edge deployment", "Serverless architecture", "Scalable ML inference orchestration"],
-    "cybersecurity": ["Nmap automation", "PCAP forensics", "TLS protocol analysis", "API and web vulnerability analysis", "reverse engineering", "YARA based malware triage", "cryptographic weakness detection", "AWS IAM and S3 security"],
-    "coreCs": ["Data Structures", "Algorithms", "Time and Space Complexity Analysis", "Object Oriented Design", "Memory Management", "Concurrency and Multithreading", "Operating Systems Basics"]
+    "programmingLanguages": ["Python", "JavaScript", "TypeScript", "Java", "C", "C++", "Go", "Rust", "Ruby", "SQL", "Jac", "HTML", "CSS"],
+    "aiMl": ["PyTorch", "TensorFlow", "JAX", "HuggingFace Transformers", "Unsloth", "LoRA/QLoRA fine tuning", "RLHF/DPO", "ONNX Runtime", "vLLM", "Scikit-learn", "OpenAI APIs", "LLMs", "RAG", "Mixture of Experts", "NLP", "Computer Vision", "Reinforcement Learning", "Edge AI", "Quantization", "Model optimization", "Agentic systems", "MCP"],
+    "softwareDevelopment": ["React", "Next.js", "React Native", "Node.js", "Express", "Django", "Flask", "FastAPI", "REST", "GraphQL", "gRPC", "Flutter", "Dart", "WebSockets", "Tailwind CSS", "Vue", "Git", "GitHub", "GitHub Actions", "GitLab", "CI/CD", "APIs"],
+    "databases": ["MongoDB", "PostgreSQL", "Redis", "MySQL", "Vector databases", "ETL pipelines", "Pandas"],
+    "devOps": ["Docker", "Kubernetes", "CI/CD pipelines", "RabbitMQ", "Linux", "AWS EC2", "AWS Lambda", "AWS S3", "GCP", "Terraform", "Nginx", "Edge deployment", "Serverless architecture", "Scalable ML inference orchestration"],
+    "coreCs": ["Data Structures", "Algorithms", "Time and Space Complexity Analysis", "Object Oriented Design"]
   },
   "certifications": []
 }
