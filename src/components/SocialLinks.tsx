@@ -5,9 +5,10 @@ import { ThemeToggle } from "./ThemeToggle"
 
 interface SocialLinksProps {
   className?: string
+  showThemeToggle?: boolean
 }
 
-export function SocialLinks({ className }: SocialLinksProps) {
+export function SocialLinks({ className, showThemeToggle = true }: SocialLinksProps) {
   const [showEmailTooltip, setShowEmailTooltip] = React.useState(false)
   const [copied, setCopied] = React.useState(false)
   const email = "contactayushmadhav@gmail.com"
@@ -90,7 +91,7 @@ export function SocialLinks({ className }: SocialLinksProps) {
           <link.icon className="w-6 h-6" />
         </a>
       ))}
-      <ThemeToggle />
+      {showThemeToggle && <ThemeToggle />}
     </div>
   )
 }

@@ -51,7 +51,7 @@ export const projects: Project[] = [
   {
     title: "ConceptPilot",
     description: "[Overall 1st Prize at Red Bull Kappa Theta Pi Hackathon for Education track] ConceptPilot turns exam results and concept maps into readiness insights: it maps how students stand on each concept, groups strugglers, and gives instructors dashboards, traces, and suggestions with an interactive concept graph so you can see dependencies and gaps at a glance.",
-    tags: ["FASTAPI", "Next.js", "PostreSQL", "Alembic", "Anthropic API", "NetworkX"],
+    tags: ["FastAPI", "Next.js", "PostgreSQL", "Alembic", "Anthropic API", "NetworkX"],
     githubUrl: "https://github.com/ayushmk7/ConceptPilot",
   },
   {
