@@ -285,14 +285,18 @@ html[data-theme="comic"] .skill-tag {
    HALFTONE CIRCLE DECORATION
    Placed as a background accent on hackathon panels
    ============================================================ */
-/* hackathon panels: white box, black outline, red accents in BOTH modes */
+/* hackathon panels: theme-aware (light = white box / dark text, dark = dark box / light text).
+   Background, text, border and shadow all follow the mode via tokens; red accents stay. */
 html[data-theme="comic"] .panel--burst {
   background-image: radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--accent) 18%, transparent) 0%, color-mix(in srgb, var(--accent) 18%, transparent) 38%, transparent 40%);
-  background-color: #ffffff;
-  color: #141414;
-  border-color: #141414;
-  box-shadow: 6px 6px 0 #141414;
+  background-color: var(--surface);
+  color: var(--text);
+  border-color: var(--outline);
+  box-shadow: 6px 6px 0 var(--panel-shadow);
 }
+/* inner text follows the mode; event heading stays red, placement/blurb use theme text */
+html[data-theme="comic"] .panel--burst h3 { color: var(--accent); }
+html[data-theme="comic"] .panel--burst p { color: var(--text); }
 
 /* ============================================================
    MOBILE SPACING OVERRIDES
