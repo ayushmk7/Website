@@ -7,6 +7,7 @@ import { ThemeContact } from '../../../components/v2/ThemeContact';
 import { experience, hackathons } from '../../../data/v2';
 import { projects } from '../../../data/projects';
 import resumeData from '../../../data/resume.json';
+import ComicWorldMap from '../../../components/v2/ComicWorldMap';
 
 const categoryLabels: Record<string, string> = {
   programmingLanguages: 'Programming Languages',
@@ -109,6 +110,14 @@ const categoryLabels: Record<string, string> = {
         </div>
       ))}
     </div>
+  </section>
+
+  <section id="places" class="max-w-6xl mx-auto py-16" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
+    <div class="section-heading">
+      <h2 class="text-6xl text-[var(--comic-blue)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Places I have been</h2>
+    </div>
+    <p class="mb-6" style="font-weight:700">Tap a pin for live weather and a NASA satellite view.</p>
+    <ComicWorldMap client:visible />
   </section>
 
   <footer id="contact" class="max-w-6xl mx-auto py-20 text-center" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
