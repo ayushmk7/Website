@@ -20,5 +20,8 @@ html[data-theme="terminal"] .caret::after {
   content: '_'; color: var(--accent); animation: tBlink 1s steps(1) infinite;
 }
 @keyframes tBlink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="terminal"] .caret::after { animation: none; }
+}
 /* type-on: reuse [data-load] but with no transform, just sequential fade */
 html[data-theme="terminal"] [data-load] { transform: none; }
