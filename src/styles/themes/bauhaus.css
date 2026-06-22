@@ -254,6 +254,17 @@ html[data-theme="bauhaus"] .bau-link:focus-visible {
   color: var(--bg);
 }
 
+/* Icon-only variant: suppresses the geometric square prefix, square tap target */
+html[data-theme="bauhaus"] .bau-link.bau-link--icon {
+  padding: 0.45rem;
+  min-width: 36px;
+  min-height: 36px;
+  justify-content: center;
+}
+html[data-theme="bauhaus"] .bau-link.bau-link--icon::before {
+  display: none;
+}
+
 /* ============================================================
    SKILL TAG — surface block with geometric indicator dot
    ============================================================ */

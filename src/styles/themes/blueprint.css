@@ -411,6 +411,14 @@ html[data-theme="blueprint"] .bp-link:focus-visible::after {
   border-color: var(--btn-bg-hover);
 }
 
+/* -- Icon-only link variant: square tap target, no text ------------------- */
+html[data-theme="blueprint"] .bp-icon-link {
+  padding: 0;
+  width: 2.25rem;
+  min-height: 2.25rem;
+  justify-content: center;
+}
+
 /* -- Mobile spacing adjustments ----------------------------------------- */
 @media (max-width: 767px) {
   html[data-theme="blueprint"] .bp-hero-content {

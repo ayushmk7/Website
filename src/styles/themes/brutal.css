@@ -160,6 +160,14 @@ html[data-theme="brutal"] .b-btn:active {
   }
 }
 
+/* Icon-only variant: square, 36px minimum, no text padding */
+html[data-theme="brutal"] .b-btn.b-btn-icon {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0.45rem;
+  line-height: 1;
+}
+
 /* Accent variant — red shadow, filled background for contrast */
 html[data-theme="brutal"] .b-btn-accent {
   box-shadow: var(--btn-shadow-accent);

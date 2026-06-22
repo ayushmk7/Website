@@ -334,6 +334,15 @@ html[data-theme="aurora"] .aurora-link:hover::after {
   background: color-mix(in srgb, var(--accent) 14%, var(--surface));
 }
 
+/* ── Icon-only link variant ──────────────────────────────────────────────── */
+html[data-theme="aurora"] .aurora-link--icon {
+  padding: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-height: 2.5rem;
+  justify-content: center;
+}
+
 /* ── Stack chips ─────────────────────────────────────────────────────────── */
 html[data-theme="aurora"] .aurora-category-label {
   color: var(--accent);

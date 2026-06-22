@@ -13,3 +13,4 @@ Hero one-viewport pass (12 themes): clamp sizing, dvh cap, short-screen fit (com
 Uniqueness + parity pass (12 themes): custom buttons/boxes/icons, signature animations, dark/light parity, terminal ids+resume fix (commit c3a7644)
 Consistency/uniqueness review + fixes (commit a822cb1)
 Spacing pass (8 themes + current): rhythm, padding, gaps, shadow clearance (commit 3b3805f)
+Harsh UI/UX audit + fixes (9 designs): contrast, focus, tap targets, overflow, hero (commit f2b324e)

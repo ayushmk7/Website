@@ -226,18 +226,6 @@ html[data-theme="comic"] .comic-link-btn {
   transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s cubic-bezier(0.34,1.56,0.64,1);
 }
 
-/* spark icon before GitHub button */
-html[data-theme="comic"] .comic-link-btn::before {
-  content: '';
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  background: var(--spark-color);
-  border: 2px solid var(--spark-border);
-  /* 4-point star via clip-path */
-  clip-path: polygon(50% 0%,58% 38%,100% 50%,58% 62%,50% 100%,42% 62%,0% 50%,42% 38%);
-  flex-shrink: 0;
-}
 
 @media (prefers-reduced-motion: no-preference) {
   html[data-theme="comic"] .comic-link-btn:hover {
@@ -267,18 +255,6 @@ html[data-theme="comic"] .section-heading {
   margin-bottom: 2.25rem;
 }
 
-html[data-theme="comic"] .section-heading::before {
-  content: '';
-  display: inline-block;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background-image: radial-gradient(circle, var(--outline) 1.8px, transparent 2px);
-  background-size: 7px 7px;
-  background-color: var(--halftone-accent);
-  border: 3px solid var(--outline);
-  flex-shrink: 0;
-}
 
 /* ============================================================
    SKILL TAG: tiny halftone-dot badge with pop on hover
