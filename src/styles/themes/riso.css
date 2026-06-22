@@ -325,6 +325,8 @@ html[data-theme="riso"] .riso-chip {
 html[data-theme="riso"] .riso-hero {
   min-height: 100svh;
   min-height: 100dvh;
+  max-height: 100svh;
+  max-height: 100dvh;
   box-sizing: border-box;
   padding-top: 56px;
   padding-bottom: clamp(0.5rem, 2vh, 1.5rem);

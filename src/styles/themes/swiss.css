@@ -146,7 +146,7 @@ html[data-theme="swiss"] .swiss-hero {
   height: 100dvh;
   min-height: 0;
   box-sizing: border-box;
-  overflow: visible;
+  overflow: hidden;
 }
 
 /* Photo: 2:3 portrait that scales with viewport, never squishes */

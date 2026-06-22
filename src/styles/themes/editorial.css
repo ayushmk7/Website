@@ -221,6 +221,9 @@ html[data-theme="editorial"] main {
 html[data-theme="editorial"] .ed-hero {
   min-height: 100svh;
   min-height: 100dvh;
+  max-height: 100svh;
+  max-height: 100dvh;
+  overflow: hidden;
   box-sizing: border-box;
   padding-top: 56px;
   display: flex;
