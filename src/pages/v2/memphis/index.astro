@@ -34,7 +34,7 @@ const pillStyles = [
 <ThemeLayout themeKey="memphis" title="Ayush Madhav Kumar. Memphis">
 
   <!-- HERO -->
-  <section class="memphis-hero pt-24 flex flex-col justify-center max-w-5xl mx-auto px-6">
+  <section class="memphis-hero">
 
     <!-- Confetti layer -->
     <div class="m-shape m-circle" style="width:180px;height:180px;background:var(--accent);opacity:0.18;top:-40px;right:-50px;"></div>
@@ -62,22 +62,18 @@ const pillStyles = [
     <div class="m-shape m-bounce" style="width:24px;height:24px;background:var(--m-yellow);border:3px solid var(--text);top:30%;right:15%;"></div>
 
     <!-- Content -->
-    <div class="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
-      <div class="flex-shrink-0" data-load style="--i:0">
-        <Photo class="h-44 w-44 md:h-56 md:w-[14.7rem] rounded-[1rem] border-[3px] border-[var(--text)]" />
+    <div class="memphis-hero-inner">
+      <div class="memphis-hero-photo" data-load style="--i:0">
+        <Photo class="memphis-hero-img rounded-[1rem] border-[3px] border-[var(--text)]" />
       </div>
-      <div>
-        <h1
-          class="text-6xl md:text-8xl leading-[0.9] mt-0"
-          style="font-family:var(--font-display);font-weight:700;--i:1"
-          data-load
-        >
+      <div class="memphis-hero-text">
+        <h1 class="memphis-hero-name" data-load style="--i:1">
           Ayush<br/>Madhav<br/>Kumar
         </h1>
-        <p class="text-lg mt-4 text-[var(--text-dim)]" data-load style="--i:2">CS and Math @UMichigan</p>
-        <p class="font-mono mt-1 text-[var(--accent)]" data-load style="--i:3">&gt; NSF-backed research</p>
+        <p class="memphis-hero-sub" data-load style="--i:2">CS and Math @UMichigan</p>
+        <p class="memphis-hero-sub font-mono" style="color:var(--accent);--i:3" data-load>&gt; NSF-backed research</p>
         <a
-          class="inline-flex items-center mt-4 px-5 py-3 text-sm font-mono bg-[var(--m-yellow)] text-[#161616] border-[3px] border-[var(--text)] rounded-[1rem]"
+          class="memphis-hero-btn"
           href="/AyushMadhavResume.pdf"
           target="_blank"
           rel="noopener noreferrer"

@@ -62,11 +62,22 @@ html[data-theme="terminal"] .stack-group p {
   margin-bottom: 0.2rem;
 }
 
-/* hero fills one viewport minus fixed nav (~56px) */
+/* hero fills exactly one viewport minus fixed nav (~56px), no overflow */
 html[data-theme="terminal"] .hero-section {
   min-height: calc(100svh - 56px);
   min-height: calc(100dvh - 56px);
-  padding-top: 56px;
+  max-height: calc(100svh - 56px);
+  max-height: calc(100dvh - 56px);
+  padding-top: clamp(0.5rem, 3svh, 2rem);
+  padding-bottom: clamp(0.5rem, 3svh, 2rem);
+  overflow: hidden;
+  gap: clamp(0.25rem, 1.5svh, 0.75rem);
+}
+/* responsive name size: shrinks on short/narrow viewports */
+html[data-theme="terminal"] .hero-name {
+  font-size: clamp(1.25rem, min(6vw, 4svh), 2.5rem);
+  line-height: 1.2;
+  margin: 0;
 }
 
 /* project links */

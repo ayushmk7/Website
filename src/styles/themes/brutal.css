@@ -22,6 +22,47 @@ html[data-theme="brutal"].dark {
 }
 
 html[data-theme="brutal"] body { overflow-x: hidden; font-size: 1rem; line-height: 1.55; font-weight: var(--w-body); }
+
+/* First screen: marquee + hero = exactly one viewport */
+html[data-theme="brutal"] .b-first-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+html[data-theme="brutal"] .b-hero {
+  flex: 1;
+  overflow: hidden;
+  display: grid;
+  align-items: center;
+}
+
+/* Name: fluid from small mobile to wide desktop */
+html[data-theme="brutal"] .b-name {
+  font-size: clamp(2.4rem, 10vw + 0.5dvh, 6rem);
+}
+
+/* Photo: shrinks on short/narrow screens */
+html[data-theme="brutal"] .b-photo {
+  width: clamp(7rem, 22vw, 13.3rem);
+  height: auto;
+  display: block;
+}
+html[data-theme="brutal"] .b-photo-wrap {
+  align-self: center;
+}
+
+/* Short screens: tighten further */
+@media (max-height: 700px) {
+  html[data-theme="brutal"] .b-name {
+    font-size: clamp(2rem, 8vw + 0.3dvh, 4rem);
+  }
+  html[data-theme="brutal"] .b-photo {
+    width: clamp(5.5rem, 18vw, 9rem);
+  }
+  html[data-theme="brutal"] .b-hero {
+    gap: 0.5rem;
+  }
+}
 html[data-theme="brutal"] .hard { border: var(--border); box-shadow: 6px 6px 0 var(--shadow-hard); background: var(--surface); }
 html[data-theme="brutal"] .hard-accent { box-shadow: 6px 6px 0 var(--accent); }
 html[data-theme="brutal"] .project-link { display: inline-flex; align-items: center; min-height: 36px; transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease); text-decoration: none; color: var(--text); }

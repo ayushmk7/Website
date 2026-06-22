@@ -18,15 +18,19 @@ const categoryLabels: Record<string, string> = {
 };
 ---
 <ThemeLayout themeKey="editorial" title="Ayush Madhav Kumar. Editorial">
-  <header class="max-w-5xl mx-auto px-6 pt-24 pb-10">
-    <p class="uppercase tracking-[0.3em] text-xs text-[var(--accent)]" data-load>Portfolio . MMXXVI</p>
-    <h1 class="text-6xl md:text-8xl leading-[0.95] mt-4" style="font-family:var(--font-display);font-weight:900;--i:1" data-load>Ayush<br/>Madhav Kumar</h1>
-  </header>
-  <section class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[1fr_300px] gap-8 md:gap-10 items-end pb-16 pt-4">
-    <p class="dropcap text-xl leading-relaxed max-w-prose order-2 md:order-1" data-load style="--i:2">
-      CS and Math at the University of Michigan working in systems programming and AI infrastructure: on-device inference engines, fine-tuned coding agents, and the tooling around them. NSF-backed research; contributor at Cactus (YC S25). <a class="underline text-[var(--accent)]" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer">Read the resume.</a>
-    </p>
-    <Photo class="h-[19rem] w-[12.6rem] order-1 md:order-2 md:justify-self-end" />
+  <section class="ed-hero">
+    <div class="ed-hero__inner max-w-5xl mx-auto px-6">
+      <p class="uppercase tracking-[0.3em] text-xs text-[var(--accent)]" data-load>Portfolio . MMXXVI</p>
+      <div class="ed-hero__grid">
+        <div class="ed-hero__text order-2 md:order-1">
+          <h1 class="ed-hero__name leading-[0.95] mt-4" style="font-family:var(--font-display);font-weight:900;--i:1" data-load>Ayush<br/>Madhav Kumar</h1>
+          <p class="dropcap ed-hero__body leading-relaxed max-w-prose mt-4" data-load style="--i:2">
+            CS and Math at the University of Michigan working in systems programming and AI infrastructure: on-device inference engines, fine-tuned coding agents, and the tooling around them. NSF-backed research; contributor at Cactus (YC S25). <a class="underline text-[var(--accent)]" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer">Read the resume.</a>
+          </p>
+        </div>
+        <Photo class="ed-hero__photo order-1 md:order-2 md:justify-self-end" />
+      </div>
+    </div>
   </section>
 
   <!-- numbered article sections -->

@@ -65,12 +65,100 @@ html[data-theme="bauhaus"] .bau-link {
 }
 html[data-theme="bauhaus"] .bau-link:hover { opacity: 0.7; }
 
-/* -- Hero section: clamp to viewport, clip decorative shapes; pad top for fixed nav */
-html[data-theme="bauhaus"] section:first-of-type {
+/* -- Hero section: exactly one viewport, no overflow, nav-aware padding ------ */
+html[data-theme="bauhaus"] .bau-hero {
+  /* fill exactly one viewport on all modern browsers */
+  height: 100svh;
+  height: 100dvh;
   min-height: 100svh;
   min-height: 100dvh;
-  padding-top: 64px;
+  max-height: 100svh;
+  max-height: 100dvh;
+  /* account for fixed ~56px nav */
+  padding-top: 56px;
+  box-sizing: border-box;
   overflow: hidden;
+  display: grid;
+}
+
+/* Two-column grid on md+; single column stacked (photo first) on mobile */
+html[data-theme="bauhaus"] .bau-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  html[data-theme="bauhaus"] .bau-hero-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+}
+
+/* Photo panel: flexible height, never overflows */
+html[data-theme="bauhaus"] .bau-photo-panel {
+  display: grid;
+  place-items: center;
+  background: var(--bau-yellow);
+  padding: clamp(0.75rem, 2vw, 2rem);
+  overflow: hidden;
+  /* mobile: appears above text (order 0), limited height */
+  order: 0;
+  max-height: 45svh;
+  max-height: 45dvh;
+}
+
+@media (min-width: 768px) {
+  html[data-theme="bauhaus"] .bau-photo-panel {
+    order: 2;
+    max-height: none;
+    height: 100%;
+  }
+}
+
+/* Photo image inside panel */
+html[data-theme="bauhaus"] .bau-photo-panel img,
+html[data-theme="bauhaus"] .bau-photo-panel .photo-wrap {
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Text column: flex, centered, never overflows */
+html[data-theme="bauhaus"] .bau-hero-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 3.5rem);
+  overflow: hidden;
+  order: 1;
+}
+
+@media (min-width: 768px) {
+  html[data-theme="bauhaus"] .bau-hero-text {
+    order: 1;
+  }
+}
+
+/* Big name: clamp so it fits from 360px wide / 640px tall upward */
+html[data-theme="bauhaus"] .bau-hero-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.9;
+  /* clamp: min 2.2rem (tiny phone), preferred viewport-relative, max 6rem (desktop) */
+  font-size: clamp(2.2rem, min(9vw, 9vh), 6rem);
+  margin-top: 0.5rem;
+}
+
+/* Tagline above name */
+html[data-theme="bauhaus"] .bau-hero-tagline {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: clamp(0.65rem, 1.8vw, 0.875rem);
+  line-height: 1.4;
 }
 
 /* -- Load animations ------------------------------------------------------- */

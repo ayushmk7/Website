@@ -20,15 +20,15 @@ const LABEL_MAP: Record<string, string> = {
 ---
 <ThemeLayout themeKey="blueprint" title="Ayush Madhav Kumar. Blueprint">
   <!-- HERO: spec-sheet rail left, title block right -->
-  <section class="bp-hero overflow-hidden grid md:grid-cols-[260px_1fr]">
+  <section class="bp-hero grid md:grid-cols-[260px_1fr]">
     <aside class="hidden md:flex flex-col justify-between bp-rail-border p-6 font-mono text-[var(--text-dim)]" style="font-size:0.75rem;line-height:1.6">
       <div data-load style="--i:0">DRAWING NO. AMK-001<br/>SCALE 1:1<br/>UNITS dp</div>
       <div data-load style="--i:2">REV. 2026.06<br/>ANN ARBOR, MI</div>
     </aside>
-    <div class="flex flex-col justify-center p-6 md:p-12">
-      <div class="mb-6" data-load style="--i:0"><Photo class="h-40 w-40 md:h-[19rem] md:w-[12.6rem] bp-photo-frame" /></div>
+    <div class="bp-hero-content p-6 md:p-12">
+      <div data-load style="--i:0"><Photo class="bp-hero-photo bp-photo-frame" /></div>
       <p class="fig-label" data-load style="--i:1">CS AND MATH @UMICHIGAN</p>
-      <h1 class="text-5xl md:text-7xl my-3" data-load style="font-family:var(--font-display);font-weight:700;letter-spacing:-0.03em;--i:2">Ayush Madhav Kumar</h1>
+      <h1 class="bp-hero-name" data-load style="--i:2">Ayush Madhav Kumar</h1>
       <p class="font-mono text-[var(--accent)] text-sm" data-load style="--i:3">&gt; NSF-backed research</p>
       <a class="font-mono text-[var(--accent)] text-sm hover:underline" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:4">&gt; view resume (pdf)</a>
     </div>

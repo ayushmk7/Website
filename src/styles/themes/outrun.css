@@ -79,6 +79,47 @@ html[data-theme="outrun"] section,
 html[data-theme="outrun"] header,
 html[data-theme="outrun"] footer { position: relative; z-index: 1; }
 
+/* ── HERO: exactly one viewport, no overflow, responsive ── */
+html[data-theme="outrun"] .hero-viewport {
+  height: 100svh;
+  height: 100dvh;
+  max-height: 100svh;
+  max-height: 100dvh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  padding-top: 56px;
+  padding-bottom: clamp(0.5rem, 2vh, 1.5rem);
+  gap: clamp(0.35rem, 1.5vh, 0.9rem);
+  overflow: hidden;
+}
+html[data-theme="outrun"] .hero-avatar {
+  width: clamp(4.5rem, 16vmin, 8rem);
+  height: clamp(4.5rem, 16vmin, 8rem);
+  flex-shrink: 0;
+  order: -1;
+}
+html[data-theme="outrun"] .hero-subtitle {
+  font-size: clamp(0.6rem, 1.8vmin, 0.85rem);
+  letter-spacing: 0.25em;
+  margin: 0;
+}
+html[data-theme="outrun"] .hero-name {
+  font-size: clamp(1.5rem, 6vmin, 4.5rem);
+  line-height: 1.1;
+  margin: 0;
+}
+html[data-theme="outrun"] .hero-tagline {
+  font-size: clamp(0.75rem, 2vmin, 1.1rem);
+  margin: 0;
+}
+html[data-theme="outrun"] .hero-cta {
+  font-size: clamp(0.7rem, 1.8vmin, 0.9rem);
+  padding: clamp(0.3rem, 1vmin, 0.5rem) clamp(0.9rem, 3vmin, 1.5rem);
+  min-height: 2.25rem;
+  flex-shrink: 0;
+}
+
 /* neon project links -- readable in both modes */
 html[data-theme="outrun"] #projects a {
   color: var(--accent);

@@ -20,16 +20,17 @@ const skillLabelMap: Record<string, string> = {
 };
 ---
 <ThemeLayout themeKey="brutal" title="Ayush Madhav Kumar. Brutalist">
-  <div class="overflow-hidden pt-14"><div class="marquee" data-load><span>{ticker}{ticker}{ticker}{ticker}</span></div></div>
-
-  <section class="min-h-[100svh] min-h-[100dvh] grid md:grid-cols-2 items-center gap-8 max-w-6xl mx-auto px-6 py-12">
-    <div class="hard p-2 justify-self-center order-first md:order-last" data-load style="--i:1"><Photo class="h-[20rem] w-[13.3rem]" /></div>
-    <div class="order-last md:order-first">
-      <h1 class="text-7xl md:text-8xl leading-[0.85] uppercase break-words" style="font-family:var(--font-display)" data-load>Ayush<br/>Madhav<br/>Kumar</h1>
-      <p class="mt-6 text-lg font-bold uppercase" data-load style="--i:1">CS + MATH @UMICHIGAN</p>
-      <a href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" class="hard hard-accent inline-block mt-4 px-5 py-2 font-bold uppercase" data-load style="--i:2">Resume PDF</a>
-    </div>
-  </section>
+  <div class="b-first-screen pt-14">
+    <div class="marquee" data-load><span>{ticker}{ticker}{ticker}{ticker}</span></div>
+    <section class="b-hero grid md:grid-cols-2 items-center gap-4 md:gap-8 max-w-6xl mx-auto px-6 py-6 md:py-8">
+      <div class="b-photo-wrap hard p-2 justify-self-center order-first md:order-last" data-load style="--i:1"><Photo class="b-photo" /></div>
+      <div class="order-last md:order-first">
+        <h1 class="b-name leading-[0.85] uppercase break-words" style="font-family:var(--font-display)" data-load>Ayush<br/>Madhav<br/>Kumar</h1>
+        <p class="mt-3 md:mt-6 text-base md:text-lg font-bold uppercase" data-load style="--i:1">CS + MATH @UMICHIGAN</p>
+        <a href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" class="hard hard-accent inline-block mt-3 md:mt-4 px-5 py-2 font-bold uppercase" data-load style="--i:2">Resume PDF</a>
+      </div>
+    </section>
+  </div>
 
   <section id="experience" class="max-w-6xl mx-auto px-6 py-12">
     <h2 class="text-5xl uppercase mb-8" style="font-family:var(--font-display)">Experience</h2>

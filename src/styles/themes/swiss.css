@@ -103,10 +103,22 @@ html[data-theme="swiss"] [data-load] {
   }
 }
 
-/* ── Swiss hero: full viewport ─────────────────────────────────────── */
+/* ── Swiss hero: full viewport, exactly one screen tall ────────────── */
 html[data-theme="swiss"] .swiss-hero {
-  min-height: 100svh;
-  min-height: 100dvh;
+  /* lock to exactly one viewport — no next-section peek */
+  height: 100svh;
+  height: 100dvh;
+  min-height: 0;
+  box-sizing: border-box;
+  /* shrink inner content, never clip text */
+  overflow: visible;
+}
+
+/* Photo shrinks on short/small screens */
+html[data-theme="swiss"] .sw-hero-photo {
+  width:  clamp(6rem, 18vw, 13rem);
+  height: clamp(8rem, 26vw, 18rem);
+  flex-shrink: 0;
 }
 
 /* ── Accent tag (role / placement label) ───────────────────────────── */

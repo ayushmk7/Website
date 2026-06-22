@@ -27,42 +27,42 @@ const filteredProjects = projects.filter(
   <!-- ═══════════════════════ HERO ═══════════════════════════ -->
   <section class="deco-hero px-6" aria-label="Introduction">
 
-    <!-- mobile: photo above name -->
-    <Photo class="mb-6 md:hidden w-28 h-36 object-cover" data-load style="--i:0" />
+    <!-- mobile: photo above name; smaller on very short screens -->
+    <Photo class="md:hidden object-cover" data-load style="--i:0; width:clamp(4rem,14svh,7rem); height:clamp(5rem,18svh,9rem)" />
 
     <!-- top ornament label -->
-    <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent-text)] mb-4" data-load style="--i:0">
+    <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent-text)]" style="margin-bottom:clamp(0.2rem,1svh,1rem)" data-load>
       Portfolio &middot; MMXXVI
     </p>
 
     <!-- sunburst above name -->
-    <div class="deco-sunburst mb-3 mx-auto" aria-hidden="true"></div>
+    <div class="deco-sunburst mx-auto" aria-hidden="true"></div>
 
-    <!-- name -->
+    <!-- name: clamp scales from ~1.15rem on 360px up to 4.5rem on desktop -->
     <h1
-      class="deco-heading text-4xl sm:text-5xl md:text-7xl leading-tight mb-2"
+      class="deco-heading leading-tight"
       data-load
-      style="--i:1"
+      style="--i:1; font-size:clamp(1.15rem,5vw,4.5rem); letter-spacing:clamp(0.04em,0.8vw,0.2em); margin-bottom:clamp(0.1rem,0.6svh,0.5rem)"
     >
       Ayush Madhav Kumar
     </h1>
 
     <!-- double-rule -->
-    <div class="deco-rule w-full max-w-lg mx-auto my-4" aria-hidden="true">
+    <div class="deco-rule w-full max-w-lg mx-auto" aria-hidden="true">
       <span class="deco-rule-span">CS &amp; Math</span>
     </div>
 
     <!-- role + callout row -->
-    <div class="flex flex-col items-center gap-1 mb-6" data-load style="--i:2">
+    <div class="flex flex-col items-center" data-load style="--i:2; gap:clamp(0.1rem,0.5svh,0.5rem); margin-bottom:clamp(0.4rem,2svh,1.5rem)">
       <p
-        class="font-display tracking-[0.25em] uppercase text-sm text-[var(--text)]"
-        style="font-family:var(--font-display)"
+        class="tracking-[0.25em] uppercase text-[var(--text)]"
+        style="font-family:var(--font-display); font-size:clamp(0.65rem,1.8vw,0.875rem)"
       >
         CS and Math @UMichigan
       </p>
       <p
-        class="font-display tracking-[0.2em] uppercase text-xs text-[var(--accent-2)]"
-        style="font-family:var(--font-display)"
+        class="tracking-[0.2em] uppercase text-[var(--accent-2)]"
+        style="font-family:var(--font-display); font-size:clamp(0.6rem,1.5vw,0.75rem)"
       >
         &rsaquo; NSF-backed research
       </p>
@@ -70,12 +70,12 @@ const filteredProjects = projects.filter(
 
     <!-- desktop photo + blurb row -->
     <div
-      class="hidden md:flex items-center gap-10 max-w-3xl mx-auto mt-4"
+      class="hidden md:flex items-center gap-8 max-w-3xl mx-auto"
       data-load
       style="--i:3"
     >
-      <Photo class="w-28 h-36 flex-shrink-0" />
-      <p class="text-[var(--text)] text-sm leading-relaxed max-w-prose text-left">
+      <Photo class="flex-shrink-0" style="width:clamp(5rem,8vw,7rem); height:clamp(6.25rem,10vw,9rem)" />
+      <p class="text-[var(--text)] leading-relaxed max-w-prose text-left" style="font-size:clamp(0.75rem,1.2vw,0.9375rem)">
         Systems programming and AI infrastructure: on-device inference engines, fine-tuned
         coding agents, and the tooling around them. NSF-backed research; contributor at
         Cactus (YC S25).
@@ -83,8 +83,8 @@ const filteredProjects = projects.filter(
           href="/AyushMadhavResume.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          class="block mt-3 text-[var(--accent-text)] tracking-widest uppercase text-xs"
-          style="font-family:var(--font-display)"
+          class="block text-[var(--accent-text)] tracking-widest uppercase"
+          style="font-family:var(--font-display); font-size:clamp(0.6rem,1vw,0.75rem); margin-top:clamp(0.25rem,1svh,0.75rem)"
         >
           View Resume &rarr;
         </a>
@@ -93,9 +93,9 @@ const filteredProjects = projects.filter(
 
     <!-- mobile blurb -->
     <p
-      class="md:hidden text-[var(--text)] text-sm leading-relaxed max-w-prose text-center mt-4"
+      class="md:hidden text-[var(--text)] leading-relaxed max-w-prose text-center"
       data-load
-      style="--i:3"
+      style="--i:3; font-size:clamp(0.7rem,3.5vw,0.875rem); margin-top:clamp(0.25rem,1svh,1rem)"
     >
       Systems programming and AI infrastructure: on-device inference engines, fine-tuned
       coding agents, and the tooling around them.
@@ -103,15 +103,15 @@ const filteredProjects = projects.filter(
         href="/AyushMadhavResume.pdf"
         target="_blank"
         rel="noopener noreferrer"
-        class="block mt-3 text-[var(--accent-text)] tracking-widest uppercase text-xs"
-        style="font-family:var(--font-display)"
+        class="block text-[var(--accent-text)] tracking-widest uppercase"
+        style="font-family:var(--font-display); font-size:clamp(0.6rem,2.5vw,0.75rem); margin-top:clamp(0.25rem,1svh,0.75rem)"
       >
         View Resume &rarr;
       </a>
     </p>
 
     <!-- bottom chevron -->
-    <div class="deco-chevron mt-10" aria-hidden="true"></div>
+    <div class="deco-chevron" aria-hidden="true"></div>
   </section>
 
   <!-- ═══════════════════════ EXPERIENCE ════════════════════ -->

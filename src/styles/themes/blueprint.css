@@ -45,13 +45,43 @@ html[data-theme="blueprint"].dark body {
     var(--bg);
 }
 
-/* -- Hero: clear fixed nav (~56 px) with a small buffer ----------------- */
+/* -- Hero: exactly one viewport, content centered ----------------------- */
 html[data-theme="blueprint"] .bp-hero {
-  min-height: 100vh;
-  min-height: 100svh;
-  min-height: 100dvh;
-  padding-top: 72px;
-  align-items: center;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  min-height: 0;
+  padding-top: clamp(56px, 9vmin, 72px);
+  padding-bottom: clamp(8px, 2vmin, 24px);
+  box-sizing: border-box;
+  align-items: stretch;
+}
+
+/* Hero content column: shrinks to fit, never overflows */
+html[data-theme="blueprint"] .bp-hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  overflow: visible;
+  gap: clamp(4px, 1.2vmin, 16px);
+}
+
+/* Photo: clamp between 96px (small) and 19rem (large) */
+html[data-theme="blueprint"] .bp-hero-photo {
+  width: clamp(80px, 22vmin, 12.6rem);
+  height: clamp(96px, 28vmin, 19rem);
+  flex-shrink: 0;
+}
+
+/* Name headline: clamp from 1.6rem (360px) up to 4.5rem (desktop) */
+html[data-theme="blueprint"] .bp-hero-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-size: clamp(1.6rem, 5.5vw + 0.5rem, 4.5rem);
+  line-height: 1.1;
+  margin: 0;
 }
 
 html[data-theme="blueprint"] .bp-rail-border {

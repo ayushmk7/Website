@@ -20,12 +20,12 @@ const categoryLabels: Record<string, string> = {
 const skillGroups = Object.entries(resumeData.skills) as [string, string[]][];
 ---
 <ThemeLayout themeKey="aurora" title="Ayush Madhav Kumar. Aurora">
-  <section class="min-h-[100svh] min-h-[100dvh] flex flex-col justify-center items-center text-center px-6">
-    <Photo class="aurora-photo h-40 w-40 md:h-[19rem] md:w-[12.6rem] rounded-[1.25rem]" />
-    <p class="mt-6 text-[var(--accent)]" data-load>CS and Math @UMichigan</p>
-    <h1 class="text-5xl md:text-7xl mt-3" style="font-family:var(--font-display);font-weight:700;letter-spacing:-0.02em;--i:1" data-load>Ayush Madhav Kumar</h1>
-    <p class="font-mono mt-4 text-[var(--accent)]" data-load style="--i:2">&gt; NSF-backed research</p>
-    <a class="font-mono text-[var(--accent)] hover:underline" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3;padding:0.5rem 0.75rem;display:inline-block;min-height:2.75rem;line-height:1.75rem">&gt; view resume (pdf)</a>
+  <section class="aurora-hero flex flex-col justify-center items-center text-center px-6">
+    <Photo class="aurora-photo aurora-hero-photo rounded-[1.25rem]" />
+    <p class="mt-4 text-[var(--accent)] aurora-hero-sub" data-load>CS and Math @UMichigan</p>
+    <h1 class="aurora-hero-name mt-2" style="font-family:var(--font-display);font-weight:700;letter-spacing:-0.02em;--i:1" data-load>Ayush Madhav Kumar</h1>
+    <p class="font-mono mt-3 text-[var(--accent)] aurora-hero-sub" data-load style="--i:2">&gt; NSF-backed research</p>
+    <a class="font-mono text-[var(--accent)] hover:underline aurora-hero-sub" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3;padding:0.5rem 0.75rem;display:inline-block;min-height:2.75rem;line-height:1.75rem">&gt; view resume (pdf)</a>
   </section>
 
   <section id="experience" class="max-w-5xl mx-auto px-6 py-16">

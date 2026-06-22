@@ -92,6 +92,65 @@ html[data-theme="riso"] #skills span {
   color: var(--text);
 }
 
+/* ── HERO: exactly one viewport, content fits short/small screens ── */
+html[data-theme="riso"] .riso-hero {
+  min-height: 100svh;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  padding-top: 56px; /* account for fixed nav */
+  padding-bottom: clamp(0.5rem, 2vh, 1.5rem);
+  gap: clamp(0.35rem, 1.2vh, 0.9rem);
+  overflow: hidden; /* clip misreg ghost only, no real text hidden */
+}
+
+html[data-theme="riso"] .riso-hero-photo {
+  flex-shrink: 0;
+  width: clamp(5rem, 18vw, 12.6rem);
+  height: clamp(5rem, 18vw, 12.6rem);
+  object-fit: cover;
+  align-self: flex-start;
+}
+
+html[data-theme="riso"] .riso-hero-name {
+  font-size: clamp(2rem, 8.5vw + 0.5vh, 5rem);
+  line-height: 1.05;
+  margin: 0;
+  overflow: visible; /* keep misreg ghost, parent clips it */
+}
+
+html[data-theme="riso"] .riso-hero-sub {
+  font-size: clamp(0.9rem, 2.5vw, 1.25rem);
+  line-height: 1.45;
+  margin: 0;
+  color: var(--text);
+}
+
+html[data-theme="riso"] .riso-hero-line {
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* on mobile, photo is naturally above name because flex-col order is photo then h1 */
+@media (min-width: 768px) {
+  html[data-theme="riso"] .riso-hero-photo {
+    width: clamp(8rem, 14vw, 12.6rem);
+    height: auto;
+    aspect-ratio: 2 / 3;
+  }
+}
+
+/* short viewports: further shrink photo */
+@media (max-height: 720px) {
+  html[data-theme="riso"] .riso-hero-photo {
+    width: clamp(4rem, 12vh, 8rem);
+    height: clamp(4rem, 12vh, 8rem);
+  }
+  html[data-theme="riso"] .riso-hero {
+    gap: clamp(0.25rem, 0.8vh, 0.6rem);
+  }
+}
+
 /* contact footer ThemeContact button border inherits via inline style;
    ensure the copy button has a readable background */
 html[data-theme="riso"] #contact button {

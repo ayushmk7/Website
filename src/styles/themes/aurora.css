@@ -69,9 +69,49 @@ html[data-theme="aurora"] .aurora-photo {
   box-shadow: 0 8px 30px rgba(46, 52, 64, 0.18);
 }
 
-/* ── Hero: clear fixed ~56 px nav ────────────────────────────────────────── */
-html[data-theme="aurora"] section:first-of-type {
+/* ── Hero: exactly one viewport, content always fits ─────────────────────── */
+html[data-theme="aurora"] .aurora-hero {
+  /* Lock to exactly one viewport height using svh with dvh override */
+  height: 100svh;
+  height: 100dvh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  max-height: 100svh;
+  max-height: 100dvh;
+  /* Clear the fixed nav (~56px) while keeping content centered */
   padding-top: calc(56px + 2rem);
+  padding-bottom: 1rem;
+  /* Use flex column so items stack, gap shrinks on small viewports */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  gap: clamp(0.25rem, 1.5svh, 0.75rem);
+}
+
+/* Photo: tall on desktop, shrinks on short/small viewports */
+html[data-theme="aurora"] .aurora-hero-photo {
+  /* Width clamps between 8rem (360px screen) and 12.5rem (large) */
+  width: clamp(7rem, 22vw, 12.5rem);
+  /* 2:3 aspect ratio, but cap at a fraction of viewport height */
+  height: clamp(9.5rem, 28svh, 19rem);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Name: clamp from 2rem on tiny screens to 4.5rem on large */
+html[data-theme="aurora"] .aurora-hero-name {
+  font-size: clamp(1.75rem, 6vw, 4.5rem);
+  line-height: 1.1;
+  margin-top: 0;
+}
+
+/* Sub-lines (tagline, resume link): shrink text on tiny screens */
+html[data-theme="aurora"] .aurora-hero-sub {
+  font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 /* ── Project links ──────────────────────────────────────────────────────── */

@@ -54,9 +54,38 @@ html[data-theme="comic"] body {
 
 /* hero: exactly one viewport, content centered; pad top so it clears the fixed ~56px nav */
 html[data-theme="comic"] .comic-hero {
-  min-height: 100svh;
-  min-height: 100dvh;
+  height: 100svh;
+  height: 100dvh;
+  max-height: 100svh;
+  max-height: 100dvh;
+  min-height: 0;
+  box-sizing: border-box;
   padding-top: 64px;
+  padding-bottom: 8px;
+  overflow: clip;
+}
+
+/* scale photo panel on small/short screens */
+html[data-theme="comic"] .comic-hero-photo {
+  width: clamp(5rem, 20vmin, 11rem);
+  height: clamp(5rem, 20vmin, 11rem);
+  border-radius: 0.75rem;
+}
+
+/* hero gap shrinks on short screens */
+@media (max-height: 700px) {
+  html[data-theme="comic"] .comic-hero {
+    gap: clamp(0.5rem, 1.5vh, 1.5rem);
+    padding-top: 60px;
+    padding-bottom: 4px;
+  }
+}
+
+@media (max-height: 560px) {
+  html[data-theme="comic"] .comic-hero {
+    gap: 0.35rem;
+    padding-top: 58px;
+  }
 }
 
 /* side padding keeps 6px hard shadow visible and not clipped */
