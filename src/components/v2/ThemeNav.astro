@@ -25,12 +25,22 @@ const links = [
 </header>
 
 <style>
+  /* pin the nav to the viewport on every theme, above all theme overlays */
+  .theme-nav-wrap {
+    position: fixed !important;
+    top: 0.75rem;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
   .theme-nav {
     background: var(--surface);
     border-color: color-mix(in srgb, var(--text) 22%, transparent);
     border-radius: 9999px;
     font-family: var(--font-body);
     color: var(--text);
+    /* solid-enough backdrop so content scrolling under stays readable */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
   }
   .theme-nav-brand {
     font-family: var(--font-display);
