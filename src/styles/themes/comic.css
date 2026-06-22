@@ -21,6 +21,13 @@ html[data-theme="comic"] {
   --link-btn-shadow: #141414;
   --link-btn-site-bg: #2b6cff;
   --link-btn-site-text: #ffffff;
+  --burst-bg: #ff3b3b;
+  --burst-text: #ffffff;
+  --burst-border: #141414;
+  --burst-shadow: #141414;
+  --spark-color: #ffd400;
+  --spark-border: #141414;
+  --halftone-accent: rgba(255,59,59,0.18);
 }
 
 /* -- DARK palette -- */
@@ -40,6 +47,13 @@ html[data-theme="comic"].dark {
   --link-btn-shadow: #e8e8e8;
   --link-btn-site-bg: #5b8fff;
   --link-btn-site-text: #ffffff;
+  --burst-bg: #ff3b3b;
+  --burst-text: #ffffff;
+  --burst-border: #e8e8e8;
+  --burst-shadow: #e8e8e8;
+  --spark-color: #ffd400;
+  --spark-border: #e8e8e8;
+  --halftone-accent: rgba(91,143,255,0.18);
 }
 
 html[data-theme="comic"] body {
@@ -89,16 +103,24 @@ html[data-theme="comic"] .comic-hero-photo {
   }
 }
 
-/* side padding keeps 6px hard shadow visible and not clipped */
+/* side padding keeps hard shadow visible and not clipped */
 html[data-theme="comic"] .panel {
   border: var(--border);
   border-radius: var(--radius);
   background: var(--surface);
   box-shadow: 6px 6px 0 var(--panel-shadow);
   color: var(--text);
+  transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s cubic-bezier(0.34,1.56,0.64,1);
 }
 
-/* rounded caption box (tail removed: the downward arrow read as out of place) */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="comic"] .panel:hover {
+    transform: translate(-3px, -3px) scale(1.02);
+    box-shadow: 9px 9px 0 var(--panel-shadow);
+  }
+}
+
+/* rounded caption box (tail removed: downward arrow was out of place) */
 html[data-theme="comic"] .bubble {
   border: var(--border);
   border-radius: 1.5rem;
@@ -113,36 +135,161 @@ html[data-theme="comic"] [data-load] { animation-timing-function: cubic-bezier(0
 /* prevent panel shadows from causing horizontal scroll */
 html[data-theme="comic"] section { overflow-x: clip; }
 
-/* project link buttons */
+/* ============================================================
+   STARBURST / ACTION-BURST BUTTON
+   Polygon clip-path for the spiky burst shape.
+   Uses CSS custom-property border + hard shadow.
+   ============================================================ */
+html[data-theme="comic"] .burst-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0.5rem 1.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.8vw, 1.5rem);
+  letter-spacing: 0.04em;
+  color: var(--burst-text);
+  background: var(--burst-bg);
+  border: 3px solid var(--burst-border);
+  border-radius: 4px;
+  /* 12-point starburst via clip-path */
+  clip-path: polygon(
+    50% 0%, 58% 8%, 68% 4%, 72% 14%,
+    84% 12%, 84% 24%, 95% 28%, 91% 40%,
+    100% 48%, 93% 58%, 100% 68%, 90% 74%,
+    92% 86%, 80% 88%, 78% 100%, 66% 96%,
+    58% 100%, 50% 93%, 42% 100%, 34% 96%,
+    22% 100%, 20% 88%, 8% 86%, 10% 74%,
+    0% 68%, 7% 58%, 0% 48%, 9% 40%,
+    5% 28%, 16% 24%, 16% 12%, 28% 14%,
+    32% 4%, 42% 8%
+  );
+  /* hard shadow done via drop-filter so it follows the clip shape */
+  filter: drop-shadow(4px 4px 0 var(--burst-shadow));
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), filter 0.18s cubic-bezier(0.34,1.56,0.64,1);
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="comic"] .burst-btn:hover {
+    transform: scale(1.12) rotate(-2deg);
+    filter: drop-shadow(6px 6px 0 var(--burst-shadow));
+  }
+  html[data-theme="comic"] .burst-btn:active {
+    transform: scale(0.96) rotate(1deg);
+    filter: drop-shadow(2px 2px 0 var(--burst-shadow));
+  }
+}
+
+/* ============================================================
+   PANEL / THICK-OUTLINE LINK BUTTONS
+   Used for GitHub + Site project links
+   ============================================================ */
 html[data-theme="comic"] .comic-link-btn {
   display: inline-flex;
   align-items: center;
+  gap: 0.35rem;
   min-height: 36px;
-  padding: 0.375rem 0.875rem;
-  font-size: 0.875rem;
-  font-family: var(--font-body);
-  font-weight: 800;
-  border: 2px solid var(--link-btn-border);
-  border-radius: var(--radius);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  border: 3px solid var(--link-btn-border);
+  border-radius: 6px;
   background: var(--link-btn-bg);
   color: var(--link-btn-text);
-  box-shadow: 3px 3px 0 var(--link-btn-shadow);
-  text-decoration: none;
-  transition: transform 0.1s, box-shadow 0.1s;
-}
-
-html[data-theme="comic"] .comic-link-btn:hover {
-  transform: translate(-1px, -1px);
   box-shadow: 4px 4px 0 var(--link-btn-shadow);
+  text-decoration: none;
+  transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s cubic-bezier(0.34,1.56,0.64,1);
 }
 
-html[data-theme="comic"] .comic-link-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 var(--link-btn-shadow);
+/* spark icon before GitHub button */
+html[data-theme="comic"] .comic-link-btn::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--spark-color);
+  border: 2px solid var(--spark-border);
+  /* 4-point star via clip-path */
+  clip-path: polygon(50% 0%,58% 38%,100% 50%,58% 62%,50% 100%,42% 62%,0% 50%,42% 38%);
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="comic"] .comic-link-btn:hover {
+    transform: translate(-2px, -2px) scale(1.06);
+    box-shadow: 6px 6px 0 var(--link-btn-shadow);
+  }
+  html[data-theme="comic"] .comic-link-btn:active {
+    transform: translate(2px, 2px) scale(0.97);
+    box-shadow: 1px 1px 0 var(--link-btn-shadow);
+  }
 }
 
 html[data-theme="comic"] .comic-link-btn--site {
   background: var(--link-btn-site-bg);
   color: var(--link-btn-site-text);
   border-color: var(--link-btn-border);
+}
+
+/* ============================================================
+   SECTION HEADING DECORATION
+   Halftone dot circle accent before each h2
+   ============================================================ */
+html[data-theme="comic"] .section-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+html[data-theme="comic"] .section-heading::before {
+  content: '';
+  display: inline-block;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-image: radial-gradient(circle, var(--outline) 1.8px, transparent 2px);
+  background-size: 7px 7px;
+  background-color: var(--halftone-accent);
+  border: 3px solid var(--outline);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   SKILL TAG: tiny halftone-dot badge with pop on hover
+   ============================================================ */
+html[data-theme="comic"] .skill-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  border: 2.5px solid var(--outline);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 3px 3px 0 var(--panel-shadow);
+  transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s;
+  position: relative;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="comic"] .skill-tag:hover {
+    transform: translate(-2px,-2px) scale(1.08);
+    box-shadow: 5px 5px 0 var(--panel-shadow);
+  }
+}
+
+/* ============================================================
+   HALFTONE CIRCLE DECORATION
+   Placed as a background accent on hackathon panels
+   ============================================================ */
+html[data-theme="comic"] .panel--burst {
+  background-image: radial-gradient(circle at 90% 10%, var(--halftone-accent) 0%, var(--halftone-accent) 38%, transparent 40%);
 }

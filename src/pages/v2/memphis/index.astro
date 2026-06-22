@@ -60,6 +60,8 @@ const pillStyles = [
     <div class="m-shape m-dots" style="width:60px;height:60px;color:var(--m-pink);opacity:0.2;top:8%;right:40%;"></div>
 
     <div class="m-shape m-bounce" style="width:24px;height:24px;background:var(--m-yellow);border:3px solid var(--text);top:30%;right:15%;"></div>
+    <div class="m-shape m-wobble" style="width:36px;height:36px;background:var(--m-pink);border:3px solid var(--text);border-radius:4px;top:60%;left:22%;"></div>
+    <div class="m-shape m-wobble" style="width:20px;height:20px;background:var(--accent-2);border:2px solid var(--text);border-radius:50%;top:25%;right:35%;animation-delay:1.1s;"></div>
 
     <!-- Content -->
     <div class="memphis-hero-inner">
@@ -121,10 +123,10 @@ const pillStyles = [
           <p class="text-sm mt-2 text-[var(--text-dim)]">{p.description}</p>
           <div class="flex gap-3 mt-3 flex-wrap">
             {p.githubUrl && (
-              <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="text-xs font-mono underline" style="color:var(--accent);min-height:2.25rem;display:inline-flex;align-items:center;padding:0.35em 0;">github</a>
+              <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="m-link-btn">github</a>
             )}
             {p.websiteUrl && (
-              <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="text-xs font-mono underline" style="color:var(--accent-2);min-height:2.25rem;display:inline-flex;align-items:center;padding:0.35em 0;">site</a>
+              <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="m-link-btn m-link-btn--site">site</a>
             )}
           </div>
         </div>
@@ -148,8 +150,8 @@ const pillStyles = [
           <p class="text-xs mb-1 opacity-70">{h.organizer}</p>
           <p class="text-sm mt-2">{h.blurb}</p>
           <div class="flex gap-3 mt-3 flex-wrap">
-            {h.repoUrl && <a href={h.repoUrl} target="_blank" rel="noopener noreferrer" class="text-xs font-mono underline" style="min-height:2.25rem;display:inline-flex;align-items:center;padding:0.35em 0;">repo</a>}
-            {h.siteUrl && <a href={h.siteUrl} target="_blank" rel="noopener noreferrer" class="text-xs font-mono underline" style="min-height:2.25rem;display:inline-flex;align-items:center;padding:0.35em 0;">site</a>}
+            {h.repoUrl && <a href={h.repoUrl} target="_blank" rel="noopener noreferrer" class="m-link-btn m-link-btn--repo">repo</a>}
+            {h.siteUrl && <a href={h.siteUrl} target="_blank" rel="noopener noreferrer" class="m-link-btn m-link-btn--site">site</a>}
           </div>
         </div>
       ))}

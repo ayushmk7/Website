@@ -1,6 +1,8 @@
 /* src/styles/themes/deco.css
    Art Deco / Gatsby theme — 1920s aesthetic.
    Cinzel (display) + Jost (body). Symmetric, ornamental, gold hairline double-rules.
+   Unique deco idioms: corner-bracket buttons, shimmer sweep, diamond markers,
+   triple-chevron dividers, ziggurat cards with stepped corners.
 */
 
 /* ── LIGHT (default) ───────────────────────────────────────── */
@@ -285,6 +287,12 @@ html[data-theme="deco"] p a {
   min-height: unset;
   padding-block: 0.25em;
 }
+/* deco-btn inside a <p> must still be inline-flex (overrides p a above) */
+html[data-theme="deco"] p a.deco-btn {
+  display: inline-flex;
+  min-height: 36px;
+  padding-block: 0;
+}
 
 /* ── Prevent horizontal overflow ──────────────────────────── */
 html[data-theme="deco"] body,
@@ -292,9 +300,169 @@ html[data-theme="deco"] main {
   overflow-x: hidden;
 }
 
+/* ── Deco corner-bracket button ────────────────────────────────
+   Gold hairlines pinned to each corner; shimmer sweeps on hover.
+   Works on <a> and <button>. Apply class="deco-btn".
+   ──────────────────────────────────────────────────────────────── */
+html[data-theme="deco"] .deco-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45em 1.4em;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  background: transparent;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  min-height: 36px;
+  overflow: hidden;
+  /* four corner brackets via box-shadow */
+  box-shadow:
+    -5px -5px 0 -4px var(--accent),
+     5px -5px 0 -4px var(--accent),
+    -5px  5px 0 -4px var(--accent),
+     5px  5px 0 -4px var(--accent);
+}
+
+/* inner double-rule frame */
+html[data-theme="deco"] .deco-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
+  pointer-events: none;
+}
+
+/* shimmer sweep overlay */
+html[data-theme="deco"] .deco-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    color-mix(in srgb, var(--accent) 22%, transparent) 50%,
+    transparent 65%
+  );
+  background-size: 220% 100%;
+  background-position: 150% 0;
+  transition: background-position 0.55s var(--ease);
+  pointer-events: none;
+}
+
+html[data-theme="deco"] .deco-btn:hover::after,
+html[data-theme="deco"] .deco-btn:focus-visible::after {
+  background-position: -50% 0;
+}
+
+html[data-theme="deco"] .deco-btn:hover,
+html[data-theme="deco"] .deco-btn:focus-visible {
+  color: var(--accent);
+  outline: none;
+}
+
+/* ── Shimmer keyframe for double-rules ────────────────────────── */
+@keyframes deco-rule-sweep {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+
+html[data-theme="deco"] .deco-rule-shimmer::before,
+html[data-theme="deco"] .deco-rule-shimmer::after {
+  background-image: linear-gradient(
+    90deg,
+    var(--accent) 0%,
+    color-mix(in srgb, var(--accent) 65%, #fff) 48%,
+    var(--accent) 52%,
+    var(--accent) 100%
+  );
+  background-size: 200% 100%;
+  background-position: -200% 0;
+  animation: deco-rule-sweep 1.6s var(--ease) forwards;
+}
+
+/* ── Deco diamond bullet marker ────────────────────────────────
+   Usage: <span class="deco-diamond" aria-hidden="true"></span>  */
+html[data-theme="deco"] .deco-diamond {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  background: var(--accent);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  flex-shrink: 0;
+  margin-top: 0.35em;
+}
+
+/* ── Triple chevron divider ────────────────────────────────────
+   Three descending V-shapes in a 48x18 block.
+   Usage: <div class="deco-chevron-triple" aria-hidden="true"></div> */
+html[data-theme="deco"] .deco-chevron-triple {
+  width: 48px;
+  height: 18px;
+  position: relative;
+  margin: clamp(0.5rem, 1.5svh, 1.5rem) auto;
+  overflow: visible;
+}
+html[data-theme="deco"] .deco-chevron-triple::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* six half-triangles forming three nested V-chevrons */
+  background:
+    linear-gradient(to bottom right, transparent 49%, var(--accent) 49%, var(--accent) 51%, transparent 51%) left 0 top 0/24px 6px no-repeat,
+    linear-gradient(to bottom left,  transparent 49%, var(--accent) 49%, var(--accent) 51%, transparent 51%) right 0 top 0/24px 6px no-repeat,
+    linear-gradient(to bottom right, transparent 49%, var(--accent) 49%, var(--accent) 51%, transparent 51%) left 0 top 6px/24px 6px no-repeat,
+    linear-gradient(to bottom left,  transparent 49%, var(--accent) 49%, var(--accent) 51%, transparent 51%) right 0 top 6px/24px 6px no-repeat,
+    linear-gradient(to bottom right, transparent 49%, var(--accent) 49%, var(--accent) 51%, transparent 51%) left 0 top 12px/24px 6px no-repeat,
+    linear-gradient(to bottom left,  transparent 49%, var(--accent) 49%, var(--accent) 51%, transparent 51%) right 0 top 12px/24px 6px no-repeat;
+}
+
+/* ── Ziggurat card: notched stepped corners via clip-path ──────── */
+html[data-theme="deco"] .deco-ziggurat {
+  position: relative;
+  padding: 1.5rem;
+  clip-path: polygon(
+    8px 0%,   calc(100% - 8px) 0%,
+    100% 8px, 100% calc(100% - 8px),
+    calc(100% - 8px) 100%, 8px 100%,
+    0% calc(100% - 8px), 0% 8px
+  );
+  outline: none;
+  box-shadow: none;
+  border: 1px solid var(--accent);
+}
+/* outer ghost frame offset further out */
+html[data-theme="deco"] .deco-ziggurat::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  clip-path: polygon(
+    13px 0%,   calc(100% - 13px) 0%,
+    100% 13px, 100% calc(100% - 13px),
+    calc(100% - 13px) 100%, 13px 100%,
+    0% calc(100% - 13px), 0% 13px
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  pointer-events: none;
+}
+
 /* ── Reduced-motion guard ──────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html[data-theme="deco"] .deco-sunburst::before {
+    animation: none;
+  }
+  html[data-theme="deco"] .deco-btn::after {
+    transition: none;
+    background: none;
+  }
+  html[data-theme="deco"] .deco-rule-shimmer::before,
+  html[data-theme="deco"] .deco-rule-shimmer::after {
     animation: none;
   }
 }

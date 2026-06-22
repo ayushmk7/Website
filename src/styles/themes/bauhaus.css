@@ -4,7 +4,7 @@
 html[data-theme="bauhaus"] {
   --bg: #f4f1ea; --bg-2: #ffffff; --surface: #ffffff;
   --text: #141414; --text-dim: #444444;
-  --accent: #c0281e;   /* red -- darkened to pass AA on white */
+  --accent: #c0281e;   /* red -- AA on white */
   --accent-2: #1f4ed8; /* blue */
   --bau-yellow: #f4c20d;
   --font-display: 'Jost', sans-serif;
@@ -12,21 +12,30 @@ html[data-theme="bauhaus"] {
   --font-mono: 'Jost', monospace;
   --w-display: 700; --w-body: 400;
   --radius: 0; --border: 3px solid #141414; --dur: 0.6s;
+  /* corner block accent used on cards */
+  --corner-block: var(--accent);
 }
 
 /* -- DARK palette ----------------------------------------------------------- */
 html[data-theme="bauhaus"].dark {
   --bg: #111111; --bg-2: #1a1a1a; --surface: #1e1e1e;
   --text: #f0ece2; --text-dim: #bdb8ae;
-  --accent: #e63329; /* red is on dark surfaces in dark mode -- passes AA */
+  --accent: #e63329;
   --accent-2: #4f7ef8;
   --bau-yellow: #f4c20d;
   --border: 3px solid #d4cfc5;
+  --corner-block: var(--accent);
 }
 
-/* -- Geometric shapes ------------------------------------------------------ */
-html[data-theme="bauhaus"] .shape { position: absolute; z-index: 0; pointer-events: none; max-width: 100%; }
-html[data-theme="bauhaus"] .circle { border-radius: 50%; background: var(--accent); }
+/* ============================================================
+   GEOMETRIC SHAPES (hero decorations)
+   ============================================================ */
+html[data-theme="bauhaus"] .shape {
+  position: absolute; z-index: 0; pointer-events: none; max-width: 100%;
+}
+html[data-theme="bauhaus"] .circle {
+  border-radius: 50%; background: var(--accent);
+}
 html[data-theme="bauhaus"] .square { background: var(--accent-2); }
 html[data-theme="bauhaus"] .tri {
   width: 0; height: 0; background: transparent;
@@ -34,62 +43,311 @@ html[data-theme="bauhaus"] .tri {
   border-bottom: 104px solid var(--bau-yellow);
 }
 
-/* -- Card borders: use CSS var so both light and dark get correct stroke ---- */
+/* Signature load animation: shapes spin in */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="bauhaus"] .circle { animation: bauCircleSpin 1.1s cubic-bezier(.22,.68,0,1.2) both; }
+  html[data-theme="bauhaus"] .tri { animation: bauTriDrop 0.9s cubic-bezier(.22,.68,0,1.2) 0.3s both; }
+}
+@keyframes bauCircleSpin {
+  from { opacity: 0; transform: scale(0.4) rotate(-180deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes bauTriDrop {
+  from { opacity: 0; transform: translateY(-40px) rotate(30deg); }
+  to   { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+
+/* ============================================================
+   CARD BORDERS — visible in both themes
+   ============================================================ */
 html[data-theme="bauhaus"] .block { border: var(--border); }
 
-/* -- Body text: readable weight, size, and line-height --------------------- */
+/* ============================================================
+   CORNER BLOCK ACCENT on cards
+   The ::before pseudo inserts a colored square in top-left corner.
+   ============================================================ */
+html[data-theme="bauhaus"] .bau-card {
+  position: relative;
+  overflow: hidden;
+}
+html[data-theme="bauhaus"] .bau-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 10px; height: 10px;
+  background: var(--corner-block);
+  z-index: 2;
+}
+html[data-theme="bauhaus"] .bau-card:nth-child(2n)::before { background: var(--accent-2); }
+html[data-theme="bauhaus"] .bau-card:nth-child(3n)::before { background: var(--bau-yellow); }
+
+/* Hover: corner block expands to a full-width color stripe */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="bauhaus"] .bau-card::before {
+    transition: width 0.25s ease, height 0.25s ease;
+  }
+  html[data-theme="bauhaus"] .bau-card:hover::before {
+    width: 100%; height: 4px;
+  }
+}
+
+/* ============================================================
+   BODY TEXT
+   ============================================================ */
 html[data-theme="bauhaus"] p,
 html[data-theme="bauhaus"] li {
   font-weight: var(--w-body);
-  font-size: 0.9375rem; /* ~15px */
+  font-size: 0.9375rem;
   line-height: 1.6;
 }
-
 html[data-theme="bauhaus"] .text-sm {
   font-size: 0.875rem;
   line-height: 1.55;
 }
 
-/* -- Project / contact links ----------------------------------------------- */
+/* ============================================================
+   GEOMETRIC BULLET — replaces "- " in experience lists
+   A small primary-colored square before each <li>
+   ============================================================ */
+html[data-theme="bauhaus"] .bau-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+html[data-theme="bauhaus"] .bau-bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+}
+html[data-theme="bauhaus"] .bau-bullets li::before {
+  content: '';
+  flex-shrink: 0;
+  display: inline-block;
+  width: 8px; height: 8px;
+  margin-top: 0.42em;
+  background: var(--accent);
+}
+html[data-theme="bauhaus"] .bau-bullets li:nth-child(2n)::before { background: var(--accent-2); }
+html[data-theme="bauhaus"] .bau-bullets li:nth-child(3n)::before { background: var(--bau-yellow); }
+
+/* ============================================================
+   PRIMARY BUTTON — hard-edge Bauhaus block
+   Colored filled block, text contrasts, hard diagonal wipe on hover
+   ============================================================ */
+html[data-theme="bauhaus"] .bau-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.55rem 1.25rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  border: var(--border);
+  /* hard split background via gradient */
+  background: var(--accent-2);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  /* isolate stacking so ::after is clipped */
+  isolation: isolate;
+}
+
+/* The sliding block that reveals on hover */
+html[data-theme="bauhaus"] .bau-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  /* slide in from left, initially pushed off-screen */
+  transform: translateX(-105%);
+  z-index: -1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="bauhaus"] .bau-btn::after {
+    transition: transform 0.22s cubic-bezier(.4,0,.2,1);
+  }
+}
+html[data-theme="bauhaus"] .bau-btn:hover::after,
+html[data-theme="bauhaus"] .bau-btn:focus-visible::after {
+  transform: translateX(0);
+}
+html[data-theme="bauhaus"] .bau-btn:focus-visible {
+  outline: 3px solid var(--bau-yellow);
+  outline-offset: 2px;
+}
+
+/* Yellow variant (resume button) */
+html[data-theme="bauhaus"] .bau-btn-yellow {
+  background: var(--bau-yellow);
+  color: #141414;
+  border-color: #141414;
+}
+html[data-theme="bauhaus"] .bau-btn-yellow::after {
+  background: var(--accent);
+}
+html[data-theme="bauhaus"] .bau-btn-yellow:hover {
+  color: #ffffff; /* white text once red block slides in */
+}
+
+/* ============================================================
+   PROJECT / CONTACT LINKS — block idiom (not pill, not underline)
+   A small colored square precedes the label; full block on hover
+   ============================================================ */
 html[data-theme="bauhaus"] .bau-link {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   min-height: 36px;
+  padding: 0.3rem 0.65rem;
   font-family: var(--font-display);
   font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   text-decoration: none;
-  border-bottom: 2px solid currentColor;
-  padding-bottom: 1px;
-  transition: opacity 0.2s;
+  border: 2px solid currentColor;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
-html[data-theme="bauhaus"] .bau-link:hover { opacity: 0.7; }
+/* small geometric square prefix */
+html[data-theme="bauhaus"] .bau-link::before {
+  content: '';
+  display: inline-block;
+  width: 7px; height: 7px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+/* fill wipe on hover */
+html[data-theme="bauhaus"] .bau-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: -1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="bauhaus"] .bau-link::after {
+    transition: transform 0.2s ease;
+  }
+}
+html[data-theme="bauhaus"] .bau-link:hover::after,
+html[data-theme="bauhaus"] .bau-link:focus-visible::after {
+  transform: scaleX(1);
+}
+html[data-theme="bauhaus"] .bau-link:hover,
+html[data-theme="bauhaus"] .bau-link:focus-visible {
+  color: var(--bg);
+}
 
-/* -- Hero section: exactly one viewport, no overflow, nav-aware padding ------ */
+/* ============================================================
+   SKILL TAG — surface block with geometric indicator dot
+   ============================================================ */
+html[data-theme="bauhaus"] .bau-skill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8125rem;
+  background: var(--surface);
+  border: var(--border);
+}
+html[data-theme="bauhaus"] .bau-skill::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   CATEGORY ICON — circle/square/triangle as CSS
+   ============================================================ */
+html[data-theme="bauhaus"] .bau-cat-icon {
+  display: inline-block;
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+}
+html[data-theme="bauhaus"] .bau-cat-icon.sq  { background: var(--cat-color, var(--accent)); }
+html[data-theme="bauhaus"] .bau-cat-icon.dot {
+  border-radius: 50%; background: var(--cat-color, var(--accent));
+}
+html[data-theme="bauhaus"] .bau-cat-icon.tri-sm {
+  background: transparent;
+  border-left: 7px solid transparent; border-right: 7px solid transparent;
+  border-bottom: 12px solid var(--cat-color, var(--bau-yellow));
+  height: 0; width: 0;
+}
+
+/* ============================================================
+   SECTION HEADING ACCENT — horizontal color bar beside h2
+   ============================================================ */
+html[data-theme="bauhaus"] .bau-section-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+html[data-theme="bauhaus"] .bau-section-head h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0;
+}
+html[data-theme="bauhaus"] .bau-section-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--section-bar-color, var(--accent));
+  max-width: 160px;
+}
+
+/* ============================================================
+   GRID MOTIF BACKDROP — faint primary-color grid on hero
+   ============================================================ */
+html[data-theme="bauhaus"] .bau-grid-motif {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, var(--accent) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--accent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.04;
+}
+html[data-theme="bauhaus"].dark .bau-grid-motif { opacity: 0.06; }
+
+/* ============================================================
+   HERO LAYOUT
+   ============================================================ */
 html[data-theme="bauhaus"] .bau-hero {
-  /* fill exactly one viewport on all modern browsers */
-  height: 100svh;
-  height: 100dvh;
-  min-height: 100svh;
-  min-height: 100dvh;
-  max-height: 100svh;
-  max-height: 100dvh;
-  /* account for fixed ~56px nav */
+  height: 100svh; height: 100dvh;
+  min-height: 100svh; min-height: 100dvh;
+  max-height: 100svh; max-height: 100dvh;
   padding-top: 56px;
   box-sizing: border-box;
   overflow: hidden;
   display: grid;
+  position: relative;
 }
 
-/* Two-column grid on md+; single column stacked (photo first) on mobile */
 html[data-theme="bauhaus"] .bau-hero-grid {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
 }
-
 @media (min-width: 768px) {
   html[data-theme="bauhaus"] .bau-hero-grid {
     grid-template-columns: 1fr 1fr;
@@ -97,40 +355,52 @@ html[data-theme="bauhaus"] .bau-hero-grid {
   }
 }
 
-/* Photo panel: flexible height, never overflows */
+/* NSF tag bar */
+html[data-theme="bauhaus"] .bau-nsf-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: var(--bau-yellow);
+  color: #141414;
+  border: 2px solid #141414;
+  width: fit-content;
+  margin-top: 0.5rem;
+}
+html[data-theme="bauhaus"] .bau-nsf-tag::before {
+  content: '';
+  display: inline-block;
+  width: 0; height: 0;
+  border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-bottom: 8px solid #141414;
+}
+
 html[data-theme="bauhaus"] .bau-photo-panel {
   display: grid;
   place-items: center;
   background: var(--bau-yellow);
   padding: clamp(0.75rem, 2vw, 2rem);
   overflow: hidden;
-  /* mobile: appears above text (order 0), limited height */
   order: 0;
-  max-height: 45svh;
-  max-height: 45dvh;
+  max-height: 45svh; max-height: 45dvh;
 }
-
 @media (min-width: 768px) {
   html[data-theme="bauhaus"] .bau-photo-panel {
-    order: 2;
-    max-height: none;
-    height: 100%;
+    order: 2; max-height: none; height: 100%;
   }
 }
-
-/* Photo image inside panel: fill the panel without distortion */
 html[data-theme="bauhaus"] .bau-photo-panel img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  width: 100%; height: 100%; object-fit: cover; display: block;
 }
 html[data-theme="bauhaus"] .bau-photo-panel .photo-wrap {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
 }
 
-/* Text column: flex, centered, never overflows */
 html[data-theme="bauhaus"] .bau-hero-text {
   display: flex;
   flex-direction: column;
@@ -139,25 +409,19 @@ html[data-theme="bauhaus"] .bau-hero-text {
   overflow: hidden;
   order: 1;
 }
-
 @media (min-width: 768px) {
-  html[data-theme="bauhaus"] .bau-hero-text {
-    order: 1;
-  }
+  html[data-theme="bauhaus"] .bau-hero-text { order: 1; }
 }
 
-/* Big name: clamp so it fits from 360px wide / 640px tall upward */
 html[data-theme="bauhaus"] .bau-hero-name {
   font-family: var(--font-display);
   font-weight: 700;
   text-transform: uppercase;
   line-height: 0.9;
-  /* clamp: min 2.2rem (tiny phone), preferred viewport-relative, max 6rem (desktop) */
   font-size: clamp(2.2rem, min(9vw, 9vh), 6rem);
   margin-top: 0.5rem;
 }
 
-/* Tagline above name */
 html[data-theme="bauhaus"] .bau-hero-tagline {
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -165,6 +429,40 @@ html[data-theme="bauhaus"] .bau-hero-tagline {
   line-height: 1.4;
 }
 
-/* -- Load animations ------------------------------------------------------- */
-html[data-theme="bauhaus"] [data-load]:nth-child(even) { animation-name: bauSlideR; }
-@keyframes bauSlideR { from { opacity:0; transform: translateX(40px); } to { opacity:1; transform:none; } }
+/* ============================================================
+   HACKATHON CARDS — colored block with inverted text
+   ============================================================ */
+html[data-theme="bauhaus"] .bau-hack-card {
+  position: relative;
+  overflow: hidden;
+}
+/* triangle corner decoration */
+html[data-theme="bauhaus"] .bau-hack-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 0; height: 0;
+  border-right: 32px solid rgba(0,0,0,0.18);
+  border-top: 32px solid transparent;
+}
+
+/* ============================================================
+   LOAD ANIMATIONS
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="bauhaus"] [data-load] {
+    animation: bauSlideUp var(--dur, 0.6s) cubic-bezier(.22,.68,0,1.1)
+      calc(var(--i, 0) * 0.1s) both;
+  }
+  html[data-theme="bauhaus"] [data-load]:nth-child(even) {
+    animation-name: bauSlideR;
+  }
+}
+@keyframes bauSlideUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes bauSlideR {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: none; }
+}

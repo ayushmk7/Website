@@ -21,48 +21,63 @@ const skillEntries = Object.entries(resumeData.skills) as [string, string[]][];
 ---
 <ThemeLayout themeKey="riso" title="Ayush Madhav Kumar. Risograph">
   <div class="grain"></div>
+
+  <!-- HERO -->
   <section class="riso-hero flex flex-col justify-center max-w-5xl mx-auto px-6">
-    <Photo class="riso-hero-photo rounded-[1.5rem] border-2 border-[var(--text)]" />
+    <Photo class="riso-hero-photo" />
     <h1 class="misreg riso-hero-name" data-text="Ayush Madhav Kumar" style="font-family:var(--font-display);font-weight:800;" data-load>Ayush Madhav Kumar</h1>
     <p class="riso-hero-sub" data-load style="--i:1">CS and Math @UMichigan. Systems and AI infrastructure.</p>
     <p class="font-mono riso-hero-line text-[var(--accent)]" data-load style="--i:2">&gt; NSF-backed research</p>
-    <a class="font-mono riso-hero-line text-[var(--accent)] underline" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">&gt; view resume (pdf)</a>
+    <a class="riso-btn" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3;width:fit-content">
+      <span aria-hidden="true">&gt;</span> view resume (pdf)
+    </a>
   </section>
 
-  <section id="experience" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="misreg text-4xl mb-8" data-text="Experience" style="font-family:var(--font-display);font-weight:800">Experience</h2>
-    <div class="space-y-5">
+  <!-- EXPERIENCE -->
+  <section id="experience" class="max-w-5xl mx-auto px-6 py-16" style="position:relative">
+    <!-- ink blob accent -->
+    <div class="riso-blob" style="width:280px;height:220px;background:var(--accent);top:-40px;right:-60px;"></div>
+    <h2 class="misreg text-4xl mb-8 flex items-center" data-text="Experience" style="font-family:var(--font-display);font-weight:800">
+      <span class="riso-reg-mark" aria-hidden="true"><span></span></span>
+      Experience
+    </h2>
+    <div class="space-y-5" style="position:relative;z-index:1">
       {experience.map((j, i) => (
-        <div class="bg-[var(--surface)] border-2 border-[var(--text)] rounded-[1.5rem] p-5 shadow-[6px_6px_0_var(--accent)]" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="riso-card" data-load style={`--i:${Math.min(i,4)}`}>
           <p class="font-mono text-[var(--accent)]">{j.period}</p>
           <h3 class="text-xl" style="font-weight:800">{j.company} . {j.role}</h3>
-          <ul class="mt-2 space-y-1">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
+          <ul class="mt-2 space-y-1">{j.bullets.map((b) => <li>{b}</li>)}</ul>
         </div>
       ))}
     </div>
   </section>
 
-  <section id="projects" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="misreg text-4xl mb-8" data-text="Projects" style="font-family:var(--font-display);font-weight:800">Projects</h2>
-    <div class="grid md:grid-cols-2 gap-5">
+  <!-- PROJECTS -->
+  <section id="projects" class="max-w-5xl mx-auto px-6 py-16" style="position:relative">
+    <div class="riso-blob" style="width:320px;height:240px;background:var(--text);bottom:-60px;left:-80px;"></div>
+    <h2 class="misreg text-4xl mb-8 flex items-center" data-text="Projects" style="font-family:var(--font-display);font-weight:800">
+      <span class="riso-reg-mark" aria-hidden="true"><span></span></span>
+      Projects
+    </h2>
+    <div class="grid md:grid-cols-2 gap-5" style="position:relative;z-index:1">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
-        <div class="bg-[var(--surface)] border-2 border-[var(--text)] rounded-[1.5rem] p-5 shadow-[6px_6px_0_var(--accent)]" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="riso-card" data-load style={`--i:${Math.min(i,4)}`}>
           <h3 class="text-lg" style="font-weight:800">{p.title}</h3>
           <p class="mt-2">{p.description}</p>
           {p.tags && p.tags.length > 0 && (
             <div class="flex flex-wrap gap-1 mt-3">
               {p.tags.map((t) => (
-                <span class="border border-[var(--text-dim)] rounded-full px-2 py-0.5 text-xs text-[var(--text-dim)]">{t}</span>
+                <span class="riso-chip">{t}</span>
               ))}
             </div>
           )}
           {(p.githubUrl || p.websiteUrl) && (
-            <div class="flex gap-4 mt-4">
+            <div class="flex gap-3 mt-4">
               {p.githubUrl && (
-                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-[var(--accent)] underline underline-offset-2">&gt; github</a>
+                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="riso-link-btn">&gt; github</a>
               )}
               {p.websiteUrl && (
-                <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-[var(--accent)] underline underline-offset-2">&gt; site</a>
+                <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="riso-link-btn">&gt; site</a>
               )}
             </div>
           )}
@@ -71,11 +86,16 @@ const skillEntries = Object.entries(resumeData.skills) as [string, string[]][];
     </div>
   </section>
 
-  <section id="hackathons" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="misreg text-4xl mb-8" data-text="Hackathons" style="font-family:var(--font-display);font-weight:800">Hackathons</h2>
-    <div class="grid md:grid-cols-2 gap-5">
+  <!-- HACKATHONS -->
+  <section id="hackathons" class="max-w-5xl mx-auto px-6 py-16" style="position:relative">
+    <div class="riso-blob" style="width:260px;height:200px;background:var(--accent);top:20px;right:-40px;"></div>
+    <h2 class="misreg text-4xl mb-8 flex items-center" data-text="Hackathons" style="font-family:var(--font-display);font-weight:800">
+      <span class="riso-reg-mark" aria-hidden="true"><span></span></span>
+      Hackathons
+    </h2>
+    <div class="grid md:grid-cols-2 gap-5" style="position:relative;z-index:1">
       {hackathons.map((h, i) => (
-        <div class="bg-[var(--surface)] border-2 border-[var(--text)] rounded-[1.5rem] p-5 shadow-[6px_6px_0_var(--accent)]" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="riso-card" data-load style={`--i:${Math.min(i,4)}`}>
           <p class="font-mono text-[var(--accent)]">&gt; {h.placement}</p>
           <h3 class="text-lg" style="font-weight:800">{h.event}</h3>
           <p class="mt-2">{h.blurb}</p>
@@ -84,15 +104,20 @@ const skillEntries = Object.entries(resumeData.skills) as [string, string[]][];
     </div>
   </section>
 
-  <section id="skills" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="misreg text-4xl mb-8" data-text="Stack" style="font-family:var(--font-display);font-weight:800">Stack</h2>
-    <div class="space-y-8">
+  <!-- SKILLS -->
+  <section id="skills" class="max-w-5xl mx-auto px-6 py-16" style="position:relative">
+    <div class="riso-blob" style="width:300px;height:230px;background:var(--text);bottom:-40px;right:-60px;"></div>
+    <h2 class="misreg text-4xl mb-8 flex items-center" data-text="Stack" style="font-family:var(--font-display);font-weight:800">
+      <span class="riso-reg-mark" aria-hidden="true"><span></span></span>
+      Stack
+    </h2>
+    <div class="space-y-8" style="position:relative;z-index:1">
       {skillEntries.map(([key, items]) => (
         <div>
           <p class="font-mono text-sm text-[var(--accent)] mb-3">&gt; {LABEL[key] ?? key}</p>
           <div class="flex flex-wrap gap-2">
             {items.map((s) => (
-              <span class="border-2 border-[var(--text)] rounded-full px-3 py-1 text-sm">{s}</span>
+              <span class="riso-chip">{s}</span>
             ))}
           </div>
         </div>
@@ -100,8 +125,15 @@ const skillEntries = Object.entries(resumeData.skills) as [string, string[]][];
     </div>
   </section>
 
-  <footer id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center">
-    <h2 class="misreg text-4xl mb-8" data-text="Contact" style="font-family:var(--font-display);font-weight:800">Contact</h2>
-    <ThemeContact client:load />
+  <!-- CONTACT -->
+  <footer id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center" style="position:relative">
+    <div class="riso-blob" style="width:350px;height:280px;background:var(--accent);top:-60px;left:50%;transform:translateX(-50%);"></div>
+    <h2 class="misreg text-4xl mb-8 flex items-center justify-center" data-text="Contact" style="font-family:var(--font-display);font-weight:800">
+      <span class="riso-reg-mark" aria-hidden="true"><span></span></span>
+      Contact
+    </h2>
+    <div style="position:relative;z-index:1">
+      <ThemeContact client:load />
+    </div>
   </footer>
 </ThemeLayout>

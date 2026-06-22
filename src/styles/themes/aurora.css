@@ -5,6 +5,10 @@ html[data-theme="aurora"] {
   --bg: #eceff4; --bg-2: #e5e9f0; --surface: rgba(229,233,240,0.88);
   --text: #2e3440; --text-dim: #3b4252;
   --accent: #5e81ac; --accent-2: #a3be8c;
+  --aurora-1: rgba(136,192,208,0.55); /* teal */
+  --aurora-2: rgba(163,190,140,0.50); /* green */
+  --aurora-3: rgba(180,142,173,0.50); /* purple */
+  --aurora-4: rgba(235,203,139,0.45); /* yellow */
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
   --w-display: 700; --w-body: 300;
@@ -24,11 +28,15 @@ html[data-theme="aurora"] body {
   line-height: 1.6;
 }
 
-/* ── DARK mode: Nord "Polar Night" (original palette) ───────────────────── */
+/* ── DARK mode: Nord "Polar Night" ──────────────────────────────────────── */
 html[data-theme="aurora"].dark {
   --bg: #2e3440; --bg-2: #3b4252; --surface: rgba(59,66,82,0.80);
   --text: #eceff4; --text-dim: #c8d0e0;
   --accent: #88c0d0; --accent-2: #a3be8c;
+  --aurora-1: rgba(136,192,208,0.65);
+  --aurora-2: rgba(163,190,140,0.55);
+  --aurora-3: rgba(180,142,173,0.55);
+  --aurora-4: rgba(235,203,139,0.50);
   --border: 1px solid rgba(136,192,208,0.4);
 }
 html[data-theme="aurora"].dark body {
@@ -58,30 +66,49 @@ html[data-theme="aurora"] .glass {
   color: var(--text);
   font-size: 0.95rem;
   line-height: 1.6;
+  /* Signature float animation */
+  animation: cardFloat 6s ease-in-out infinite;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+html[data-theme="aurora"] .glass:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 32px rgba(136,192,208,0.18);
+}
+/* Stagger the float per card */
+html[data-theme="aurora"] .glass:nth-child(2) { animation-delay: -1.5s; }
+html[data-theme="aurora"] .glass:nth-child(3) { animation-delay: -3s; }
+html[data-theme="aurora"] .glass:nth-child(4) { animation-delay: -4.5s; }
+html[data-theme="aurora"] .glass:nth-child(5) { animation-delay: -2s; }
+html[data-theme="aurora"] .glass:nth-child(6) { animation-delay: -3.5s; }
+
+@keyframes cardFloat {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="aurora"] .glass { animation: none; }
+  html[data-theme="aurora"] .glass:hover { transform: none !important; }
+}
+
 html[data-theme="aurora"] section { box-sizing: border-box; width: 100%; }
 html[data-theme="aurora"] .grid { width: 100%; }
 
-/* Hero portrait: visible accent frame (the Tailwind /40 opacity modifier does not
-   work on an arbitrary CSS-var color, so define the border here) */
+/* ── Photo portrait frame ─────────────────────────────────────────────────── */
 html[data-theme="aurora"] .aurora-photo {
   border: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  box-shadow: 0 8px 30px rgba(46, 52, 64, 0.18);
+  box-shadow: 0 8px 30px rgba(46,52,64,0.18);
 }
 
-/* ── Hero: exactly one viewport, content always fits ─────────────────────── */
+/* ── Hero ─────────────────────────────────────────────────────────────────── */
 html[data-theme="aurora"] .aurora-hero {
-  /* Lock to exactly one viewport height using svh with dvh override */
   height: 100svh;
   height: 100dvh;
   min-height: 100svh;
   min-height: 100dvh;
   max-height: 100svh;
   max-height: 100dvh;
-  /* Clear the fixed nav (~56px) while keeping content centered */
   padding-top: calc(56px + 2rem);
   padding-bottom: 1rem;
-  /* Use flex column so items stack, gap shrinks on small viewports */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -92,7 +119,6 @@ html[data-theme="aurora"] .aurora-hero {
   gap: clamp(0.25rem, 1.5svh, 0.75rem);
 }
 
-/* Photo: 2:3 portrait that scales with viewport, never squishes */
 html[data-theme="aurora"] .aurora-hero-photo {
   width: clamp(8rem, 22vmin, 13rem);
   aspect-ratio: 2 / 3;
@@ -100,37 +126,204 @@ html[data-theme="aurora"] .aurora-hero-photo {
   flex-shrink: 0;
 }
 
-/* Name: clamp from 2rem on tiny screens to 4.5rem on large */
 html[data-theme="aurora"] .aurora-hero-name {
   font-size: clamp(1.75rem, 6vw, 4.5rem);
   line-height: 1.1;
   margin-top: 0;
 }
 
-/* Sub-lines (tagline, resume link): shrink text on tiny screens */
 html[data-theme="aurora"] .aurora-hero-sub {
   font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
-/* ── Project links ──────────────────────────────────────────────────────── */
-html[data-theme="aurora"] .aurora-link {
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  padding: 0.45rem 0.85rem;
-  min-height: 2.75rem;
+/* ── Aurora-ribbon frosted-glass resume button ───────────────────────────── */
+html[data-theme="aurora"] .aurora-resume-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  border-radius: 0.5rem;
-  border: 1px solid var(--accent);
-  transition: background 0.2s, color 0.2s;
+  font-family: var(--font-body);
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  color: var(--accent);
+  padding: 0.55rem 1.25rem;
+  min-height: 2.75rem;
+  border-radius: 0.65rem;
+  background: var(--surface);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  /* Gradient border via outline trick */
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+  text-decoration: none;
+  overflow: hidden;
+  transition: color 0.25s ease, box-shadow 0.25s ease;
+  z-index: 0;
 }
-html[data-theme="aurora"] .aurora-link:hover {
-  background: var(--accent);
-  color: var(--bg);
+/* Animated aurora gradient border ring */
+html[data-theme="aurora"] .aurora-resume-btn::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(115deg,
+    var(--aurora-1),
+    var(--aurora-2),
+    var(--aurora-3),
+    var(--aurora-1));
+  background-size: 300% 300%;
+  animation: auroraGradientSpin 5s linear infinite;
+  z-index: -1;
+}
+/* Inner fill to re-establish the frosted background above the border */
+html[data-theme="aurora"] .aurora-resume-btn::after {
+  content: '';
+  position: absolute;
+  inset: 1.5px;
+  border-radius: calc(0.65rem - 1px);
+  background: var(--surface);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: -1;
+  transition: background 0.25s ease;
+}
+html[data-theme="aurora"] .aurora-resume-btn:hover {
+  color: var(--text);
+  box-shadow: 0 4px 24px rgba(136,192,208,0.30);
+}
+html[data-theme="aurora"] .aurora-resume-btn:hover::after {
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+}
+@keyframes auroraGradientSpin {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="aurora"] .aurora-resume-btn::before { animation: none; }
 }
 
-/* ── Stack chips and category labels ─────────────────────────────────────── */
+/* ── Aurora-ribbon divider ────────────────────────────────────────────────── */
+html[data-theme="aurora"] .aurora-divider {
+  position: relative;
+  width: 100%;
+  max-width: 5xl;
+  margin: 0 auto;
+  height: 3px;
+  border: none;
+  border-radius: 999px;
+  overflow: visible;
+}
+html[data-theme="aurora"] .aurora-divider::before {
+  content: '';
+  display: block;
+  width: 60%;
+  margin: 0 auto;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--aurora-1),
+    var(--aurora-2),
+    var(--aurora-3),
+    var(--aurora-4),
+    var(--aurora-3),
+    var(--aurora-2),
+    var(--aurora-1),
+    transparent);
+  background-size: 200% 100%;
+  animation: auroraRibbonShimmer 4s ease-in-out infinite;
+  box-shadow: 0 0 8px 1px var(--aurora-1);
+}
+@keyframes auroraRibbonShimmer {
+  0%   { background-position: 0%   0%; opacity: 0.7; }
+  50%  { background-position: 100% 0%; opacity: 1;   }
+  100% { background-position: 0%   0%; opacity: 0.7; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="aurora"] .aurora-divider::before { animation: none; opacity: 0.8; }
+}
+
+/* ── Section heading with aurora-lights marker ───────────────────────────── */
+html[data-theme="aurora"] .aurora-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+/* Northern-lights marker: three stacked arcs in CSS */
+html[data-theme="aurora"] .aurora-section-heading::before {
+  content: '';
+  flex-shrink: 0;
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 100%,
+      transparent 58%,
+      var(--aurora-1) 58%, var(--aurora-1) 68%,
+      transparent 68%),
+    radial-gradient(ellipse 100% 60% at 50% 100%,
+      transparent 70%,
+      var(--aurora-2) 70%, var(--aurora-2) 80%,
+      transparent 80%),
+    radial-gradient(ellipse 100% 60% at 50% 100%,
+      transparent 82%,
+      var(--aurora-3) 82%, var(--aurora-3) 92%,
+      transparent 92%);
+}
+
+/* ── Project / contact link buttons: frosted-glass with aurora-sheen ─────── */
+html[data-theme="aurora"] .aurora-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.9rem;
+  min-height: 2.75rem;
+  font-size: 0.85rem;
+  color: var(--accent);
+  border-radius: 0.55rem;
+  background: var(--surface);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1.5px solid transparent;
+  text-decoration: none;
+  overflow: hidden;
+  z-index: 0;
+  transition: color 0.2s ease, box-shadow 0.2s ease;
+}
+html[data-theme="aurora"] .aurora-link::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(115deg,
+    var(--aurora-1),
+    var(--aurora-2),
+    var(--aurora-3));
+  background-size: 200% 200%;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.25s ease;
+}
+html[data-theme="aurora"] .aurora-link::after {
+  content: '';
+  position: absolute;
+  inset: 1.5px;
+  border-radius: calc(0.55rem - 1px);
+  background: var(--surface);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: -1;
+  transition: background 0.25s ease;
+}
+html[data-theme="aurora"] .aurora-link:hover {
+  color: var(--text);
+  box-shadow: 0 2px 16px rgba(136,192,208,0.22);
+}
+html[data-theme="aurora"] .aurora-link:hover::before { opacity: 1; }
+html[data-theme="aurora"] .aurora-link:hover::after {
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+}
+
+/* ── Stack chips ─────────────────────────────────────────────────────────── */
 html[data-theme="aurora"] .aurora-category-label {
   color: var(--accent);
   text-transform: uppercase;
@@ -140,8 +333,17 @@ html[data-theme="aurora"] .aurora-chip {
   background: var(--bg-2);
   color: var(--text);
   border: 1px solid rgba(94,129,172,0.30);
+  transition: border-color 0.2s, background 0.2s;
+}
+html[data-theme="aurora"] .aurora-chip:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg-2));
 }
 html[data-theme="aurora"].dark .aurora-chip {
   background: rgba(59,66,82,0.7);
   border-color: rgba(136,192,208,0.25);
+}
+html[data-theme="aurora"].dark .aurora-chip:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, rgba(59,66,82,0.7));
 }

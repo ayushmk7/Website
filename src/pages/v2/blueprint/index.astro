@@ -19,6 +19,9 @@ const LABEL_MAP: Record<string, string> = {
 };
 ---
 <ThemeLayout themeKey="blueprint" title="Ayush Madhav Kumar. Blueprint">
+  <!-- Parallax secondary grid overlay (fades/drifts slowly, reduced-motion guarded) -->
+  <div class="bp-grid-parallax" aria-hidden="true"></div>
+
   <!-- HERO: spec-sheet rail left, title block right -->
   <section class="bp-hero grid md:grid-cols-[260px_1fr]">
     <aside class="hidden md:flex flex-col justify-between bp-rail-border p-6 font-mono text-[var(--text-dim)]" style="font-size:0.75rem;line-height:1.6">
@@ -29,15 +32,26 @@ const LABEL_MAP: Record<string, string> = {
       <div data-load style="--i:0"><Photo class="bp-hero-photo bp-photo-frame" /></div>
       <p class="fig-label" data-load style="--i:1">CS AND MATH @UMICHIGAN</p>
       <h1 class="bp-hero-name" data-load style="--i:2">Ayush Madhav Kumar</h1>
-      <p class="font-mono text-[var(--accent)] text-sm" data-load style="--i:3">&gt; NSF-backed research</p>
-      <a class="font-mono text-[var(--accent)] text-sm hover:underline" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:4">&gt; view resume (pdf)</a>
+      <!-- Crosshair marker + NSF line -->
+      <div class="flex items-center gap-3" data-load style="--i:3">
+        <span class="bp-crosshair" aria-hidden="true"><span class="bp-crosshair-dot"></span></span>
+        <p class="font-mono text-[var(--accent)] text-sm">&gt; NSF-backed research</p>
+      </div>
+      <!-- Dimension-callout resume button -->
+      <div data-load style="--i:4">
+        <a class="bp-btn" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer">
+          view resume (pdf)
+        </a>
+      </div>
     </div>
   </section>
 
   <Plate fig="01" title="Experience" id="experience">
     <div class="grid md:grid-cols-2 gap-px bp-grid">
       {experience.map((j, i) => (
-        <div class="bg-[var(--bg)] p-5" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="bp-corner bg-[var(--bg)] p-5" data-load style={`--i:${Math.min(i,4)}`}>
+          <span class="bp-corner-tr" aria-hidden="true"></span>
+          <span class="bp-corner-bl" aria-hidden="true"></span>
           <p class="font-mono text-xs text-[var(--accent)]">{j.period}</p>
           <h3 class="text-lg" style="font-weight:700">{j.company}</h3>
           <p class="text-[var(--text-dim)]" style="font-weight:var(--w-body)">{j.role}</p>
@@ -50,7 +64,9 @@ const LABEL_MAP: Record<string, string> = {
   <Plate fig="02" title="Projects" id="projects">
     <div class="grid md:grid-cols-3 gap-px bp-grid">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
-        <div class="bp-card bg-[var(--bg)] p-5" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="bp-card bp-corner bg-[var(--bg)] p-5" data-load style={`--i:${Math.min(i,4)}`}>
+          <span class="bp-corner-tr" aria-hidden="true"></span>
+          <span class="bp-corner-bl" aria-hidden="true"></span>
           <h3 style="font-weight:700">{p.title}</h3>
           <p class="text-sm text-[var(--text-dim)] mt-2" style="line-height:1.6;font-weight:var(--w-body)">{p.description}</p>
           <p class="font-mono text-xs text-[var(--accent)] mt-3">{p.tags.slice(0,4).join(' / ')}</p>
@@ -76,7 +92,9 @@ const LABEL_MAP: Record<string, string> = {
   <Plate fig="03" title="Hackathons" id="hackathons">
     <div class="grid md:grid-cols-2 gap-px bp-grid">
       {hackathons.map((h, i) => (
-        <div class="bg-[var(--bg)] p-5" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="bp-corner bg-[var(--bg)] p-5" data-load style={`--i:${Math.min(i,4)}`}>
+          <span class="bp-corner-tr" aria-hidden="true"></span>
+          <span class="bp-corner-bl" aria-hidden="true"></span>
           <p class="font-mono text-xs text-[var(--accent)]">&gt; {h.placement}</p>
           <h3 style="font-weight:700">{h.event}</h3>
           <p class="text-sm text-[var(--text-dim)] mt-2" style="line-height:1.6;font-weight:var(--w-body)">{h.blurb}</p>

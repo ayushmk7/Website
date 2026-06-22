@@ -25,11 +25,13 @@ const skillGroups = Object.entries(resumeData.skills) as [string, string[]][];
     <p class="mt-4 text-[var(--accent)] aurora-hero-sub" data-load>CS and Math @UMichigan</p>
     <h1 class="aurora-hero-name mt-2" style="font-family:var(--font-display);font-weight:700;letter-spacing:-0.02em;--i:1" data-load>Ayush Madhav Kumar</h1>
     <p class="font-mono mt-3 text-[var(--accent)] aurora-hero-sub" data-load style="--i:2">&gt; NSF-backed research</p>
-    <a class="font-mono text-[var(--accent)] hover:underline aurora-hero-sub" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3;padding:0.5rem 0.75rem;display:inline-block;min-height:2.75rem;line-height:1.75rem">&gt; view resume (pdf)</a>
+    <a class="aurora-resume-btn font-mono mt-1" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">&gt; view resume (pdf)</a>
   </section>
 
+  <hr class="aurora-divider mx-auto my-0 px-6" />
+
   <section id="experience" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Experience</h2>
+    <h2 class="aurora-section-heading text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Experience</h2>
     <div class="grid md:grid-cols-2 gap-5">
       {experience.map((j, i) => (
         <div class="glass p-5" data-load style={`--i:${Math.min(i,4)}`}>
@@ -42,8 +44,10 @@ const skillGroups = Object.entries(resumeData.skills) as [string, string[]][];
     </div>
   </section>
 
+  <hr class="aurora-divider mx-auto my-0 px-6" />
+
   <section id="projects" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Projects</h2>
+    <h2 class="aurora-section-heading text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Projects</h2>
     <div class="grid md:grid-cols-3 gap-5">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
         <div class="glass p-5 flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
@@ -78,8 +82,10 @@ const skillGroups = Object.entries(resumeData.skills) as [string, string[]][];
     </div>
   </section>
 
+  <hr class="aurora-divider mx-auto my-0 px-6" />
+
   <section id="hackathons" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Hackathons</h2>
+    <h2 class="aurora-section-heading text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Hackathons</h2>
     <div class="grid md:grid-cols-2 gap-5">
       {hackathons.map((h, i) => (
         <div class="glass p-5" data-load style={`--i:${Math.min(i,4)}`}>
@@ -91,8 +97,10 @@ const skillGroups = Object.entries(resumeData.skills) as [string, string[]][];
     </div>
   </section>
 
+  <hr class="aurora-divider mx-auto my-0 px-6" />
+
   <section id="skills" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Stack</h2>
+    <h2 class="aurora-section-heading text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Stack</h2>
     <div class="flex flex-col gap-6">
       {skillGroups.map(([key, items]) => (
         <div class="glass p-5" data-load>
@@ -108,7 +116,7 @@ const skillGroups = Object.entries(resumeData.skills) as [string, string[]][];
   </section>
 
   <footer id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center">
-    <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Contact</h2>
+    <h2 class="aurora-section-heading justify-center text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Contact</h2>
     <ThemeContact client:load />
   </footer>
 </ThemeLayout>

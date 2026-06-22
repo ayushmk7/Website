@@ -20,66 +20,88 @@ const categoryLabels: Record<string, string> = {
 ---
 <ThemeLayout themeKey="terminal" title="Ayush Madhav Kumar. Phosphor">
   <main class="max-w-4xl mx-auto px-4 leading-relaxed">
+
+    <!-- HERO: one viewport, portrait, typewriter whoami -->
     <section class="hero-section flex flex-col justify-center">
       <div data-load style="--i:0" class="mb-4"><Photo class="term-photo" /></div>
-      <p data-load style="--i:0">{prompt} whoami</p>
-      <pre data-load style="--i:1" class="hero-name whitespace-pre-wrap break-words">Ayush Madhav Kumar</pre>
+      <p data-load style="--i:0" class="shell-prompt">{prompt} <span class="cmd-text">whoami</span></p>
+      <pre data-load style="--i:1" class="hero-name whitespace-pre-wrap break-words typewriter">Ayush Madhav Kumar</pre>
       <p data-load style="--i:2" class="text-[var(--text-dim)]">CS and Math @UMichigan . Ann Arbor, MI</p>
       <p data-load style="--i:3" class="caret">&gt; NSF-backed research</p>
+      <p data-load style="--i:4" class="mt-3">
+        <a href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" class="term-btn">[ ./resume.pdf ]</a>
+      </p>
     </section>
 
-    <p class="mt-10" data-load style="--i:4">{prompt} cat experience.md</p>
-    {experience.map((j, i) => (
-      <div class="mt-3" data-load style={`--i:${5+Math.min(i,4)}`}>
-        <p class="text-[var(--accent)] break-words"># {j.company} . {j.role} . {j.period}</p>
-        {j.bullets.map((b) => <p class="text-[var(--text-dim)] break-words">- {b}</p>)}
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <p class="mt-10 shell-prompt" data-load style="--i:5">{prompt} <span class="cmd-text">cat experience.md</span></p>
+      {experience.map((j, i) => (
+        <div class="term-box mt-4" data-load style={`--i:${6+Math.min(i,4)}`}>
+          <p class="box-top">┌─ <span class="text-[var(--accent)]">{j.company}</span> &nbsp;{j.role} &nbsp;<span class="text-[var(--text-dim)]">{j.period}</span></p>
+          {j.bullets.map((b) => (
+            <p class="box-row break-words">│ <span class="text-[var(--text-dim)]">{b}</span></p>
+          ))}
+          <p class="box-bot">└{'─'.repeat(32)}</p>
+        </div>
+      ))}
+    </section>
+
+    <!-- HACKATHONS -->
+    <section id="hackathons">
+      <p class="mt-10 shell-prompt" data-load style="--i:11">{prompt} <span class="cmd-text">ls hackathons/</span></p>
+      {hackathons.map((h, i) => (
+        <p data-load style={`--i:${12+Math.min(i,3)}`} class="break-words mt-1">
+          <span class="gutter">$</span>
+          <span class="text-[var(--text-dim)]">[{h.placement}]</span>&nbsp;
+          <span class="text-[var(--accent)]">{h.event}</span>
+          &nbsp;-&gt; {h.project}
+        </p>
+      ))}
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <p class="mt-10 shell-prompt" data-load style="--i:16">{prompt} <span class="cmd-text">ls projects/</span></p>
+      <div class="mt-2" data-load style="--i:17">
+        {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p) => (
+          <div class="term-box project-entry mt-3">
+            <p class="box-top">┌─ <span class="text-[var(--accent)] font-bold">{p.title}</span>&nbsp;<span class="text-[var(--text-dim)]"># {p.tags.slice(0,3).join(', ')}</span></p>
+            {(p.githubUrl || p.websiteUrl) && (
+              <p class="box-row flex flex-wrap gap-x-3 items-center">
+                <span>│</span>
+                {p.githubUrl && (
+                  <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="term-btn-sm">[ open github ]</a>
+                )}
+                {p.websiteUrl && (
+                  <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="term-btn-sm">[ open site ]</a>
+                )}
+              </p>
+            )}
+            <p class="box-bot">└{'─'.repeat(32)}</p>
+          </div>
+        ))}
       </div>
-    ))}
+    </section>
 
-    <p class="mt-10" data-load style="--i:10">{prompt} ls hackathons/</p>
-    {hackathons.map((h, i) => (
-      <p data-load style={`--i:${11+Math.min(i,3)}`} class="break-words">[{h.placement}] <span class="text-[var(--accent)]">{h.event}</span> -&gt; {h.project}</p>
-    ))}
+    <!-- SKILLS -->
+    <section id="skills">
+      <p class="mt-10 shell-prompt" data-load style="--i:18">{prompt} <span class="cmd-text">cat stack.txt</span></p>
+      <div class="mt-2">
+        {Object.entries(resumeData.skills).map(([k, items], i) => (
+          <div class="stack-group mt-3" data-load style={`--i:${19+Math.min(i,5)}`}>
+            <p class="text-[var(--accent)] break-words"><span class="gutter">$</span>{categoryLabels[k] ?? k}:</p>
+            <p class="text-[var(--text-dim)] break-words pl-4">{(items as string[]).join(' . ')}</p>
+          </div>
+        ))}
+      </div>
+    </section>
 
-    <p class="mt-10" data-load style="--i:15">{prompt} ls projects/</p>
-    <div class="mt-2" data-load style="--i:16">
-      {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p) => (
-        <div class="project-entry mt-2 pl-2 border-l border-[var(--accent)]" style="border-left: 2px solid var(--accent); padding-left: 0.75rem; margin-bottom: 0.75rem;">
-          <p class="break-words">
-            <span class="text-[var(--accent)] font-bold">{p.title}</span>
-            <span class="text-[var(--text-dim)]"> # {p.tags.slice(0,3).join(', ')}</span>
-          </p>
-          {(p.githubUrl || p.websiteUrl) && (
-            <p class="text-sm mt-1 flex flex-wrap gap-x-4 items-center">
-              {p.githubUrl && (
-                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="project-link">
-                  [github]
-                </a>
-              )}
-              {p.websiteUrl && (
-                <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="project-link">
-                  [site]
-                </a>
-              )}
-            </p>
-          )}
-        </div>
-      ))}
-    </div>
-
-    <p class="mt-10" data-load style="--i:17">{prompt} cat stack.txt</p>
-    <div class="mt-2">
-      {Object.entries(resumeData.skills).map(([k, items], i) => (
-        <div class="stack-group mt-3" data-load style={`--i:${18+Math.min(i,5)}`}>
-          <p class="text-[var(--accent)] break-words">{categoryLabels[k] ?? k}:</p>
-          <p class="text-[var(--text-dim)] break-words pl-4">{(items as string[]).join(' . ')}</p>
-        </div>
-      ))}
-    </div>
-
-    <div class="mt-10 mb-8" id="contact" data-load style="--i:25">
-      <p class="caret mb-4">{prompt} mail contactayushmadhav@gmail.com</p>
+    <!-- CONTACT -->
+    <section id="contact" class="mt-10 mb-8" data-load style="--i:26">
+      <p class="shell-prompt caret mb-4">{prompt} <span class="cmd-text">mail contactayushmadhav@gmail.com</span></p>
       <ThemeContact client:load />
-    </div>
+    </section>
+
   </main>
 </ThemeLayout>

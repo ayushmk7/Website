@@ -78,10 +78,10 @@ const filteredProjects = projects.filter(
           href="/AyushMadhavResume.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          class="block text-[var(--accent-text)] tracking-widest uppercase"
-          style="font-family:var(--font-display); font-size:clamp(0.6rem,1vw,0.75rem); margin-top:clamp(0.25rem,1svh,0.75rem)"
+          class="deco-btn"
+          style="font-size:clamp(0.55rem,0.9vw,0.65rem); margin-top:clamp(0.25rem,1svh,0.75rem)"
         >
-          View Resume &rarr;
+          <span class="deco-btn-inner">View Resume</span>
         </a>
       </p>
     </div>
@@ -98,15 +98,15 @@ const filteredProjects = projects.filter(
         href="/AyushMadhavResume.pdf"
         target="_blank"
         rel="noopener noreferrer"
-        class="block text-[var(--accent-text)] tracking-widest uppercase"
-        style="font-family:var(--font-display); font-size:clamp(0.6rem,2.5vw,0.75rem); margin-top:clamp(0.25rem,1svh,0.75rem)"
+        class="deco-btn mx-auto"
+        style="font-size:clamp(0.55rem,2.2vw,0.65rem); margin-top:clamp(0.25rem,1svh,0.75rem)"
       >
-        View Resume &rarr;
+        <span class="deco-btn-inner">View Resume</span>
       </a>
     </p>
 
-    <!-- bottom chevron -->
-    <div class="deco-chevron" aria-hidden="true"></div>
+    <!-- bottom triple-chevron -->
+    <div class="deco-chevron-triple" aria-hidden="true"></div>
   </section>
 
   <!-- ═══════════════════════ EXPERIENCE ════════════════════ -->
@@ -142,7 +142,7 @@ const filteredProjects = projects.filter(
           <ul class="space-y-1 text-sm text-[var(--text)]">
             {j.bullets.map((b) => (
               <li class="flex gap-2 items-start">
-                <span class="text-[var(--accent)] mt-1 flex-shrink-0" aria-hidden="true">&#9656;</span>
+                <span class="deco-diamond" aria-hidden="true"></span>
                 <span>{b}</span>
               </li>
             ))}
@@ -179,15 +179,16 @@ const filteredProjects = projects.filter(
             ))}
           </div>
           {(p.githubUrl || p.websiteUrl) && (
-            <div class="flex gap-4 text-xs" style="font-family:var(--font-display)">
+            <div class="flex gap-3 flex-wrap">
               {p.githubUrl && (
                 <a
                   href={p.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-[var(--accent-text)] tracking-widest uppercase hover:underline"
+                  class="deco-btn"
+                  style="font-size:0.58rem"
                 >
-                  GitHub &rarr;
+                  <span class="deco-btn-inner">GitHub</span>
                 </a>
               )}
               {p.websiteUrl && (
@@ -195,9 +196,10 @@ const filteredProjects = projects.filter(
                   href={p.websiteUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-[var(--accent-2)] tracking-widest uppercase hover:underline"
+                  class="deco-btn"
+                  style="font-size:0.58rem; color:var(--accent-2)"
                 >
-                  Live &rarr;
+                  <span class="deco-btn-inner">Live</span>
                 </a>
               )}
             </div>
@@ -241,15 +243,16 @@ const filteredProjects = projects.filter(
           </p>
           <p class="text-sm text-[var(--text)] leading-relaxed mb-3">{h.blurb}</p>
           {(h.repoUrl || h.siteUrl) && (
-            <div class="flex gap-4 text-xs" style="font-family:var(--font-display)">
+            <div class="flex gap-3 flex-wrap">
               {h.repoUrl && (
                 <a
                   href={h.repoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-[var(--accent-text)] tracking-widest uppercase hover:underline"
+                  class="deco-btn"
+                  style="font-size:0.58rem"
                 >
-                  GitHub &rarr;
+                  <span class="deco-btn-inner">GitHub</span>
                 </a>
               )}
               {h.siteUrl && (
@@ -257,9 +260,10 @@ const filteredProjects = projects.filter(
                   href={h.siteUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-[var(--accent-2)] tracking-widest uppercase hover:underline"
+                  class="deco-btn"
+                  style="font-size:0.58rem; color:var(--accent-2)"
                 >
-                  Live &rarr;
+                  <span class="deco-btn-inner">Live</span>
                 </a>
               )}
             </div>
@@ -315,7 +319,25 @@ const filteredProjects = projects.filter(
     <div class="deco-heading text-xl md:text-2xl" style="font-family:var(--font-display); letter-spacing:0.1em">
       <ThemeContact client:load />
     </div>
-    <div class="deco-chevron mt-8" aria-hidden="true"></div>
+    <div class="deco-chevron-triple mt-8 mx-auto" aria-hidden="true"></div>
   </footer>
+
+  <script>
+    // Shimmer sweep on section rules when they enter the viewport.
+    // Reduced-motion: the CSS guard removes the animation, so this is safe.
+    if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const rules = e.target.querySelectorAll<HTMLElement>('.deco-rule');
+          rules.forEach((r) => {
+            r.classList.add('deco-rule-shimmer');
+            r.addEventListener('animationend', () => r.classList.remove('deco-rule-shimmer'), { once: true });
+          });
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.deco-section-rule').forEach((s) => io.observe(s));
+    }
+  </script>
 
 </ThemeLayout>

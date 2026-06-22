@@ -22,11 +22,13 @@ const categoryLabels: Record<string, string> = {
     <div class="panel p-2" data-load><Photo class="comic-hero-photo" /></div>
     <div class="bubble px-5 py-2" data-load style="--i:1"><p style="font-weight:800;font-size:clamp(0.85rem,2.2vw,1.125rem)">CS and Math @UMichigan</p></div>
     <h1 class="pop text-[var(--accent)]" data-load style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline);--i:2;font-size:clamp(2.5rem,8vw,6rem);line-height:1">Ayush Madhav Kumar!</h1>
-    <a class="panel px-6 py-2 bg-[var(--accent-2)]" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="font-family:var(--font-display);--i:3;font-size:clamp(1.25rem,3.5vw,1.75rem)">Resume</a>
+    <a class="burst-btn" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">Resume</a>
   </section>
 
   <section id="experience" class="max-w-6xl mx-auto px-4 py-16">
-    <h2 class="text-6xl text-[var(--comic-blue)] mb-8" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Experience</h2>
+    <div class="section-heading">
+      <h2 class="text-6xl text-[var(--comic-blue)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Experience</h2>
+    </div>
     <div class="grid md:grid-cols-2 gap-6">
       {experience.map((j, i) => (
         <div class="panel p-5" data-load style={`--i:${Math.min(i,4)}`}>
@@ -40,7 +42,9 @@ const categoryLabels: Record<string, string> = {
   </section>
 
   <section id="projects" class="max-w-6xl mx-auto px-4 py-16">
-    <h2 class="text-6xl text-[var(--accent)] mb-8" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Projects</h2>
+    <div class="section-heading">
+      <h2 class="text-6xl text-[var(--accent)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Projects</h2>
+    </div>
     <div class="grid md:grid-cols-3 gap-6">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
         <div class="panel p-5 flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
@@ -76,10 +80,12 @@ const categoryLabels: Record<string, string> = {
   </section>
 
   <section id="hackathons" class="max-w-6xl mx-auto px-4 py-16">
-    <h2 class="text-6xl text-[var(--comic-blue)] mb-8" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Hackathons</h2>
+    <div class="section-heading">
+      <h2 class="text-6xl text-[var(--comic-blue)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Hackathons</h2>
+    </div>
     <div class="grid md:grid-cols-2 gap-6">
       {hackathons.map((h, i) => (
-        <div class="panel p-5 bg-[var(--accent-2)]" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="panel panel--burst p-5 bg-[var(--accent-2)]" data-load style={`--i:${Math.min(i,4)}`}>
           <p class="text-sm" style="font-weight:600">{h.placement}</p>
           <h3 class="text-3xl text-[var(--accent)]" style="font-family:var(--font-display)">{h.event}</h3>
           <p class="text-sm mt-2">{h.blurb}</p>
@@ -89,7 +95,9 @@ const categoryLabels: Record<string, string> = {
   </section>
 
   <section id="skills" class="max-w-6xl mx-auto px-4 py-16">
-    <h2 class="text-6xl text-[var(--accent)] mb-8" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Stack</h2>
+    <div class="section-heading">
+      <h2 class="text-6xl text-[var(--accent)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Stack</h2>
+    </div>
     <div class="flex flex-col gap-8">
       {Object.entries(resumeData.skills).map(([key, items]) => (
         <div>
@@ -98,7 +106,7 @@ const categoryLabels: Record<string, string> = {
           </h3>
           <div class="flex flex-wrap gap-2">
             {(items as string[]).map((s) => (
-              <span class="panel px-3 py-1 text-sm" style="box-shadow:3px 3px 0 var(--panel-shadow);font-weight:800">{s}</span>
+              <span class="skill-tag">{s}</span>
             ))}
           </div>
         </div>
@@ -107,7 +115,9 @@ const categoryLabels: Record<string, string> = {
   </section>
 
   <footer id="contact" class="max-w-6xl mx-auto px-4 py-20 text-center">
-    <h2 class="text-6xl text-[var(--accent)] mb-8" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Contact</h2>
+    <div class="section-heading justify-center">
+      <h2 class="text-6xl text-[var(--accent)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Contact</h2>
+    </div>
     <ThemeContact client:load />
   </footer>
 </ThemeLayout>

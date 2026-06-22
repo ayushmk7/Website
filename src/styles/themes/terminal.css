@@ -11,6 +11,14 @@ html[data-theme="terminal"] {
   --w-display: 800; --w-body: 400;
   --radius: 0; --border: 1px solid rgba(26,107,26,0.35);
   --ease: steps(1,end); --dur: 0.01s;
+  /* button palette */
+  --btn-bg: transparent;
+  --btn-border: #1a6b1a;
+  --btn-text: #1a6b1a;
+  --btn-hover-bg: #1a6b1a;
+  --btn-hover-text: #f0f0e6;
+  /* box-drawing gutter */
+  --gutter-color: rgba(26,107,26,0.5);
 }
 html[data-theme="terminal"] body {
   background:
@@ -25,6 +33,12 @@ html[data-theme="terminal"].dark {
   --text: #43f57b; --text-dim: #3ac96a;
   --accent: #b6ff00; --accent-2: #43f57b;
   --border: 1px solid rgba(67,245,123,0.4);
+  --btn-bg: transparent;
+  --btn-border: #b6ff00;
+  --btn-text: #b6ff00;
+  --btn-hover-bg: #b6ff00;
+  --btn-hover-text: #050806;
+  --gutter-color: rgba(67,245,123,0.4);
 }
 html[data-theme="terminal"].dark body {
   text-shadow: 0 0 2px rgba(67,245,123,0.25);
@@ -32,31 +46,120 @@ html[data-theme="terminal"].dark body {
     repeating-linear-gradient(rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.25) 2px 4px),
     var(--bg);
 }
+
+/* ── blinking block cursor ─────────────────────────────────────── */
 html[data-theme="terminal"] .caret::after {
   content: '_'; color: var(--accent); animation: tBlink 1s steps(1) infinite;
 }
 @keyframes tBlink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
   html[data-theme="terminal"] .caret::after { animation: none; }
+  html[data-theme="terminal"] .typewriter { animation: none; border-right: none; }
 }
+
+/* ── type-on effect on hero name ───────────────────────────────── */
+html[data-theme="terminal"] .typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--accent);
+  width: 0;
+  animation:
+    tType 1.2s steps(18, end) 0.3s forwards,
+    tBlink 0.75s steps(1) 1.5s 4;
+}
+@keyframes tType {
+  from { width: 0; }
+  to   { width: 19ch; }
+}
+
 /* type-on: reuse [data-load] but with no transform, just sequential fade */
 html[data-theme="terminal"] [data-load] { transform: none; }
 
-/* hero avatar: framed portrait, proper 2:3 proportions (not a pfp) */
+/* ── shell prompt styling ──────────────────────────────────────── */
+html[data-theme="terminal"] .shell-prompt {
+  color: var(--text);
+}
+html[data-theme="terminal"] .cmd-text {
+  color: var(--accent-2);
+}
+
+/* ── command-gutter prompt glyph ───────────────────────────────── */
+html[data-theme="terminal"] .gutter {
+  display: inline-block;
+  width: 1.4rem;
+  color: var(--gutter-color);
+  user-select: none;
+  font-weight: 700;
+}
+
+/* ── box-drawing frames ────────────────────────────────────────── */
+html[data-theme="terminal"] .term-box {
+  border-left: 2px solid var(--accent);
+  padding-left: 0;
+  font-family: var(--font-mono);
+}
+html[data-theme="terminal"] .box-top,
+html[data-theme="terminal"] .box-bot {
+  color: var(--gutter-color);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html[data-theme="terminal"] .box-row {
+  padding-left: 0.5rem;
+  line-height: 1.55;
+}
+
+/* ── bracketed terminal buttons ───────────────────────────────── */
+html[data-theme="terminal"] .term-btn,
+html[data-theme="terminal"] .term-btn-sm {
+  display: inline-block;
+  font-family: var(--font-mono);
+  color: var(--btn-text);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  padding: 0.2rem 0.55rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: background 0.1s, color 0.1s;
+  cursor: pointer;
+}
+html[data-theme="terminal"] .term-btn {
+  font-size: 0.95rem;
+  padding: 0.25rem 0.75rem;
+  min-height: 2.25rem;
+  line-height: 1.8;
+}
+html[data-theme="terminal"] .term-btn-sm {
+  font-size: 0.82rem;
+  padding: 0.15rem 0.5rem;
+  min-height: 2rem;
+}
+html[data-theme="terminal"] .term-btn:hover,
+html[data-theme="terminal"] .term-btn-sm:hover,
+html[data-theme="terminal"] .term-btn:focus-visible,
+html[data-theme="terminal"] .term-btn-sm:focus-visible {
+  background: var(--btn-hover-bg);
+  color: var(--btn-hover-text);
+  outline: none;
+}
+
+/* ── hero avatar ───────────────────────────────────────────────── */
 html[data-theme="terminal"] .term-photo {
   width: clamp(6rem, 16vmin, 9rem);
   aspect-ratio: 2 / 3;
   height: auto;
   border: 1px solid var(--accent);
   border-radius: 2px;
-  box-shadow: 0 0 8px rgba(67, 245, 123, 0.25);
+  box-shadow: 0 0 8px rgba(67,245,123,0.25);
 }
 
-/* prevent horizontal overflow on mobile */
+/* ── layout ────────────────────────────────────────────────────── */
 html[data-theme="terminal"] main { overflow-x: hidden; }
-html[data-theme="terminal"] pre { white-space: pre-wrap; overflow-wrap: break-word; max-width: 100%; }
-
-/* body text sizing and line-height */
+html[data-theme="terminal"] pre  { white-space: pre-wrap; overflow-wrap: break-word; max-width: 100%; }
 html[data-theme="terminal"] main {
   font-size: 1rem;
   line-height: 1.6;
@@ -65,14 +168,13 @@ html[data-theme="terminal"] main p,
 html[data-theme="terminal"] main pre {
   line-height: 1.6;
 }
-/* shell output blocks: breathe between dim lines */
 html[data-theme="terminal"] .project-entry p,
 html[data-theme="terminal"] .stack-group p {
   line-height: 1.55;
   margin-bottom: 0.2rem;
 }
 
-/* hero fills exactly one viewport minus fixed nav (~56px), no overflow */
+/* hero: one viewport */
 html[data-theme="terminal"] .hero-section {
   min-height: calc(100svh - 56px);
   min-height: calc(100dvh - 56px);
@@ -83,14 +185,13 @@ html[data-theme="terminal"] .hero-section {
   overflow: hidden;
   gap: clamp(0.25rem, 1.5svh, 0.75rem);
 }
-/* responsive name size: shrinks on short/narrow viewports */
 html[data-theme="terminal"] .hero-name {
   font-size: clamp(1.25rem, min(6vw, 4svh), 2.5rem);
   line-height: 1.2;
   margin: 0;
 }
 
-/* project links */
+/* project links (legacy class kept for safety) */
 html[data-theme="terminal"] .project-link {
   color: var(--accent-2);
   text-decoration: underline;
@@ -118,4 +219,9 @@ html[data-theme="terminal"].dark .stack-group {
 html[data-theme="terminal"] #contact {
   border-top: var(--border);
   padding-top: 1.5rem;
+}
+
+/* scroll targets: offset below fixed nav */
+html[data-theme="terminal"] section[id] {
+  scroll-margin-top: 64px;
 }

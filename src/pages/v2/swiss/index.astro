@@ -27,7 +27,7 @@ const categoryLabels: Record<string, string> = {
   <section class="swiss-hero px-6 md:px-12 max-w-7xl mx-auto flex flex-col justify-between" style="padding-top:clamp(3.5rem,10vh,6rem);padding-bottom:clamp(1rem,4vh,2.5rem);">
 
     <!-- Top bar -->
-    <div class="sw-rule" style="margin-bottom:clamp(0.5rem,2vh,2rem);" aria-hidden="true"></div>
+    <div class="sw-rule sw-wipe" style="margin-bottom:clamp(0.5rem,2vh,2rem);" aria-hidden="true"></div>
 
     <!-- Content: photo + name block -->
     <div class="flex flex-col md:flex-row md:items-end flex-1" style="gap:clamp(0.75rem,2vh,2.5rem);min-height:0;">
@@ -46,7 +46,7 @@ const categoryLabels: Record<string, string> = {
         >
           Ayush<br/>Madhav Kumar
         </h1>
-        <hr class="sw-rule-accent" style="margin-top:clamp(0.5rem,2vh,1.5rem);margin-bottom:clamp(0.375rem,1.5vh,1rem);" aria-hidden="true" />
+        <hr class="sw-rule-accent sw-wipe" style="margin-top:clamp(0.5rem,2vh,1.5rem);margin-bottom:clamp(0.375rem,1.5vh,1rem);" aria-hidden="true" />
         <p class="text-[var(--text-dim)]" style="font-family:var(--font-display);font-weight:400;font-size:clamp(0.875rem,2vw,1.125rem);--i:3" data-load>
           CS and Math @UMichigan
         </p>
@@ -58,16 +58,15 @@ const categoryLabels: Record<string, string> = {
             href="/AyushMadhavResume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            class="sw-tag border border-[var(--accent)] px-4 py-3 inline-flex items-center hover:bg-[var(--accent)] hover:text-white transition-colors"
-            style="transition-duration:var(--dur);transition-timing-function:var(--ease);"
-          >Resume</a>
+            class="sw-resume-btn"
+          ><span>Resume</span></a>
         </p>
       </div>
 
     </div>
 
     <!-- Bottom rule -->
-    <div class="sw-rule" style="margin-top:clamp(0.5rem,2vh,2rem);" aria-hidden="true"></div>
+    <div class="sw-rule sw-wipe" style="margin-top:clamp(0.5rem,2vh,2rem);" aria-hidden="true"></div>
 
   </section>
 
@@ -81,7 +80,7 @@ const categoryLabels: Record<string, string> = {
     <div class="grid grid-cols-[auto_1fr] items-baseline gap-8 mb-12">
       <span class="sw-numeral" aria-hidden="true">01</span>
       <div>
-        <div class="sw-rule mb-4" aria-hidden="true"></div>
+        <div class="sw-rule sw-wipe mb-4" aria-hidden="true"></div>
         <h2 class="sw-section-title">Experience</h2>
       </div>
     </div>
@@ -102,7 +101,7 @@ const categoryLabels: Record<string, string> = {
           <ul class="space-y-1" style="font-weight:400;line-height:1.6;font-size:0.9375rem;">
             {j.bullets.map(b => (
               <li class="flex gap-3">
-                <span class="text-[var(--accent)] select-none flex-shrink-0 mt-[0.3em]" aria-hidden="true">+</span>
+                <span class="sw-bullet" aria-hidden="true"></span>
                 <span>{b}</span>
               </li>
             ))}
@@ -122,7 +121,7 @@ const categoryLabels: Record<string, string> = {
     <div class="grid grid-cols-[auto_1fr] items-baseline gap-8 mb-12">
       <span class="sw-numeral" aria-hidden="true">02</span>
       <div>
-        <div class="sw-rule mb-4" aria-hidden="true"></div>
+        <div class="sw-rule sw-wipe mb-4" aria-hidden="true"></div>
         <h2 class="sw-section-title">Projects</h2>
       </div>
     </div>
@@ -144,7 +143,7 @@ const categoryLabels: Record<string, string> = {
                     href={p.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="sw-tag sw-project-link"
+                    class="sw-project-link"
                   >GitHub</a>
                 )}
                 {p.websiteUrl && (
@@ -152,7 +151,7 @@ const categoryLabels: Record<string, string> = {
                     href={p.websiteUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="sw-tag sw-project-link"
+                    class="sw-project-link"
                   >Site</a>
                 )}
               </div>
@@ -173,7 +172,7 @@ const categoryLabels: Record<string, string> = {
     <div class="grid grid-cols-[auto_1fr] items-baseline gap-8 mb-12">
       <span class="sw-numeral" aria-hidden="true">03</span>
       <div>
-        <div class="sw-rule mb-4" aria-hidden="true"></div>
+        <div class="sw-rule sw-wipe mb-4" aria-hidden="true"></div>
         <h2 class="sw-section-title">Hackathons</h2>
       </div>
     </div>
@@ -197,7 +196,7 @@ const categoryLabels: Record<string, string> = {
                 href={h.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="sw-tag sw-project-link"
+                class="sw-project-link"
               >Repo</a>
             )}
             {h.siteUrl && (
@@ -205,7 +204,7 @@ const categoryLabels: Record<string, string> = {
                 href={h.siteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="sw-tag sw-project-link"
+                class="sw-project-link"
               >Site</a>
             )}
           </div>
@@ -224,7 +223,7 @@ const categoryLabels: Record<string, string> = {
     <div class="grid grid-cols-[auto_1fr] items-baseline gap-8 mb-12">
       <span class="sw-numeral" aria-hidden="true">04</span>
       <div>
-        <div class="sw-rule mb-4" aria-hidden="true"></div>
+        <div class="sw-rule sw-wipe mb-4" aria-hidden="true"></div>
         <h2 class="sw-section-title">Stack</h2>
       </div>
     </div>
@@ -251,17 +250,52 @@ const categoryLabels: Record<string, string> = {
        05 CONTACT
   ════════════════════════════════════════════════════════════════════ -->
   <footer id="contact" class="max-w-7xl mx-auto px-6 md:px-12 py-24">
-    <div class="sw-rule mb-16" aria-hidden="true"></div>
+    <div class="sw-rule sw-wipe mb-16" aria-hidden="true"></div>
     <div class="grid md:grid-cols-[auto_1fr] gap-8 items-end">
-      <p class="sw-numeral" aria-hidden="true" style="color:var(--text-dim);">05</p>
+      <p class="sw-numeral" aria-hidden="true" style="color:var(--accent);opacity:0.18;">05</p>
       <div>
         <p class="sw-tag mb-4" data-load style="--i:0">Contact</p>
         <div data-load style="--i:1">
           <ThemeContact client:load />
         </div>
-        <div class="sw-rule-accent mt-8" aria-hidden="true"></div>
+        <div class="sw-rule-accent sw-wipe mt-8" aria-hidden="true"></div>
       </div>
     </div>
   </footer>
+
+  <!-- Scroll-wipe: fires red rule across .sw-wipe elements on entry -->
+  <script>
+    (function () {
+      if (typeof window === 'undefined') return;
+
+      function initWipe() {
+        var targets = document.querySelectorAll('.sw-wipe');
+        if (!targets.length) return;
+
+        // Respect reduced-motion: skip observer, mark all active immediately
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          targets.forEach(function (el) { el.classList.add('sw-wipe-active'); });
+          return;
+        }
+
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('sw-wipe-active');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.2 });
+
+        targets.forEach(function (el) { io.observe(el); });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initWipe);
+      } else {
+        initWipe();
+      }
+    })();
+  </script>
 
 </ThemeLayout>

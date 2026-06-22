@@ -23,13 +23,14 @@ const LABEL_MAP: Record<string, string> = {
   <section class="hero-viewport flex flex-col items-center justify-center text-center px-6">
     <Photo class="hero-avatar rounded-lg border-2 border-[var(--accent)] shadow-[0_0_24px_rgba(255,46,151,0.45)]" />
     <p class="uppercase tracking-[0.3em] hero-subtitle text-[var(--accent-2)]" data-load>CS and Math @UMichigan</p>
-    <h1 class="glow hero-name uppercase" style="font-family:var(--font-display);font-weight:900;letter-spacing:0.05em;--i:1" data-load>Ayush Madhav Kumar</h1>
+    <span class="outrun-sun" aria-hidden="true"></span>
+    <h1 class="glow chrome-text hero-name uppercase" style="font-family:var(--font-display);font-weight:900;letter-spacing:0.05em;--i:1" data-load>Ayush Madhav Kumar</h1>
     <p class="font-mono hero-tagline" data-load style="--i:2">&gt; NSF-backed research</p>
-    <a class="hero-cta border border-[var(--accent)] uppercase tracking-wider" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3;display:inline-flex;align-items:center">Resume</a>
+    <a class="btn-outrun hero-cta" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">Resume</a>
   </section>
 
   <section id="experience" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="glow text-4xl uppercase mb-8" style="font-family:var(--font-display)">Experience</h2>
+    <h2 class="glow text-4xl uppercase section-heading" style="font-family:var(--font-display)">Experience</h2>
     <div class="grid md:grid-cols-2 gap-5">
       {experience.map((j, i) => (
         <div class="border border-[var(--accent)] bg-[var(--surface)] backdrop-blur p-5 rounded-lg" data-load style={`--i:${Math.min(i,4)}`}>
@@ -43,7 +44,7 @@ const LABEL_MAP: Record<string, string> = {
   </section>
 
   <section id="projects" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="glow text-4xl uppercase mb-8" style="font-family:var(--font-display)">Projects</h2>
+    <h2 class="glow text-4xl uppercase section-heading" style="font-family:var(--font-display)">Projects</h2>
     <div class="grid md:grid-cols-3 gap-5">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
         <div class="border border-[var(--accent)] bg-[var(--surface)] backdrop-blur p-5 rounded-lg flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
@@ -52,10 +53,10 @@ const LABEL_MAP: Record<string, string> = {
           {(p.githubUrl || p.websiteUrl) && (
             <div class="mt-4 flex gap-3 flex-wrap">
               {p.githubUrl && (
-                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="text-xs uppercase tracking-wider border border-[var(--accent)] px-3 py-2 rounded-full transition-opacity hover:opacity-80" style="min-height:2.25rem;display:inline-flex;align-items:center">GitHub</a>
+                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="btn-outrun-sm">GitHub</a>
               )}
               {p.websiteUrl && (
-                <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="text-xs uppercase tracking-wider border border-[var(--accent-2)] px-3 py-2 rounded-full transition-opacity hover:opacity-80" style="color:var(--accent-2);min-height:2.25rem;display:inline-flex;align-items:center">Site</a>
+                <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="btn-outrun-sm alt">Site</a>
               )}
             </div>
           )}
@@ -65,7 +66,7 @@ const LABEL_MAP: Record<string, string> = {
   </section>
 
   <section id="hackathons" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="glow text-4xl uppercase mb-8" style="font-family:var(--font-display)">Hackathons</h2>
+    <h2 class="glow text-4xl uppercase section-heading" style="font-family:var(--font-display)">Hackathons</h2>
     <div class="grid md:grid-cols-2 gap-5">
       {hackathons.map((h, i) => (
         <div class="border border-[var(--accent)] bg-[var(--surface)] backdrop-blur p-5 rounded-lg" data-load style={`--i:${Math.min(i,4)}`}>
@@ -78,14 +79,14 @@ const LABEL_MAP: Record<string, string> = {
   </section>
 
   <section id="skills" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="glow text-4xl uppercase mb-8" style="font-family:var(--font-display)">Stack</h2>
+    <h2 class="glow text-4xl uppercase section-heading" style="font-family:var(--font-display)">Stack</h2>
     <div class="space-y-6">
       {Object.entries(resumeData.skills).map(([key, items]) => (
         <div>
           <p class="text-xs uppercase tracking-widest mb-2 text-[var(--accent-2)]">{LABEL_MAP[key] ?? key}</p>
           <div class="flex flex-wrap gap-2">
             {(items as string[]).map((s) => (
-              <span class="border border-[var(--accent)] rounded-full px-3 py-1 text-sm">{s}</span>
+              <span class="border border-[var(--accent)] px-3 py-1 text-sm">{s}</span>
             ))}
           </div>
         </div>
@@ -94,7 +95,7 @@ const LABEL_MAP: Record<string, string> = {
   </section>
 
   <footer id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center">
-    <h2 class="glow text-4xl uppercase mb-8" style="font-family:var(--font-display)">Contact</h2>
+    <h2 class="glow text-4xl uppercase section-heading justify-center" style="font-family:var(--font-display)">Contact</h2>
     <ThemeContact client:load />
   </footer>
 </ThemeLayout>

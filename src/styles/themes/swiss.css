@@ -1,6 +1,6 @@
 /* src/styles/themes/swiss.css
    International Typographic Style — Swiss design.
-   Archivo 900 display / 300 body. Strict grid. Swiss red. Zero decoration. */
+   Archivo 900 display / 400 body. Strict grid. Swiss red. Zero decoration. */
 
 /* ── LIGHT palette ─────────────────────────────────────────────────── */
 html[data-theme="swiss"] {
@@ -27,6 +27,10 @@ html[data-theme="swiss"] {
   /* Swiss-specific sizing tokens */
   --numeral-size: clamp(5rem, 12vw, 9rem);
   --rule-color:   var(--text);
+
+  /* Red-wipe animation timing */
+  --wipe-dur: 0.35s;
+  --wipe-ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── DARK palette ──────────────────────────────────────────────────── */
@@ -67,16 +71,49 @@ html[data-theme="swiss"] .sw-rule-accent {
   margin: 0;
 }
 
+/* ── Signature: red rule wipe on scroll-into-view ──────────────────── */
+/* Applied via JS class .sw-wipe-active — see <script> in astro file   */
+html[data-theme="swiss"] .sw-wipe {
+  position: relative;
+  overflow: hidden;
+}
+
+html[data-theme="swiss"] .sw-wipe::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--wipe-dur) var(--wipe-ease);
+}
+
+html[data-theme="swiss"] .sw-wipe.sw-wipe-active::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="swiss"] .sw-wipe::after {
+    transition: none;
+    transform: scaleX(1);
+  }
+}
+
 /* ── Big section numeral ───────────────────────────────────────────── */
 html[data-theme="swiss"] .sw-numeral {
   font-family:  var(--font-display);
   font-weight:  900;
   font-size:    var(--numeral-size);
   line-height:  1;
-  color:        var(--text-dim);
+  color:        var(--accent);
+  opacity:      0.18;
   letter-spacing: -0.04em;
   user-select: none;
   pointer-events: none;
+  /* Crisp red — oversized, ghosted, grid-anchoring */
 }
 
 /* ── Override entrance animation: crisp fade-up (no lateral drift) ── */
@@ -105,12 +142,10 @@ html[data-theme="swiss"] [data-load] {
 
 /* ── Swiss hero: full viewport, exactly one screen tall ────────────── */
 html[data-theme="swiss"] .swiss-hero {
-  /* lock to exactly one viewport — no next-section peek */
   height: 100svh;
   height: 100dvh;
   min-height: 0;
   box-sizing: border-box;
-  /* shrink inner content, never clip text */
   overflow: visible;
 }
 
@@ -161,19 +196,120 @@ html[data-theme="swiss"] .sw-stack-label {
   color: var(--accent);
 }
 
-/* ── Project / hackathon links ─────────────────────────────────────── */
-html[data-theme="swiss"] .sw-project-link {
-  border-bottom: 1px solid var(--accent);
-  padding-block: 0.5rem;
-  min-height: 36px;
-  display: inline-flex;
-  align-items: center;
-  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+/* ── Bullet: precise red square marker ────────────────────────────── */
+/* Replaces the "+" text span with a 5×5 CSS square — Swiss/Müller-Brockmann */
+html[data-theme="swiss"] .sw-bullet {
+  display: inline-block;
+  width:  5px;
+  height: 5px;
+  background: var(--accent);
+  flex-shrink: 0;
+  margin-top: 0.55em;   /* optically align to cap-height */
+  align-self: flex-start;
 }
 
-html[data-theme="swiss"] .sw-project-link:hover {
-  color: var(--text);
-  border-color: var(--text);
+/* ── Resume button: Swiss red-block label idiom ────────────────────── */
+/* Hollow at rest; a red block slides in from left on hover.            */
+html[data-theme="swiss"] .sw-resume-btn {
+  font-family:    var(--font-display);
+  font-weight:    900;
+  font-size:      0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color:          var(--accent);
+  border:         1px solid var(--accent);
+  padding:        0.625rem 1.25rem;
+  display:        inline-flex;
+  align-items:    center;
+  gap:            0.5rem;
+  position:       relative;
+  overflow:       hidden;
+  text-decoration: none;
+  transition:     color var(--wipe-dur) var(--wipe-ease);
+  min-height: 44px;
+}
+
+/* Sliding red block */
+html[data-theme="swiss"] .sw-resume-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--wipe-dur) var(--wipe-ease);
+  z-index: 0;
+}
+
+html[data-theme="swiss"] .sw-resume-btn:hover::before,
+html[data-theme="swiss"] .sw-resume-btn:focus-visible::before {
+  transform: scaleX(1);
+}
+
+html[data-theme="swiss"] .sw-resume-btn:hover,
+html[data-theme="swiss"] .sw-resume-btn:focus-visible {
+  color: #ffffff;
+}
+
+html[data-theme="swiss"] .sw-resume-btn > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="swiss"] .sw-resume-btn::before {
+    transition: none;
+    transform: scaleX(0);
+  }
+  html[data-theme="swiss"] .sw-resume-btn:hover::before {
+    transform: scaleX(1);
+  }
+}
+
+/* ── Project / hackathon links: red underline wipe ─────────────────── */
+/* A precise red underline wipes in from left on hover — Swiss idiom.  */
+html[data-theme="swiss"] .sw-project-link {
+  font-family:    var(--font-display);
+  font-weight:    900;
+  font-size:      0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color:          var(--accent);
+  position:       relative;
+  padding-bottom: 3px;
+  display:        inline-flex;
+  align-items:    center;
+  min-height: 36px;
+  text-decoration: none;
+}
+
+/* Hairline at rest */
+html[data-theme="swiss"] .sw-project-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0.25);
+  transform-origin: left center;
+  transition: transform var(--wipe-dur) var(--wipe-ease),
+              height    var(--wipe-dur) var(--wipe-ease);
+}
+
+html[data-theme="swiss"] .sw-project-link:hover::after,
+html[data-theme="swiss"] .sw-project-link:focus-visible::after {
+  transform: scaleX(1);
+  height: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="swiss"] .sw-project-link::after {
+    transition: none;
+    transform: scaleX(1);
+    height: 2px;
+  }
 }
 
 /* ── ThemeContact alignment inside footer ──────────────────────────── */
@@ -188,7 +324,28 @@ html[data-theme="swiss"] #contact a[href^="mailto"] {
   letter-spacing: -0.02em;
   color: var(--accent);
   text-decoration: none;
+  position: relative;
+  padding-bottom: 4px;
+  display: inline-block;
   transition: color var(--dur) var(--ease);
+}
+
+/* Red underline wipe on mailto link */
+html[data-theme="swiss"] #contact a[href^="mailto"]::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--wipe-dur) var(--wipe-ease);
+}
+
+html[data-theme="swiss"] #contact a[href^="mailto"]:hover::after {
+  transform: scaleX(1);
 }
 
 html[data-theme="swiss"] #contact a[href^="mailto"]:hover {
@@ -200,9 +357,41 @@ html[data-theme="swiss"] #contact button {
   border-color: var(--accent);
   color: var(--accent);
   background: transparent;
+  position: relative;
+  overflow: hidden;
+  transition: color var(--wipe-dur) var(--wipe-ease);
+}
+
+html[data-theme="swiss"] #contact button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--wipe-dur) var(--wipe-ease);
+  z-index: 0;
+}
+
+html[data-theme="swiss"] #contact button > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-theme="swiss"] #contact button:hover::before {
+  transform: scaleX(1);
 }
 
 html[data-theme="swiss"] #contact button:hover {
-  background: var(--accent);
   color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="swiss"] #contact a[href^="mailto"]::after {
+    transition: none;
+    transform: scaleX(1);
+  }
+  html[data-theme="swiss"] #contact button::before {
+    transition: none;
+  }
 }
