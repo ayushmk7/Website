@@ -297,6 +297,8 @@ html[data-theme="comic"] .panel--burst {
 /* inner text follows the mode; event heading stays red, placement/blurb use theme text */
 html[data-theme="comic"] .panel--burst h3 { color: var(--accent); }
 html[data-theme="comic"] .panel--burst p { color: var(--text); }
+/* dark mode: event headings yellow (like before) instead of red */
+html[data-theme="comic"].dark .panel--burst h3 { color: var(--accent-2); }
 
 /* ============================================================
    MOBILE SPACING OVERRIDES
