@@ -285,16 +285,13 @@ html[data-theme="comic"] .skill-tag {
    HALFTONE CIRCLE DECORATION
    Placed as a background accent on hackathon panels
    ============================================================ */
+/* hackathon panels: white box, black outline, red accents in BOTH modes */
 html[data-theme="comic"] .panel--burst {
-  background-image: radial-gradient(circle at 90% 10%, var(--halftone-accent) 0%, var(--halftone-accent) 38%, transparent 40%);
-  /* light: yellow panel with dark text */
-  background-color: var(--accent-2);
+  background-image: radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--accent) 18%, transparent) 0%, color-mix(in srgb, var(--accent) 18%, transparent) 38%, transparent 40%);
+  background-color: #ffffff;
   color: #141414;
-}
-/* dark: dark surface with white text (white on yellow would be illegible) */
-html[data-theme="comic"].dark .panel--burst {
-  background-color: var(--surface);
-  color: #f0f0f0;
+  border-color: #141414;
+  box-shadow: 6px 6px 0 #141414;
 }
 
 /* ============================================================
