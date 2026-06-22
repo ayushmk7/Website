@@ -5,16 +5,16 @@ const LI = 'https://www.linkedin.com/in/ayushmk';
 const RESUME = '/AyushMadhavResume.pdf';
 const role = 'CS and Math @UMichigan';
 
-const LAYOUTS = ['stack', 'right', 'left', 'portrait', 'banner', 'mini', 'wide'] as const;
+const LAYOUTS = ['stack', 'portrait', 'duo', 'overlap', 'bigstack', 'diptych', 'framed'] as const;
 type Layout = (typeof LAYOUTS)[number];
 const LABELS: Record<Layout, string> = {
   stack: 'Stack',
-  right: 'Pic Right',
-  left: 'Pic Left',
   portrait: 'Portrait',
-  banner: 'Banner',
-  mini: 'Mini Pic',
-  wide: 'Wide',
+  duo: 'Duo',
+  overlap: 'Overlap',
+  bigstack: 'Big Stack',
+  diptych: 'Diptych',
+  framed: 'Framed',
 };
 
 const githubSvg = (
@@ -24,20 +24,20 @@ const linkedinSvg = (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>
 );
 
-function PhotoBox({ size = 'clamp(7rem,18vmin,10rem)', ratio = '1 / 1', round = false }: { size?: string; ratio?: string; round?: boolean }) {
+function PhotoBox({ size = 'clamp(7rem,18vmin,10rem)', ratio = '1 / 1', round = false, bare = false }: { size?: string; ratio?: string; round?: boolean; bare?: boolean }) {
   const inner: React.CSSProperties = {
     position: 'relative', display: 'grid', placeItems: 'center', fontWeight: 800, overflow: 'hidden',
     background: 'var(--surface)', width: size, aspectRatio: ratio, height: 'auto',
     ...(round ? { borderRadius: '50%' } : {}),
   };
-  return (
-    <div className="panel" style={{ padding: '0.4rem', ...(round ? { borderRadius: '50%' } : {}) }}>
-      <div className="ch-photo-pop" style={inner}>
-        AK
-        <img src="/profile.jpg" alt="Ayush Madhav Kumar" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
-      </div>
+  const img = (
+    <div className="ch-photo-pop" style={bare ? { ...inner, border: '3px solid var(--outline)', borderRadius: round ? '50%' : '0.5rem' } : inner}>
+      AK
+      <img src="/profile.jpg" alt="Ayush Madhav Kumar" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
     </div>
   );
+  if (bare) return img;
+  return <div className="panel" style={{ padding: '0.4rem', ...(round ? { borderRadius: '50%' } : {}) }}>{img}</div>;
 }
 
 const bangers = (size: string): React.CSSProperties => ({
@@ -54,18 +54,6 @@ function Buttons({ center = true }: { center?: boolean }) {
       <a className="panel panel--burst" href={RESUME} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-display)', background: 'var(--accent-2)', color: '#141414', padding: '0.45rem 1.4rem', fontSize: '1.35rem', display: 'inline-block', boxShadow: '6px 6px 0 var(--panel-shadow)' }}>Résumé</a>
       <a className="comic-link-btn" href={GH} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" style={{ minWidth: 36, minHeight: 36, padding: '0.5rem' }}>{githubSvg}</a>
       <a className="comic-link-btn" href={LI} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" style={{ minWidth: 36, minHeight: 36, padding: '0.5rem' }}>{linkedinSvg}</a>
-    </div>
-  );
-}
-
-// shared text column (left-aligned on desktop)
-function TextCol({ nameSize, align = true }: { nameSize: string; align?: boolean }) {
-  return (
-    <div className={`flex flex-col gap-3 ${align ? 'items-center md:items-start text-center md:text-left' : 'items-center text-center'}`}>
-      <Role size="clamp(0.85rem,2vw,1.05rem)" />
-      <h1 style={bangers(nameSize)}>Ayush Madhav Kumar!</h1>
-      <Nsf />
-      <Buttons center={!align} />
     </div>
   );
 }
@@ -93,7 +81,7 @@ export default function ComicHero() {
         ))}
       </div>
 
-      {/* STACK: centered column, medium pic */}
+      {/* STACK */}
       {layout === 'stack' && (
         <div className="flex flex-col justify-center items-center text-center px-6 w-full" style={{ gap: 'clamp(0.75rem,2.2vh,1.6rem)' }}>
           <PhotoBox />
@@ -104,66 +92,73 @@ export default function ComicHero() {
         </div>
       )}
 
-      {/* RIGHT: text left, big pic right */}
-      {layout === 'right' && (
-        <div className="grid md:grid-cols-[1fr_auto] items-center gap-8 md:gap-12 px-6 w-full max-w-5xl">
-          <div className="order-2 md:order-1"><TextCol nameSize="clamp(2.2rem,6vw,4.5rem)" /></div>
-          <div className="order-1 md:order-2 mx-auto md:mx-0"><PhotoBox size="clamp(8rem,22vmin,13rem)" /></div>
-        </div>
-      )}
-
-      {/* LEFT: big pic left, text right */}
-      {layout === 'left' && (
-        <div className="grid md:grid-cols-[auto_1fr] items-center gap-8 md:gap-12 px-6 w-full max-w-5xl">
-          <div className="mx-auto md:mx-0"><PhotoBox size="clamp(8rem,22vmin,13rem)" /></div>
-          <div><TextCol nameSize="clamp(2.2rem,6vw,4.5rem)" /></div>
-        </div>
-      )}
-
-      {/* PORTRAIT: large tall portrait dominant, compact text */}
+      {/* PORTRAIT: tall portrait left, text right */}
       {layout === 'portrait' && (
         <div className="grid md:grid-cols-[auto_1fr] items-center gap-8 md:gap-12 px-6 w-full max-w-5xl">
           <div className="mx-auto md:mx-0"><PhotoBox size="clamp(9rem,26vmin,15rem)" ratio="3 / 4" /></div>
-          <div><TextCol nameSize="clamp(2rem,5.5vw,4rem)" /></div>
-        </div>
-      )}
-
-      {/* BANNER: small round pic, oversized full-width name */}
-      {layout === 'banner' && (
-        <div className="flex flex-col justify-center items-center text-center px-6 w-full max-w-5xl" style={{ gap: 'clamp(0.7rem,2vh,1.4rem)' }}>
-          <PhotoBox round size="clamp(5rem,13vmin,7rem)" />
-          <h1 style={bangers('clamp(3rem,12vw,8rem)')}>Ayush Madhav Kumar!</h1>
-          <Role size="clamp(0.85rem,2vw,1.1rem)" />
-          <Nsf />
-          <Buttons />
-        </div>
-      )}
-
-      {/* MINI: tiny avatar inline with role, name huge */}
-      {layout === 'mini' && (
-        <div className="flex flex-col justify-center items-center text-center px-6 w-full max-w-4xl" style={{ gap: 'clamp(0.7rem,2.2vh,1.4rem)' }}>
-          <div className="flex items-center" style={{ gap: '0.8rem' }}>
-            <PhotoBox round size="3.4rem" />
-            <Role size="1rem" />
-          </div>
-          <h1 style={bangers('clamp(2.8rem,10vw,7rem)')}>Ayush Madhav Kumar!</h1>
-          <Nsf />
-          <Buttons />
-        </div>
-      )}
-
-      {/* WIDE: huge left name, small pic right, role+nsf inline */}
-      {layout === 'wide' && (
-        <div className="grid md:grid-cols-[1fr_auto] items-center gap-6 md:gap-10 px-6 w-full max-w-6xl">
-          <div className="order-2 md:order-1 flex flex-col items-center md:items-start text-center md:text-left gap-3">
-            <h1 style={bangers('clamp(2.6rem,8vw,6rem)')}>Ayush Madhav Kumar!</h1>
-            <div className="flex items-center flex-wrap justify-center md:justify-start" style={{ gap: '0.75rem' }}>
-              <Role size="0.95rem" />
-              <Nsf />
-            </div>
+          <div className="flex flex-col items-center md:items-start text-center md:text-left gap-3">
+            <Role size="clamp(0.85rem,2vw,1.05rem)" />
+            <h1 style={bangers('clamp(2rem,5.5vw,4rem)')}>Ayush Madhav Kumar!</h1>
+            <Nsf />
             <Buttons center={false} />
           </div>
-          <div className="order-1 md:order-2 mx-auto md:mx-0"><PhotoBox size="clamp(6rem,15vmin,8.5rem)" /></div>
+        </div>
+      )}
+
+      {/* DUO: big photo + big name, equal weight side by side */}
+      {layout === 'duo' && (
+        <div className="grid md:grid-cols-2 items-center gap-6 md:gap-10 px-6 w-full max-w-5xl">
+          <div className="order-1 mx-auto md:justify-self-end"><PhotoBox size="clamp(8rem,26vmin,14rem)" /></div>
+          <div className="order-2 flex flex-col items-center md:items-start text-center md:text-left gap-3">
+            <h1 style={bangers('clamp(2.5rem,7vw,5rem)')}>Ayush Madhav Kumar!</h1>
+            <Role size="clamp(0.85rem,2vw,1.05rem)" />
+            <Nsf />
+            <Buttons center={false} />
+          </div>
+        </div>
+      )}
+
+      {/* OVERLAP: name overlaps the bottom of a big photo, both dominant */}
+      {layout === 'overlap' && (
+        <div className="flex flex-col items-center text-center px-6 w-full" style={{ gap: '0.9rem' }}>
+          <PhotoBox size="clamp(9rem,28vmin,15rem)" />
+          <h1 style={{ ...bangers('clamp(2.6rem,11vw,7.5rem)'), marginTop: 'clamp(-2.5rem,-4vw,-1.2rem)', position: 'relative', zIndex: 2 }}>Ayush Madhav Kumar!</h1>
+          <Role size="clamp(0.85rem,2vw,1.05rem)" />
+          <Buttons />
+        </div>
+      )}
+
+      {/* BIG STACK: big photo then GIANT name, both large, tight */}
+      {layout === 'bigstack' && (
+        <div className="flex flex-col items-center text-center px-6 w-full" style={{ gap: 'clamp(0.5rem,1.6vh,1rem)' }}>
+          <PhotoBox size="clamp(9rem,24vmin,14rem)" />
+          <h1 style={bangers('clamp(3rem,11vw,7.5rem)')}>Ayush Madhav Kumar!</h1>
+          <Role size="clamp(0.85rem,2vw,1.05rem)" />
+          <Buttons />
+        </div>
+      )}
+
+      {/* DIPTYCH: two equal panels - photo | name */}
+      {layout === 'diptych' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 mx-auto w-full max-w-5xl" style={{ maxHeight: '74vh' }}>
+          <div className="panel flex items-center justify-center" style={{ padding: '0.9rem' }}><PhotoBox size="clamp(7rem,22vmin,12rem)" bare /></div>
+          <div className="panel flex flex-col items-center justify-center text-center" style={{ padding: '1.25rem', gap: '0.8rem' }}>
+            <h1 style={bangers('clamp(2rem,5.5vw,3.6rem)')}>Ayush Madhav Kumar!</h1>
+            <Role size="0.95rem" />
+            <Nsf />
+            <Buttons />
+          </div>
+        </div>
+      )}
+
+      {/* FRAMED: name + photo inside one big comic panel as a unit */}
+      {layout === 'framed' && (
+        <div className="panel flex flex-col items-center text-center mx-auto" style={{ padding: 'clamp(1.25rem,4vw,2rem)', gap: 'clamp(0.7rem,2vh,1.2rem)', maxWidth: '44rem', width: '100%' }}>
+          <h1 style={bangers('clamp(2.2rem,7vw,4.5rem)')}>Ayush Madhav Kumar!</h1>
+          <PhotoBox size="clamp(8rem,22vmin,12rem)" bare />
+          <Role size="clamp(0.85rem,2vw,1.05rem)" />
+          <Nsf />
+          <Buttons />
         </div>
       )}
     </section>
