@@ -1,0 +1,34 @@
+/* src/styles/themes/_base.css
+   Every theme defines these vars under html[data-theme="<key>"].
+   These defaults are a safety net only (match Current). */
+:root {
+  --bg: #ffffff; --bg-2: #ffffff; --surface: #ffffff;
+  --text: oklch(0.145 0 0); --text-dim: #717182;
+  --accent: #2563eb; --accent-2: #2563eb;
+  --font-display: ui-sans-serif, system-ui, sans-serif;
+  --font-body: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --w-display: 500; --w-body: 400;
+  --radius: 1rem; --border: 2px solid currentColor;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1); --dur: 0.6s;
+}
+
+/* Page-load reveal driven by stagger index var --i */
+[data-load] {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: themeReveal var(--dur) var(--ease) forwards;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+@keyframes themeReveal { to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-load] { animation: none; opacity: 1; transform: none; }
+}
+
+/* Grain overlay helper (themes opt in via class) */
+.grain::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  opacity: 0.06; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}

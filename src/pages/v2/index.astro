@@ -6,10 +6,21 @@ import ProjectsV2 from '../../components/v2/ProjectsV2';
 import Hackathons from '../../components/v2/Hackathons.astro';
 import Skills from '../../components/v2/Skills.astro';
 import ContactFooter from '../../components/ContactFooter';
+import { ThemeDock } from '../../components/v2/ThemeDock';
 ---
 
 <V2Layout title="Ayush Madhav Kumar, Systems and AI Infrastructure">
   <Hero client:load />
+  <script is:inline>
+    try {
+      const saved = localStorage.getItem('v2-theme');
+      if (saved && saved !== 'current' && !location.search.includes('stay')) {
+        const r = {"blueprint":"/v2/blueprint","terminal":"/v2/terminal","editorial":"/v2/editorial","brutal":"/v2/brutal","riso":"/v2/riso","outrun":"/v2/outrun","aurora":"/v2/aurora","bauhaus":"/v2/bauhaus","comic":"/v2/comic"}[saved];
+        if (r) location.replace(r);
+      }
+    } catch (e) {}
+  </script>
+  <ThemeDock client:load current="current" />
 
   <Experience />
 

@@ -1,0 +1,44 @@
+---
+// src/layouts/ThemeLayout.astro
+import '../styles/global.css';
+import './../styles/themes/_base.css';
+import Analytics from '@vercel/analytics/astro';
+import { ThemeDock } from '../components/v2/ThemeDock';
+import { themeByKey } from '../lib/themes';
+
+interface Props { themeKey: string; title: string; description?: string }
+const { themeKey, title, description = 'Ayush Madhav Kumar. CS and Math @UMichigan. Systems programming, AI infrastructure, on-device inference, and hackathon wins.' } = Astro.props;
+const def = themeByKey(themeKey);
+---
+<!DOCTYPE html>
+<html lang="en" data-theme={themeKey}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+    <title>{title}</title>
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {def?.fontHrefs.map((href) => <link rel="stylesheet" href={href} />)}
+    <Analytics />
+    <script is:inline>
+      // theme memory: remember last picked (dock handles writes)
+      try {
+        const saved = localStorage.getItem('v2-theme');
+        const here = document.documentElement.getAttribute('data-theme');
+        // only the Current page (/v2) auto-redirects to a saved non-current theme
+        if (here === 'current' && saved && saved !== 'current' && !location.search.includes('stay')) {
+          const routes = {"blueprint":"/v2/blueprint","terminal":"/v2/terminal","editorial":"/v2/editorial","brutal":"/v2/brutal","riso":"/v2/riso","outrun":"/v2/outrun","aurora":"/v2/aurora","bauhaus":"/v2/bauhaus","comic":"/v2/comic"};
+          if (routes[saved]) location.replace(routes[saved]);
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body class="bg-[var(--bg)] text-[var(--text)] min-h-screen antialiased" style="font-family: var(--font-body); font-weight: var(--w-body);">
+    <slot />
+    <ThemeDock client:load current={themeKey} />
+  </body>
+</html>

@@ -1,0 +1,9 @@
+---
+// src/components/v2/shared/Photo.astro
+interface Props { class?: string }
+const { class: klass = '' } = Astro.props;
+---
+<div class={`relative bg-[var(--surface)] grid place-items-center font-bold overflow-hidden ${klass}`}>
+  AK
+  <img src="/profile.jpg" alt="Ayush Madhav Kumar" class="absolute inset-0 h-full w-full object-cover" onerror="this.style.display='none'" />
+</div>
