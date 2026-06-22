@@ -102,15 +102,18 @@ html[data-theme="terminal"] .box-top,
 html[data-theme="terminal"] .box-bot {
   color: var(--gutter-color);
   font-size: 0.88rem;
-  line-height: 1.4;
+  line-height: 1.5;
   letter-spacing: -0.01em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding-left: 0.25rem;
 }
 html[data-theme="terminal"] .box-row {
-  padding-left: 0.5rem;
-  line-height: 1.55;
+  padding-left: 0.75rem;
+  line-height: 1.6;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
 }
 
 /* ── bracketed terminal buttons ───────────────────────────────── */
@@ -170,8 +173,8 @@ html[data-theme="terminal"] main pre {
 }
 html[data-theme="terminal"] .project-entry p,
 html[data-theme="terminal"] .stack-group p {
-  line-height: 1.55;
-  margin-bottom: 0.2rem;
+  line-height: 1.6;
+  margin-bottom: 0.25rem;
 }
 
 /* hero: one viewport */
@@ -210,6 +213,8 @@ html[data-theme="terminal"] .project-link:hover {
 html[data-theme="terminal"] .stack-group {
   border-left: 2px solid var(--accent);
   padding-left: 0.75rem;
+  padding-top: 0.15rem;
+  padding-bottom: 0.15rem;
 }
 html[data-theme="terminal"].dark .stack-group {
   border-left-color: var(--accent-2);
@@ -218,7 +223,8 @@ html[data-theme="terminal"].dark .stack-group {
 /* contact section */
 html[data-theme="terminal"] #contact {
   border-top: var(--border);
-  padding-top: 1.5rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 /* scroll targets: offset below fixed nav */

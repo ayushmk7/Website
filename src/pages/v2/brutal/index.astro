@@ -26,7 +26,7 @@ const skillLabelMap: Record<string, string> = {
       <div class="b-photo-wrap hard p-2 justify-self-center order-first md:order-last" data-load style="--i:1"><Photo class="b-photo" /></div>
       <div class="order-last md:order-first">
         <h1 class="b-name leading-[0.85] uppercase break-words" style="font-family:var(--font-display)" data-load>Ayush<br/>Madhav<br/>Kumar</h1>
-        <p class="mt-3 md:mt-6 text-base md:text-lg font-bold uppercase" data-load style="--i:1">CS + MATH @UMICHIGAN</p>
+        <p class="mt-4 md:mt-6 text-base md:text-lg font-bold uppercase" data-load style="--i:1">CS + MATH @UMICHIGAN</p>
         <div class="b-nsf-stamp" data-load style="--i:1">&gt; NSF-backed research</div>
         <a href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" class="b-btn b-btn-accent mt-4" data-load style="--i:2">Resume PDF</a>
       </div>
@@ -35,14 +35,14 @@ const skillLabelMap: Record<string, string> = {
 
   <section id="experience" class="max-w-6xl mx-auto px-6 py-12">
     <h2 class="b-section-title">Experience</h2>
-    <div class="grid md:grid-cols-2 gap-8 pb-2 pr-2">
+    <div class="grid md:grid-cols-2 gap-8 b-card-grid">
       {experience.map((j, i) => (
         <div class="b-card hard p-5" data-load style={`--i:${Math.min(i,4)}`}>
           <div class="b-card-num">{String(i + 1).padStart(2, '0')}</div>
-          <p class="font-bold uppercase pt-3" style="color:var(--accent-text)">{j.period}</p>
+          <p class="font-bold uppercase pt-4" style="color:var(--accent-text)">{j.period}</p>
           <h3 class="text-2xl uppercase" style="font-family:var(--font-display)">{j.company}</h3>
           <p class="font-bold">{j.role}</p>
-          <ul class="b-bullet-list mt-2 space-y-1 text-sm leading-relaxed">{j.bullets.map((b) => <li>{b}</li>)}</ul>
+          <ul class="b-bullet-list mt-3 space-y-1.5 text-sm leading-relaxed">{j.bullets.map((b) => <li>{b}</li>)}</ul>
         </div>
       ))}
     </div>
@@ -50,11 +50,11 @@ const skillLabelMap: Record<string, string> = {
 
   <section id="projects" class="max-w-6xl mx-auto px-6 py-12">
     <h2 class="b-section-title">Projects</h2>
-    <div class="grid md:grid-cols-3 gap-8 pb-2 pr-2">
+    <div class="grid md:grid-cols-3 gap-8 b-card-grid">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
         <div class="b-card hard p-5 flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
           <div class="b-card-num">{String(i + 1).padStart(2, '0')}</div>
-          <h3 class="text-xl uppercase pt-3" style="font-family:var(--font-display)">{p.title}</h3>
+          <h3 class="text-xl uppercase pt-4" style="font-family:var(--font-display)">{p.title}</h3>
           <p class="text-sm mt-2 flex-1">{p.description}</p>
           {(p.githubUrl || p.websiteUrl) && (
             <div class="flex gap-3 mt-4 flex-wrap">
@@ -73,11 +73,11 @@ const skillLabelMap: Record<string, string> = {
 
   <section id="hackathons" class="max-w-6xl mx-auto px-6 py-12">
     <h2 class="b-section-title">Hackathons</h2>
-    <div class="grid md:grid-cols-2 gap-8 pb-2 pr-2">
+    <div class="grid md:grid-cols-2 gap-8 b-card-grid">
       {hackathons.map((h, i) => (
         <div class="b-card hard hard-accent p-5" data-load style={`--i:${Math.min(i,4)}`}>
           <div class="b-card-num">{String(i + 1).padStart(2, '0')}</div>
-          <p class="font-bold uppercase pt-3" style="color:var(--accent-text)">{h.placement}</p>
+          <p class="font-bold uppercase pt-4" style="color:var(--accent-text)">{h.placement}</p>
           <h3 class="text-2xl uppercase" style="font-family:var(--font-display)">{h.event}</h3>
           <p class="text-sm mt-2">{h.blurb}</p>
         </div>
@@ -87,7 +87,7 @@ const skillLabelMap: Record<string, string> = {
 
   <section id="skills" class="max-w-6xl mx-auto px-6 py-12">
     <h2 class="b-section-title">Stack</h2>
-    <div class="space-y-8 pb-2 pr-2">
+    <div class="space-y-8 pb-3 pr-3">
       {Object.entries(resumeData.skills).map(([key, items]) => (
         <div>
           <p class="text-xs font-bold uppercase mb-3 tracking-widest" style="font-family:var(--font-display); color:var(--text-dim)">{skillLabelMap[key] ?? key}</p>
@@ -99,7 +99,7 @@ const skillLabelMap: Record<string, string> = {
     </div>
   </section>
 
-  <footer id="contact" class="max-w-6xl mx-auto px-6 py-20 pb-24">
+  <footer id="contact" class="max-w-6xl mx-auto px-6 py-12 pb-16">
     <h2 class="b-section-title">Contact</h2>
     <div class="hard p-6 inline-block">
       <ThemeContact client:load />

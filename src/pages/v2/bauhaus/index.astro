@@ -69,19 +69,19 @@ const sectionBarColors = ['var(--accent)', 'var(--accent-2)', 'var(--bau-yellow)
   <!-- ========================================================
        EXPERIENCE
        ======================================================== -->
-  <section id="experience" class="max-w-6xl mx-auto px-4 py-16">
+  <section id="experience" class="max-w-6xl mx-auto px-6 py-20">
     <div class="bau-section-head" style="--section-bar-color:var(--accent)">
       <h2>Experience</h2>
       <div class="bau-section-bar" aria-hidden="true"></div>
     </div>
-    <div class="grid md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-2 gap-8">
       {experience.map((j, i) => (
-        <div class="bau-card block p-5 bg-[var(--surface)]" data-load style={`--i:${Math.min(i,4)}`}>
-          <div class="h-2 w-12 mb-3" style={i % 2 ? 'background:var(--accent-2)' : 'background:var(--accent)'} aria-hidden="true"></div>
+        <div class="bau-card block p-6 bg-[var(--surface)]" data-load style={`--i:${Math.min(i,4)}`}>
+          <div class="h-2 w-12 mb-4" style={i % 2 ? 'background:var(--accent-2)' : 'background:var(--accent)'} aria-hidden="true"></div>
           <p class="uppercase text-sm">{j.period}</p>
-          <h3 class="text-2xl uppercase" style="font-family:var(--font-display);font-weight:700">{j.company}</h3>
-          <p>{j.role}</p>
-          <ul class="bau-bullets mt-2 text-sm">
+          <h3 class="text-2xl uppercase mt-1" style="font-family:var(--font-display);font-weight:700">{j.company}</h3>
+          <p class="mt-1">{j.role}</p>
+          <ul class="bau-bullets text-sm">
             {j.bullets.map((b) => <li>{b}</li>)}
           </ul>
         </div>
@@ -92,18 +92,18 @@ const sectionBarColors = ['var(--accent)', 'var(--accent-2)', 'var(--bau-yellow)
   <!-- ========================================================
        PROJECTS
        ======================================================== -->
-  <section id="projects" class="max-w-6xl mx-auto px-4 py-16">
+  <section id="projects" class="max-w-6xl mx-auto px-6 py-20">
     <div class="bau-section-head" style="--section-bar-color:var(--accent-2)">
       <h2>Projects</h2>
       <div class="bau-section-bar" aria-hidden="true"></div>
     </div>
-    <div class="grid md:grid-cols-3 gap-6">
+    <div class="grid md:grid-cols-3 gap-8">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
-        <div class="bau-card block p-5 bg-[var(--surface)]" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="bau-card block p-6 bg-[var(--surface)]" data-load style={`--i:${Math.min(i,4)}`}>
           <h3 class="text-xl uppercase" style="font-family:var(--font-display);font-weight:700">{p.title}</h3>
-          <p class="text-sm mt-2">{p.description}</p>
+          <p class="text-sm mt-3">{p.description}</p>
           {(p.githubUrl || p.websiteUrl) && (
-            <div class="flex flex-wrap gap-3 mt-4">
+            <div class="flex flex-wrap gap-3 mt-5">
               {p.githubUrl && (
                 <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="bau-link" style="color:var(--accent-2)">GitHub</a>
               )}
@@ -120,21 +120,21 @@ const sectionBarColors = ['var(--accent)', 'var(--accent-2)', 'var(--bau-yellow)
   <!-- ========================================================
        HACKATHONS
        ======================================================== -->
-  <section id="hackathons" class="max-w-6xl mx-auto px-4 py-16">
+  <section id="hackathons" class="max-w-6xl mx-auto px-6 py-20">
     <div class="bau-section-head" style="--section-bar-color:var(--bau-yellow)">
       <h2>Hackathons</h2>
       <div class="bau-section-bar" aria-hidden="true"></div>
     </div>
-    <div class="grid md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-2 gap-8">
       {hackathons.map((h, i) => (
         <div
-          class="bau-hack-card bau-card block p-5"
+          class="bau-hack-card bau-card block p-7"
           style={i % 2 ? 'background:var(--accent-2)' : 'background:var(--accent)'}
           data-load
         >
           <p class="uppercase text-sm text-white">{h.placement}</p>
-          <h3 class="text-2xl uppercase text-white" style="font-family:var(--font-display);font-weight:700">{h.event}</h3>
-          <p class="text-sm mt-2 text-white">{h.blurb}</p>
+          <h3 class="text-2xl uppercase text-white mt-1" style="font-family:var(--font-display);font-weight:700">{h.event}</h3>
+          <p class="text-sm mt-3 text-white">{h.blurb}</p>
         </div>
       ))}
     </div>
@@ -143,17 +143,17 @@ const sectionBarColors = ['var(--accent)', 'var(--accent-2)', 'var(--bau-yellow)
   <!-- ========================================================
        STACK (skills)
        ======================================================== -->
-  <section id="skills" class="max-w-6xl mx-auto px-4 py-16">
+  <section id="skills" class="max-w-6xl mx-auto px-6 py-20">
     <div class="bau-section-head" style="--section-bar-color:var(--accent)">
       <h2>Stack</h2>
       <div class="bau-section-bar" aria-hidden="true"></div>
     </div>
-    <div class="space-y-8">
+    <div class="space-y-10">
       {Object.entries(resumeData.skills).map(([key, items], ci) => {
         const meta = categoryMeta[ci % categoryMeta.length];
         return (
           <div>
-            <div class="flex items-center gap-3 mb-3">
+            <div class="flex items-center gap-3 mb-4">
               <span
                 class={`bau-cat-icon ${meta.icon}`}
                 style={`--cat-color:${meta.color}`}
@@ -163,7 +163,7 @@ const sectionBarColors = ['var(--accent)', 'var(--accent-2)', 'var(--bau-yellow)
                 {categoryLabels[key] ?? key}
               </span>
             </div>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-3">
               {(items as string[]).map((s) => (
                 <span class="bau-skill">{s}</span>
               ))}
@@ -177,7 +177,7 @@ const sectionBarColors = ['var(--accent)', 'var(--accent-2)', 'var(--bau-yellow)
   <!-- ========================================================
        CONTACT
        ======================================================== -->
-  <footer id="contact" class="max-w-6xl mx-auto px-4 py-20">
+  <footer id="contact" class="max-w-6xl mx-auto px-6 py-20">
     <div class="bau-section-head" style="--section-bar-color:var(--accent-2)">
       <h2>Contact</h2>
       <div class="bau-section-bar" aria-hidden="true"></div>

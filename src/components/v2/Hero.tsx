@@ -22,10 +22,10 @@ function Photo({ className = '' }: { className?: string }) {
 export default function Hero() {
   return (
     <section className="relative h-[100svh] h-[100dvh] min-h-[36rem] overflow-hidden flex flex-col">
-      <div className="flex-1 grid place-items-center px-4 md:px-8 pt-28 pb-20">
-        {/* EDITORIAL — left-aligned name, photo right. mobile: photo over name. */}
-        <div className="grid md:grid-cols-[1fr_auto] gap-8 md:gap-14 items-center max-w-5xl w-full">
-          <div className="order-2 md:order-1 flex flex-col items-center md:items-start text-center md:text-left gap-4">
+      <div className="flex-1 grid place-items-center px-4 md:px-8 pt-24 pb-16">
+        {/* EDITORIAL: left-aligned name, photo right. mobile: photo over name. */}
+        <div className="grid md:grid-cols-[1fr_auto] gap-6 md:gap-14 items-center max-w-5xl w-full">
+          <div className="order-2 md:order-1 flex flex-col items-center md:items-start text-center md:text-left gap-3 md:gap-4">
             <p className="text-blue-600 dark:text-blue-400 text-sm">CS and Math @UMichigan</p>
             <h1 className="text-4xl sm:text-6xl font-medium tracking-tight">Ayush Madhav Kumar</h1>
             <div className="h-px w-24 bg-foreground/30" />

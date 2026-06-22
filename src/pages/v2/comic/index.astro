@@ -18,41 +18,41 @@ const categoryLabels: Record<string, string> = {
 };
 ---
 <ThemeLayout themeKey="comic" title="Ayush Madhav Kumar. Comic Pop">
-  <section class="comic-hero flex flex-col justify-center items-center text-center px-6" style="gap:clamp(0.6rem,2vh,1.5rem)">
-    <div class="panel p-2" data-load><Photo class="comic-hero-photo" /></div>
-    <div class="bubble px-5 py-2" data-load style="--i:1"><p style="font-weight:800;font-size:clamp(0.85rem,2.2vw,1.125rem)">CS and Math @UMichigan</p></div>
+  <section class="comic-hero flex flex-col justify-center items-center text-center px-6" style="gap:clamp(0.75rem,2.2vh,1.6rem)">
+    <div class="panel" style="padding:0.5rem" data-load><Photo class="comic-hero-photo" /></div>
+    <div class="bubble" style="padding:0.4rem 1.25rem;--i:1" data-load><p style="font-weight:800;font-size:clamp(0.85rem,2.2vw,1.125rem)">CS and Math @UMichigan</p></div>
     <h1 class="pop text-[var(--accent)]" data-load style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline);--i:2;font-size:clamp(2.5rem,8vw,6rem);line-height:1">Ayush Madhav Kumar!</h1>
     <p data-load style="--i:3;font-family:var(--font-body);font-weight:800;letter-spacing:0.02em">&gt; NSF-backed research</p>
-    <a class="panel" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:4;font-family:var(--font-display);background:var(--accent-2);color:#141414;padding:0.4rem 1.6rem;font-size:1.5rem;display:inline-block">Resume</a>
+    <a class="panel" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:4;font-family:var(--font-display);background:var(--accent-2);color:#141414;padding:0.5rem 1.75rem;font-size:1.5rem;display:inline-block;box-shadow:6px 6px 0 var(--panel-shadow)">Resume</a>
   </section>
 
-  <section id="experience" class="max-w-6xl mx-auto px-4 py-16">
+  <section id="experience" class="max-w-6xl mx-auto py-16" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
     <div class="section-heading">
       <h2 class="text-6xl text-[var(--comic-blue)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Experience</h2>
     </div>
-    <div class="grid md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-2" style="gap:1.5rem">
       {experience.map((j, i) => (
-        <div class="panel p-5" data-load style={`--i:${Math.min(i,4)}`}>
-          <p class="text-sm" style="font-weight:600">{j.period}</p>
-          <h3 class="text-3xl text-[var(--accent)]" style="font-family:var(--font-display)">{j.company}</h3>
-          <p style="font-weight:700">{j.role}</p>
-          <ul class="mt-2 space-y-1 text-sm">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
+        <div class="panel" style={`padding:1.25rem 1.5rem;--i:${Math.min(i,4)}`} data-load>
+          <p class="text-sm" style="font-weight:600;margin-bottom:0.25rem">{j.period}</p>
+          <h3 class="text-3xl text-[var(--accent)]" style="font-family:var(--font-display);line-height:1.1;margin-bottom:0.25rem">{j.company}</h3>
+          <p style="font-weight:700;margin-bottom:0.75rem">{j.role}</p>
+          <ul style="font-size:0.875rem;display:flex;flex-direction:column;gap:0.375rem">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
         </div>
       ))}
     </div>
   </section>
 
-  <section id="projects" class="max-w-6xl mx-auto px-4 py-16">
+  <section id="projects" class="max-w-6xl mx-auto py-16" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
     <div class="section-heading">
       <h2 class="text-6xl text-[var(--accent)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Projects</h2>
     </div>
-    <div class="grid md:grid-cols-3 gap-6">
+    <div class="grid md:grid-cols-3" style="gap:1.5rem">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
-        <div class="panel p-5 flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
-          <h3 class="text-2xl text-[var(--comic-blue)]" style="font-family:var(--font-display)">{p.title}</h3>
-          <p class="text-sm mt-2 flex-1">{p.description}</p>
+        <div class="panel flex flex-col" style={`padding:1.25rem 1.5rem;--i:${Math.min(i,4)}`} data-load>
+          <h3 class="text-2xl text-[var(--comic-blue)]" style="font-family:var(--font-display);margin-bottom:0.5rem">{p.title}</h3>
+          <p class="flex-1" style="font-size:0.875rem;margin-bottom:1rem">{p.description}</p>
           {(p.githubUrl || p.websiteUrl) && (
-            <div class="flex gap-2 mt-4 flex-wrap">
+            <div style="display:flex;gap:0.625rem;flex-wrap:wrap;margin-top:auto">
               {p.githubUrl && (
                 <a
                   href={p.githubUrl}
@@ -80,32 +80,32 @@ const categoryLabels: Record<string, string> = {
     </div>
   </section>
 
-  <section id="hackathons" class="max-w-6xl mx-auto px-4 py-16">
+  <section id="hackathons" class="max-w-6xl mx-auto py-16" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
     <div class="section-heading">
       <h2 class="text-6xl text-[var(--comic-blue)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Hackathons</h2>
     </div>
-    <div class="grid md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-2" style="gap:1.5rem">
       {hackathons.map((h, i) => (
-        <div class="panel panel--burst p-5 bg-[var(--accent-2)]" data-load style={`--i:${Math.min(i,4)}`}>
-          <p class="text-sm" style="font-weight:600">{h.placement}</p>
-          <h3 class="text-3xl text-[var(--accent)]" style="font-family:var(--font-display)">{h.event}</h3>
-          <p class="text-sm mt-2">{h.blurb}</p>
+        <div class="panel panel--burst bg-[var(--accent-2)]" style={`padding:1.25rem 1.5rem;--i:${Math.min(i,4)}`} data-load>
+          <p class="text-sm" style="font-weight:600;margin-bottom:0.25rem">{h.placement}</p>
+          <h3 class="text-3xl text-[var(--accent)]" style="font-family:var(--font-display);line-height:1.1;margin-bottom:0.5rem">{h.event}</h3>
+          <p style="font-size:0.875rem">{h.blurb}</p>
         </div>
       ))}
     </div>
   </section>
 
-  <section id="skills" class="max-w-6xl mx-auto px-4 py-16">
+  <section id="skills" class="max-w-6xl mx-auto py-16" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
     <div class="section-heading">
       <h2 class="text-6xl text-[var(--accent)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Stack</h2>
     </div>
-    <div class="flex flex-col gap-8">
+    <div style="display:flex;flex-direction:column;gap:1.75rem">
       {Object.entries(resumeData.skills).map(([key, items]) => (
         <div>
-          <h3 class="text-2xl text-[var(--comic-blue)] mb-3" style="font-family:var(--font-display)">
+          <h3 class="text-2xl text-[var(--comic-blue)]" style="font-family:var(--font-display);margin-bottom:0.75rem">
             {categoryLabels[key] ?? key}
           </h3>
-          <div class="flex flex-wrap gap-2">
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem">
             {(items as string[]).map((s) => (
               <span class="skill-tag">{s}</span>
             ))}
@@ -115,8 +115,8 @@ const categoryLabels: Record<string, string> = {
     </div>
   </section>
 
-  <footer id="contact" class="max-w-6xl mx-auto px-4 py-20 text-center">
-    <div class="section-heading justify-center">
+  <footer id="contact" class="max-w-6xl mx-auto py-20 text-center" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
+    <div class="section-heading justify-center" style="margin-bottom:2.5rem">
       <h2 class="text-6xl text-[var(--accent)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Contact</h2>
     </div>
     <ThemeContact client:load />

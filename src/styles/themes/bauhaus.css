@@ -112,12 +112,13 @@ html[data-theme="bauhaus"] .text-sm {
 html[data-theme="bauhaus"] .bau-bullets {
   list-style: none;
   padding: 0;
-  margin: 0.5rem 0 0;
+  margin: 0.75rem 0 0;
 }
 html[data-theme="bauhaus"] .bau-bullets li {
   display: flex;
   align-items: flex-start;
   gap: 0.55rem;
+  margin-bottom: 0.35rem;
 }
 html[data-theme="bauhaus"] .bau-bullets li::before {
   content: '';
@@ -139,7 +140,7 @@ html[data-theme="bauhaus"] .bau-btn {
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  padding: 0.55rem 1.25rem;
+  padding: 0.6rem 1.5rem;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.8125rem;
@@ -204,7 +205,7 @@ html[data-theme="bauhaus"] .bau-link {
   align-items: center;
   gap: 6px;
   min-height: 36px;
-  padding: 0.3rem 0.65rem;
+  padding: 0.35rem 0.75rem;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.75rem;
@@ -255,7 +256,7 @@ html[data-theme="bauhaus"] .bau-skill {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.3rem 0.75rem;
+  padding: 0.35rem 0.85rem;
   font-size: 0.8125rem;
   background: var(--surface);
   border: var(--border);
@@ -295,7 +296,7 @@ html[data-theme="bauhaus"] .bau-section-head {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 html[data-theme="bauhaus"] .bau-section-head h2 {
   font-family: var(--font-display);
@@ -360,7 +361,7 @@ html[data-theme="bauhaus"] .bau-nsf-tag {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.2rem 0.6rem;
+  padding: 0.3rem 0.75rem;
   font-family: var(--font-display);
   font-size: 0.7rem;
   font-weight: 700;
@@ -427,6 +428,18 @@ html[data-theme="bauhaus"] .bau-hero-tagline {
   letter-spacing: 0.2em;
   font-size: clamp(0.65rem, 1.8vw, 0.875rem);
   line-height: 1.4;
+}
+
+/* ============================================================
+   MOBILE SPACING OVERRIDES
+   ============================================================ */
+@media (max-width: 767px) {
+  html[data-theme="bauhaus"] .bau-section-head {
+    margin-bottom: 1.75rem;
+  }
+  html[data-theme="bauhaus"] .bau-hack-card.bau-card.block {
+    padding: 1.25rem;
+  }
 }
 
 /* ============================================================

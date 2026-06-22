@@ -29,29 +29,29 @@ const LABEL_MAP: Record<string, string> = {
     <a class="btn-outrun hero-cta" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">Resume</a>
   </section>
 
-  <section id="experience" class="max-w-5xl mx-auto px-6 py-16">
+  <section id="experience" class="max-w-5xl mx-auto px-6 py-20">
     <h2 class="glow text-4xl uppercase section-heading" style="font-family:var(--font-display)">Experience</h2>
-    <div class="grid md:grid-cols-2 gap-5">
+    <div class="grid md:grid-cols-2 section-grid-2">
       {experience.map((j, i) => (
-        <div class="border border-[var(--accent)] bg-[var(--surface)] backdrop-blur p-5 rounded-lg" data-load style={`--i:${Math.min(i,4)}`}>
-          <p class="text-[var(--accent-2)] uppercase tracking-wide">{j.period}</p>
+        <div class="border border-[var(--accent)] bg-[var(--surface)] backdrop-blur p-6 rounded-lg" data-load style={`--i:${Math.min(i,4)}`}>
+          <p class="card-period text-[var(--accent-2)] uppercase tracking-wide text-sm">{j.period}</p>
           <h3 class="text-xl uppercase" style="font-family:var(--font-display)">{j.company}</h3>
           <p>{j.role}</p>
-          <ul class="mt-2 space-y-1 text-[var(--text-dim)]">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
+          <ul class="space-y-1 text-[var(--text-dim)]">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
         </div>
       ))}
     </div>
   </section>
 
-  <section id="projects" class="max-w-5xl mx-auto px-6 py-16">
+  <section id="projects" class="max-w-5xl mx-auto px-6 py-20">
     <h2 class="glow text-4xl uppercase section-heading" style="font-family:var(--font-display)">Projects</h2>
-    <div class="grid md:grid-cols-3 gap-5">
+    <div class="grid md:grid-cols-3 section-grid-3">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
-        <div class="border border-[var(--accent)] bg-[var(--surface)] backdrop-blur p-5 rounded-lg flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="border border-[var(--accent)] bg-[var(--surface)] backdrop-blur p-6 rounded-lg flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
           <h3 class="uppercase" style="font-family:var(--font-display)">{p.title}</h3>
-          <p class="text-[var(--text-dim)] mt-2 flex-1">{p.description}</p>
+          <p class="text-[var(--text-dim)] flex-1">{p.description}</p>
           {(p.githubUrl || p.websiteUrl) && (
-            <div class="mt-4 flex gap-3 flex-wrap">
+            <div class="card-links flex flex-wrap">
               {p.githubUrl && (
                 <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="btn-outrun-sm">GitHub</a>
               )}
@@ -65,28 +65,28 @@ const LABEL_MAP: Record<string, string> = {
     </div>
   </section>
 
-  <section id="hackathons" class="max-w-5xl mx-auto px-6 py-16">
+  <section id="hackathons" class="max-w-5xl mx-auto px-6 py-20">
     <h2 class="glow text-4xl uppercase section-heading" style="font-family:var(--font-display)">Hackathons</h2>
-    <div class="grid md:grid-cols-2 gap-5">
+    <div class="grid md:grid-cols-2 section-grid-2">
       {hackathons.map((h, i) => (
-        <div class="border border-[var(--accent)] bg-[var(--surface)] backdrop-blur p-5 rounded-lg" data-load style={`--i:${Math.min(i,4)}`}>
-          <p class="text-[var(--accent-2)] uppercase">{h.placement}</p>
+        <div class="border border-[var(--accent)] bg-[var(--surface)] backdrop-blur p-6 rounded-lg" data-load style={`--i:${Math.min(i,4)}`}>
+          <p class="card-placement text-[var(--accent-2)] uppercase text-sm">{h.placement}</p>
           <h3 class="uppercase" style="font-family:var(--font-display)">{h.event}</h3>
-          <p class="text-[var(--text-dim)] mt-2">{h.blurb}</p>
+          <p class="text-[var(--text-dim)]">{h.blurb}</p>
         </div>
       ))}
     </div>
   </section>
 
-  <section id="skills" class="max-w-5xl mx-auto px-6 py-16">
+  <section id="skills" class="max-w-5xl mx-auto px-6 py-20">
     <h2 class="glow text-4xl uppercase section-heading" style="font-family:var(--font-display)">Stack</h2>
     <div class="space-y-6">
       {Object.entries(resumeData.skills).map(([key, items]) => (
         <div>
-          <p class="text-xs uppercase tracking-widest mb-2 text-[var(--accent-2)]">{LABEL_MAP[key] ?? key}</p>
-          <div class="flex flex-wrap gap-2">
+          <p class="skill-label text-xs uppercase tracking-widest text-[var(--accent-2)]">{LABEL_MAP[key] ?? key}</p>
+          <div class="skill-row flex flex-wrap">
             {(items as string[]).map((s) => (
-              <span class="border border-[var(--accent)] px-3 py-1 text-sm">{s}</span>
+              <span>{s}</span>
             ))}
           </div>
         </div>

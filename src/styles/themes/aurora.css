@@ -116,7 +116,7 @@ html[data-theme="aurora"] .aurora-hero {
   text-align: center;
   box-sizing: border-box;
   overflow: hidden;
-  gap: clamp(0.25rem, 1.5svh, 0.75rem);
+  gap: clamp(0.35rem, 1.8svh, 0.9rem);
 }
 
 html[data-theme="aurora"] .aurora-hero-photo {
@@ -211,6 +211,7 @@ html[data-theme="aurora"] .aurora-divider {
   border: none;
   border-radius: 999px;
   overflow: visible;
+  padding-block: 0;
 }
 html[data-theme="aurora"] .aurora-divider::before {
   content: '';
@@ -275,8 +276,8 @@ html[data-theme="aurora"] .aurora-link {
   position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 0.4rem 0.9rem;
-  min-height: 2.75rem;
+  padding: 0.45rem 1rem;
+  min-height: 2.25rem;
   font-size: 0.85rem;
   color: var(--accent);
   border-radius: 0.55rem;
@@ -346,4 +347,23 @@ html[data-theme="aurora"].dark .aurora-chip {
 html[data-theme="aurora"].dark .aurora-chip:hover {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 12%, rgba(59,66,82,0.7));
+}
+
+/* ── Mobile spacing ──────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  html[data-theme="aurora"] .aurora-hero {
+    padding-top: calc(56px + 1.25rem);
+    padding-bottom: 0.75rem;
+    gap: clamp(0.3rem, 2svh, 0.75rem);
+  }
+  html[data-theme="aurora"] section,
+  html[data-theme="aurora"] footer {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  html[data-theme="aurora"] .glass {
+    padding: 1.25rem;
+  }
 }

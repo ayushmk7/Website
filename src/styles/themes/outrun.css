@@ -246,7 +246,7 @@ html[data-theme="outrun"] .btn-outrun-sm:hover {
 /* ── Section heading accent bar: outrun sun icon before h2 ── */
 html[data-theme="outrun"] .section-heading {
   display: flex; align-items: center; gap: 0.75rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.25rem;
 }
 html[data-theme="outrun"] .section-heading::before {
   content: '';
@@ -268,12 +268,12 @@ html[data-theme="outrun"] .hero-viewport {
   min-height: 100dvh;
   box-sizing: border-box;
   padding-top: 56px;
-  padding-bottom: clamp(0.5rem, 2vh, 1.5rem);
-  gap: clamp(0.35rem, 1.5vh, 0.9rem);
+  padding-bottom: clamp(1rem, 3vh, 2rem);
+  gap: clamp(0.55rem, 2vh, 1.1rem);
   overflow: hidden;
 }
 html[data-theme="outrun"] .hero-avatar {
-  width: clamp(6rem, 15vmin, 8.5rem);
+  width: clamp(5.5rem, 13vmin, 8rem);
   aspect-ratio: 2 / 3;
   height: auto;
   flex-shrink: 0;
@@ -283,11 +283,11 @@ html[data-theme="outrun"] .hero-avatar {
 html[data-theme="outrun"] .hero-subtitle {
   font-size: clamp(0.6rem, 1.8vmin, 0.85rem);
   letter-spacing: 0.25em;
-  margin: 0 0 0.25rem;
+  margin: 0;
   background: var(--bg-2);
   color: var(--accent-2);
   border: 1px solid var(--accent);
-  padding: 0.3rem 0.9rem;
+  padding: 0.35rem 1rem;
   border-radius: 9999px;
   display: inline-block;
   box-shadow: inset 1px 1px 0 var(--bevel-light);
@@ -303,8 +303,8 @@ html[data-theme="outrun"] .hero-tagline {
 }
 html[data-theme="outrun"] .hero-cta {
   font-size: clamp(0.7rem, 1.8vmin, 0.9rem);
-  padding: clamp(0.3rem, 1vmin, 0.5rem) clamp(0.9rem, 3vmin, 1.5rem);
-  min-height: 2.25rem;
+  padding: clamp(0.4rem, 1.2vmin, 0.6rem) clamp(1.1rem, 3.5vmin, 1.8rem);
+  min-height: 2.5rem;
   flex-shrink: 0;
 }
 
@@ -326,9 +326,51 @@ html[data-theme="outrun"] #skills span {
   border: 1.5px solid var(--accent);
   box-shadow: inset 1px 1px 0 var(--bevel-light), 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent);
   font-size: 0.8rem;
-  padding: 0.25rem 0.7rem;
+  padding: 0.3rem 0.8rem;
   border-radius: var(--radius);
   /* square chips instead of pill to match outrun aesthetic */
+}
+
+/* ── CARD interior vertical rhythm ── */
+/* experience cards */
+html[data-theme="outrun"] #experience .card-period { margin-bottom: 0.2rem; }
+html[data-theme="outrun"] #experience h3 { margin: 0.15rem 0 0.25rem; }
+html[data-theme="outrun"] #experience p { margin: 0; }
+html[data-theme="outrun"] #experience ul { margin-top: 0.6rem; }
+
+/* project cards */
+html[data-theme="outrun"] #projects h3 { margin: 0 0 0.5rem; }
+html[data-theme="outrun"] #projects .card-links { margin-top: 0.75rem; gap: 0.5rem; }
+
+/* hackathon cards */
+html[data-theme="outrun"] #hackathons .card-placement { margin-bottom: 0.2rem; }
+html[data-theme="outrun"] #hackathons h3 { margin: 0.15rem 0 0; }
+html[data-theme="outrun"] #hackathons p { margin-top: 0.5rem; }
+
+/* skills category label */
+html[data-theme="outrun"] #skills .skill-label { margin-bottom: 0.4rem; }
+html[data-theme="outrun"] #skills .skill-row { gap: 0.4rem; }
+
+/* ── Consistent section/grid spacing ── */
+html[data-theme="outrun"] .section-grid-2 { gap: 1.25rem; }
+html[data-theme="outrun"] .section-grid-3 { gap: 1.25rem; }
+
+/* ── MOBILE spacing ── */
+@media (max-width: 640px) {
+  html[data-theme="outrun"] section,
+  html[data-theme="outrun"] footer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  html[data-theme="outrun"] .hero-viewport {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    gap: clamp(0.45rem, 2.5vw, 0.85rem);
+  }
+  html[data-theme="outrun"] .section-grid-2,
+  html[data-theme="outrun"] .section-grid-3 { gap: 1rem; }
 }
 
 /* contact copy-button hover */

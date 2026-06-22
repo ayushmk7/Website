@@ -22,39 +22,39 @@ const skillGroups = Object.entries(resumeData.skills) as [string, string[]][];
 <ThemeLayout themeKey="aurora" title="Ayush Madhav Kumar. Aurora">
   <section class="aurora-hero flex flex-col justify-center items-center text-center px-6">
     <Photo class="aurora-photo aurora-hero-photo rounded-[1.25rem]" />
-    <p class="mt-4 text-[var(--accent)] aurora-hero-sub" data-load>CS and Math @UMichigan</p>
-    <h1 class="aurora-hero-name mt-2" style="font-family:var(--font-display);font-weight:700;letter-spacing:-0.02em;--i:1" data-load>Ayush Madhav Kumar</h1>
-    <p class="font-mono mt-3 text-[var(--accent)] aurora-hero-sub" data-load style="--i:2">&gt; NSF-backed research</p>
-    <a class="aurora-resume-btn font-mono mt-1" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">&gt; view resume (pdf)</a>
+    <p class="text-[var(--accent)] aurora-hero-sub" data-load>CS and Math @UMichigan</p>
+    <h1 class="aurora-hero-name" style="font-family:var(--font-display);font-weight:700;letter-spacing:-0.02em;--i:1" data-load>Ayush Madhav Kumar</h1>
+    <p class="font-mono text-[var(--accent)] aurora-hero-sub" data-load style="--i:2">&gt; NSF-backed research</p>
+    <a class="aurora-resume-btn font-mono" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">&gt; view resume (pdf)</a>
   </section>
 
-  <hr class="aurora-divider mx-auto my-0 px-6" />
+  <hr class="aurora-divider mx-auto px-6" />
 
   <section id="experience" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="aurora-section-heading text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Experience</h2>
-    <div class="grid md:grid-cols-2 gap-5">
+    <h2 class="aurora-section-heading text-4xl mb-6" style="font-family:var(--font-display);font-weight:700">Experience</h2>
+    <div class="grid md:grid-cols-2 gap-6">
       {experience.map((j, i) => (
-        <div class="glass p-5" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="glass p-6" data-load style={`--i:${Math.min(i,4)}`}>
           <p class="text-[var(--accent)] text-sm">{j.period}</p>
-          <h3 class="text-xl" style="font-family:var(--font-display);font-weight:700">{j.company}</h3>
-          <p class="text-[var(--text-dim)]">{j.role}</p>
-          <ul class="mt-2 space-y-1 text-sm" style="line-height:1.55">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
+          <h3 class="text-xl mt-1" style="font-family:var(--font-display);font-weight:700">{j.company}</h3>
+          <p class="text-[var(--text-dim)] mt-0.5">{j.role}</p>
+          <ul class="mt-3 space-y-1 text-sm" style="line-height:1.55">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
         </div>
       ))}
     </div>
   </section>
 
-  <hr class="aurora-divider mx-auto my-0 px-6" />
+  <hr class="aurora-divider mx-auto px-6" />
 
   <section id="projects" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="aurora-section-heading text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Projects</h2>
-    <div class="grid md:grid-cols-3 gap-5">
+    <h2 class="aurora-section-heading text-4xl mb-6" style="font-family:var(--font-display);font-weight:700">Projects</h2>
+    <div class="grid md:grid-cols-3 gap-6">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
-        <div class="glass p-5 flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="glass p-6 flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
           <h3 style="font-family:var(--font-display);font-weight:700">{p.title}</h3>
           <p class="text-sm text-[var(--text-dim)] mt-2 flex-1">{p.description}</p>
           {(p.githubUrl || p.websiteUrl) && (
-            <div class="mt-4 flex flex-wrap gap-3 text-sm">
+            <div class="mt-4 flex flex-wrap gap-2 text-sm">
               {p.githubUrl && (
                 <a
                   href={p.githubUrl}
@@ -82,41 +82,41 @@ const skillGroups = Object.entries(resumeData.skills) as [string, string[]][];
     </div>
   </section>
 
-  <hr class="aurora-divider mx-auto my-0 px-6" />
+  <hr class="aurora-divider mx-auto px-6" />
 
   <section id="hackathons" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="aurora-section-heading text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Hackathons</h2>
-    <div class="grid md:grid-cols-2 gap-5">
+    <h2 class="aurora-section-heading text-4xl mb-6" style="font-family:var(--font-display);font-weight:700">Hackathons</h2>
+    <div class="grid md:grid-cols-2 gap-6">
       {hackathons.map((h, i) => (
-        <div class="glass p-5" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="glass p-6" data-load style={`--i:${Math.min(i,4)}`}>
           <p class="text-[var(--accent)] text-sm">&gt; {h.placement}</p>
-          <h3 style="font-family:var(--font-display);font-weight:700">{h.event}</h3>
+          <h3 class="mt-1" style="font-family:var(--font-display);font-weight:700">{h.event}</h3>
           <p class="text-sm text-[var(--text-dim)] mt-2">{h.blurb}</p>
         </div>
       ))}
     </div>
   </section>
 
-  <hr class="aurora-divider mx-auto my-0 px-6" />
+  <hr class="aurora-divider mx-auto px-6" />
 
   <section id="skills" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="aurora-section-heading text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Stack</h2>
-    <div class="flex flex-col gap-6">
+    <h2 class="aurora-section-heading text-4xl mb-6" style="font-family:var(--font-display);font-weight:700">Stack</h2>
+    <div class="flex flex-col gap-5">
       {skillGroups.map(([key, items]) => (
-        <div class="glass p-5" data-load>
+        <div class="glass p-6" data-load>
           <h3 class="text-sm font-semibold mb-3 aurora-category-label">
             {categoryLabels[key] ?? key}
           </h3>
           <div class="flex flex-wrap gap-2">
-            {items.map((s) => <span class="aurora-chip px-3 py-1 text-sm rounded-full">{s}</span>)}
+            {items.map((s) => <span class="aurora-chip px-3 py-1.5 text-sm rounded-full">{s}</span>)}
           </div>
         </div>
       ))}
     </div>
   </section>
 
-  <footer id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center">
-    <h2 class="aurora-section-heading justify-center text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Contact</h2>
+  <footer id="contact" class="max-w-5xl mx-auto px-6 py-16 text-center">
+    <h2 class="aurora-section-heading justify-center text-4xl mb-6" style="font-family:var(--font-display);font-weight:700">Contact</h2>
     <ThemeContact client:load />
   </footer>
 </ThemeLayout>

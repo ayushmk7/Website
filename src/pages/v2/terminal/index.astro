@@ -34,8 +34,8 @@ const categoryLabels: Record<string, string> = {
     </section>
 
     <!-- EXPERIENCE -->
-    <section id="experience">
-      <p class="mt-10 shell-prompt" data-load style="--i:5">{prompt} <span class="cmd-text">cat experience.md</span></p>
+    <section id="experience" class="mt-12">
+      <p class="shell-prompt mb-3" data-load style="--i:5">{prompt} <span class="cmd-text">cat experience.md</span></p>
       {experience.map((j, i) => (
         <div class="term-box mt-4" data-load style={`--i:${6+Math.min(i,4)}`}>
           <p class="box-top">┌─ <span class="text-[var(--accent)]">{j.company}</span> &nbsp;{j.role} &nbsp;<span class="text-[var(--text-dim)]">{j.period}</span></p>
@@ -48,10 +48,10 @@ const categoryLabels: Record<string, string> = {
     </section>
 
     <!-- HACKATHONS -->
-    <section id="hackathons">
-      <p class="mt-10 shell-prompt" data-load style="--i:11">{prompt} <span class="cmd-text">ls hackathons/</span></p>
+    <section id="hackathons" class="mt-12">
+      <p class="shell-prompt mb-3" data-load style="--i:11">{prompt} <span class="cmd-text">ls hackathons/</span></p>
       {hackathons.map((h, i) => (
-        <p data-load style={`--i:${12+Math.min(i,3)}`} class="break-words mt-1">
+        <p data-load style={`--i:${12+Math.min(i,3)}`} class="break-words mt-2">
           <span class="gutter">$</span>
           <span class="text-[var(--text-dim)]">[{h.placement}]</span>&nbsp;
           <span class="text-[var(--accent)]">{h.event}</span>
@@ -61,14 +61,14 @@ const categoryLabels: Record<string, string> = {
     </section>
 
     <!-- PROJECTS -->
-    <section id="projects">
-      <p class="mt-10 shell-prompt" data-load style="--i:16">{prompt} <span class="cmd-text">ls projects/</span></p>
-      <div class="mt-2" data-load style="--i:17">
+    <section id="projects" class="mt-12">
+      <p class="shell-prompt mb-3" data-load style="--i:16">{prompt} <span class="cmd-text">ls projects/</span></p>
+      <div data-load style="--i:17">
         {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p) => (
-          <div class="term-box project-entry mt-3">
+          <div class="term-box project-entry mt-4">
             <p class="box-top">┌─ <span class="text-[var(--accent)] font-bold">{p.title}</span>&nbsp;<span class="text-[var(--text-dim)]"># {p.tags.slice(0,3).join(', ')}</span></p>
             {(p.githubUrl || p.websiteUrl) && (
-              <p class="box-row flex flex-wrap gap-x-3 items-center">
+              <p class="box-row flex flex-wrap gap-x-3 gap-y-1 items-center py-1">
                 <span>│</span>
                 {p.githubUrl && (
                   <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="term-btn-sm">[ open github ]</a>
@@ -85,9 +85,9 @@ const categoryLabels: Record<string, string> = {
     </section>
 
     <!-- SKILLS -->
-    <section id="skills">
-      <p class="mt-10 shell-prompt" data-load style="--i:18">{prompt} <span class="cmd-text">cat stack.txt</span></p>
-      <div class="mt-2">
+    <section id="skills" class="mt-12">
+      <p class="shell-prompt mb-3" data-load style="--i:18">{prompt} <span class="cmd-text">cat stack.txt</span></p>
+      <div class="mt-1">
         {Object.entries(resumeData.skills).map(([k, items], i) => (
           <div class="stack-group mt-3" data-load style={`--i:${19+Math.min(i,5)}`}>
             <p class="text-[var(--accent)] break-words"><span class="gutter">$</span>{categoryLabels[k] ?? k}:</p>
@@ -98,7 +98,7 @@ const categoryLabels: Record<string, string> = {
     </section>
 
     <!-- CONTACT -->
-    <section id="contact" class="mt-10 mb-8" data-load style="--i:26">
+    <section id="contact" class="mt-12" data-load style="--i:26">
       <p class="shell-prompt caret mb-4">{prompt} <span class="cmd-text">mail contactayushmadhav@gmail.com</span></p>
       <ThemeContact client:load />
     </section>

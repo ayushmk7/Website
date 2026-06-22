@@ -94,7 +94,7 @@ html[data-theme="brutal"] .marquee {
 }
 html[data-theme="brutal"] .marquee span {
   display: inline-block;
-  padding-block: 0.4rem;
+  padding-block: 0.55rem;
   animation: bMarq 18s linear infinite;
   font-family: var(--font-display);
   letter-spacing: 0.05em;
@@ -215,7 +215,7 @@ html[data-theme="brutal"] .b-section-title {
   font-family: var(--font-display);
   font-size: clamp(2rem, 5vw, 3.2rem);
   text-transform: uppercase;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 html[data-theme="brutal"] .b-section-title::before {
   content: '*';
@@ -248,7 +248,7 @@ html[data-theme="brutal"] .b-chip {
   border: var(--border);
   box-shadow: 3px 3px 0 var(--shadow-hard);
   background: var(--surface);
-  padding: 0.2rem 0.65rem;
+  padding: 0.25rem 0.75rem;
   font-size: 0.82rem;
   font-weight: 700;
   transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
@@ -257,6 +257,25 @@ html[data-theme="brutal"] .b-chip {
   html[data-theme="brutal"] .b-chip:hover {
     box-shadow: 1px 1px 0 var(--shadow-hard);
     transform: translate(2px, 2px);
+  }
+}
+
+/* ── Card grid shadow clearance: bottom/right must clear the hard shadow offset ── */
+html[data-theme="brutal"] .b-card-grid {
+  padding-bottom: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+/* ── Mobile spacing overrides ── */
+@media (max-width: 640px) {
+  html[data-theme="brutal"] .b-section-title {
+    margin-bottom: 1.75rem;
+  }
+  html[data-theme="brutal"] .b-btn {
+    padding: 0.5rem 1rem;
+  }
+  html[data-theme="brutal"] .b-chip {
+    padding: 0.2rem 0.6rem;
   }
 }
 
@@ -269,7 +288,7 @@ html[data-theme="brutal"] .b-nsf-stamp {
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 3px 10px;
-  margin-top: 0.6rem;
+  padding: 4px 12px;
+  margin-top: 0.75rem;
   box-shadow: 3px 3px 0 var(--accent);
 }

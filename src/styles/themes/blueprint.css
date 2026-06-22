@@ -100,7 +100,7 @@ html[data-theme="blueprint"] .bp-hero-content {
   justify-content: center;
   min-height: 0;
   overflow: visible;
-  gap: clamp(4px, 1.2vmin, 16px);
+  gap: clamp(8px, 1.8vmin, 20px);
 }
 
 /* Photo: 2:3 portrait that scales with viewport, never squishes */
@@ -317,7 +317,7 @@ html[data-theme="blueprint"] .bp-btn:hover::after {
 /* -- Skill chips -------------------------------------------------------- */
 html[data-theme="blueprint"] .bp-chip {
   display: inline-block;
-  padding: 4px 10px;
+  padding: 4px 12px;
   background: var(--chip-bg);
   border: 1px dashed var(--chip-border);
   color: var(--chip-text);
@@ -368,4 +368,21 @@ html[data-theme="blueprint"] .bp-link::after {
 html[data-theme="blueprint"] .bp-link:hover {
   background: var(--btn-bg-hover);
   color: var(--btn-text-hover);
+}
+
+/* -- Mobile spacing adjustments ----------------------------------------- */
+@media (max-width: 767px) {
+  html[data-theme="blueprint"] .bp-hero-content {
+    gap: clamp(8px, 2vmin, 14px);
+  }
+  html[data-theme="blueprint"] .bp-hero-content .p-6,
+  html[data-theme="blueprint"] .bp-hero-content .p-12 {
+    padding: 1rem;
+  }
+  html[data-theme="blueprint"] .bp-btn {
+    padding: 8px 16px;
+  }
+  html[data-theme="blueprint"] .bp-chip {
+    padding: 3px 10px;
+  }
 }
