@@ -46,6 +46,8 @@ html[data-theme="memphis"] body {
   font-family: var(--font-body);
   font-weight: var(--w-body);
   overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
 }
 
 /* ── Bouncy entrance override ── */
@@ -118,11 +120,11 @@ html[data-theme="memphis"] .m-card:nth-child(4n+2) { box-shadow: 6px 6px 0 var(-
 html[data-theme="memphis"] .m-card:nth-child(4n+3) { box-shadow: 6px 6px 0 var(--m-yellow); }
 html[data-theme="memphis"] .m-card:nth-child(4n+4) { box-shadow: 6px 6px 0 var(--m-pink); }
 
-html[data-theme="memphis"] .m-card-red    { background: var(--accent);   border-color: var(--text); }
-html[data-theme="memphis"] .m-card-teal   { background: var(--accent-2); border-color: var(--text); }
-html[data-theme="memphis"] .m-card-yellow { background: var(--m-yellow); border-color: var(--text); }
-html[data-theme="memphis"] .m-card-blue   { background: var(--m-blue);   border-color: var(--text); }
-html[data-theme="memphis"] .m-card-pink   { background: var(--m-pink);   border-color: var(--text); }
+html[data-theme="memphis"] .m-card-red    { background: var(--accent);   border-color: var(--text); color: #fff; }
+html[data-theme="memphis"] .m-card-teal   { background: var(--accent-2); border-color: var(--text); color: #fff; }
+html[data-theme="memphis"] .m-card-yellow { background: var(--m-yellow); border-color: var(--text); color: #161616; }
+html[data-theme="memphis"] .m-card-blue   { background: var(--m-blue);   border-color: var(--text); color: #fff; }
+html[data-theme="memphis"] .m-card-pink   { background: var(--m-pink);   border-color: var(--text); color: #161616; }
 
 /* ── Section heading label strip ── */
 html[data-theme="memphis"] .m-label {
@@ -132,7 +134,10 @@ html[data-theme="memphis"] .m-label {
   font-size: clamp(2.5rem, 6vw, 4rem);
   padding: 0.15em 0.5em;
   border: var(--border);
+  border-radius: var(--radius);
   margin-bottom: 2rem;
+  color: var(--text);
+  box-shadow: 5px 5px 0 var(--text);
 }
 
 /* ── Skill pill ── */

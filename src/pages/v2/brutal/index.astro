@@ -3,10 +3,21 @@
 import ThemeLayout from '../../../layouts/ThemeLayout.astro';
 import '../../../styles/themes/brutal.css';
 import Photo from '../../../components/v2/shared/Photo.astro';
+import { ThemeContact } from '../../../components/v2/ThemeContact';
 import { experience, hackathons } from '../../../data/v2';
 import { projects } from '../../../data/projects';
 import resumeData from '../../../data/resume.json';
+
 const ticker = 'AYUSH MADHAV KUMAR . SYSTEMS . AI INFRA . HACKATHON WINS . ';
+
+const skillLabelMap: Record<string, string> = {
+  programmingLanguages: 'Programming Languages',
+  aiMl: 'AI and ML',
+  softwareDevelopment: 'Software Development',
+  databases: 'Databases and Data Engineering',
+  devOps: 'DevOps and Cloud Infrastructure',
+  coreCs: 'Core Computer Science',
+};
 ---
 <ThemeLayout themeKey="brutal" title="Ayush Madhav Kumar. Brutalist">
   <div class="overflow-hidden pt-14"><div class="marquee" data-load><span>{ticker}{ticker}{ticker}{ticker}</span></div></div>
@@ -25,7 +36,7 @@ const ticker = 'AYUSH MADHAV KUMAR . SYSTEMS . AI INFRA . HACKATHON WINS . ';
     <div class="grid md:grid-cols-2 gap-8 pb-2 pr-2">
       {experience.map((j, i) => (
         <div class="hard p-5" data-load style={`--i:${Math.min(i,4)}`}>
-          <p class="font-bold text-[var(--accent)] uppercase">{j.period}</p>
+          <p class="font-bold uppercase" style="color:var(--accent)">{j.period}</p>
           <h3 class="text-2xl uppercase" style="font-family:var(--font-display)">{j.company}</h3>
           <p class="font-bold">{j.role}</p>
           <ul class="mt-2 space-y-1 text-sm">{j.bullets.map((b) => <li>+ {b}</li>)}</ul>
@@ -38,9 +49,19 @@ const ticker = 'AYUSH MADHAV KUMAR . SYSTEMS . AI INFRA . HACKATHON WINS . ';
     <h2 class="text-5xl uppercase mb-8" style="font-family:var(--font-display)">Projects</h2>
     <div class="grid md:grid-cols-3 gap-8 pb-2 pr-2">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
-        <div class="hard p-5" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="hard p-5 flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
           <h3 class="text-xl uppercase" style="font-family:var(--font-display)">{p.title}</h3>
-          <p class="text-sm mt-2">{p.description}</p>
+          <p class="text-sm mt-2 flex-1">{p.description}</p>
+          {(p.githubUrl || p.websiteUrl) && (
+            <div class="flex gap-2 mt-4 flex-wrap">
+              {p.githubUrl && (
+                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="project-link hard px-3 py-1 text-xs font-bold uppercase">GitHub</a>
+              )}
+              {p.websiteUrl && (
+                <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="project-link hard hard-accent px-3 py-1 text-xs font-bold uppercase">Site</a>
+              )}
+            </div>
+          )}
         </div>
       ))}
     </div>
@@ -51,7 +72,7 @@ const ticker = 'AYUSH MADHAV KUMAR . SYSTEMS . AI INFRA . HACKATHON WINS . ';
     <div class="grid md:grid-cols-2 gap-8 pb-2 pr-2">
       {hackathons.map((h, i) => (
         <div class="hard hard-accent p-5" data-load style={`--i:${Math.min(i,4)}`}>
-          <p class="font-bold text-[var(--accent)] uppercase">{h.placement}</p>
+          <p class="font-bold uppercase" style="color:var(--accent)">{h.placement}</p>
           <h3 class="text-2xl uppercase" style="font-family:var(--font-display)">{h.event}</h3>
           <p class="text-sm mt-2">{h.blurb}</p>
         </div>
@@ -61,12 +82,22 @@ const ticker = 'AYUSH MADHAV KUMAR . SYSTEMS . AI INFRA . HACKATHON WINS . ';
 
   <section id="skills" class="max-w-6xl mx-auto px-6 py-12">
     <h2 class="text-5xl uppercase mb-8" style="font-family:var(--font-display)">Stack</h2>
-    <div class="flex flex-wrap gap-2 pb-2 pr-2">
-      {Object.values(resumeData.skills).flat().map((s) => <span class="hard px-3 py-1 text-sm font-bold">{s}</span>)}
+    <div class="space-y-8 pb-2 pr-2">
+      {Object.entries(resumeData.skills).map(([key, items]) => (
+        <div>
+          <p class="text-xs font-bold uppercase mb-3 tracking-widest" style="font-family:var(--font-display); color:var(--text-dim)">{skillLabelMap[key] ?? key}</p>
+          <div class="flex flex-wrap gap-2">
+            {(items as string[]).map((s) => <span class="hard px-3 py-1 text-sm font-bold">{s}</span>)}
+          </div>
+        </div>
+      ))}
     </div>
   </section>
 
   <footer id="contact" class="max-w-6xl mx-auto px-6 py-20 pb-24">
-    <a href="mailto:contactayushmadhav@gmail.com" class="hard hard-accent inline-block px-6 py-3 text-2xl uppercase font-bold" style="font-family:var(--font-display)">contactayushmadhav@gmail.com</a>
+    <h2 class="text-5xl uppercase mb-8" style="font-family:var(--font-display)">Contact</h2>
+    <div class="hard p-6 inline-block">
+      <ThemeContact client:load />
+    </div>
   </footer>
 </ThemeLayout>

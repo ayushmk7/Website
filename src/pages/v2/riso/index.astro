@@ -3,9 +3,21 @@
 import ThemeLayout from '../../../layouts/ThemeLayout.astro';
 import '../../../styles/themes/riso.css';
 import Photo from '../../../components/v2/shared/Photo.astro';
+import { ThemeContact } from '../../../components/v2/ThemeContact';
 import { experience, hackathons } from '../../../data/v2';
 import { projects } from '../../../data/projects';
 import resumeData from '../../../data/resume.json';
+
+const LABEL: Record<string, string> = {
+  programmingLanguages: 'Programming Languages',
+  aiMl: 'AI and ML',
+  softwareDevelopment: 'Software Development',
+  databases: 'Databases and Data Engineering',
+  devOps: 'DevOps and Cloud Infrastructure',
+  coreCs: 'Core Computer Science',
+};
+
+const skillEntries = Object.entries(resumeData.skills) as [string, string[]][];
 ---
 <ThemeLayout themeKey="riso" title="Ayush Madhav Kumar. Risograph">
   <div class="grain"></div>
@@ -17,7 +29,6 @@ import resumeData from '../../../data/resume.json';
     <a class="font-mono text-[var(--accent)] underline" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">&gt; view resume (pdf)</a>
   </section>
 
-  <!-- sections: rounded cards with pink offset; reuse same shell per section -->
   <section id="experience" class="max-w-5xl mx-auto px-6 py-16">
     <h2 class="misreg text-4xl mb-8" data-text="Experience" style="font-family:var(--font-display);font-weight:800">Experience</h2>
     <div class="space-y-5">
@@ -38,6 +49,23 @@ import resumeData from '../../../data/resume.json';
         <div class="bg-[var(--surface)] border-2 border-[var(--text)] rounded-[1.5rem] p-5 shadow-[6px_6px_0_var(--accent)]" data-load style={`--i:${Math.min(i,4)}`}>
           <h3 class="text-lg" style="font-weight:800">{p.title}</h3>
           <p class="text-sm mt-2">{p.description}</p>
+          {p.tags && p.tags.length > 0 && (
+            <div class="flex flex-wrap gap-1 mt-3">
+              {p.tags.map((t) => (
+                <span class="border border-[var(--text-dim)] rounded-full px-2 py-0.5 text-xs text-[var(--text-dim)]">{t}</span>
+              ))}
+            </div>
+          )}
+          {(p.githubUrl || p.websiteUrl) && (
+            <div class="flex gap-4 mt-4">
+              {p.githubUrl && (
+                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-[var(--accent)] underline underline-offset-2">&gt; github</a>
+              )}
+              {p.websiteUrl && (
+                <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-[var(--accent)] underline underline-offset-2">&gt; site</a>
+              )}
+            </div>
+          )}
         </div>
       ))}
     </div>
@@ -58,12 +86,22 @@ import resumeData from '../../../data/resume.json';
 
   <section id="skills" class="max-w-5xl mx-auto px-6 py-16">
     <h2 class="misreg text-4xl mb-8" data-text="Stack" style="font-family:var(--font-display);font-weight:800">Stack</h2>
-    <div class="flex flex-wrap gap-2">
-      {Object.values(resumeData.skills).flat().map((s) => <span class="border-2 border-[var(--text)] rounded-full px-3 py-1 text-sm">{s}</span>)}
+    <div class="space-y-8">
+      {skillEntries.map(([key, items]) => (
+        <div>
+          <p class="font-mono text-sm text-[var(--accent)] mb-3">&gt; {LABEL[key] ?? key}</p>
+          <div class="flex flex-wrap gap-2">
+            {items.map((s) => (
+              <span class="border-2 border-[var(--text)] rounded-full px-3 py-1 text-sm">{s}</span>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   </section>
 
   <footer id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center">
-    <a href="mailto:contactayushmadhav@gmail.com" class="text-xl underline text-[var(--accent)]">contactayushmadhav@gmail.com</a>
+    <h2 class="misreg text-4xl mb-8" data-text="Contact" style="font-family:var(--font-display);font-weight:800">Contact</h2>
+    <ThemeContact client:load />
   </footer>
 </ThemeLayout>

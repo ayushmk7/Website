@@ -1,6 +1,6 @@
 /* src/styles/themes/blueprint.css */
 
-/* ── LIGHT variant: white/pale-blue paper, navy hairline grid ─────────── */
+/* -- LIGHT variant: white/pale-blue paper, navy hairline grid ----------- */
 html[data-theme="blueprint"] {
   --bg: #eef4fa; --bg-2: #e4edf6; --surface: #f5f9fd;
   --text: #0a1929; --text-dim: #3d6080;
@@ -11,17 +11,25 @@ html[data-theme="blueprint"] {
   --w-display: 700; --w-body: 300;
   --radius: 0; --border: 1px dashed rgba(0,87,168,0.35);
   --ease: cubic-bezier(0.16,1,0.3,1); --dur: 0.7s;
+  --chip-bg: rgba(0,87,168,0.1);
+  --chip-border: rgba(0,87,168,0.35);
+  --chip-text: #0057a8;
+  --link-border: rgba(0,87,168,0.5);
 }
 
-/* ── DARK variant: navy + cyan grid (original palette) ───────────────── */
+/* -- DARK variant: navy + cyan grid (original palette) ------------------ */
 html[data-theme="blueprint"].dark {
   --bg: #0a1929; --bg-2: #0c1f33; --surface: #0e2236;
-  --text: #d7e9f7; --text-dim: #5b86a8;
+  --text: #d7e9f7; --text-dim: #7aa8c8;
   --accent: #00d9ff; --accent-2: #ffd23f;
   --border: 1px dashed rgba(0,217,255,0.5);
+  --chip-bg: rgba(0,217,255,0.08);
+  --chip-border: rgba(0,217,255,0.35);
+  --chip-text: #00d9ff;
+  --link-border: rgba(0,217,255,0.5);
 }
 
-/* ── LIGHT body: white paper with navy hairline grid ─────────────────── */
+/* -- LIGHT body: white paper with navy hairline grid -------------------- */
 html[data-theme="blueprint"] body {
   background:
     linear-gradient(rgba(0,87,168,0.08) 1px, transparent 1px) 0 0 / 100% 32px,
@@ -29,7 +37,7 @@ html[data-theme="blueprint"] body {
     var(--bg);
 }
 
-/* ── DARK body: cyan-on-navy grid ────────────────────────────────────── */
+/* -- DARK body: cyan-on-navy grid --------------------------------------- */
 html[data-theme="blueprint"].dark body {
   background:
     linear-gradient(rgba(0,217,255,0.06) 1px, transparent 1px) 0 0 / 100% 32px,
@@ -37,13 +45,17 @@ html[data-theme="blueprint"].dark body {
     var(--bg);
 }
 
-/* ── Hero: clear fixed nav (~56 px) with a small buffer ──────────────── */
+/* -- Hero: clear fixed nav (~56 px) with a small buffer ----------------- */
 html[data-theme="blueprint"] .bp-hero {
   min-height: 100vh;
   min-height: 100svh;
   min-height: 100dvh;
   padding-top: 72px;
   align-items: center;
+}
+
+html[data-theme="blueprint"] .bp-rail-border {
+  border-right: var(--border);
 }
 
 html[data-theme="blueprint"] .fig-label {
@@ -59,4 +71,29 @@ html[data-theme="blueprint"] .draw-underline::after {
 @keyframes bpDraw { to { transform: scaleX(1); } }
 @media (prefers-reduced-motion: reduce) {
   html[data-theme="blueprint"] .draw-underline::after { animation: none; transform: scaleX(1); }
+}
+
+/* -- Skill chips -------------------------------------------------------- */
+html[data-theme="blueprint"] .bp-chip {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--chip-bg);
+  border: 1px dashed var(--chip-border);
+  color: var(--chip-text);
+  line-height: 1.6;
+}
+
+/* -- Project card links ------------------------------------------------- */
+html[data-theme="blueprint"] .bp-link {
+  display: inline-block;
+  padding: 2px 10px;
+  border: 1px dashed var(--link-border);
+  color: var(--accent);
+  text-decoration: none;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+html[data-theme="blueprint"] .bp-link:hover {
+  background: var(--accent);
+  color: var(--bg);
 }

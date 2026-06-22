@@ -3,12 +3,23 @@
 import ThemeLayout from '../../../layouts/ThemeLayout.astro';
 import '../../../styles/themes/outrun.css';
 import Photo from '../../../components/v2/shared/Photo.astro';
+import { ThemeContact } from '../../../components/v2/ThemeContact';
 import { experience, hackathons } from '../../../data/v2';
 import { projects } from '../../../data/projects';
 import resumeData from '../../../data/resume.json';
+
+const LABEL_MAP: Record<string, string> = {
+  programmingLanguages: 'Programming Languages',
+  aiMl: 'AI and ML',
+  softwareDevelopment: 'Software Development',
+  databases: 'Databases and Data Engineering',
+  devOps: 'DevOps and Cloud Infrastructure',
+  coreCs: 'Core Computer Science',
+};
 ---
 <ThemeLayout themeKey="outrun" title="Ayush Madhav Kumar. Outrun">
-  <div class="horizon"></div>
+  <div class="horizon" aria-hidden="true"></div>
+
   <section class="min-h-[100svh] min-h-[100dvh] flex flex-col items-center justify-center text-center px-6 pt-14">
     <Photo class="h-40 w-40 rounded-full border-2 border-[var(--accent)] shadow-[0_0_30px_var(--accent)]" />
     <p class="uppercase tracking-[0.3em] mt-6 text-[var(--accent-2)]" data-load>CS and Math @UMichigan</p>
@@ -35,9 +46,19 @@ import resumeData from '../../../data/resume.json';
     <h2 class="glow text-4xl uppercase mb-8" style="font-family:var(--font-display)">Projects</h2>
     <div class="grid md:grid-cols-3 gap-5">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
-        <div class="border border-[var(--accent)] bg-[var(--surface)] backdrop-blur p-5 rounded-lg" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="border border-[var(--accent)] bg-[var(--surface)] backdrop-blur p-5 rounded-lg flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
           <h3 class="uppercase" style="font-family:var(--font-display)">{p.title}</h3>
-          <p class="text-sm text-[var(--text-dim)] mt-2">{p.description}</p>
+          <p class="text-sm text-[var(--text-dim)] mt-2 flex-1">{p.description}</p>
+          {(p.githubUrl || p.websiteUrl) && (
+            <div class="mt-4 flex gap-3 flex-wrap">
+              {p.githubUrl && (
+                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="text-xs uppercase tracking-wider border border-[var(--accent)] px-3 py-1 rounded-full glow transition-opacity hover:opacity-80">GitHub</a>
+              )}
+              {p.websiteUrl && (
+                <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="text-xs uppercase tracking-wider border border-[var(--accent-2)] px-3 py-1 rounded-full transition-opacity hover:opacity-80" style="color:var(--accent-2);text-shadow:0 0 8px var(--accent-2)">Site</a>
+              )}
+            </div>
+          )}
         </div>
       ))}
     </div>
@@ -58,12 +79,22 @@ import resumeData from '../../../data/resume.json';
 
   <section id="skills" class="max-w-5xl mx-auto px-6 py-16">
     <h2 class="glow text-4xl uppercase mb-8" style="font-family:var(--font-display)">Stack</h2>
-    <div class="flex flex-wrap gap-2">
-      {Object.values(resumeData.skills).flat().map((s) => <span class="border border-[var(--accent)] rounded-full px-3 py-1 text-sm">{s}</span>)}
+    <div class="space-y-6">
+      {Object.entries(resumeData.skills).map(([key, items]) => (
+        <div>
+          <p class="text-xs uppercase tracking-widest mb-2 text-[var(--accent-2)]">{LABEL_MAP[key] ?? key}</p>
+          <div class="flex flex-wrap gap-2">
+            {(items as string[]).map((s) => (
+              <span class="border border-[var(--accent)] rounded-full px-3 py-1 text-sm">{s}</span>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   </section>
 
   <footer id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center">
-    <a href="mailto:contactayushmadhav@gmail.com" class="glow text-2xl uppercase" style="font-family:var(--font-display)">Contact</a>
+    <h2 class="glow text-4xl uppercase mb-8" style="font-family:var(--font-display)">Contact</h2>
+    <ThemeContact client:load />
   </footer>
 </ThemeLayout>

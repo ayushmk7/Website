@@ -124,3 +124,56 @@ html[data-theme="swiss"] .sw-entry {
 html[data-theme="swiss"] .sw-entry:last-child {
   border-bottom: 1px solid var(--rule-color);
 }
+
+/* ── Stack category label ──────────────────────────────────────────── */
+html[data-theme="swiss"] .sw-stack-label {
+  font-family:  var(--font-display);
+  font-weight:  900;
+  font-size:    0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ── Project / hackathon links ─────────────────────────────────────── */
+html[data-theme="swiss"] .sw-project-link {
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 1px;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+html[data-theme="swiss"] .sw-project-link:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+/* ── ThemeContact alignment inside footer ──────────────────────────── */
+html[data-theme="swiss"] #contact .flex {
+  justify-content: flex-start;
+}
+
+html[data-theme="swiss"] #contact a[href^="mailto"] {
+  font-family:  var(--font-display);
+  font-weight:  900;
+  font-size:    clamp(1.25rem, 3vw, 2.5rem);
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--dur) var(--ease);
+}
+
+html[data-theme="swiss"] #contact a[href^="mailto"]:hover {
+  color: var(--text);
+}
+
+html[data-theme="swiss"] #contact button {
+  border-radius: 0;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: transparent;
+}
+
+html[data-theme="swiss"] #contact button:hover {
+  background: var(--accent);
+  color: #ffffff;
+}

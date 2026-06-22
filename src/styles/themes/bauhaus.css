@@ -1,6 +1,6 @@
 /* src/styles/themes/bauhaus.css */
 
-/* ── LIGHT (base) palette ───────────────────────────────────────────── */
+/* -- LIGHT (base) palette -------------------------------------------------- */
 html[data-theme="bauhaus"] {
   --bg: #f4f1ea; --bg-2: #ffffff; --surface: #ffffff;
   --text: #141414; --text-dim: #555555;
@@ -14,17 +14,17 @@ html[data-theme="bauhaus"] {
   --radius: 0; --border: 3px solid #141414; --dur: 0.6s;
 }
 
-/* ── DARK palette ───────────────────────────────────────────────────── */
+/* -- DARK palette ----------------------------------------------------------- */
 html[data-theme="bauhaus"].dark {
   --bg: #111111; --bg-2: #1a1a1a; --surface: #1e1e1e;
   --text: #f0ece2; --text-dim: #a8a49a;
-  /* accent colours stay vivid – same red / blue / yellow */
   --accent: #e63329;
-  --accent-2: #1f4ed8;
+  --accent-2: #4f7ef8;
   --bau-yellow: #f4c20d;
   --border: 3px solid #d4cfc5;
 }
 
+/* -- Geometric shapes ------------------------------------------------------ */
 html[data-theme="bauhaus"] .shape { position: absolute; z-index: 0; pointer-events: none; max-width: 100%; }
 html[data-theme="bauhaus"] .circle { border-radius: 50%; background: var(--accent); }
 html[data-theme="bauhaus"] .square { background: var(--accent-2); }
@@ -33,14 +33,32 @@ html[data-theme="bauhaus"] .tri {
   border-left: 60px solid transparent; border-right: 60px solid transparent;
   border-bottom: 104px solid var(--bau-yellow);
 }
+
+/* -- Card borders: use CSS var so both light and dark get correct stroke ---- */
 html[data-theme="bauhaus"] .block { border: var(--border); }
-/* hero section: clamp to viewport, clip decorative shapes; pad top for fixed nav */
+
+/* -- Project / contact links ----------------------------------------------- */
+html[data-theme="bauhaus"] .bau-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 1px;
+  transition: opacity 0.2s;
+}
+html[data-theme="bauhaus"] .bau-link:hover { opacity: 0.7; }
+
+/* -- Hero section: clamp to viewport, clip decorative shapes; pad top for fixed nav */
 html[data-theme="bauhaus"] section:first-of-type {
   min-height: 100svh;
   min-height: 100dvh;
   padding-top: 64px;
   overflow: hidden;
 }
-/* alternate slide direction by nth */
+
+/* -- Load animations ------------------------------------------------------- */
 html[data-theme="bauhaus"] [data-load]:nth-child(even) { animation-name: bauSlideR; }
 @keyframes bauSlideR { from { opacity:0; transform: translateX(40px); } to { opacity:1; transform:none; } }

@@ -2,11 +2,21 @@
 import ThemeLayout from '../../../layouts/ThemeLayout.astro';
 import '../../../styles/themes/swiss.css';
 import Photo from '../../../components/v2/shared/Photo.astro';
+import { ThemeContact } from '../../../components/v2/ThemeContact';
 import { experience, hackathons } from '../../../data/v2';
 import { projects } from '../../../data/projects';
 import resumeData from '../../../data/resume.json';
 
 const nonHackathonProjects = projects.filter(p => !hackathons.some(h => h.project === p.title));
+
+const categoryLabels: Record<string, string> = {
+  programmingLanguages: 'Programming Languages',
+  aiMl: 'AI and ML',
+  softwareDevelopment: 'Software Development',
+  databases: 'Databases and Data Engineering',
+  devOps: 'DevOps and Cloud Infrastructure',
+  coreCs: 'Core Computer Science',
+};
 ---
 
 <ThemeLayout themeKey="swiss" title="Ayush Madhav Kumar. Swiss">
@@ -128,14 +138,25 @@ const nonHackathonProjects = projects.filter(p => !hackathons.some(h => h.projec
             <p class="text-[var(--text-dim)]" style="font-weight:300;line-height:1.55;font-size:0.9375rem;">
               {p.description}
             </p>
-            {p.url && (
-              <a
-                href={p.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="sw-tag mt-2 inline-block hover:text-[var(--text)] transition-colors"
-                style="transition-duration:var(--dur);"
-              >View</a>
+            {(p.githubUrl || p.websiteUrl) && (
+              <div class="sw-project-links mt-3 flex gap-4 flex-wrap">
+                {p.githubUrl && (
+                  <a
+                    href={p.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="sw-tag sw-project-link"
+                  >GitHub</a>
+                )}
+                {p.websiteUrl && (
+                  <a
+                    href={p.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="sw-tag sw-project-link"
+                  >Site</a>
+                )}
+              </div>
             )}
           </div>
         ))}
@@ -177,8 +198,7 @@ const nonHackathonProjects = projects.filter(p => !hackathons.some(h => h.projec
                 href={h.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="sw-tag hover:text-[var(--text)] transition-colors"
-                style="transition-duration:var(--dur);"
+                class="sw-tag sw-project-link"
               >Repo</a>
             )}
             {h.siteUrl && (
@@ -186,8 +206,7 @@ const nonHackathonProjects = projects.filter(p => !hackathons.some(h => h.projec
                 href={h.siteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="sw-tag hover:text-[var(--text)] transition-colors"
-                style="transition-duration:var(--dur);"
+                class="sw-tag sw-project-link"
               >Site</a>
             )}
           </div>
@@ -199,7 +218,7 @@ const nonHackathonProjects = projects.filter(p => !hackathons.some(h => h.projec
 
 
   <!-- ═══════════════════════════════════════════════════════════════
-       04 SKILLS
+       04 STACK
   ════════════════════════════════════════════════════════════════════ -->
   <section id="skills" class="max-w-7xl mx-auto px-6 md:px-12 py-20">
 
@@ -213,10 +232,10 @@ const nonHackathonProjects = projects.filter(p => !hackathons.some(h => h.projec
 
     <div class="pl-0 md:pl-[calc(var(--numeral-size)+2rem)]">
       {Object.entries(resumeData.skills).map(([category, items], i) => (
-        <div class="sw-entry" data-load style={`--i:${Math.min(i, 4)}`}>
-          <div class="grid md:grid-cols-[180px_1fr] gap-4 items-baseline">
-            <span style="font-family:var(--font-display);font-weight:900;font-size:0.8125rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);">
-              {category}
+        <div class="sw-entry" data-load style={`--i:${Math.min(i, 5)}`}>
+          <div class="grid md:grid-cols-[220px_1fr] gap-4 items-baseline">
+            <span class="sw-stack-label">
+              {categoryLabels[category] ?? category}
             </span>
             <p style="font-weight:300;line-height:1.6;">
               {(items as string[]).join(', ')}
@@ -230,7 +249,7 @@ const nonHackathonProjects = projects.filter(p => !hackathons.some(h => h.projec
 
 
   <!-- ═══════════════════════════════════════════════════════════════
-       CONTACT
+       05 CONTACT
   ════════════════════════════════════════════════════════════════════ -->
   <footer id="contact" class="max-w-7xl mx-auto px-6 md:px-12 py-24">
     <div class="sw-rule mb-16" aria-hidden="true"></div>
@@ -238,14 +257,9 @@ const nonHackathonProjects = projects.filter(p => !hackathons.some(h => h.projec
       <p class="sw-numeral" aria-hidden="true" style="color:var(--text-dim);">05</p>
       <div>
         <p class="sw-tag mb-4" data-load style="--i:0">Contact</p>
-        <a
-          href="mailto:contactayushmadhav@gmail.com"
-          class="block leading-none tracking-tight hover:text-[var(--accent)] transition-colors"
-          style="font-family:var(--font-display);font-weight:900;font-size:clamp(1.5rem,4vw,3rem);letter-spacing:-0.02em;transition-duration:var(--dur);transition-timing-function:var(--ease);--i:1"
-          data-load
-        >
-          contactayushmadhav@gmail.com
-        </a>
+        <div data-load style="--i:1">
+          <ThemeContact client:load />
+        </div>
         <div class="sw-rule-accent mt-8" aria-hidden="true"></div>
       </div>
     </div>

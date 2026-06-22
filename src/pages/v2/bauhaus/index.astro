@@ -3,9 +3,28 @@
 import ThemeLayout from '../../../layouts/ThemeLayout.astro';
 import '../../../styles/themes/bauhaus.css';
 import Photo from '../../../components/v2/shared/Photo.astro';
+import { ThemeContact } from '../../../components/v2/ThemeContact';
 import { experience, hackathons } from '../../../data/v2';
 import { projects } from '../../../data/projects';
 import resumeData from '../../../data/resume.json';
+
+const categoryLabels: Record<string, string> = {
+  programmingLanguages: 'Programming Languages',
+  aiMl: 'AI and ML',
+  softwareDevelopment: 'Software Development',
+  databases: 'Databases and Data Engineering',
+  devOps: 'DevOps and Cloud Infrastructure',
+  coreCs: 'Core Computer Science',
+};
+
+const categoryAccents = [
+  'var(--accent)',
+  'var(--accent-2)',
+  'var(--bau-yellow)',
+  'var(--accent)',
+  'var(--accent-2)',
+  'var(--bau-yellow)',
+];
 ---
 <ThemeLayout themeKey="bauhaus" title="Ayush Madhav Kumar. Bauhaus">
   <section class="relative overflow-hidden min-h-[100svh] grid grid-cols-1 md:grid-cols-2">
@@ -44,6 +63,16 @@ import resumeData from '../../../data/resume.json';
         <div class="block p-5 bg-[var(--surface)]" data-load style={`--i:${Math.min(i,4)}`}>
           <h3 class="text-xl uppercase" style="font-family:var(--font-display);font-weight:700">{p.title}</h3>
           <p class="text-sm mt-2">{p.description}</p>
+          {(p.githubUrl || p.websiteUrl) && (
+            <div class="flex flex-wrap gap-3 mt-4">
+              {p.githubUrl && (
+                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="bau-link text-xs uppercase tracking-wider" style="color:var(--accent-2)">GitHub</a>
+              )}
+              {p.websiteUrl && (
+                <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="bau-link text-xs uppercase tracking-wider" style="color:var(--accent)">Live Site</a>
+              )}
+            </div>
+          )}
         </div>
       ))}
     </div>
@@ -53,7 +82,7 @@ import resumeData from '../../../data/resume.json';
     <h2 class="text-5xl uppercase mb-8" style="font-family:var(--font-display);font-weight:700">Hackathons</h2>
     <div class="grid md:grid-cols-2 gap-6">
       {hackathons.map((h, i) => (
-        <div class="block p-5" style={i % 2 ? 'background:var(--accent)' : 'background:var(--accent-2)'} data-load>
+        <div class="block p-5" style={i % 2 ? 'background:var(--accent-2)' : 'background:var(--accent)'} data-load>
           <p class="uppercase text-sm text-white">{h.placement}</p>
           <h3 class="text-2xl uppercase text-white" style="font-family:var(--font-display);font-weight:700">{h.event}</h3>
           <p class="text-sm mt-2 text-white">{h.blurb}</p>
@@ -64,12 +93,27 @@ import resumeData from '../../../data/resume.json';
 
   <section id="skills" class="max-w-6xl mx-auto px-4 py-16">
     <h2 class="text-5xl uppercase mb-8" style="font-family:var(--font-display);font-weight:700">Stack</h2>
-    <div class="flex flex-wrap gap-2">
-      {Object.values(resumeData.skills).flat().map((s) => <span class="block px-3 py-1 text-sm bg-[var(--surface)]">{s}</span>)}
+    <div class="space-y-8">
+      {Object.entries(resumeData.skills).map(([key, items], ci) => (
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <div class="h-4 w-4 shrink-0" style={`background:${categoryAccents[ci % categoryAccents.length]}`}></div>
+            <span class="uppercase text-sm tracking-widest" style={`font-family:var(--font-display);font-weight:700;color:${categoryAccents[ci % categoryAccents.length]}`}>
+              {categoryLabels[key] ?? key}
+            </span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            {(items as string[]).map((s) => (
+              <span class="block px-3 py-1 text-sm bg-[var(--surface)]">{s}</span>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   </section>
 
   <footer id="contact" class="max-w-6xl mx-auto px-4 py-20">
-    <a href="mailto:contactayushmadhav@gmail.com" class="inline-block px-6 py-3 bg-[var(--accent)] text-white text-2xl uppercase" style="font-family:var(--font-display)">contactayushmadhav@gmail.com</a>
+    <h2 class="text-5xl uppercase mb-8" style="font-family:var(--font-display);font-weight:700">Contact</h2>
+    <ThemeContact client:load />
   </footer>
 </ThemeLayout>

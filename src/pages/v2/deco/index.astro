@@ -3,9 +3,19 @@
 import ThemeLayout from '../../../layouts/ThemeLayout.astro';
 import '../../../styles/themes/deco.css';
 import Photo from '../../../components/v2/shared/Photo.astro';
+import { ThemeContact } from '../../../components/v2/ThemeContact';
 import { experience, hackathons } from '../../../data/v2';
 import { projects } from '../../../data/projects';
 import resumeData from '../../../data/resume.json';
+
+const CATEGORY_LABELS: Record<string, string> = {
+  programmingLanguages: 'Programming Languages',
+  aiMl: 'AI and ML',
+  softwareDevelopment: 'Software Development',
+  databases: 'Databases and Data Engineering',
+  devOps: 'DevOps and Cloud Infrastructure',
+  coreCs: 'Core Computer Science',
+};
 
 const filteredProjects = projects.filter(
   (p) => !hackathons.some((h) => h.project === p.title)
@@ -278,8 +288,8 @@ const filteredProjects = projects.filter(
     <div class="space-y-6">
       {Object.entries(resumeData.skills).map(([category, items], i) => (
         <div data-load style={`--i:${Math.min(i, 4)}`}>
-          <div class="deco-rule mb-3" aria-hidden="true">
-            <span class="deco-rule-span">{category}</span>
+          <div class="deco-rule mb-3">
+            <span class="deco-rule-span">{CATEGORY_LABELS[category] ?? category}</span>
           </div>
           <div class="flex flex-wrap gap-2">
             {(items as string[]).map((item) => (
@@ -307,13 +317,9 @@ const filteredProjects = projects.filter(
     <div class="deco-rule w-56 mx-auto mb-6" aria-hidden="true">
       <span class="deco-rule-span" aria-hidden="true">&#9670;</span>
     </div>
-    <a
-      href="mailto:contactayushmadhav@gmail.com"
-      class="deco-heading text-xl md:text-2xl text-[var(--accent)] hover:text-[var(--accent-2)] transition-colors"
-      style="font-family:var(--font-display); letter-spacing:0.1em"
-    >
-      contactayushmadhav@gmail.com
-    </a>
+    <div class="deco-heading text-xl md:text-2xl" style="font-family:var(--font-display); letter-spacing:0.1em">
+      <ThemeContact client:load />
+    </div>
     <div class="deco-chevron mt-8" aria-hidden="true"></div>
   </footer>
 

@@ -1,6 +1,6 @@
 /* src/styles/themes/editorial.css */
 
-/* ── LIGHT (default) ───────────────────────────────────────── */
+/* LIGHT (default) */
 html[data-theme="editorial"] {
   --bg: #f7f3ec; --bg-2: #efe9df; --surface: #fffdf8;
   --text: #1b1a17; --text-dim: #6b655b;
@@ -10,20 +10,42 @@ html[data-theme="editorial"] {
   --font-mono: 'Source Sans 3', sans-serif;
   --w-display: 900; --w-body: 300;
   --radius: 0; --border: 1px solid #1b1a17; --dur: 0.9s;
+  --rule-color: #1b1a17;
 }
 
-/* ── DARK variant ──────────────────────────────────────────── */
+/* DARK variant */
 html[data-theme="editorial"].dark {
   --bg: #1a1813; --bg-2: #232018; --surface: #201e18;
   --text: #f0ebe0; --text-dim: #9e9688;
   --accent: #c9503a; --accent-2: #f0ebe0;
   --border: 1px solid #f0ebe0;
+  --rule-color: #f0ebe0;
 }
+
 html[data-theme="editorial"] .dropcap::first-letter {
   font-family: var(--font-display); font-weight: 900; font-size: 3.4em;
   float: left; line-height: 0.8; padding-right: 0.08em; color: var(--accent);
 }
-html[data-theme="editorial"] .rule { border-top: 1px solid var(--text); }
+
+/* Use --rule-color so hairline rules stay visible in both modes */
+html[data-theme="editorial"] .rule {
+  border-top: 1px solid var(--rule-color);
+}
+
+/* Project/site links: small-caps accent style */
+html[data-theme="editorial"] .editorial-link {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s;
+}
+html[data-theme="editorial"] .editorial-link:hover {
+  opacity: 0.75;
+}
 
 /* Prevent horizontal overflow on all screens */
 html[data-theme="editorial"] body,

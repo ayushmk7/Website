@@ -1,6 +1,6 @@
 /* src/styles/themes/terminal.css */
 
-/* ── LIGHT: paper-terminal (dark ink on phosphor-cream) ── */
+/* -- LIGHT: paper-terminal (dark ink on phosphor-cream) -- */
 html[data-theme="terminal"] {
   --bg: #f0f0e6; --bg-2: #e8e8d8; --surface: #deded0;
   --text: #1a2e1a; --text-dim: #4a6b4a;
@@ -13,14 +13,13 @@ html[data-theme="terminal"] {
   --ease: steps(1,end); --dur: 0.01s;
 }
 html[data-theme="terminal"] body {
-  /* subtle warm-paper texture, no glow */
   background:
     repeating-linear-gradient(rgba(26,107,26,0.04) 0 1px, transparent 1px 4px),
     var(--bg);
   text-shadow: none;
 }
 
-/* ── DARK: classic green-on-black CRT ── */
+/* -- DARK: classic green-on-black CRT -- */
 html[data-theme="terminal"].dark {
   --bg: #050806; --bg-2: #0a0f0b; --surface: #0a120c;
   --text: #43f57b; --text-dim: #1f8f45;
@@ -52,4 +51,30 @@ html[data-theme="terminal"] .hero-section {
   min-height: calc(100svh - 56px);
   min-height: calc(100dvh - 56px);
   padding-top: 56px;
+}
+
+/* project links */
+html[data-theme="terminal"] .project-link {
+  color: var(--accent-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.1s;
+}
+html[data-theme="terminal"] .project-link:hover {
+  color: var(--accent);
+}
+
+/* stack category groups */
+html[data-theme="terminal"] .stack-group {
+  border-left: 2px solid var(--accent);
+  padding-left: 0.75rem;
+}
+html[data-theme="terminal"].dark .stack-group {
+  border-left-color: var(--accent-2);
+}
+
+/* contact section */
+html[data-theme="terminal"] #contact {
+  border-top: var(--border);
+  padding-top: 1.5rem;
 }

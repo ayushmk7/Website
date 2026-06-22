@@ -3,9 +3,19 @@
 import ThemeLayout from '../../../layouts/ThemeLayout.astro';
 import '../../../styles/themes/editorial.css';
 import Photo from '../../../components/v2/shared/Photo.astro';
+import { ThemeContact } from '../../../components/v2/ThemeContact';
 import { experience, hackathons } from '../../../data/v2';
 import { projects } from '../../../data/projects';
 import resumeData from '../../../data/resume.json';
+
+const categoryLabels: Record<string, string> = {
+  programmingLanguages: 'Programming Languages',
+  aiMl: 'AI and ML',
+  softwareDevelopment: 'Software Development',
+  databases: 'Databases and Data Engineering',
+  devOps: 'DevOps and Cloud Infrastructure',
+  coreCs: 'Core Computer Science',
+};
 ---
 <ThemeLayout themeKey="editorial" title="Ayush Madhav Kumar. Editorial">
   <header class="max-w-5xl mx-auto px-6 pt-24 pb-10">
@@ -19,7 +29,7 @@ import resumeData from '../../../data/resume.json';
     <Photo class="h-[19rem] w-[12.6rem] order-1 md:order-2 md:justify-self-end" />
   </section>
 
-  <!-- numbered article sections; reuse a small inline pattern -->
+  <!-- numbered article sections -->
   <section id="experience" class="rule max-w-5xl mx-auto px-6 py-16">
     <div class="grid md:grid-cols-[120px_1fr] gap-6">
       <p class="text-5xl text-[var(--text-dim)]" style="font-family:var(--font-display)">01</p>
@@ -45,7 +55,17 @@ import resumeData from '../../../data/resume.json';
           {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p) => (
             <div class="mb-6 break-inside-avoid">
               <h3 class="text-lg" style="font-family:var(--font-display);font-weight:900">{p.title}</h3>
-              <p class="text-[var(--text-dim)]">{p.description}</p>
+              <p class="text-[var(--text-dim)] mt-1">{p.description}</p>
+              {(p.githubUrl || p.websiteUrl) && (
+                <p class="mt-2 flex gap-4 flex-wrap">
+                  {p.githubUrl && (
+                    <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="editorial-link">GitHub</a>
+                  )}
+                  {p.websiteUrl && (
+                    <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="editorial-link">Site</a>
+                  )}
+                </p>
+              )}
             </div>
           ))}
         </div>
@@ -75,13 +95,17 @@ import resumeData from '../../../data/resume.json';
       <div>
         <h2 class="text-3xl mb-8" style="font-family:var(--font-display);font-weight:900">Stack</h2>
         {Object.entries(resumeData.skills).map(([k, items]) => (
-          <p class="mb-3 max-w-prose"><span class="text-[var(--accent)]" style="font-family:var(--font-display)">{k}. </span>{items.join(', ')}</p>
+          <div class="mb-4 max-w-prose">
+            <p class="text-xs uppercase tracking-[0.2em] text-[var(--text-dim)] mb-1" style="font-family:var(--font-display)">{categoryLabels[k] ?? k}</p>
+            <p>{(items as string[]).join(', ')}</p>
+          </div>
         ))}
       </div>
     </div>
   </section>
 
   <footer id="contact" class="rule max-w-5xl mx-auto px-6 py-20 text-center">
-    <a href="mailto:contactayushmadhav@gmail.com" class="text-2xl underline text-[var(--accent)]" style="font-family:var(--font-display)">contactayushmadhav@gmail.com</a>
+    <h2 class="text-3xl mb-8" style="font-family:var(--font-display);font-weight:900">Contact</h2>
+    <ThemeContact client:load />
   </footer>
 </ThemeLayout>

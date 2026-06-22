@@ -60,6 +60,10 @@ html[data-theme="outrun"].dark .glow {
 }
 
 /* ── SHARED structural rules ── */
+html[data-theme="outrun"] body {
+  color: var(--text);
+  font-family: var(--font-body);
+}
 html[data-theme="outrun"] .horizon {
   position: fixed; inset: 55% 0 0 0; z-index: 0; pointer-events: none; overflow: hidden;
   transform: perspective(300px) rotateX(72deg); transform-origin: top;
@@ -67,3 +71,16 @@ html[data-theme="outrun"] .horizon {
 html[data-theme="outrun"] section,
 html[data-theme="outrun"] header,
 html[data-theme="outrun"] footer { position: relative; z-index: 1; }
+
+/* neon project links -- readable in both modes */
+html[data-theme="outrun"] #projects a {
+  color: var(--accent);
+}
+html[data-theme="outrun"] #projects a[style*="accent-2"] {
+  color: var(--accent-2);
+}
+
+/* contact copy-button hover */
+html[data-theme="outrun"] #contact button:hover {
+  background: rgba(var(--accent), 0.1);
+}

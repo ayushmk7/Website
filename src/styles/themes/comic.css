@@ -1,6 +1,6 @@
 /* src/styles/themes/comic.css */
 
-/* ── LIGHT palette (default) ── */
+/* -- LIGHT palette (default) -- */
 html[data-theme="comic"] {
   --bg: #fff6df; --bg-2: #ffffff; --surface: #ffffff;
   --text: #141414; --text-dim: #444444;
@@ -15,9 +15,15 @@ html[data-theme="comic"] {
   --outline: #141414;
   --dot-color: rgba(0,0,0,0.14);
   --panel-shadow: #141414;
+  --link-btn-bg: #ffffff;
+  --link-btn-text: #141414;
+  --link-btn-border: #141414;
+  --link-btn-shadow: #141414;
+  --link-btn-site-bg: #2b6cff;
+  --link-btn-site-text: #ffffff;
 }
 
-/* ── DARK palette ── */
+/* -- DARK palette -- */
 html[data-theme="comic"].dark {
   --bg: #0d1117; --bg-2: #161b22; --surface: #1c2230;
   --text: #f0f0f0; --text-dim: #aaaaaa;
@@ -28,11 +34,18 @@ html[data-theme="comic"].dark {
   --dot-color: rgba(255,255,255,0.10);
   --panel-shadow: #e8e8e8;
   --border: 3px solid #e8e8e8;
+  --link-btn-bg: #1c2230;
+  --link-btn-text: #f0f0f0;
+  --link-btn-border: #e8e8e8;
+  --link-btn-shadow: #e8e8e8;
+  --link-btn-site-bg: #5b8fff;
+  --link-btn-site-text: #ffffff;
 }
 
 html[data-theme="comic"] body {
   background-image: radial-gradient(circle, var(--dot-color) 1.5px, transparent 1.7px);
   background-size: 14px 14px; background-color: var(--bg);
+  color: var(--text);
   overflow-x: hidden;
 }
 
@@ -44,11 +57,67 @@ html[data-theme="comic"] .comic-hero {
 }
 
 /* side padding keeps 6px hard shadow visible and not clipped */
-html[data-theme="comic"] .panel { border: var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: 6px 6px 0 var(--panel-shadow); }
+html[data-theme="comic"] .panel {
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 6px 6px 0 var(--panel-shadow);
+  color: var(--text);
+}
+
 /* bubble: extra bottom margin so the 14px tail doesn't overlap the next element */
-html[data-theme="comic"] .bubble { border: var(--border); border-radius: 1.5rem; background: var(--surface); position: relative; margin-bottom: 8px; }
-html[data-theme="comic"] .bubble::after { content:''; position:absolute; bottom:-14px; left:32px; width:0;height:0; border:10px solid transparent; border-top-color:var(--outline); }
+html[data-theme="comic"] .bubble {
+  border: var(--border);
+  border-radius: 1.5rem;
+  background: var(--surface);
+  color: var(--text);
+  position: relative;
+  margin-bottom: 8px;
+}
+html[data-theme="comic"] .bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  left: 32px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: var(--outline);
+}
+
 html[data-theme="comic"] .pop { letter-spacing: 0.02em; }
 html[data-theme="comic"] [data-load] { animation-timing-function: cubic-bezier(0.34,1.56,0.64,1); }
+
 /* prevent panel shadows from causing horizontal scroll */
 html[data-theme="comic"] section { overflow-x: clip; }
+
+/* project link buttons */
+html[data-theme="comic"] .comic-link-btn {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 800;
+  border: 2px solid var(--link-btn-border);
+  border-radius: var(--radius);
+  background: var(--link-btn-bg);
+  color: var(--link-btn-text);
+  box-shadow: 3px 3px 0 var(--link-btn-shadow);
+  text-decoration: none;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+html[data-theme="comic"] .comic-link-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--link-btn-shadow);
+}
+
+html[data-theme="comic"] .comic-link-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--link-btn-shadow);
+}
+
+html[data-theme="comic"] .comic-link-btn--site {
+  background: var(--link-btn-site-bg);
+  color: var(--link-btn-site-text);
+  border-color: var(--link-btn-border);
+}

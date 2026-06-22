@@ -3,9 +3,21 @@
 import ThemeLayout from '../../../layouts/ThemeLayout.astro';
 import '../../../styles/themes/aurora.css';
 import Photo from '../../../components/v2/shared/Photo.astro';
+import { ThemeContact } from '../../../components/v2/ThemeContact';
 import { experience, hackathons } from '../../../data/v2';
 import { projects } from '../../../data/projects';
 import resumeData from '../../../data/resume.json';
+
+const categoryLabels: Record<string, string> = {
+  programmingLanguages: 'Programming Languages',
+  aiMl: 'AI and ML',
+  softwareDevelopment: 'Software Development',
+  databases: 'Databases and Data Engineering',
+  devOps: 'DevOps and Cloud Infrastructure',
+  coreCs: 'Core Computer Science',
+};
+
+const skillGroups = Object.entries(resumeData.skills) as [string, string[]][];
 ---
 <ThemeLayout themeKey="aurora" title="Ayush Madhav Kumar. Aurora">
   <section class="min-h-[100svh] min-h-[100dvh] flex flex-col justify-center items-center text-center px-6">
@@ -34,9 +46,33 @@ import resumeData from '../../../data/resume.json';
     <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Projects</h2>
     <div class="grid md:grid-cols-3 gap-5">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
-        <div class="glass p-5" data-load style={`--i:${Math.min(i,4)}`}>
+        <div class="glass p-5 flex flex-col" data-load style={`--i:${Math.min(i,4)}`}>
           <h3 style="font-family:var(--font-display);font-weight:700">{p.title}</h3>
-          <p class="text-sm text-[var(--text-dim)] mt-2">{p.description}</p>
+          <p class="text-sm text-[var(--text-dim)] mt-2 flex-1">{p.description}</p>
+          {(p.githubUrl || p.websiteUrl) && (
+            <div class="mt-4 flex flex-wrap gap-3 text-sm">
+              {p.githubUrl && (
+                <a
+                  href={p.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="aurora-link"
+                >
+                  GitHub
+                </a>
+              )}
+              {p.websiteUrl && (
+                <a
+                  href={p.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="aurora-link"
+                >
+                  Site
+                </a>
+              )}
+            </div>
+          )}
         </div>
       ))}
     </div>
@@ -57,12 +93,22 @@ import resumeData from '../../../data/resume.json';
 
   <section id="skills" class="max-w-5xl mx-auto px-6 py-16">
     <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Stack</h2>
-    <div class="flex flex-wrap gap-2">
-      {Object.values(resumeData.skills).flat().map((s) => <span class="glass px-3 py-1 text-sm rounded-full">{s}</span>)}
+    <div class="flex flex-col gap-6">
+      {skillGroups.map(([key, items]) => (
+        <div class="glass p-5" data-load>
+          <h3 class="text-sm font-semibold mb-3 aurora-category-label">
+            {categoryLabels[key] ?? key}
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {items.map((s) => <span class="aurora-chip px-3 py-1 text-sm rounded-full">{s}</span>)}
+          </div>
+        </div>
+      ))}
     </div>
   </section>
 
   <footer id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center">
-    <a href="mailto:contactayushmadhav@gmail.com" class="text-xl text-[var(--accent)] hover:underline">contactayushmadhav@gmail.com</a>
+    <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Contact</h2>
+    <ThemeContact client:load />
   </footer>
 </ThemeLayout>

@@ -222,6 +222,20 @@ html[data-theme="deco"] .deco-badge {
   margin-left: 0.5em;
 }
 
+/* ── ThemeContact overrides: sharp Art Deco corners ────────── */
+html[data-theme="deco"] #contact button {
+  border-radius: 0;
+  background: transparent;
+}
+html[data-theme="deco"] #contact button:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+html[data-theme="deco"] #contact a {
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
+}
+
 /* ── Prevent horizontal overflow ──────────────────────────── */
 html[data-theme="deco"] body,
 html[data-theme="deco"] main {

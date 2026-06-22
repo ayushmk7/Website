@@ -62,3 +62,35 @@ html[data-theme="aurora"] .grid { width: 100%; }
 html[data-theme="aurora"] section:first-of-type {
   padding-top: calc(56px + 2rem);
 }
+
+/* ── Project links ──────────────────────────────────────────────────────── */
+html[data-theme="aurora"] .aurora-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--accent);
+  transition: background 0.2s, color 0.2s;
+  display: inline-block;
+}
+html[data-theme="aurora"] .aurora-link:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ── Stack chips and category labels ─────────────────────────────────────── */
+html[data-theme="aurora"] .aurora-category-label {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+html[data-theme="aurora"] .aurora-chip {
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid rgba(94,129,172,0.30);
+}
+html[data-theme="aurora"].dark .aurora-chip {
+  background: rgba(59,66,82,0.7);
+  border-color: rgba(136,192,208,0.25);
+}
