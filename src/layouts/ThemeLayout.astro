@@ -40,7 +40,7 @@ const def = themeByKey(themeKey);
         const here = document.documentElement.getAttribute('data-theme');
         // only the Current page (/v2) auto-redirects to a saved non-current theme
         if (here === 'current' && saved && saved !== 'current' && !location.search.includes('stay')) {
-          const routes = {"blueprint":"/v2/blueprint","terminal":"/v2/terminal","editorial":"/v2/editorial","brutal":"/v2/brutal","riso":"/v2/riso","outrun":"/v2/outrun","aurora":"/v2/aurora","bauhaus":"/v2/bauhaus","comic":"/v2/comic","deco":"/v2/deco","memphis":"/v2/memphis","swiss":"/v2/swiss"};
+          const routes = {"blueprint":"/v2/blueprint","terminal":"/v2/terminal","brutal":"/v2/brutal","riso":"/v2/riso","outrun":"/v2/outrun","aurora":"/v2/aurora","bauhaus":"/v2/bauhaus","comic":"/v2/comic"};
           if (routes[saved]) location.replace(routes[saved]);
         }
       } catch (e) {}
