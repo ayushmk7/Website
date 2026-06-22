@@ -3,22 +3,22 @@
 /* -- LIGHT (base) palette -------------------------------------------------- */
 html[data-theme="bauhaus"] {
   --bg: #f4f1ea; --bg-2: #ffffff; --surface: #ffffff;
-  --text: #141414; --text-dim: #555555;
-  --accent: #e63329;   /* red */
+  --text: #141414; --text-dim: #444444;
+  --accent: #c0281e;   /* red -- darkened to pass AA on white */
   --accent-2: #1f4ed8; /* blue */
   --bau-yellow: #f4c20d;
   --font-display: 'Jost', sans-serif;
   --font-body: 'Jost', sans-serif;
   --font-mono: 'Jost', monospace;
-  --w-display: 700; --w-body: 300;
+  --w-display: 700; --w-body: 400;
   --radius: 0; --border: 3px solid #141414; --dur: 0.6s;
 }
 
 /* -- DARK palette ----------------------------------------------------------- */
 html[data-theme="bauhaus"].dark {
   --bg: #111111; --bg-2: #1a1a1a; --surface: #1e1e1e;
-  --text: #f0ece2; --text-dim: #a8a49a;
-  --accent: #e63329;
+  --text: #f0ece2; --text-dim: #bdb8ae;
+  --accent: #e63329; /* red is on dark surfaces in dark mode -- passes AA */
   --accent-2: #4f7ef8;
   --bau-yellow: #f4c20d;
   --border: 3px solid #d4cfc5;
@@ -37,11 +37,25 @@ html[data-theme="bauhaus"] .tri {
 /* -- Card borders: use CSS var so both light and dark get correct stroke ---- */
 html[data-theme="bauhaus"] .block { border: var(--border); }
 
+/* -- Body text: readable weight, size, and line-height --------------------- */
+html[data-theme="bauhaus"] p,
+html[data-theme="bauhaus"] li {
+  font-weight: var(--w-body);
+  font-size: 0.9375rem; /* ~15px */
+  line-height: 1.6;
+}
+
+html[data-theme="bauhaus"] .text-sm {
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
 /* -- Project / contact links ----------------------------------------------- */
 html[data-theme="bauhaus"] .bau-link {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  min-height: 36px;
   font-family: var(--font-display);
   font-weight: 700;
   text-decoration: none;

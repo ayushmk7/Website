@@ -3,12 +3,12 @@
 /* ── LIGHT palette (warm paper, riso blue ink, fluoro pink) ── */
 html[data-theme="riso"] {
   --bg: #f3ecdd; --bg-2: #f3ecdd; --surface: #fbf6ea;
-  --text: #1d2bd4; --text-dim: #5a63c9;   /* riso blue as "ink 1" */
+  --text: #1d2bd4; --text-dim: #3a42b8;   /* darkened from #5a63c9 for WCAG AA on warm paper */
   --accent: #ff48a6; --accent-2: #1d2bd4; /* fluoro pink "ink 2" */
   --font-display: 'Hanken Grotesk', sans-serif;
   --font-body: 'Hanken Grotesk', sans-serif;
   --font-mono: 'Space Grotesk', monospace;
-  --w-display: 800; --w-body: 300;
+  --w-display: 800; --w-body: 400;        /* bumped from 300 for legibility */
   --radius: 1.5rem; --border: 2px solid var(--text); --dur: 0.6s;
 }
 
@@ -44,6 +44,8 @@ html[data-theme="riso"] body {
   overflow-x: hidden;
   color: var(--text);
   background-color: var(--bg);
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 /* ensure body text reads on both themes */
@@ -51,6 +53,27 @@ html[data-theme="riso"] p,
 html[data-theme="riso"] li,
 html[data-theme="riso"] h3 {
   color: var(--text);
+  font-size: 0.9375rem; /* ~15px, comfortably above 0.9rem floor */
+  line-height: 1.6;
+}
+
+/* misreg ghost is legibility-safe only on large display text */
+html[data-theme="riso"] p.misreg::before,
+html[data-theme="riso"] li.misreg::before {
+  display: none;
+}
+
+/* touch targets: inline links get enough vertical padding to hit ~44px */
+html[data-theme="riso"] a {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* restore normal flow for block-context anchors inside cards */
+html[data-theme="riso"] .flex a,
+html[data-theme="riso"] a.font-mono {
+  display: inline-flex;
 }
 
 /* card offset shadow visible in both modes */

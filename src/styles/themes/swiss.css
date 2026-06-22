@@ -8,7 +8,7 @@ html[data-theme="swiss"] {
   --bg-2:      #fafafa;
   --surface:   #fafafa;
   --text:      #111111;
-  --text-dim:  #666666;
+  --text-dim:  #595959;
   --accent:    #e2231a;
   --accent-2:  #111111;
 
@@ -17,7 +17,7 @@ html[data-theme="swiss"] {
   --font-mono:    'Archivo', monospace;
 
   --w-display: 900;
-  --w-body:    300;
+  --w-body:    400;
 
   --radius: 0;
   --border: 1px solid var(--text);
@@ -35,10 +35,23 @@ html[data-theme="swiss"].dark {
   --bg-2:      #141414;
   --surface:   #141414;
   --text:      #f2f2f2;
-  --text-dim:  #999999;
+  --text-dim:  #a8a8a8;
   --accent:    #ff3b2f;
   --accent-2:  #f2f2f2;
   --rule-color: var(--text);
+}
+
+/* ── Body text defaults ────────────────────────────────────────────── */
+html[data-theme="swiss"] body {
+  font-weight: var(--w-body);
+  font-size:   0.9375rem;
+  line-height: 1.6;
+}
+
+/* ── Touch-target floor for entry list items ───────────────────────── */
+html[data-theme="swiss"] .sw-entry li {
+  min-height: 36px;
+  align-items: flex-start;
 }
 
 /* ── Hairline rules ────────────────────────────────────────────────── */
@@ -138,7 +151,10 @@ html[data-theme="swiss"] .sw-stack-label {
 /* ── Project / hackathon links ─────────────────────────────────────── */
 html[data-theme="swiss"] .sw-project-link {
   border-bottom: 1px solid var(--accent);
-  padding-bottom: 1px;
+  padding-block: 0.5rem;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
   transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 

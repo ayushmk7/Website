@@ -31,7 +31,7 @@ const filteredProjects = projects.filter(
     <Photo class="mb-6 md:hidden w-28 h-36 object-cover" data-load style="--i:0" />
 
     <!-- top ornament label -->
-    <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent)] mb-4" data-load style="--i:0">
+    <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent-text)] mb-4" data-load style="--i:0">
       Portfolio &middot; MMXXVI
     </p>
 
@@ -55,7 +55,7 @@ const filteredProjects = projects.filter(
     <!-- role + callout row -->
     <div class="flex flex-col items-center gap-1 mb-6" data-load style="--i:2">
       <p
-        class="font-display tracking-[0.25em] uppercase text-sm text-[var(--text-dim)]"
+        class="font-display tracking-[0.25em] uppercase text-sm text-[var(--text)]"
         style="font-family:var(--font-display)"
       >
         CS and Math @UMichigan
@@ -75,7 +75,7 @@ const filteredProjects = projects.filter(
       style="--i:3"
     >
       <Photo class="w-28 h-36 flex-shrink-0" />
-      <p class="text-[var(--text-dim)] text-sm leading-relaxed max-w-prose text-left">
+      <p class="text-[var(--text)] text-sm leading-relaxed max-w-prose text-left">
         Systems programming and AI infrastructure: on-device inference engines, fine-tuned
         coding agents, and the tooling around them. NSF-backed research; contributor at
         Cactus (YC S25).
@@ -83,7 +83,7 @@ const filteredProjects = projects.filter(
           href="/AyushMadhavResume.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          class="block mt-3 text-[var(--accent)] tracking-widest uppercase text-xs"
+          class="block mt-3 text-[var(--accent-text)] tracking-widest uppercase text-xs"
           style="font-family:var(--font-display)"
         >
           View Resume &rarr;
@@ -93,7 +93,7 @@ const filteredProjects = projects.filter(
 
     <!-- mobile blurb -->
     <p
-      class="md:hidden text-[var(--text-dim)] text-sm leading-relaxed max-w-prose text-center mt-4"
+      class="md:hidden text-[var(--text)] text-sm leading-relaxed max-w-prose text-center mt-4"
       data-load
       style="--i:3"
     >
@@ -103,7 +103,7 @@ const filteredProjects = projects.filter(
         href="/AyushMadhavResume.pdf"
         target="_blank"
         rel="noopener noreferrer"
-        class="block mt-3 text-[var(--accent)] tracking-widest uppercase text-xs"
+        class="block mt-3 text-[var(--accent-text)] tracking-widest uppercase text-xs"
         style="font-family:var(--font-display)"
       >
         View Resume &rarr;
@@ -119,7 +119,7 @@ const filteredProjects = projects.filter(
 
     <!-- section heading -->
     <div class="text-center mb-12" data-load style="--i:0">
-      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent)] mb-2">I</p>
+      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent-text)] mb-2">I</p>
       <h2 class="deco-heading text-2xl md:text-3xl">Experience</h2>
       <div class="deco-rule w-64 mx-auto mt-4" aria-hidden="true">
         <span class="deco-rule-span" aria-hidden="true">&#9670;</span>
@@ -139,12 +139,12 @@ const filteredProjects = projects.filter(
             {j.badge && <span class="deco-badge">{j.badge}</span>}
           </div>
           <p
-            class="text-[var(--accent)] text-xs tracking-widest uppercase mb-3"
+            class="text-[var(--accent-text)] text-xs tracking-widest uppercase mb-3"
             style="font-family:var(--font-display)"
           >
             {j.role} &middot; {j.period}{j.location ? ` &middot; ${j.location}` : ''}
           </p>
-          <ul class="space-y-1 text-sm text-[var(--text-dim)]">
+          <ul class="space-y-1 text-sm text-[var(--text)]">
             {j.bullets.map((b) => (
               <li class="flex gap-2 items-start">
                 <span class="text-[var(--accent)] mt-1 flex-shrink-0" aria-hidden="true">&#9656;</span>
@@ -161,7 +161,7 @@ const filteredProjects = projects.filter(
   <section id="projects" class="deco-section-rule max-w-4xl mx-auto px-6 py-20">
 
     <div class="text-center mb-12" data-load style="--i:0">
-      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent)] mb-2">II</p>
+      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent-text)] mb-2">II</p>
       <h2 class="deco-heading text-2xl md:text-3xl">Projects</h2>
       <div class="deco-rule w-64 mx-auto mt-4" aria-hidden="true">
         <span class="deco-rule-span" aria-hidden="true">&#9670;</span>
@@ -177,7 +177,7 @@ const filteredProjects = projects.filter(
           >
             {p.title}
           </h3>
-          <p class="text-[var(--text-dim)] text-sm leading-relaxed mb-3">{p.description}</p>
+          <p class="text-[var(--text)] text-sm leading-relaxed mb-3">{p.description}</p>
           <div class="flex flex-wrap gap-2 mb-3">
             {p.tags.slice(0, 4).map((t) => (
               <span class="deco-tag">{t}</span>
@@ -190,7 +190,7 @@ const filteredProjects = projects.filter(
                   href={p.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-[var(--accent)] tracking-widest uppercase hover:underline"
+                  class="text-[var(--accent-text)] tracking-widest uppercase hover:underline"
                 >
                   GitHub &rarr;
                 </a>
@@ -216,7 +216,7 @@ const filteredProjects = projects.filter(
   <section id="hackathons" class="deco-section-rule max-w-4xl mx-auto px-6 py-20">
 
     <div class="text-center mb-12" data-load style="--i:0">
-      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent)] mb-2">III</p>
+      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent-text)] mb-2">III</p>
       <h2 class="deco-heading text-2xl md:text-3xl">Hackathons</h2>
       <div class="deco-rule w-64 mx-auto mt-4" aria-hidden="true">
         <span class="deco-rule-span" aria-hidden="true">&#9670;</span>
@@ -227,7 +227,7 @@ const filteredProjects = projects.filter(
       {hackathons.map((h, i) => (
         <div class="deco-card" data-load style={`--i:${Math.min(i, 4)}`}>
           <p
-            class="text-[var(--accent)] text-xs tracking-[0.25em] uppercase mb-1"
+            class="text-[var(--accent-text)] text-xs tracking-[0.25em] uppercase mb-1"
             style="font-family:var(--font-display)"
           >
             {h.placement}
@@ -244,7 +244,7 @@ const filteredProjects = projects.filter(
           >
             {h.organizer} &middot; {h.date}
           </p>
-          <p class="text-sm text-[var(--text-dim)] leading-relaxed mb-3">{h.blurb}</p>
+          <p class="text-sm text-[var(--text)] leading-relaxed mb-3">{h.blurb}</p>
           {(h.repoUrl || h.siteUrl) && (
             <div class="flex gap-4 text-xs" style="font-family:var(--font-display)">
               {h.repoUrl && (
@@ -252,7 +252,7 @@ const filteredProjects = projects.filter(
                   href={h.repoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-[var(--accent)] tracking-widest uppercase hover:underline"
+                  class="text-[var(--accent-text)] tracking-widest uppercase hover:underline"
                 >
                   GitHub &rarr;
                 </a>
@@ -278,7 +278,7 @@ const filteredProjects = projects.filter(
   <section id="skills" class="deco-section-rule max-w-4xl mx-auto px-6 py-20">
 
     <div class="text-center mb-12" data-load style="--i:0">
-      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent)] mb-2">IV</p>
+      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent-text)] mb-2">IV</p>
       <h2 class="deco-heading text-2xl md:text-3xl">Stack</h2>
       <div class="deco-rule w-64 mx-auto mt-4" aria-hidden="true">
         <span class="deco-rule-span" aria-hidden="true">&#9670;</span>
@@ -310,7 +310,7 @@ const filteredProjects = projects.filter(
   >
     <div class="deco-sunburst mb-6 mx-auto" aria-hidden="true"></div>
     <p
-      class="deco-heading text-[0.6rem] tracking-[0.5em] text-[var(--accent)] mb-4"
+      class="deco-heading text-[0.6rem] tracking-[0.5em] text-[var(--accent-text)] mb-4"
     >
       Get In Touch
     </p>

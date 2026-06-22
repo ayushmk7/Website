@@ -9,15 +9,16 @@ html[data-theme="deco"] {
   --bg-2:     #faf6ec;
   --surface:  #faf6ec;
   --text:     #1a1a1a;
-  --text-dim: #6b6253;
-  --accent:   #b8902b;
+  --text-dim: #4a4036;   /* darkened: was #6b6253 (~3.8:1), now ~6.5:1 on cream */
+  --accent:   #b8902b;   /* kept for rules/ornaments/accents only */
+  --accent-text: #7a5c0a; /* AA-safe gold for small text on cream (~5.5:1) */
   --accent-2: #0f5c4a;
 
   --font-display: 'Cinzel', serif;
   --font-body:    'Jost', sans-serif;
   --font-mono:    'Jost', monospace;
   --w-display: 700;
-  --w-body:    300;
+  --w-body:    400;      /* was 300; 400 improves stroke legibility */
   --radius: 0;
   --border: 1px solid var(--accent);
   --ease:   cubic-bezier(0.16, 1, 0.3, 1);
@@ -34,8 +35,9 @@ html[data-theme="deco"].dark {
   --bg-2:     #14110c;
   --surface:  #14110c;
   --text:     #f3ead2;
-  --text-dim: #b7a980;
+  --text-dim: #c8b98a;   /* lightened from #b7a980 for ~7:1 on near-black */
   --accent:   #c9a227;
+  --accent-text: #c9a227; /* gold is already AA on dark bg */
   --accent-2: #1f8a6e;
   --border: 1px solid var(--accent);
 }
@@ -234,6 +236,33 @@ html[data-theme="deco"] #contact button:hover {
 html[data-theme="deco"] #contact a {
   font-family: var(--font-display);
   letter-spacing: 0.1em;
+}
+
+/* ── Body text legibility ──────────────────────────────────── */
+html[data-theme="deco"] p,
+html[data-theme="deco"] li,
+html[data-theme="deco"] span:not(.deco-tag):not(.deco-badge):not(.deco-rule-span) {
+  font-family: var(--font-body);
+  font-weight: var(--w-body);
+}
+html[data-theme="deco"] p,
+html[data-theme="deco"] li {
+  font-size: 0.9375rem;  /* ~15px, up from Tailwind text-sm 14px */
+  line-height: 1.6;
+}
+
+/* ── Touch targets: links and buttons at least 36px tall ─── */
+html[data-theme="deco"] a,
+html[data-theme="deco"] button {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+}
+/* Restore block display for paragraph-level links that must flow inline */
+html[data-theme="deco"] p a {
+  display: inline;
+  min-height: unset;
+  padding-block: 0.25em;
 }
 
 /* ── Prevent horizontal overflow ──────────────────────────── */

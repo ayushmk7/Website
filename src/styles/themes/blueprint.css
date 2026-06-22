@@ -3,12 +3,12 @@
 /* -- LIGHT variant: white/pale-blue paper, navy hairline grid ----------- */
 html[data-theme="blueprint"] {
   --bg: #eef4fa; --bg-2: #e4edf6; --surface: #f5f9fd;
-  --text: #0a1929; --text-dim: #3d6080;
+  --text: #0a1929; --text-dim: #244e6e;
   --accent: #0057a8; --accent-2: #c47c00;
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Space Grotesk', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --w-display: 700; --w-body: 300;
+  --w-display: 700; --w-body: 400;
   --radius: 0; --border: 1px dashed rgba(0,87,168,0.35);
   --ease: cubic-bezier(0.16,1,0.3,1); --dur: 0.7s;
   --chip-bg: rgba(0,87,168,0.1);
@@ -20,7 +20,7 @@ html[data-theme="blueprint"] {
 /* -- DARK variant: navy + cyan grid (original palette) ------------------ */
 html[data-theme="blueprint"].dark {
   --bg: #0a1929; --bg-2: #0c1f33; --surface: #0e2236;
-  --text: #d7e9f7; --text-dim: #7aa8c8;
+  --text: #d7e9f7; --text-dim: #9ec6e0;
   --accent: #00d9ff; --accent-2: #ffd23f;
   --border: 1px dashed rgba(0,217,255,0.5);
   --chip-bg: rgba(0,217,255,0.08);
@@ -72,7 +72,7 @@ html[data-theme="blueprint"] .bp-plate {
 }
 
 html[data-theme="blueprint"] .fig-label {
-  font-family: var(--font-mono); color: var(--accent); font-size: 0.7rem;
+  font-family: var(--font-mono); color: var(--text-dim); font-size: 0.75rem;
   letter-spacing: 0.2em; text-transform: uppercase;
 }
 html[data-theme="blueprint"] .draw-underline { position: relative; }
@@ -89,17 +89,20 @@ html[data-theme="blueprint"] .draw-underline::after {
 /* -- Skill chips -------------------------------------------------------- */
 html[data-theme="blueprint"] .bp-chip {
   display: inline-block;
-  padding: 2px 8px;
+  padding: 4px 10px;
   background: var(--chip-bg);
   border: 1px dashed var(--chip-border);
   color: var(--chip-text);
   line-height: 1.6;
+  min-height: 2rem;
 }
 
 /* -- Project card links ------------------------------------------------- */
 html[data-theme="blueprint"] .bp-link {
-  display: inline-block;
-  padding: 2px 10px;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  min-height: 2.25rem;
   border: 1px dashed var(--link-border);
   color: var(--accent);
   text-decoration: none;

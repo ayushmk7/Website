@@ -3,12 +3,12 @@
 /* LIGHT (default) */
 html[data-theme="editorial"] {
   --bg: #f7f3ec; --bg-2: #efe9df; --surface: #fffdf8;
-  --text: #1b1a17; --text-dim: #6b655b;
+  --text: #1b1a17; --text-dim: #524d44;
   --accent: #b3402e; --accent-2: #1b1a17;
   --font-display: 'Fraunces', serif;
   --font-body: 'Source Sans 3', sans-serif;
   --font-mono: 'Source Sans 3', sans-serif;
-  --w-display: 900; --w-body: 300;
+  --w-display: 900; --w-body: 400;
   --radius: 0; --border: 1px solid #1b1a17; --dur: 0.9s;
   --rule-color: #1b1a17;
 }
@@ -16,7 +16,7 @@ html[data-theme="editorial"] {
 /* DARK variant */
 html[data-theme="editorial"].dark {
   --bg: #1a1813; --bg-2: #232018; --surface: #201e18;
-  --text: #f0ebe0; --text-dim: #9e9688;
+  --text: #f0ebe0; --text-dim: #bdb6a8;
   --accent: #c9503a; --accent-2: #f0ebe0;
   --border: 1px solid #f0ebe0;
   --rule-color: #f0ebe0;
@@ -32,16 +32,27 @@ html[data-theme="editorial"] .rule {
   border-top: 1px solid var(--rule-color);
 }
 
+/* Body copy: readable size, weight, and line-height */
+html[data-theme="editorial"] p,
+html[data-theme="editorial"] li {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  font-weight: var(--w-body);
+}
+
 /* Project/site links: small-caps accent style */
 html[data-theme="editorial"] .editorial-link {
   font-family: var(--font-display);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-variant: small-caps;
   letter-spacing: 0.08em;
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
   transition: opacity 0.15s;
+  display: inline-block;
+  padding-block: 0.6rem;
+  padding-inline: 0.2rem;
 }
 html[data-theme="editorial"] .editorial-link:hover {
   opacity: 0.75;
@@ -51,6 +62,12 @@ html[data-theme="editorial"] .editorial-link:hover {
 html[data-theme="editorial"] body,
 html[data-theme="editorial"] main {
   overflow-x: hidden;
+}
+
+/* Multi-column: generous gap and hairline rule between columns */
+html[data-theme="editorial"] .columns-1.md\:columns-2 {
+  column-gap: 2.75rem;
+  column-rule: 1px solid var(--rule-color);
 }
 
 /* Numbered-section grid: single column on mobile, two columns on md+ */

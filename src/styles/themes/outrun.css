@@ -5,16 +5,16 @@ html[data-theme="outrun"] {
   --font-display: 'Orbitron', sans-serif;
   --font-body: 'Rajdhani', sans-serif;
   --font-mono: 'Rajdhani', monospace;
-  --w-display: 900; --w-body: 300;
+  --w-display: 900; --w-body: 500;
   --radius: 0.5rem; --dur: 0.7s;
 }
 
 /* ── LIGHT mode: daytime outrun / Miami ── */
 html[data-theme="outrun"]:not(.dark) {
   --bg: #fde8d8; --bg-2: #fcd5e0;
-  --surface: rgba(255,220,235,0.7);
-  --text: #3b0a45; --text-dim: #7c2d6e;
-  --accent: #d6006e; --accent-2: #e05a00;
+  --surface: rgba(255,220,235,0.90);
+  --text: #3b0a45; --text-dim: #5a1550;
+  --accent: #d6006e; --accent-2: #b84700;
   --border: 1px solid var(--accent);
 }
 html[data-theme="outrun"]:not(.dark) body {
@@ -30,15 +30,17 @@ html[data-theme="outrun"]:not(.dark) .horizon {
     linear-gradient(90deg, rgba(214,0,110,0.3) 2px, transparent 2px);
   background-size: 100% 40px, 40px 100%;
 }
-html[data-theme="outrun"]:not(.dark) .glow {
+html[data-theme="outrun"]:not(.dark) h1.glow,
+html[data-theme="outrun"]:not(.dark) h2.glow,
+html[data-theme="outrun"]:not(.dark) h3.glow {
   text-shadow: 0 0 10px rgba(214,0,110,0.5), 0 0 22px rgba(214,0,110,0.3);
 }
 
 /* ── DARK mode: night sunset, neon grid (original) ── */
 html[data-theme="outrun"].dark {
   --bg: #1a0b2e; --bg-2: #2a1145;
-  --surface: rgba(42,17,69,0.6);
-  --text: #ffe9ff; --text-dim: #b98fd6;
+  --surface: rgba(42,17,69,0.85);
+  --text: #ffe9ff; --text-dim: #d4a8f0;
   --accent: #ff2e97; --accent-2: #ffb347;
   --border: 1px solid var(--accent);
 }
@@ -55,7 +57,9 @@ html[data-theme="outrun"].dark .horizon {
     linear-gradient(90deg, rgba(255,46,151,0.4) 2px, transparent 2px);
   background-size: 100% 40px, 40px 100%;
 }
-html[data-theme="outrun"].dark .glow {
+html[data-theme="outrun"].dark h1.glow,
+html[data-theme="outrun"].dark h2.glow,
+html[data-theme="outrun"].dark h3.glow {
   text-shadow: 0 0 12px var(--accent), 0 0 28px rgba(255,46,151,0.5);
 }
 
@@ -63,6 +67,9 @@ html[data-theme="outrun"].dark .glow {
 html[data-theme="outrun"] body {
   color: var(--text);
   font-family: var(--font-body);
+  font-weight: var(--w-body);
+  font-size: 1rem;
+  line-height: 1.6;
 }
 html[data-theme="outrun"] .horizon {
   position: fixed; inset: 55% 0 0 0; z-index: 0; pointer-events: none; overflow: hidden;

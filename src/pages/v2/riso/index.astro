@@ -36,7 +36,7 @@ const skillEntries = Object.entries(resumeData.skills) as [string, string[]][];
         <div class="bg-[var(--surface)] border-2 border-[var(--text)] rounded-[1.5rem] p-5 shadow-[6px_6px_0_var(--accent)]" data-load style={`--i:${Math.min(i,4)}`}>
           <p class="font-mono text-[var(--accent)]">{j.period}</p>
           <h3 class="text-xl" style="font-weight:800">{j.company} . {j.role}</h3>
-          <ul class="mt-2 space-y-1 text-sm">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
+          <ul class="mt-2 space-y-1">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
         </div>
       ))}
     </div>
@@ -48,7 +48,7 @@ const skillEntries = Object.entries(resumeData.skills) as [string, string[]][];
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
         <div class="bg-[var(--surface)] border-2 border-[var(--text)] rounded-[1.5rem] p-5 shadow-[6px_6px_0_var(--accent)]" data-load style={`--i:${Math.min(i,4)}`}>
           <h3 class="text-lg" style="font-weight:800">{p.title}</h3>
-          <p class="text-sm mt-2">{p.description}</p>
+          <p class="mt-2">{p.description}</p>
           {p.tags && p.tags.length > 0 && (
             <div class="flex flex-wrap gap-1 mt-3">
               {p.tags.map((t) => (
@@ -78,7 +78,7 @@ const skillEntries = Object.entries(resumeData.skills) as [string, string[]][];
         <div class="bg-[var(--surface)] border-2 border-[var(--text)] rounded-[1.5rem] p-5 shadow-[6px_6px_0_var(--accent)]" data-load style={`--i:${Math.min(i,4)}`}>
           <p class="font-mono text-[var(--accent)]">&gt; {h.placement}</p>
           <h3 class="text-lg" style="font-weight:800">{h.event}</h3>
-          <p class="text-sm mt-2">{h.blurb}</p>
+          <p class="mt-2">{h.blurb}</p>
         </div>
       ))}
     </div>

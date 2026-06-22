@@ -30,9 +30,9 @@ const categoryLabels: Record<string, string> = {
     <div class="grid md:grid-cols-2 gap-6">
       {experience.map((j, i) => (
         <div class="panel p-5" data-load style={`--i:${Math.min(i,4)}`}>
-          <p class="text-sm" style="font-weight:800">{j.period}</p>
+          <p class="text-sm" style="font-weight:600">{j.period}</p>
           <h3 class="text-3xl text-[var(--accent)]" style="font-family:var(--font-display)">{j.company}</h3>
-          <p style="font-weight:800">{j.role}</p>
+          <p style="font-weight:700">{j.role}</p>
           <ul class="mt-2 space-y-1 text-sm">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
         </div>
       ))}
@@ -80,7 +80,7 @@ const categoryLabels: Record<string, string> = {
     <div class="grid md:grid-cols-2 gap-6">
       {hackathons.map((h, i) => (
         <div class="panel p-5 bg-[var(--accent-2)]" data-load style={`--i:${Math.min(i,4)}`}>
-          <p class="text-sm" style="font-weight:800">{h.placement}</p>
+          <p class="text-sm" style="font-weight:600">{h.placement}</p>
           <h3 class="text-3xl text-[var(--accent)]" style="font-family:var(--font-display)">{h.event}</h3>
           <p class="text-sm mt-2">{h.blurb}</p>
         </div>

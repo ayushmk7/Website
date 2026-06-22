@@ -25,7 +25,7 @@ const skillGroups = Object.entries(resumeData.skills) as [string, string[]][];
     <p class="mt-6 text-[var(--accent)]" data-load>CS and Math @UMichigan</p>
     <h1 class="text-5xl md:text-7xl mt-3" style="font-family:var(--font-display);font-weight:700;letter-spacing:-0.02em;--i:1" data-load>Ayush Madhav Kumar</h1>
     <p class="font-mono mt-4 text-[var(--accent)]" data-load style="--i:2">&gt; NSF-backed research</p>
-    <a class="font-mono text-[var(--accent)] hover:underline" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">&gt; view resume (pdf)</a>
+    <a class="font-mono text-[var(--accent)] hover:underline" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3;padding:0.5rem 0.75rem;display:inline-block;min-height:2.75rem;line-height:1.75rem">&gt; view resume (pdf)</a>
   </section>
 
   <section id="experience" class="max-w-5xl mx-auto px-6 py-16">
@@ -36,7 +36,7 @@ const skillGroups = Object.entries(resumeData.skills) as [string, string[]][];
           <p class="text-[var(--accent)] text-sm">{j.period}</p>
           <h3 class="text-xl" style="font-family:var(--font-display);font-weight:700">{j.company}</h3>
           <p class="text-[var(--text-dim)]">{j.role}</p>
-          <ul class="mt-2 space-y-1 text-sm">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
+          <ul class="mt-2 space-y-1 text-sm" style="line-height:1.55">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
         </div>
       ))}
     </div>

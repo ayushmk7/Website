@@ -48,10 +48,10 @@ const categoryLabels: Record<string, string> = {
           Ayush<br/>Madhav Kumar
         </h1>
         <hr class="sw-rule-accent mt-6 mb-4" aria-hidden="true" />
-        <p class="text-[var(--text-dim)] text-lg" style="font-family:var(--font-display);font-weight:300;--i:3" data-load>
+        <p class="text-[var(--text-dim)] text-lg" style="font-family:var(--font-display);font-weight:400;--i:3" data-load>
           CS and Math @UMichigan
         </p>
-        <p class="mt-2 text-base" style="font-weight:300;--i:4" data-load>
+        <p class="mt-2 text-base" style="font-weight:400;--i:4" data-load>
           &gt; NSF-backed research
         </p>
         <p class="mt-4" data-load style="--i:5">
@@ -59,7 +59,7 @@ const categoryLabels: Record<string, string> = {
             href="/AyushMadhavResume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            class="sw-tag border border-[var(--accent)] px-4 py-2 inline-block hover:bg-[var(--accent)] hover:text-white transition-colors"
+            class="sw-tag border border-[var(--accent)] px-4 py-3 inline-flex items-center hover:bg-[var(--accent)] hover:text-white transition-colors"
             style="transition-duration:var(--dur);transition-timing-function:var(--ease);"
           >Resume</a>
         </p>
@@ -97,10 +97,10 @@ const categoryLabels: Record<string, string> = {
             </h3>
             <span class="sw-tag self-start">{j.kind}</span>
           </div>
-          <p class="text-[var(--text-dim)] mb-3" style="font-weight:300;">
+          <p class="text-[var(--text-dim)] mb-3" style="font-weight:400;font-size:0.9375rem;">
             {j.role} . {j.period}{j.location ? ` . ${j.location}` : ''}
           </p>
-          <ul class="space-y-1" style="font-weight:300;line-height:1.6;">
+          <ul class="space-y-1" style="font-weight:400;line-height:1.6;font-size:0.9375rem;">
             {j.bullets.map(b => (
               <li class="flex gap-3">
                 <span class="text-[var(--accent)] select-none flex-shrink-0 mt-[0.3em]" aria-hidden="true">+</span>
@@ -135,7 +135,7 @@ const categoryLabels: Record<string, string> = {
             <h3 style="font-family:var(--font-display);font-weight:900;font-size:1rem;margin-bottom:0.375rem;">
               {p.title}
             </h3>
-            <p class="text-[var(--text-dim)]" style="font-weight:300;line-height:1.55;font-size:0.9375rem;">
+            <p class="text-[var(--text-dim)]" style="font-weight:400;line-height:1.6;font-size:0.9375rem;">
               {p.description}
             </p>
             {(p.githubUrl || p.websiteUrl) && (
@@ -184,12 +184,12 @@ const categoryLabels: Record<string, string> = {
         <div class="sw-entry" data-load style={`--i:${Math.min(i, 4)}`}>
           <div class="grid md:grid-cols-[1fr_auto] gap-2 mb-1">
             <p class="sw-tag">{h.placement}</p>
-            <span class="text-[var(--text-dim)] text-sm" style="font-weight:300;">{h.date}</span>
+            <span class="text-[var(--text-dim)] text-sm" style="font-weight:400;">{h.date}</span>
           </div>
           <h3 style="font-family:var(--font-display);font-weight:900;font-size:1.0625rem;margin-bottom:0.375rem;">
             {h.project} . {h.event}
           </h3>
-          <p class="text-[var(--text-dim)] mb-3" style="font-weight:300;line-height:1.6;max-width:65ch;">
+          <p class="text-[var(--text-dim)] mb-3" style="font-weight:400;line-height:1.6;font-size:0.9375rem;max-width:65ch;">
             {h.blurb}
           </p>
           <div class="flex gap-4 flex-wrap">
@@ -237,7 +237,7 @@ const categoryLabels: Record<string, string> = {
             <span class="sw-stack-label">
               {categoryLabels[category] ?? category}
             </span>
-            <p style="font-weight:300;line-height:1.6;">
+            <p style="font-weight:400;line-height:1.6;font-size:0.9375rem;">
               {(items as string[]).join(', ')}
             </p>
           </div>

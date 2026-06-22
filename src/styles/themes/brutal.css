@@ -3,12 +3,12 @@
 /* ── LIGHT palette (concrete off-white, black, red) ── */
 html[data-theme="brutal"] {
   --bg: #e9e6dd; --bg-2: #ffffff; --surface: #ffffff;
-  --text: #111111; --text-dim: #444444;
-  --accent: #ff2200; --accent-2: #111111;
+  --text: #111111; --text-dim: #555555;
+  --accent: #ff2200; --accent-text: #b81500; --accent-2: #111111;
   --font-display: 'Anton', sans-serif;
   --font-body: 'Archivo', sans-serif;
   --font-mono: 'Archivo', monospace;
-  --w-display: 400; --w-body: 300;
+  --w-display: 400; --w-body: 400;
   --radius: 0; --border: 4px solid var(--text); --ease: linear; --dur: 0.25s;
   --shadow-hard: #111111;
 }
@@ -17,14 +17,14 @@ html[data-theme="brutal"] {
 html[data-theme="brutal"].dark {
   --bg: #1a1917; --bg-2: #252320; --surface: #252320;
   --text: #ede9df; --text-dim: #a09c94;
-  --accent: #ff2200; --accent-2: #ede9df;
+  --accent: #ff2200; --accent-text: #ff4422; --accent-2: #ede9df;
   --shadow-hard: #ede9df;
 }
 
-html[data-theme="brutal"] body { overflow-x: hidden; }
+html[data-theme="brutal"] body { overflow-x: hidden; font-size: 1rem; line-height: 1.55; font-weight: var(--w-body); }
 html[data-theme="brutal"] .hard { border: var(--border); box-shadow: 6px 6px 0 var(--shadow-hard); background: var(--surface); }
 html[data-theme="brutal"] .hard-accent { box-shadow: 6px 6px 0 var(--accent); }
-html[data-theme="brutal"] .project-link { display: inline-block; transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease); text-decoration: none; color: var(--text); }
+html[data-theme="brutal"] .project-link { display: inline-flex; align-items: center; min-height: 36px; transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease); text-decoration: none; color: var(--text); }
 html[data-theme="brutal"] .project-link:hover { box-shadow: 3px 3px 0 var(--shadow-hard); transform: translate(3px, 3px); }
 html[data-theme="brutal"] .project-link.hard-accent:hover { box-shadow: 3px 3px 0 var(--accent); }
 html[data-theme="brutal"] .marquee { overflow: hidden; white-space: nowrap; border-block: var(--border); background: var(--accent); color: #fff; }
