@@ -1,0 +1,23 @@
+/* src/styles/themes/aurora.css */
+html[data-theme="aurora"] {
+  --bg: #2e3440; --bg-2: #3b4252; --surface: rgba(59,66,82,0.55);
+  --text: #eceff4; --text-dim: #a9b3c9;
+  --accent: #88c0d0; --accent-2: #a3be8c;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --w-display: 700; --w-body: 200;
+  --radius: 1.25rem; --border: 1px solid rgba(136,192,208,0.4); --dur: 0.8s;
+}
+html[data-theme="aurora"] body {
+  background:
+    radial-gradient(at 15% 20%, rgba(136,192,208,0.35) 0, transparent 45%),
+    radial-gradient(at 80% 15%, rgba(163,190,140,0.30) 0, transparent 45%),
+    radial-gradient(at 70% 85%, rgba(180,142,173,0.30) 0, transparent 45%),
+    radial-gradient(at 25% 80%, rgba(94,129,172,0.35) 0, transparent 45%),
+    var(--bg);
+  background-attachment: fixed;
+  animation: auroraShift 18s ease-in-out infinite alternate;
+}
+@keyframes auroraShift { to { background-position: 8% -6%, -6% 8%, 6% -8%, -8% 6%; } }
+@media (prefers-reduced-motion: reduce) { html[data-theme="aurora"] body { animation: none; } }
+html[data-theme="aurora"] .glass { background: var(--surface); backdrop-filter: blur(10px); border: var(--border); border-radius: var(--radius); }

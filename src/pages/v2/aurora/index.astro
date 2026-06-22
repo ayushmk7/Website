@@ -1,0 +1,68 @@
+---
+// src/pages/v2/aurora/index.astro
+import ThemeLayout from '../../../layouts/ThemeLayout.astro';
+import '../../../styles/themes/aurora.css';
+import Photo from '../../../components/v2/shared/Photo.astro';
+import { experience, hackathons } from '../../../data/v2';
+import { projects } from '../../../data/projects';
+import resumeData from '../../../data/resume.json';
+---
+<ThemeLayout themeKey="aurora" title="Ayush Madhav Kumar. Aurora">
+  <section class="min-h-[100svh] min-h-[100dvh] flex flex-col justify-center items-center text-center px-6">
+    <Photo class="h-40 w-40 md:h-[19rem] md:w-[12.6rem] rounded-[1.25rem] border border-[var(--accent)]/40" />
+    <p class="mt-6 text-[var(--accent)]" data-load>CS and Math @UMichigan</p>
+    <h1 class="text-5xl md:text-7xl mt-3" style="font-family:var(--font-display);font-weight:700;letter-spacing:-0.02em" data-load style="--i:1">Ayush Madhav Kumar</h1>
+    <p class="font-mono mt-4 text-[var(--accent)]" data-load style="--i:2">&gt; NSF-backed research</p>
+    <a class="font-mono text-[var(--accent)] hover:underline" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">&gt; view resume (pdf)</a>
+  </section>
+
+  <section id="experience" class="max-w-5xl mx-auto px-6 py-16">
+    <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Experience</h2>
+    <div class="grid md:grid-cols-2 gap-5">
+      {experience.map((j, i) => (
+        <div class="glass p-5" data-load style={`--i:${Math.min(i,4)}`}>
+          <p class="text-[var(--accent)] text-sm">{j.period}</p>
+          <h3 class="text-xl" style="font-family:var(--font-display);font-weight:700">{j.company}</h3>
+          <p class="text-[var(--text-dim)]">{j.role}</p>
+          <ul class="mt-2 space-y-1 text-sm">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="projects" class="max-w-5xl mx-auto px-6 py-16">
+    <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Projects</h2>
+    <div class="grid md:grid-cols-3 gap-5">
+      {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
+        <div class="glass p-5" data-load style={`--i:${Math.min(i,4)}`}>
+          <h3 style="font-family:var(--font-display);font-weight:700">{p.title}</h3>
+          <p class="text-sm text-[var(--text-dim)] mt-2">{p.description}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="hackathons" class="max-w-5xl mx-auto px-6 py-16">
+    <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Hackathons</h2>
+    <div class="grid md:grid-cols-2 gap-5">
+      {hackathons.map((h, i) => (
+        <div class="glass p-5" data-load style={`--i:${Math.min(i,4)}`}>
+          <p class="text-[var(--accent)] text-sm">&gt; {h.placement}</p>
+          <h3 style="font-family:var(--font-display);font-weight:700">{h.event}</h3>
+          <p class="text-sm text-[var(--text-dim)] mt-2">{h.blurb}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="skills" class="max-w-5xl mx-auto px-6 py-16">
+    <h2 class="text-4xl mb-8" style="font-family:var(--font-display);font-weight:700">Stack</h2>
+    <div class="flex flex-wrap gap-2">
+      {Object.values(resumeData.skills).flat().map((s) => <span class="glass px-3 py-1 text-sm rounded-full">{s}</span>)}
+    </div>
+  </section>
+
+  <footer id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center">
+    <a href="mailto:contactayushmadhav@gmail.com" class="text-xl text-[var(--accent)] hover:underline">contactayushmadhav@gmail.com</a>
+  </footer>
+</ThemeLayout>

@@ -1,0 +1,25 @@
+/* src/styles/themes/outrun.css */
+html[data-theme="outrun"] {
+  --bg: #1a0b2e; --bg-2: #2a1145; --surface: rgba(42,17,69,0.6);
+  --text: #ffe9ff; --text-dim: #b98fd6;
+  --accent: #ff2e97; --accent-2: #ffb347;
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Rajdhani', sans-serif;
+  --font-mono: 'Rajdhani', monospace;
+  --w-display: 900; --w-body: 300;
+  --radius: 0.5rem; --border: 1px solid var(--accent); --dur: 0.7s;
+}
+html[data-theme="outrun"] body {
+  background:
+    radial-gradient(circle at 50% 78%, #ffb347 0 6%, #ff2e97 12%, transparent 40%),
+    linear-gradient(#1a0b2e 0 55%, #3a1259 80%, #ff2e97 120%);
+  background-attachment: fixed;
+}
+html[data-theme="outrun"] .horizon {
+  position: fixed; inset: 55% 0 0 0; z-index: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(255,46,151,0.5) 2px, transparent 2px), linear-gradient(90deg, rgba(255,46,151,0.4) 2px, transparent 2px);
+  background-size: 100% 40px, 40px 100%;
+  transform: perspective(300px) rotateX(72deg); transform-origin: top;
+}
+html[data-theme="outrun"] .glow { text-shadow: 0 0 12px var(--accent), 0 0 28px rgba(255,46,151,0.5); }
+html[data-theme="outrun"] section, html[data-theme="outrun"] header, html[data-theme="outrun"] footer { position: relative; z-index: 1; }

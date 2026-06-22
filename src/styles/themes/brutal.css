@@ -1,0 +1,17 @@
+/* src/styles/themes/brutal.css */
+html[data-theme="brutal"] {
+  --bg: #e9e6dd; --bg-2: #ffffff; --surface: #ffffff;
+  --text: #111111; --text-dim: #444444;
+  --accent: #ff2200; --accent-2: #111111;
+  --font-display: 'Anton', sans-serif;
+  --font-body: 'Archivo', sans-serif;
+  --font-mono: 'Archivo', monospace;
+  --w-display: 400; --w-body: 300;
+  --radius: 0; --border: 4px solid #111; --ease: linear; --dur: 0.25s;
+}
+html[data-theme="brutal"] .hard { border: var(--border); box-shadow: 6px 6px 0 #111; background: var(--surface); }
+html[data-theme="brutal"] .hard-accent { box-shadow: 6px 6px 0 var(--accent); }
+html[data-theme="brutal"] .marquee { overflow: hidden; white-space: nowrap; border-block: var(--border); background: var(--accent); color: #fff; }
+html[data-theme="brutal"] .marquee span { display: inline-block; padding-block: 0.4rem; animation: bMarq 18s linear infinite; font-family: var(--font-display); letter-spacing: 0.05em; }
+@keyframes bMarq { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { html[data-theme="brutal"] .marquee span { animation: none; } }

@@ -1,0 +1,69 @@
+---
+// src/pages/v2/riso/index.astro
+import ThemeLayout from '../../../layouts/ThemeLayout.astro';
+import '../../../styles/themes/riso.css';
+import Photo from '../../../components/v2/shared/Photo.astro';
+import { experience, hackathons } from '../../../data/v2';
+import { projects } from '../../../data/projects';
+import resumeData from '../../../data/resume.json';
+---
+<ThemeLayout themeKey="riso" title="Ayush Madhav Kumar. Risograph">
+  <div class="grain"></div>
+  <section class="min-h-[100svh] min-h-[100dvh] flex flex-col justify-center max-w-5xl mx-auto px-6">
+    <Photo class="h-40 w-40 md:h-[19rem] md:w-[12.6rem] rounded-[1.5rem] border-2 border-[var(--text)]" />
+    <h1 class="misreg text-6xl md:text-8xl mt-6" data-text="Ayush Madhav Kumar" style="font-family:var(--font-display);font-weight:800" data-load>Ayush Madhav Kumar</h1>
+    <p class="text-xl mt-4" data-load style="--i:1">CS and Math @UMichigan. Systems and AI infrastructure.</p>
+    <p class="font-mono mt-2 text-[var(--accent)]" data-load style="--i:2">&gt; NSF-backed research</p>
+    <a class="font-mono text-[var(--accent)] underline" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">&gt; view resume (pdf)</a>
+  </section>
+
+  <!-- sections: rounded cards with pink offset; reuse same shell per section -->
+  <section id="experience" class="max-w-5xl mx-auto px-6 py-16">
+    <h2 class="misreg text-4xl mb-8" data-text="Experience" style="font-family:var(--font-display);font-weight:800">Experience</h2>
+    <div class="space-y-5">
+      {experience.map((j, i) => (
+        <div class="bg-[var(--surface)] border-2 border-[var(--text)] rounded-[1.5rem] p-5 shadow-[6px_6px_0_var(--accent)]" data-load style={`--i:${Math.min(i,4)}`}>
+          <p class="font-mono text-[var(--accent)]">{j.period}</p>
+          <h3 class="text-xl" style="font-weight:800">{j.company} . {j.role}</h3>
+          <ul class="mt-2 space-y-1 text-sm">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="projects" class="max-w-5xl mx-auto px-6 py-16">
+    <h2 class="misreg text-4xl mb-8" data-text="Projects" style="font-family:var(--font-display);font-weight:800">Projects</h2>
+    <div class="grid md:grid-cols-2 gap-5">
+      {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
+        <div class="bg-[var(--surface)] border-2 border-[var(--text)] rounded-[1.5rem] p-5 shadow-[6px_6px_0_var(--accent)]" data-load style={`--i:${Math.min(i,4)}`}>
+          <h3 class="text-lg" style="font-weight:800">{p.title}</h3>
+          <p class="text-sm mt-2">{p.description}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="hackathons" class="max-w-5xl mx-auto px-6 py-16">
+    <h2 class="misreg text-4xl mb-8" data-text="Hackathons" style="font-family:var(--font-display);font-weight:800">Hackathons</h2>
+    <div class="grid md:grid-cols-2 gap-5">
+      {hackathons.map((h, i) => (
+        <div class="bg-[var(--surface)] border-2 border-[var(--text)] rounded-[1.5rem] p-5 shadow-[6px_6px_0_var(--accent)]" data-load style={`--i:${Math.min(i,4)}`}>
+          <p class="font-mono text-[var(--accent)]">&gt; {h.placement}</p>
+          <h3 class="text-lg" style="font-weight:800">{h.event}</h3>
+          <p class="text-sm mt-2">{h.blurb}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="skills" class="max-w-5xl mx-auto px-6 py-16">
+    <h2 class="misreg text-4xl mb-8" data-text="Stack" style="font-family:var(--font-display);font-weight:800">Stack</h2>
+    <div class="flex flex-wrap gap-2">
+      {Object.values(resumeData.skills).flat().map((s) => <span class="border-2 border-[var(--text)] rounded-full px-3 py-1 text-sm">{s}</span>)}
+    </div>
+  </section>
+
+  <footer id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center">
+    <a href="mailto:contactayushmadhav@gmail.com" class="text-xl underline text-[var(--accent)]">contactayushmadhav@gmail.com</a>
+  </footer>
+</ThemeLayout>

@@ -1,0 +1,87 @@
+---
+// src/pages/v2/editorial/index.astro
+import ThemeLayout from '../../../layouts/ThemeLayout.astro';
+import '../../../styles/themes/editorial.css';
+import Photo from '../../../components/v2/shared/Photo.astro';
+import { experience, hackathons } from '../../../data/v2';
+import { projects } from '../../../data/projects';
+import resumeData from '../../../data/resume.json';
+---
+<ThemeLayout themeKey="editorial" title="Ayush Madhav Kumar. Editorial">
+  <header class="max-w-5xl mx-auto px-6 pt-24 pb-10">
+    <p class="uppercase tracking-[0.3em] text-xs text-[var(--accent)]" data-load>Portfolio . MMXXVI</p>
+    <h1 class="text-6xl md:text-8xl leading-[0.95] mt-4" style="font-family:var(--font-display);font-weight:900" data-load style="--i:1">Ayush<br/>Madhav Kumar</h1>
+  </header>
+  <section class="min-h-[60svh] max-w-5xl mx-auto px-6 grid md:grid-cols-[1fr_300px] gap-10 items-end pb-16">
+    <p class="dropcap text-xl leading-relaxed max-w-prose" data-load style="--i:2">
+      CS and Math at the University of Michigan working in systems programming and AI infrastructure: on-device inference engines, fine-tuned coding agents, and the tooling around them. NSF-backed research; contributor at Cactus (YC S25). <a class="underline text-[var(--accent)]" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer">Read the resume.</a>
+    </p>
+    <Photo class="h-[19rem] w-[12.6rem] justify-self-end" />
+  </section>
+
+  <!-- numbered article sections; reuse a small inline pattern -->
+  <section id="experience" class="rule max-w-5xl mx-auto px-6 py-16">
+    <div class="grid md:grid-cols-[120px_1fr] gap-6">
+      <p class="text-5xl text-[var(--text-dim)]" style="font-family:var(--font-display)">01</p>
+      <div>
+        <h2 class="text-3xl mb-8" style="font-family:var(--font-display);font-weight:900">Experience</h2>
+        {experience.map((j, i) => (
+          <div class="mb-8 max-w-prose" data-load style={`--i:${Math.min(i,4)}`}>
+            <h3 class="text-xl" style="font-family:var(--font-display);font-weight:900">{j.company}</h3>
+            <p class="italic text-[var(--text-dim)]" style="font-family:var(--font-display)">{j.role} . {j.period}</p>
+            <ul class="mt-2 space-y-1">{j.bullets.map((b) => <li>{b}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="rule max-w-5xl mx-auto px-6 py-16">
+    <div class="grid md:grid-cols-[120px_1fr] gap-6">
+      <p class="text-5xl text-[var(--text-dim)]" style="font-family:var(--font-display)">02</p>
+      <div>
+        <h2 class="text-3xl mb-8" style="font-family:var(--font-display);font-weight:900">Projects</h2>
+        <div class="columns-1 md:columns-2 gap-10">
+          {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p) => (
+            <div class="mb-6 break-inside-avoid">
+              <h3 class="text-lg" style="font-family:var(--font-display);font-weight:900">{p.title}</h3>
+              <p class="text-[var(--text-dim)]">{p.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hackathons" class="rule max-w-5xl mx-auto px-6 py-16">
+    <div class="grid md:grid-cols-[120px_1fr] gap-6">
+      <p class="text-5xl text-[var(--text-dim)]" style="font-family:var(--font-display)">03</p>
+      <div>
+        <h2 class="text-3xl mb-8" style="font-family:var(--font-display);font-weight:900">Hackathons</h2>
+        {hackathons.map((h) => (
+          <div class="mb-6 max-w-prose">
+            <p class="italic text-[var(--accent)]" style="font-family:var(--font-display)">{h.placement}</p>
+            <h3 class="text-lg" style="font-family:var(--font-display);font-weight:900">{h.event}</h3>
+            <p class="text-[var(--text-dim)]">{h.blurb}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="rule max-w-5xl mx-auto px-6 py-16">
+    <div class="grid md:grid-cols-[120px_1fr] gap-6">
+      <p class="text-5xl text-[var(--text-dim)]" style="font-family:var(--font-display)">04</p>
+      <div>
+        <h2 class="text-3xl mb-8" style="font-family:var(--font-display);font-weight:900">Stack</h2>
+        {Object.entries(resumeData.skills).map(([k, items]) => (
+          <p class="mb-3 max-w-prose"><span class="text-[var(--accent)]" style="font-family:var(--font-display)">{k}. </span>{items.join(', ')}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact" class="rule max-w-5xl mx-auto px-6 py-20 text-center">
+    <a href="mailto:contactayushmadhav@gmail.com" class="text-2xl underline text-[var(--accent)]" style="font-family:var(--font-display)">contactayushmadhav@gmail.com</a>
+  </footer>
+</ThemeLayout>

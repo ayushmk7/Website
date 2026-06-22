@@ -1,0 +1,17 @@
+/* src/styles/themes/riso.css */
+html[data-theme="riso"] {
+  --bg: #f3ecdd; --bg-2: #f3ecdd; --surface: #fbf6ea;
+  --text: #1d2bd4; --text-dim: #5a63c9;   /* riso blue as "ink 1" */
+  --accent: #ff48a6; --accent-2: #1d2bd4; /* fluoro pink "ink 2" */
+  --font-display: 'Hanken Grotesk', sans-serif;
+  --font-body: 'Hanken Grotesk', sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+  --w-display: 800; --w-body: 300;
+  --radius: 1.5rem; --border: 2px solid var(--text); --dur: 0.6s;
+}
+html[data-theme="riso"] .misreg { position: relative; }
+html[data-theme="riso"] .misreg::before {
+  content: attr(data-text); position: absolute; left: 3px; top: 3px;
+  color: var(--accent); z-index: -1; mix-blend-mode: multiply;
+}
+html[data-theme="riso"] [data-load] { animation-timing-function: cubic-bezier(0.34,1.56,0.64,1); }

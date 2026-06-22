@@ -1,0 +1,22 @@
+/* src/styles/themes/comic.css */
+html[data-theme="comic"] {
+  --bg: #fff6df; --bg-2: #ffffff; --surface: #ffffff;
+  --text: #141414; --text-dim: #444444;
+  --accent: #ff3b3b;   /* red */
+  --accent-2: #ffd400; /* yellow */
+  --comic-blue: #2b6cff;
+  --font-display: 'Bangers', cursive;
+  --font-body: 'Nunito Sans', sans-serif;
+  --font-mono: 'Nunito Sans', monospace;
+  --w-display: 400; --w-body: 300;
+  --radius: 0.75rem; --border: 3px solid #141414; --dur: 0.5s;
+}
+html[data-theme="comic"] body {
+  background-image: radial-gradient(circle, rgba(0,0,0,0.14) 1.5px, transparent 1.7px);
+  background-size: 14px 14px; background-color: var(--bg);
+}
+html[data-theme="comic"] .panel { border: var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: 6px 6px 0 #141414; }
+html[data-theme="comic"] .bubble { border: var(--border); border-radius: 1.5rem; background: #fff; position: relative; }
+html[data-theme="comic"] .bubble::after { content:''; position:absolute; bottom:-14px; left:32px; width:0;height:0; border:10px solid transparent; border-top-color:#141414; }
+html[data-theme="comic"] .pop { letter-spacing: 0.02em; }
+html[data-theme="comic"] [data-load] { animation-timing-function: cubic-bezier(0.34,1.56,0.64,1); }

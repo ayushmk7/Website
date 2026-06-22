@@ -1,0 +1,75 @@
+---
+// src/pages/v2/bauhaus/index.astro
+import ThemeLayout from '../../../layouts/ThemeLayout.astro';
+import '../../../styles/themes/bauhaus.css';
+import Photo from '../../../components/v2/shared/Photo.astro';
+import { experience, hackathons } from '../../../data/v2';
+import { projects } from '../../../data/projects';
+import resumeData from '../../../data/resume.json';
+---
+<ThemeLayout themeKey="bauhaus" title="Ayush Madhav Kumar. Bauhaus">
+  <section class="relative overflow-hidden min-h-[100svh] min-h-[100dvh] grid md:grid-cols-2">
+    <div class="shape circle" style="width:220px;height:220px;top:-60px;right:-40px"></div>
+    <div class="shape tri" style="bottom:40px;left:30%"></div>
+    <div class="relative z-10 flex flex-col justify-center p-8 md:p-14">
+      <div class="h-3 w-24 bg-[var(--accent)] mb-6" data-load></div>
+      <p class="uppercase tracking-[0.2em]" data-load style="--i:1">CS and Math @UMichigan</p>
+      <h1 class="text-6xl md:text-8xl uppercase leading-[0.9] mt-3" style="font-family:var(--font-display);font-weight:700" data-load style="--i:2">Ayush<br/>Madhav<br/>Kumar</h1>
+      <a class="block mt-6 w-fit px-5 py-2 bg-[var(--accent-2)] text-white uppercase tracking-wider" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">Resume</a>
+    </div>
+    <div class="relative z-10 grid place-items-center bg-[var(--bau-yellow)] p-8">
+      <Photo class="h-[20rem] w-[13.3rem] block border-[3px] border-[var(--text)]" />
+    </div>
+  </section>
+
+  <section id="experience" class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="text-5xl uppercase mb-8" style="font-family:var(--font-display);font-weight:700">Experience</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      {experience.map((j, i) => (
+        <div class="block p-5 bg-[var(--surface)]" data-load style={`--i:${Math.min(i,4)}`}>
+          <div class="h-2 w-12 mb-3" style={i % 2 ? 'background:var(--accent-2)' : 'background:var(--accent)'}></div>
+          <p class="uppercase text-sm">{j.period}</p>
+          <h3 class="text-2xl uppercase" style="font-family:var(--font-display);font-weight:700">{j.company}</h3>
+          <p>{j.role}</p>
+          <ul class="mt-2 space-y-1 text-sm">{j.bullets.map((b) => <li>- {b}</li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="projects" class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="text-5xl uppercase mb-8" style="font-family:var(--font-display);font-weight:700">Projects</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
+        <div class="block p-5 bg-[var(--surface)]" data-load style={`--i:${Math.min(i,4)}`}>
+          <h3 class="text-xl uppercase" style="font-family:var(--font-display);font-weight:700">{p.title}</h3>
+          <p class="text-sm mt-2">{p.description}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="hackathons" class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="text-5xl uppercase mb-8" style="font-family:var(--font-display);font-weight:700">Hackathons</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      {hackathons.map((h, i) => (
+        <div class="block p-5" style={i % 2 ? 'background:var(--accent)' : 'background:var(--accent-2)'} data-load>
+          <p class="uppercase text-sm text-white">{h.placement}</p>
+          <h3 class="text-2xl uppercase text-white" style="font-family:var(--font-display);font-weight:700">{h.event}</h3>
+          <p class="text-sm mt-2 text-white">{h.blurb}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="skills" class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="text-5xl uppercase mb-8" style="font-family:var(--font-display);font-weight:700">Stack</h2>
+    <div class="flex flex-wrap gap-2">
+      {Object.values(resumeData.skills).flat().map((s) => <span class="block px-3 py-1 text-sm bg-[var(--surface)]">{s}</span>)}
+    </div>
+  </section>
+
+  <footer id="contact" class="max-w-6xl mx-auto px-4 py-20">
+    <a href="mailto:contactayushmadhav@gmail.com" class="inline-block px-6 py-3 bg-[var(--accent)] text-white text-2xl uppercase" style="font-family:var(--font-display)">contactayushmadhav@gmail.com</a>
+  </footer>
+</ThemeLayout>

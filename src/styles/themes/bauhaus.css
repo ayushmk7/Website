@@ -1,0 +1,25 @@
+/* src/styles/themes/bauhaus.css */
+html[data-theme="bauhaus"] {
+  --bg: #f4f1ea; --bg-2: #ffffff; --surface: #ffffff;
+  --text: #141414; --text-dim: #555555;
+  --accent: #e63329;   /* red */
+  --accent-2: #1f4ed8; /* blue */
+  --bau-yellow: #f4c20d;
+  --font-display: 'Jost', sans-serif;
+  --font-body: 'Jost', sans-serif;
+  --font-mono: 'Jost', monospace;
+  --w-display: 700; --w-body: 300;
+  --radius: 0; --border: 3px solid #141414; --dur: 0.6s;
+}
+html[data-theme="bauhaus"] .shape { position: absolute; z-index: 0; }
+html[data-theme="bauhaus"] .circle { border-radius: 50%; background: var(--accent); }
+html[data-theme="bauhaus"] .square { background: var(--accent-2); }
+html[data-theme="bauhaus"] .tri {
+  width: 0; height: 0; background: transparent;
+  border-left: 60px solid transparent; border-right: 60px solid transparent;
+  border-bottom: 104px solid var(--bau-yellow);
+}
+html[data-theme="bauhaus"] .block { border: var(--border); }
+/* alternate slide direction by nth */
+html[data-theme="bauhaus"] [data-load]:nth-child(even) { animation-name: bauSlideR; }
+@keyframes bauSlideR { from { opacity:0; transform: translateX(40px); } to { opacity:1; transform:none; } }

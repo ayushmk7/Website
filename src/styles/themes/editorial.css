@@ -1,0 +1,16 @@
+/* src/styles/themes/editorial.css */
+html[data-theme="editorial"] {
+  --bg: #f7f3ec; --bg-2: #efe9df; --surface: #fffdf8;
+  --text: #1b1a17; --text-dim: #6b655b;
+  --accent: #b3402e; --accent-2: #1b1a17;
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Source Sans 3', sans-serif;
+  --font-mono: 'Source Sans 3', sans-serif;
+  --w-display: 900; --w-body: 300;
+  --radius: 0; --border: 1px solid #1b1a17; --dur: 0.9s;
+}
+html[data-theme="editorial"] .dropcap::first-letter {
+  font-family: var(--font-display); font-weight: 900; font-size: 3.4em;
+  float: left; line-height: 0.8; padding-right: 0.08em; color: var(--accent);
+}
+html[data-theme="editorial"] .rule { border-top: 1px solid var(--text); }
