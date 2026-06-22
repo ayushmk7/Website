@@ -297,10 +297,6 @@ html[data-theme="comic"] .panel--burst {
 /* inner text follows the mode; event heading stays red, placement/blurb use theme text */
 html[data-theme="comic"] .panel--burst h3 { color: var(--accent); }
 html[data-theme="comic"] .panel--burst p { color: var(--text); }
-/* dark mode: the corner halftone circle goes yellow (like before) */
-html[data-theme="comic"].dark .panel--burst {
-  background-image: radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--accent-2) 22%, transparent) 0%, color-mix(in srgb, var(--accent-2) 22%, transparent) 38%, transparent 40%);
-}
 
 /* ============================================================
    MOBILE SPACING OVERRIDES
