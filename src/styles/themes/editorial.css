@@ -14,3 +14,33 @@ html[data-theme="editorial"] .dropcap::first-letter {
   float: left; line-height: 0.8; padding-right: 0.08em; color: var(--accent);
 }
 html[data-theme="editorial"] .rule { border-top: 1px solid var(--text); }
+
+/* Prevent horizontal overflow on all screens */
+html[data-theme="editorial"] body,
+html[data-theme="editorial"] main {
+  overflow-x: hidden;
+}
+
+/* Numbered-section grid: single column on mobile, two columns on md+ */
+@media (max-width: 767px) {
+  html[data-theme="editorial"] .grid.md\:grid-cols-\[120px_1fr\] {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  /* Section number sits inline above heading on mobile */
+  html[data-theme="editorial"] .grid.md\:grid-cols-\[120px_1fr\] > p.text-5xl {
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  /* Collapse columns-2 to single column */
+  html[data-theme="editorial"] .columns-1.md\:columns-2 {
+    columns: 1 !important;
+  }
+  /* Tighten section padding on mobile */
+  html[data-theme="editorial"] section.rule,
+  html[data-theme="editorial"] footer.rule {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+}

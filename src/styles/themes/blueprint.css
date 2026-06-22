@@ -16,6 +16,12 @@ html[data-theme="blueprint"] body {
     linear-gradient(90deg, rgba(0,217,255,0.06) 1px, transparent 1px) 0 0 / 32px 100%,
     var(--bg);
 }
+html[data-theme="blueprint"] .bp-hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  align-items: center;
+}
 html[data-theme="blueprint"] .fig-label {
   font-family: var(--font-mono); color: var(--accent); font-size: 0.7rem;
   letter-spacing: 0.2em; text-transform: uppercase;

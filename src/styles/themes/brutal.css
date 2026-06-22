@@ -9,6 +9,7 @@ html[data-theme="brutal"] {
   --w-display: 400; --w-body: 300;
   --radius: 0; --border: 4px solid #111; --ease: linear; --dur: 0.25s;
 }
+html[data-theme="brutal"] body { overflow-x: hidden; }
 html[data-theme="brutal"] .hard { border: var(--border); box-shadow: 6px 6px 0 #111; background: var(--surface); }
 html[data-theme="brutal"] .hard-accent { box-shadow: 6px 6px 0 var(--accent); }
 html[data-theme="brutal"] .marquee { overflow: hidden; white-space: nowrap; border-block: var(--border); background: var(--accent); color: #fff; }

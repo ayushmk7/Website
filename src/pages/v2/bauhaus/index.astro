@@ -8,17 +8,17 @@ import { projects } from '../../../data/projects';
 import resumeData from '../../../data/resume.json';
 ---
 <ThemeLayout themeKey="bauhaus" title="Ayush Madhav Kumar. Bauhaus">
-  <section class="relative overflow-hidden min-h-[100svh] min-h-[100dvh] grid md:grid-cols-2">
+  <section class="relative overflow-hidden min-h-[100svh] grid grid-cols-1 md:grid-cols-2">
     <div class="shape circle" style="width:220px;height:220px;top:-60px;right:-40px"></div>
     <div class="shape tri" style="bottom:40px;left:30%"></div>
-    <div class="relative z-10 flex flex-col justify-center p-8 md:p-14">
+    <div class="relative z-10 grid place-items-center bg-[var(--bau-yellow)] p-8 order-first md:order-last">
+      <Photo class="h-[20rem] w-[13.3rem] block border-[3px] border-[var(--text)]" />
+    </div>
+    <div class="relative z-10 flex flex-col justify-center p-8 md:p-14 order-last md:order-first">
       <div class="h-3 w-24 bg-[var(--accent)] mb-6" data-load></div>
       <p class="uppercase tracking-[0.2em]" data-load style="--i:1">CS and Math @UMichigan</p>
-      <h1 class="text-6xl md:text-8xl uppercase leading-[0.9] mt-3" style="font-family:var(--font-display);font-weight:700" data-load style="--i:2">Ayush<br/>Madhav<br/>Kumar</h1>
+      <h1 class="text-6xl md:text-8xl uppercase leading-[0.9] mt-3" style="font-family:var(--font-display);font-weight:700;--i:2" data-load>Ayush<br/>Madhav<br/>Kumar</h1>
       <a class="block mt-6 w-fit px-5 py-2 bg-[var(--accent-2)] text-white uppercase tracking-wider" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" data-load style="--i:3">Resume</a>
-    </div>
-    <div class="relative z-10 grid place-items-center bg-[var(--bau-yellow)] p-8">
-      <Photo class="h-[20rem] w-[13.3rem] block border-[3px] border-[var(--text)]" />
     </div>
   </section>
 

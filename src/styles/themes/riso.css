@@ -9,9 +9,11 @@ html[data-theme="riso"] {
   --w-display: 800; --w-body: 300;
   --radius: 1.5rem; --border: 2px solid var(--text); --dur: 0.6s;
 }
-html[data-theme="riso"] .misreg { position: relative; }
+html[data-theme="riso"] .misreg { position: relative; overflow: hidden; }
 html[data-theme="riso"] .misreg::before {
   content: attr(data-text); position: absolute; left: 3px; top: 3px;
   color: var(--accent); z-index: -1; mix-blend-mode: multiply;
+  pointer-events: none;
 }
+html[data-theme="riso"] body { overflow-x: hidden; }
 html[data-theme="riso"] [data-load] { animation-timing-function: cubic-bezier(0.34,1.56,0.64,1); }

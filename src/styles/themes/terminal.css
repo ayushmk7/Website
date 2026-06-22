@@ -25,3 +25,13 @@ html[data-theme="terminal"] .caret::after {
 }
 /* type-on: reuse [data-load] but with no transform, just sequential fade */
 html[data-theme="terminal"] [data-load] { transform: none; }
+
+/* prevent horizontal overflow on mobile */
+html[data-theme="terminal"] main { overflow-x: hidden; }
+html[data-theme="terminal"] pre { white-space: pre-wrap; overflow-wrap: break-word; max-width: 100%; }
+
+/* hero fills one viewport */
+html[data-theme="terminal"] .hero-section {
+  min-height: 100svh;
+  min-height: 100dvh;
+}

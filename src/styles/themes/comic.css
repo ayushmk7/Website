@@ -14,9 +14,19 @@ html[data-theme="comic"] {
 html[data-theme="comic"] body {
   background-image: radial-gradient(circle, rgba(0,0,0,0.14) 1.5px, transparent 1.7px);
   background-size: 14px 14px; background-color: var(--bg);
+  overflow-x: hidden;
 }
+/* hero: exactly one viewport, content centered */
+html[data-theme="comic"] .comic-hero {
+  min-height: 100svh;
+  min-height: 100dvh;
+}
+/* side padding keeps 6px hard shadow visible and not clipped */
 html[data-theme="comic"] .panel { border: var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: 6px 6px 0 #141414; }
-html[data-theme="comic"] .bubble { border: var(--border); border-radius: 1.5rem; background: #fff; position: relative; }
+/* bubble: extra bottom margin so the 14px tail doesn't overlap the next element */
+html[data-theme="comic"] .bubble { border: var(--border); border-radius: 1.5rem; background: #fff; position: relative; margin-bottom: 8px; }
 html[data-theme="comic"] .bubble::after { content:''; position:absolute; bottom:-14px; left:32px; width:0;height:0; border:10px solid transparent; border-top-color:#141414; }
 html[data-theme="comic"] .pop { letter-spacing: 0.02em; }
 html[data-theme="comic"] [data-load] { animation-timing-function: cubic-bezier(0.34,1.56,0.64,1); }
+/* prevent panel shadows from causing horizontal scroll */
+html[data-theme="comic"] section { overflow-x: clip; }
