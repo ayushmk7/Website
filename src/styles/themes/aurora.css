@@ -67,6 +67,9 @@ html[data-theme="aurora"] .glass {
   font-size: 0.95rem;
   line-height: 1.6;
   will-change: transform;
+  /* cardFloat overrides the [data-load] reveal animation, so force visible
+     (otherwise cards stay stuck at opacity:0 and the whole page looks blank) */
+  opacity: 1;
   /* Signature float animation */
   animation: cardFloat 6s ease-in-out infinite;
   transition: box-shadow 0.3s ease;
