@@ -93,9 +93,9 @@ html[data-theme="memphis"] .memphis-hero-photo {
 
 html[data-theme="memphis"] .memphis-hero-img {
   display: block;
-  width: clamp(96px, 22vmin, 176px);
-  height: clamp(96px, 22vmin, 176px);
-  object-fit: cover;
+  width: clamp(8rem, 22vmin, 13rem);
+  aspect-ratio: 2 / 3;
+  height: auto;
 }
 
 /* Text block */

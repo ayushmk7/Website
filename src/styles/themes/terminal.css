@@ -42,6 +42,16 @@ html[data-theme="terminal"] .caret::after {
 /* type-on: reuse [data-load] but with no transform, just sequential fade */
 html[data-theme="terminal"] [data-load] { transform: none; }
 
+/* hero avatar: framed portrait, proper 2:3 proportions (not a pfp) */
+html[data-theme="terminal"] .term-photo {
+  width: clamp(6rem, 16vmin, 9rem);
+  aspect-ratio: 2 / 3;
+  height: auto;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(67, 245, 123, 0.25);
+}
+
 /* prevent horizontal overflow on mobile */
 html[data-theme="terminal"] main { overflow-x: hidden; }
 html[data-theme="terminal"] pre { white-space: pre-wrap; overflow-wrap: break-word; max-width: 100%; }

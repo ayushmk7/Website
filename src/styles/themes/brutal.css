@@ -41,9 +41,10 @@ html[data-theme="brutal"] .b-name {
   font-size: clamp(2.4rem, 10vw + 0.5dvh, 6rem);
 }
 
-/* Photo: shrinks on short/narrow screens */
+/* Photo: 2:3 portrait that scales with viewport, never squishes */
 html[data-theme="brutal"] .b-photo {
-  width: clamp(7rem, 22vw, 13.3rem);
+  width: clamp(8rem, 22vmin, 13rem);
+  aspect-ratio: 2 / 3;
   height: auto;
   display: block;
 }
@@ -57,7 +58,7 @@ html[data-theme="brutal"] .b-photo-wrap {
     font-size: clamp(2rem, 8vw + 0.3dvh, 4rem);
   }
   html[data-theme="brutal"] .b-photo {
-    width: clamp(5.5rem, 18vw, 9rem);
+    width: clamp(5.5rem, 18vmin, 9rem);
   }
   html[data-theme="brutal"] .b-hero {
     gap: 0.5rem;

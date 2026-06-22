@@ -65,10 +65,11 @@ html[data-theme="comic"] .comic-hero {
   overflow: clip;
 }
 
-/* scale photo panel on small/short screens */
+/* scale photo panel on small/short screens: square crop of portrait */
 html[data-theme="comic"] .comic-hero-photo {
-  width: clamp(5rem, 20vmin, 11rem);
-  height: clamp(5rem, 20vmin, 11rem);
+  width: clamp(7rem, 18vmin, 10rem);
+  aspect-ratio: 1 / 1;
+  height: auto;
   border-radius: 0.75rem;
 }
 
@@ -97,24 +98,13 @@ html[data-theme="comic"] .panel {
   color: var(--text);
 }
 
-/* bubble: extra bottom margin so the 14px tail doesn't overlap the next element */
+/* rounded caption box (tail removed: the downward arrow read as out of place) */
 html[data-theme="comic"] .bubble {
   border: var(--border);
   border-radius: 1.5rem;
   background: var(--surface);
   color: var(--text);
   position: relative;
-  margin-bottom: 8px;
-}
-html[data-theme="comic"] .bubble::after {
-  content: '';
-  position: absolute;
-  bottom: -14px;
-  left: 32px;
-  width: 0;
-  height: 0;
-  border: 10px solid transparent;
-  border-top-color: var(--outline);
 }
 
 html[data-theme="comic"] .pop { letter-spacing: 0.02em; }

@@ -6,6 +6,7 @@ import { experience, hackathons } from '../../../data/v2';
 import { projects } from '../../../data/projects';
 import resumeData from '../../../data/resume.json';
 import { ThemeContact } from '../../../components/v2/ThemeContact';
+import Photo from '../../../components/v2/shared/Photo.astro';
 const prompt = 'ayush@umich:~$';
 
 const categoryLabels: Record<string, string> = {
@@ -20,6 +21,7 @@ const categoryLabels: Record<string, string> = {
 <ThemeLayout themeKey="terminal" title="Ayush Madhav Kumar. Phosphor">
   <main class="max-w-4xl mx-auto px-4 leading-relaxed">
     <section class="hero-section flex flex-col justify-center">
+      <div data-load style="--i:0" class="mb-4"><Photo class="term-photo" /></div>
       <p data-load style="--i:0">{prompt} whoami</p>
       <pre data-load style="--i:1" class="hero-name whitespace-pre-wrap break-words">Ayush Madhav Kumar</pre>
       <p data-load style="--i:2" class="text-[var(--text-dim)]">CS and Math @UMichigan . Ann Arbor, MI</p>

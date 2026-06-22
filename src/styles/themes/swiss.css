@@ -114,10 +114,11 @@ html[data-theme="swiss"] .swiss-hero {
   overflow: visible;
 }
 
-/* Photo shrinks on short/small screens */
+/* Photo: 2:3 portrait that scales with viewport, never squishes */
 html[data-theme="swiss"] .sw-hero-photo {
-  width:  clamp(6rem, 18vw, 13rem);
-  height: clamp(8rem, 26vw, 18rem);
+  width: clamp(8rem, 22vmin, 13rem);
+  aspect-ratio: 2 / 3;
+  height: auto;
   flex-shrink: 0;
 }
 

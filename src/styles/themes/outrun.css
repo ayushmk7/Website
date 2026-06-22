@@ -74,6 +74,12 @@ html[data-theme="outrun"] body {
 html[data-theme="outrun"] .horizon {
   position: fixed; inset: 55% 0 0 0; z-index: 0; pointer-events: none; overflow: hidden;
   transform: perspective(300px) rotateX(72deg); transform-origin: top;
+  filter: blur(1.5px);
+}
+/* a touch of soft blur on the backdrop behind content */
+html[data-theme="outrun"] body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
 }
 html[data-theme="outrun"] section,
 html[data-theme="outrun"] header,
@@ -94,15 +100,23 @@ html[data-theme="outrun"] .hero-viewport {
   overflow: hidden;
 }
 html[data-theme="outrun"] .hero-avatar {
-  width: clamp(4.5rem, 16vmin, 8rem);
-  height: clamp(4.5rem, 16vmin, 8rem);
+  width: clamp(6rem, 15vmin, 8.5rem);
+  aspect-ratio: 2 / 3;
+  height: auto;
   flex-shrink: 0;
   order: -1;
 }
+/* role line as a solid pill so it does not merge with the gradient */
 html[data-theme="outrun"] .hero-subtitle {
   font-size: clamp(0.6rem, 1.8vmin, 0.85rem);
   letter-spacing: 0.25em;
-  margin: 0;
+  margin: 0 0 0.25rem;
+  background: var(--bg-2);
+  color: var(--accent-2);
+  border: 1px solid var(--accent);
+  padding: 0.3rem 0.9rem;
+  border-radius: 9999px;
+  display: inline-block;
 }
 html[data-theme="outrun"] .hero-name {
   font-size: clamp(1.5rem, 6vmin, 4.5rem);
@@ -128,7 +142,16 @@ html[data-theme="outrun"] #projects a[style*="accent-2"] {
   color: var(--accent-2);
 }
 
+/* solid boxes so they do not merge with the gradient background */
+html[data-theme="outrun"] .hero-cta {
+  background: var(--bg-2);
+  color: var(--text);
+}
+html[data-theme="outrun"] #skills span {
+  background: var(--bg-2);
+}
+
 /* contact copy-button hover */
 html[data-theme="outrun"] #contact button:hover {
-  background: rgba(var(--accent), 0.1);
+  background: var(--bg-2);
 }

@@ -118,12 +118,16 @@ html[data-theme="bauhaus"] .bau-photo-panel {
   }
 }
 
-/* Photo image inside panel */
-html[data-theme="bauhaus"] .bau-photo-panel img,
+/* Photo image inside panel: fill the panel without distortion */
+html[data-theme="bauhaus"] .bau-photo-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 html[data-theme="bauhaus"] .bau-photo-panel .photo-wrap {
-  max-height: 100%;
-  width: auto;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
 }
 
 /* Text column: flex, centered, never overflows */

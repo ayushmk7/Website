@@ -92,13 +92,11 @@ html[data-theme="aurora"] .aurora-hero {
   gap: clamp(0.25rem, 1.5svh, 0.75rem);
 }
 
-/* Photo: tall on desktop, shrinks on short/small viewports */
+/* Photo: 2:3 portrait that scales with viewport, never squishes */
 html[data-theme="aurora"] .aurora-hero-photo {
-  /* Width clamps between 8rem (360px screen) and 12.5rem (large) */
-  width: clamp(7rem, 22vw, 12.5rem);
-  /* 2:3 aspect ratio, but cap at a fraction of viewport height */
-  height: clamp(9.5rem, 28svh, 19rem);
-  object-fit: cover;
+  width: clamp(8rem, 22vmin, 13rem);
+  aspect-ratio: 2 / 3;
+  height: auto;
   flex-shrink: 0;
 }
 

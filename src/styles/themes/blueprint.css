@@ -67,10 +67,11 @@ html[data-theme="blueprint"] .bp-hero-content {
   gap: clamp(4px, 1.2vmin, 16px);
 }
 
-/* Photo: clamp between 96px (small) and 19rem (large) */
+/* Photo: 2:3 portrait that scales with viewport, never squishes */
 html[data-theme="blueprint"] .bp-hero-photo {
-  width: clamp(80px, 22vmin, 12.6rem);
-  height: clamp(96px, 28vmin, 19rem);
+  width: clamp(8rem, 22vmin, 13rem);
+  aspect-ratio: 2 / 3;
+  height: auto;
   flex-shrink: 0;
 }
 

@@ -105,9 +105,9 @@ html[data-theme="editorial"] .ed-hero__body {
 }
 
 html[data-theme="editorial"] .ed-hero__photo {
-  width: clamp(7rem, 22vw, 12.6rem);
-  height: clamp(10.5rem, 33vw, 19rem);
-  object-fit: cover;
+  width: clamp(8rem, 22vmin, 13rem);
+  aspect-ratio: 2 / 3;
+  height: auto;
 }
 
 /* Short/small screens: tighten further */
@@ -116,8 +116,7 @@ html[data-theme="editorial"] .ed-hero__photo {
     font-size: clamp(2rem, 6vw + 0.5rem, 4rem);
   }
   html[data-theme="editorial"] .ed-hero__photo {
-    height: clamp(7rem, 20vh, 12rem);
-    width: auto;
+    width: clamp(5.5rem, 16vmin, 9rem);
   }
 }
 
