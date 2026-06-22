@@ -39,7 +39,7 @@ export default function Hero() {
               rel="noopener noreferrer"
               className="font-mono text-sm text-blue-600 dark:text-blue-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded-sm"
             >
-              &gt; view resume (pdf)
+              &gt; view résumé (pdf)
             </a>
           </div>
           <div className="order-1 md:order-2 mx-auto md:mx-0">
