@@ -1,16 +1,33 @@
 /* src/styles/themes/terminal.css */
+
+/* ── LIGHT: paper-terminal (dark ink on phosphor-cream) ── */
 html[data-theme="terminal"] {
-  --bg: #050806; --bg-2: #0a0f0b; --surface: #0a120c;
-  --text: #43f57b; --text-dim: #1f8f45;
-  --accent: #b6ff00; --accent-2: #43f57b;
+  --bg: #f0f0e6; --bg-2: #e8e8d8; --surface: #deded0;
+  --text: #1a2e1a; --text-dim: #4a6b4a;
+  --accent: #1a6b1a; --accent-2: #2e8b2e;
   --font-display: 'JetBrains Mono', monospace;
   --font-body: 'JetBrains Mono', monospace;
   --font-mono: 'JetBrains Mono', monospace;
   --w-display: 800; --w-body: 400;
-  --radius: 0; --border: 1px solid rgba(67,245,123,0.4);
+  --radius: 0; --border: 1px solid rgba(26,107,26,0.35);
   --ease: steps(1,end); --dur: 0.01s;
 }
 html[data-theme="terminal"] body {
+  /* subtle warm-paper texture, no glow */
+  background:
+    repeating-linear-gradient(rgba(26,107,26,0.04) 0 1px, transparent 1px 4px),
+    var(--bg);
+  text-shadow: none;
+}
+
+/* ── DARK: classic green-on-black CRT ── */
+html[data-theme="terminal"].dark {
+  --bg: #050806; --bg-2: #0a0f0b; --surface: #0a120c;
+  --text: #43f57b; --text-dim: #1f8f45;
+  --accent: #b6ff00; --accent-2: #43f57b;
+  --border: 1px solid rgba(67,245,123,0.4);
+}
+html[data-theme="terminal"].dark body {
   text-shadow: 0 0 4px rgba(67,245,123,0.4);
   background:
     repeating-linear-gradient(rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.25) 2px 4px),
@@ -30,8 +47,9 @@ html[data-theme="terminal"] [data-load] { transform: none; }
 html[data-theme="terminal"] main { overflow-x: hidden; }
 html[data-theme="terminal"] pre { white-space: pre-wrap; overflow-wrap: break-word; max-width: 100%; }
 
-/* hero fills one viewport */
+/* hero fills one viewport minus fixed nav (~56px) */
 html[data-theme="terminal"] .hero-section {
-  min-height: 100svh;
-  min-height: 100dvh;
+  min-height: calc(100svh - 56px);
+  min-height: calc(100dvh - 56px);
+  padding-top: 56px;
 }

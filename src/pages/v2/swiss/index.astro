@@ -1,0 +1,254 @@
+---
+import ThemeLayout from '../../../layouts/ThemeLayout.astro';
+import '../../../styles/themes/swiss.css';
+import Photo from '../../../components/v2/shared/Photo.astro';
+import { experience, hackathons } from '../../../data/v2';
+import { projects } from '../../../data/projects';
+import resumeData from '../../../data/resume.json';
+
+const nonHackathonProjects = projects.filter(p => !hackathons.some(h => h.project === p.title));
+---
+
+<ThemeLayout themeKey="swiss" title="Ayush Madhav Kumar. Swiss">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       HERO
+  ════════════════════════════════════════════════════════════════════ -->
+  <section class="swiss-hero pt-24 px-6 md:px-12 max-w-7xl mx-auto flex flex-col justify-between">
+
+    <!-- Top bar -->
+    <div class="sw-rule mb-8" aria-hidden="true"></div>
+
+    <!-- Content: photo + name block -->
+    <div class="flex flex-col md:flex-row md:items-end gap-10 flex-1 pb-12">
+
+      <!-- Photo (above name on mobile, left on desktop) -->
+      <div data-load style="--i:0">
+        <Photo class="w-40 h-56 md:w-52 md:h-72 flex-shrink-0" />
+      </div>
+
+      <!-- Name + meta -->
+      <div class="flex-1">
+        <p class="sw-tag mb-4" data-load style="--i:1">Portfolio . MMXXVI</p>
+        <h1
+          class="font-black leading-[0.9] tracking-tight"
+          style="font-family:var(--font-display);font-weight:900;font-size:clamp(3rem,10vw,8rem);letter-spacing:-0.04em;--i:2"
+          data-load
+        >
+          Ayush<br/>Madhav Kumar
+        </h1>
+        <hr class="sw-rule-accent mt-6 mb-4" aria-hidden="true" />
+        <p class="text-[var(--text-dim)] text-lg" style="font-family:var(--font-display);font-weight:300;--i:3" data-load>
+          CS and Math @UMichigan
+        </p>
+        <p class="mt-2 text-base" style="font-weight:300;--i:4" data-load>
+          &gt; NSF-backed research
+        </p>
+        <p class="mt-4" data-load style="--i:5">
+          <a
+            href="/AyushMadhavResume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="sw-tag border border-[var(--accent)] px-4 py-2 inline-block hover:bg-[var(--accent)] hover:text-white transition-colors"
+            style="transition-duration:var(--dur);transition-timing-function:var(--ease);"
+          >Resume</a>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Bottom rule -->
+    <div class="sw-rule" aria-hidden="true"></div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       01 EXPERIENCE
+  ════════════════════════════════════════════════════════════════════ -->
+  <section id="experience" class="max-w-7xl mx-auto px-6 md:px-12 py-20">
+
+    <!-- Section header row -->
+    <div class="grid grid-cols-[auto_1fr] items-baseline gap-8 mb-12">
+      <span class="sw-numeral" aria-hidden="true">01</span>
+      <div>
+        <div class="sw-rule mb-4" aria-hidden="true"></div>
+        <h2 class="sw-section-title">Experience</h2>
+      </div>
+    </div>
+
+    <!-- Entries -->
+    <div class="pl-0 md:pl-[calc(var(--numeral-size)+2rem)]">
+      {experience.map((j, i) => (
+        <div class="sw-entry" data-load style={`--i:${Math.min(i, 5)}`}>
+          <div class="grid md:grid-cols-[1fr_auto] gap-2 mb-2">
+            <h3 style="font-family:var(--font-display);font-weight:900;font-size:1.125rem;">
+              {j.company}
+            </h3>
+            <span class="sw-tag self-start">{j.kind}</span>
+          </div>
+          <p class="text-[var(--text-dim)] mb-3" style="font-weight:300;">
+            {j.role} . {j.period}{j.location ? ` . ${j.location}` : ''}
+          </p>
+          <ul class="space-y-1" style="font-weight:300;line-height:1.6;">
+            {j.bullets.map(b => (
+              <li class="flex gap-3">
+                <span class="text-[var(--accent)] select-none flex-shrink-0 mt-[0.3em]" aria-hidden="true">+</span>
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       02 PROJECTS
+  ════════════════════════════════════════════════════════════════════ -->
+  <section id="projects" class="max-w-7xl mx-auto px-6 md:px-12 py-20">
+
+    <div class="grid grid-cols-[auto_1fr] items-baseline gap-8 mb-12">
+      <span class="sw-numeral" aria-hidden="true">02</span>
+      <div>
+        <div class="sw-rule mb-4" aria-hidden="true"></div>
+        <h2 class="sw-section-title">Projects</h2>
+      </div>
+    </div>
+
+    <div class="pl-0 md:pl-[calc(var(--numeral-size)+2rem)]">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+        {nonHackathonProjects.map((p, i) => (
+          <div class="sw-entry pr-0 md:pr-10" data-load style={`--i:${Math.min(i, 5)}`}>
+            <h3 style="font-family:var(--font-display);font-weight:900;font-size:1rem;margin-bottom:0.375rem;">
+              {p.title}
+            </h3>
+            <p class="text-[var(--text-dim)]" style="font-weight:300;line-height:1.55;font-size:0.9375rem;">
+              {p.description}
+            </p>
+            {p.url && (
+              <a
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="sw-tag mt-2 inline-block hover:text-[var(--text)] transition-colors"
+                style="transition-duration:var(--dur);"
+              >View</a>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       03 HACKATHONS
+  ════════════════════════════════════════════════════════════════════ -->
+  <section id="hackathons" class="max-w-7xl mx-auto px-6 md:px-12 py-20">
+
+    <div class="grid grid-cols-[auto_1fr] items-baseline gap-8 mb-12">
+      <span class="sw-numeral" aria-hidden="true">03</span>
+      <div>
+        <div class="sw-rule mb-4" aria-hidden="true"></div>
+        <h2 class="sw-section-title">Hackathons</h2>
+      </div>
+    </div>
+
+    <div class="pl-0 md:pl-[calc(var(--numeral-size)+2rem)]">
+      {hackathons.map((h, i) => (
+        <div class="sw-entry" data-load style={`--i:${Math.min(i, 4)}`}>
+          <div class="grid md:grid-cols-[1fr_auto] gap-2 mb-1">
+            <p class="sw-tag">{h.placement}</p>
+            <span class="text-[var(--text-dim)] text-sm" style="font-weight:300;">{h.date}</span>
+          </div>
+          <h3 style="font-family:var(--font-display);font-weight:900;font-size:1.0625rem;margin-bottom:0.375rem;">
+            {h.project} . {h.event}
+          </h3>
+          <p class="text-[var(--text-dim)] mb-3" style="font-weight:300;line-height:1.6;max-width:65ch;">
+            {h.blurb}
+          </p>
+          <div class="flex gap-4 flex-wrap">
+            {h.repoUrl && (
+              <a
+                href={h.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="sw-tag hover:text-[var(--text)] transition-colors"
+                style="transition-duration:var(--dur);"
+              >Repo</a>
+            )}
+            {h.siteUrl && (
+              <a
+                href={h.siteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="sw-tag hover:text-[var(--text)] transition-colors"
+                style="transition-duration:var(--dur);"
+              >Site</a>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       04 SKILLS
+  ════════════════════════════════════════════════════════════════════ -->
+  <section id="skills" class="max-w-7xl mx-auto px-6 md:px-12 py-20">
+
+    <div class="grid grid-cols-[auto_1fr] items-baseline gap-8 mb-12">
+      <span class="sw-numeral" aria-hidden="true">04</span>
+      <div>
+        <div class="sw-rule mb-4" aria-hidden="true"></div>
+        <h2 class="sw-section-title">Stack</h2>
+      </div>
+    </div>
+
+    <div class="pl-0 md:pl-[calc(var(--numeral-size)+2rem)]">
+      {Object.entries(resumeData.skills).map(([category, items], i) => (
+        <div class="sw-entry" data-load style={`--i:${Math.min(i, 4)}`}>
+          <div class="grid md:grid-cols-[180px_1fr] gap-4 items-baseline">
+            <span style="font-family:var(--font-display);font-weight:900;font-size:0.8125rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);">
+              {category}
+            </span>
+            <p style="font-weight:300;line-height:1.6;">
+              {(items as string[]).join(', ')}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CONTACT
+  ════════════════════════════════════════════════════════════════════ -->
+  <footer id="contact" class="max-w-7xl mx-auto px-6 md:px-12 py-24">
+    <div class="sw-rule mb-16" aria-hidden="true"></div>
+    <div class="grid md:grid-cols-[auto_1fr] gap-8 items-end">
+      <p class="sw-numeral" aria-hidden="true" style="color:var(--text-dim);">05</p>
+      <div>
+        <p class="sw-tag mb-4" data-load style="--i:0">Contact</p>
+        <a
+          href="mailto:contactayushmadhav@gmail.com"
+          class="block leading-none tracking-tight hover:text-[var(--accent)] transition-colors"
+          style="font-family:var(--font-display);font-weight:900;font-size:clamp(1.5rem,4vw,3rem);letter-spacing:-0.02em;transition-duration:var(--dur);transition-timing-function:var(--ease);--i:1"
+          data-load
+        >
+          contactayushmadhav@gmail.com
+        </a>
+        <div class="sw-rule-accent mt-8" aria-hidden="true"></div>
+      </div>
+    </div>
+  </footer>
+
+</ThemeLayout>

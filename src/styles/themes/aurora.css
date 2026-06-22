@@ -1,14 +1,35 @@
 /* src/styles/themes/aurora.css */
+
+/* ── LIGHT mode (default): Nord "Snow Storm" ─────────────────────────────── */
 html[data-theme="aurora"] {
-  --bg: #2e3440; --bg-2: #3b4252; --surface: rgba(59,66,82,0.55);
-  --text: #eceff4; --text-dim: #a9b3c9;
-  --accent: #88c0d0; --accent-2: #a3be8c;
+  --bg: #eceff4; --bg-2: #e5e9f0; --surface: rgba(229,233,240,0.70);
+  --text: #2e3440; --text-dim: #4c566a;
+  --accent: #5e81ac; --accent-2: #a3be8c;
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
   --w-display: 700; --w-body: 200;
-  --radius: 1.25rem; --border: 1px solid rgba(136,192,208,0.4); --dur: 0.8s;
+  --radius: 1.25rem; --border: 1px solid rgba(94,129,172,0.35); --dur: 0.8s;
 }
 html[data-theme="aurora"] body {
+  background:
+    radial-gradient(at 15% 20%, rgba(136,192,208,0.22) 0, transparent 45%),
+    radial-gradient(at 80% 15%, rgba(163,190,140,0.18) 0, transparent 45%),
+    radial-gradient(at 70% 85%, rgba(180,142,173,0.18) 0, transparent 45%),
+    radial-gradient(at 25% 80%, rgba(94,129,172,0.20) 0, transparent 45%),
+    var(--bg);
+  background-attachment: fixed;
+  animation: auroraShift 18s ease-in-out infinite alternate;
+  overflow-x: hidden;
+}
+
+/* ── DARK mode: Nord "Polar Night" (original palette) ───────────────────── */
+html[data-theme="aurora"].dark {
+  --bg: #2e3440; --bg-2: #3b4252; --surface: rgba(59,66,82,0.55);
+  --text: #eceff4; --text-dim: #a9b3c9;
+  --accent: #88c0d0; --accent-2: #a3be8c;
+  --border: 1px solid rgba(136,192,208,0.4);
+}
+html[data-theme="aurora"].dark body {
   background:
     radial-gradient(at 15% 20%, rgba(136,192,208,0.35) 0, transparent 45%),
     radial-gradient(at 80% 15%, rgba(163,190,140,0.30) 0, transparent 45%),
@@ -19,8 +40,25 @@ html[data-theme="aurora"] body {
   animation: auroraShift 18s ease-in-out infinite alternate;
   overflow-x: hidden;
 }
+
 @keyframes auroraShift { to { background-position: 8% -6%, -6% 8%, 6% -8%, -8% 6%; } }
 @media (prefers-reduced-motion: reduce) { html[data-theme="aurora"] body { animation: none; } }
-html[data-theme="aurora"] .glass { background: var(--surface); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: var(--border); border-radius: var(--radius); box-sizing: border-box; max-width: 100%; }
+
+/* ── Shared structural rules ─────────────────────────────────────────────── */
+html[data-theme="aurora"] .glass {
+  background: var(--surface);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-sizing: border-box;
+  max-width: 100%;
+  color: var(--text);
+}
 html[data-theme="aurora"] section { box-sizing: border-box; width: 100%; }
 html[data-theme="aurora"] .grid { width: 100%; }
+
+/* ── Hero: clear fixed ~56 px nav ────────────────────────────────────────── */
+html[data-theme="aurora"] section:first-of-type {
+  padding-top: calc(56px + 2rem);
+}

@@ -1,0 +1,191 @@
+---
+// src/pages/v2/memphis/index.astro
+import ThemeLayout from '../../../layouts/ThemeLayout.astro';
+import '../../../styles/themes/memphis.css';
+import Photo from '../../../components/v2/shared/Photo.astro';
+import { experience, hackathons } from '../../../data/v2';
+import { projects } from '../../../data/projects';
+import resumeData from '../../../data/resume.json';
+
+const personalProjects = projects.filter((p) => !hackathons.some((h) => h.project === p.title));
+
+const hackBgClasses: string[] = [
+  'm-card-red', 'm-card-teal', 'm-card-yellow', 'm-card-blue', 'm-card-pink',
+];
+---
+<ThemeLayout themeKey="memphis" title="Ayush Madhav Kumar. Memphis">
+
+  <!-- ══════════ HERO ══════════ -->
+  <section class="memphis-hero pt-24 flex flex-col justify-center max-w-5xl mx-auto px-6">
+
+    <!-- Confetti layer -->
+    <!-- Large red circle top-right -->
+    <div class="m-shape m-circle" style="width:180px;height:180px;background:var(--accent);opacity:0.18;top:-40px;right:-50px;"></div>
+    <!-- Teal filled circle mid-left -->
+    <div class="m-shape m-circle" style="width:90px;height:90px;background:var(--accent-2);opacity:0.3;top:38%;left:-20px;"></div>
+    <!-- Yellow circle ring, spinning -->
+    <div class="m-shape m-circle-ring m-spin" style="width:120px;height:120px;color:var(--m-yellow);bottom:12%;right:8%;"></div>
+    <!-- Pink small circle -->
+    <div class="m-shape m-circle" style="width:40px;height:40px;background:var(--m-pink);opacity:0.7;bottom:22%;left:12%;"></div>
+    <!-- Blue small circle -->
+    <div class="m-shape m-circle" style="width:28px;height:28px;background:var(--m-blue);opacity:0.8;top:20%;left:30%;"></div>
+
+    <!-- Triangle top-left -->
+    <div class="m-shape m-tri" style="border-left:44px solid transparent;border-right:44px solid transparent;border-bottom:76px solid var(--m-yellow);opacity:0.55;top:10%;left:5%;"></div>
+    <!-- Triangle bottom-right -->
+    <div class="m-shape m-tri" style="border-left:30px solid transparent;border-right:30px solid transparent;border-bottom:52px solid var(--accent);opacity:0.5;bottom:10%;right:20%;"></div>
+
+    <!-- Squiggle SVG -->
+    <svg class="m-shape" style="width:200px;height:40px;top:55%;right:3%;opacity:0.45;" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0 20 Q20 5 40 20 Q60 35 80 20 Q100 5 120 20 Q140 35 160 20 Q180 5 200 20" stroke="var(--m-pink)" stroke-width="4" fill="none"/>
+    </svg>
+    <!-- Second squiggle -->
+    <svg class="m-shape" style="width:140px;height:28px;bottom:28%;left:8%;opacity:0.4;" viewBox="0 0 140 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0 14 Q17.5 3 35 14 Q52.5 25 70 14 Q87.5 3 105 14 Q122.5 25 140 14" stroke="var(--accent-2)" stroke-width="4" fill="none"/>
+    </svg>
+
+    <!-- Zigzag bars -->
+    <div class="m-shape m-zz" style="width:160px;color:var(--m-blue);opacity:0.5;top:72%;left:42%;"></div>
+    <div class="m-shape m-zz" style="width:100px;color:var(--accent);opacity:0.45;top:15%;right:25%;"></div>
+
+    <!-- Dotted grids -->
+    <div class="m-shape m-dots" style="width:80px;height:80px;color:var(--text);opacity:0.1;bottom:8%;left:40%;"></div>
+    <div class="m-shape m-dots" style="width:60px;height:60px;color:var(--m-pink);opacity:0.2;top:8%;right:40%;"></div>
+
+    <!-- Bouncing accent square -->
+    <div class="m-shape m-bounce" style="width:24px;height:24px;background:var(--m-yellow);border:3px solid var(--text);top:30%;right:15%;"></div>
+
+    <!-- Content: photo above name on mobile -->
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
+      <div class="flex-shrink-0" data-load style="--i:0">
+        <Photo class="h-44 w-44 md:h-56 md:w-[14.7rem] rounded-[1rem] border-[3px] border-[var(--text)]" />
+      </div>
+      <div>
+        <h1
+          class="text-6xl md:text-8xl leading-[0.9] mt-0"
+          style="font-family:var(--font-display);font-weight:700;--i:1"
+          data-load
+        >
+          Ayush<br/>Madhav<br/>Kumar
+        </h1>
+        <p class="text-lg mt-4 text-[var(--text-dim)]" data-load style="--i:2">CS and Math @UMichigan</p>
+        <p class="font-mono mt-1 text-[var(--accent)]" data-load style="--i:3">&gt; NSF-backed research</p>
+        <a
+          class="inline-block mt-4 px-5 py-2 text-sm font-mono bg-[var(--m-yellow)] text-[var(--text)] border-[3px] border-[var(--text)] rounded-[1rem]"
+          href="/AyushMadhavResume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-load
+          style="--i:4"
+        >
+          &gt; view resume (pdf)
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ EXPERIENCE ══════════ -->
+  <section id="experience" class="max-w-5xl mx-auto px-6 py-16">
+    <h2
+      class="m-label"
+      style="background:var(--m-yellow);--i:0"
+      data-load
+    >Experience</h2>
+    <div class="grid md:grid-cols-2 gap-5">
+      {experience.map((j, i) => (
+        <div class="m-card" data-load style={`--i:${Math.min(i, 4)}`}>
+          <p class="text-xs font-mono text-[var(--accent)] mb-1">{j.period} &mdash; {j.location}</p>
+          <h3 class="text-xl" style="font-family:var(--font-display);font-weight:700">{j.company}</h3>
+          <p class="text-sm text-[var(--text-dim)] mb-2">{j.role}</p>
+          <ul class="space-y-1 text-sm">
+            {j.bullets.map((b) => <li class="pl-3 relative before:absolute before:left-0 before:content-['-']">{b}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ══════════ PROJECTS ══════════ -->
+  <section id="projects" class="max-w-5xl mx-auto px-6 py-16">
+    <h2
+      class="m-label"
+      style="background:var(--m-pink);--i:0"
+      data-load
+    >Projects</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {personalProjects.map((p, i) => (
+        <div class="m-card" data-load style={`--i:${Math.min(i, 4)}`}>
+          <h3 class="text-lg" style="font-family:var(--font-display);font-weight:700">{p.title}</h3>
+          <p class="text-sm mt-2 text-[var(--text-dim)]">{p.description}</p>
+          {p.repoUrl && (
+            <a href={p.repoUrl} target="_blank" rel="noopener noreferrer" class="inline-block mt-3 text-xs font-mono text-[var(--accent-2)] underline">repo</a>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ══════════ HACKATHONS ══════════ -->
+  <section id="hackathons" class="max-w-5xl mx-auto px-6 py-16">
+    <h2
+      class="m-label"
+      style="background:var(--accent-2);color:#fff;--i:0"
+      data-load
+    >Hackathons</h2>
+    <div class="grid md:grid-cols-2 gap-5">
+      {hackathons.map((h, i) => (
+        <div class={`m-card ${hackBgClasses[i % hackBgClasses.length]}`} data-load style={`--i:${Math.min(i, 4)}`}>
+          <p class="text-xs font-mono mb-1">{h.date}</p>
+          <p class="text-sm font-mono mb-1">&gt; {h.placement}</p>
+          <h3 class="text-lg" style="font-family:var(--font-display);font-weight:700">{h.event}</h3>
+          <p class="text-xs mb-1 opacity-70">{h.organizer}</p>
+          <p class="text-sm mt-2">{h.blurb}</p>
+          <div class="flex gap-3 mt-3 flex-wrap">
+            {h.repoUrl && <a href={h.repoUrl} target="_blank" rel="noopener noreferrer" class="text-xs font-mono underline">repo</a>}
+            {h.siteUrl && <a href={h.siteUrl} target="_blank" rel="noopener noreferrer" class="text-xs font-mono underline">site</a>}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ══════════ SKILLS ══════════ -->
+  <section id="skills" class="max-w-5xl mx-auto px-6 py-16">
+    <h2
+      class="m-label"
+      style="background:var(--m-blue);color:#fff;--i:0"
+      data-load
+    >Stack</h2>
+    <div class="space-y-6">
+      {Object.entries(resumeData.skills).map(([cat, items], ci) => (
+        <div data-load style={`--i:${Math.min(ci, 4)}`}>
+          <p class="text-xs font-mono text-[var(--text-dim)] uppercase tracking-widest mb-2">{cat}</p>
+          <div class="flex flex-wrap gap-2">
+            {(items as string[]).map((s) => (
+              <span class="m-pill" style={
+                ci % 5 === 0 ? 'background:var(--m-yellow);' :
+                ci % 5 === 1 ? 'background:var(--accent);color:#fff;' :
+                ci % 5 === 2 ? 'background:var(--accent-2);color:#fff;' :
+                ci % 5 === 3 ? 'background:var(--m-pink);' :
+                               'background:var(--m-blue);color:#fff;'
+              }>{s}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ══════════ CONTACT ══════════ -->
+  <footer id="contact" class="max-w-5xl mx-auto px-6 py-20 text-center">
+    <p class="text-sm font-mono text-[var(--text-dim)] mb-4">get in touch</p>
+    <a
+      href="mailto:contactayushmadhav@gmail.com"
+      class="inline-block px-6 py-3 border-[3px] border-[var(--text)] rounded-[1rem] text-lg bg-[var(--accent)] text-white"
+      style="font-family:var(--font-display);font-weight:700;box-shadow:5px 5px 0 var(--text);"
+    >
+      contactayushmadhav@gmail.com
+    </a>
+  </footer>
+
+</ThemeLayout>

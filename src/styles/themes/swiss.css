@@ -1,0 +1,126 @@
+/* src/styles/themes/swiss.css
+   International Typographic Style — Swiss design.
+   Archivo 900 display / 300 body. Strict grid. Swiss red. Zero decoration. */
+
+/* ── LIGHT palette ─────────────────────────────────────────────────── */
+html[data-theme="swiss"] {
+  --bg:        #ffffff;
+  --bg-2:      #fafafa;
+  --surface:   #fafafa;
+  --text:      #111111;
+  --text-dim:  #666666;
+  --accent:    #e2231a;
+  --accent-2:  #111111;
+
+  --font-display: 'Archivo', sans-serif;
+  --font-body:    'Archivo', sans-serif;
+  --font-mono:    'Archivo', monospace;
+
+  --w-display: 900;
+  --w-body:    300;
+
+  --radius: 0;
+  --border: 1px solid var(--text);
+  --ease:   cubic-bezier(0.16, 1, 0.3, 1);
+  --dur:    0.6s;
+
+  /* Swiss-specific sizing tokens */
+  --numeral-size: clamp(5rem, 12vw, 9rem);
+  --rule-color:   var(--text);
+}
+
+/* ── DARK palette ──────────────────────────────────────────────────── */
+html[data-theme="swiss"].dark {
+  --bg:        #0a0a0a;
+  --bg-2:      #141414;
+  --surface:   #141414;
+  --text:      #f2f2f2;
+  --text-dim:  #999999;
+  --accent:    #ff3b2f;
+  --accent-2:  #f2f2f2;
+  --rule-color: var(--text);
+}
+
+/* ── Hairline rules ────────────────────────────────────────────────── */
+html[data-theme="swiss"] .sw-rule {
+  border: 0;
+  border-top: 1px solid var(--rule-color);
+  margin: 0;
+}
+
+html[data-theme="swiss"] .sw-rule-accent {
+  border: 0;
+  border-top: 2px solid var(--accent);
+  margin: 0;
+}
+
+/* ── Big section numeral ───────────────────────────────────────────── */
+html[data-theme="swiss"] .sw-numeral {
+  font-family:  var(--font-display);
+  font-weight:  900;
+  font-size:    var(--numeral-size);
+  line-height:  1;
+  color:        var(--text-dim);
+  letter-spacing: -0.04em;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ── Override entrance animation: crisp fade-up (no lateral drift) ── */
+html[data-theme="swiss"] [data-load] {
+  animation-name: swissReveal;
+  animation-timing-function: var(--ease);
+  animation-fill-mode: forwards;
+  animation-duration: var(--dur);
+  animation-delay: calc(var(--i, 0) * 80ms);
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+@keyframes swissReveal {
+  to { opacity: 1; transform: none; }
+}
+
+/* Respect reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="swiss"] [data-load] {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Swiss hero: full viewport ─────────────────────────────────────── */
+html[data-theme="swiss"] .swiss-hero {
+  min-height: 100svh;
+  min-height: 100dvh;
+}
+
+/* ── Accent tag (role / placement label) ───────────────────────────── */
+html[data-theme="swiss"] .sw-tag {
+  font-family:  var(--font-display);
+  font-weight:  900;
+  font-size:    0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ── Section heading ───────────────────────────────────────────────── */
+html[data-theme="swiss"] .sw-section-title {
+  font-family:  var(--font-display);
+  font-weight:  900;
+  font-size:    clamp(1.25rem, 3vw, 1.75rem);
+  letter-spacing: -0.02em;
+  line-height:  1.1;
+}
+
+/* ── Entry grid row (experience / hackathon item) ──────────────────── */
+html[data-theme="swiss"] .sw-entry {
+  border-top: 1px solid var(--rule-color);
+  padding-block: 1.5rem;
+}
+
+html[data-theme="swiss"] .sw-entry:last-child {
+  border-bottom: 1px solid var(--rule-color);
+}

@@ -1,0 +1,320 @@
+---
+// src/pages/v2/deco/index.astro
+import ThemeLayout from '../../../layouts/ThemeLayout.astro';
+import '../../../styles/themes/deco.css';
+import Photo from '../../../components/v2/shared/Photo.astro';
+import { experience, hackathons } from '../../../data/v2';
+import { projects } from '../../../data/projects';
+import resumeData from '../../../data/resume.json';
+
+const filteredProjects = projects.filter(
+  (p) => !hackathons.some((h) => h.project === p.title)
+);
+---
+
+<ThemeLayout themeKey="deco" title="Ayush Madhav Kumar. Art Deco">
+
+  <!-- ═══════════════════════ HERO ═══════════════════════════ -->
+  <section class="deco-hero px-6" aria-label="Introduction">
+
+    <!-- mobile: photo above name -->
+    <Photo class="mb-6 md:hidden w-28 h-36 object-cover" data-load style="--i:0" />
+
+    <!-- top ornament label -->
+    <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent)] mb-4" data-load style="--i:0">
+      Portfolio &middot; MMXXVI
+    </p>
+
+    <!-- sunburst above name -->
+    <div class="deco-sunburst mb-3 mx-auto" aria-hidden="true"></div>
+
+    <!-- name -->
+    <h1
+      class="deco-heading text-4xl sm:text-5xl md:text-7xl leading-tight mb-2"
+      data-load
+      style="--i:1"
+    >
+      Ayush Madhav Kumar
+    </h1>
+
+    <!-- double-rule -->
+    <div class="deco-rule w-full max-w-lg mx-auto my-4" aria-hidden="true">
+      <span class="deco-rule-span">CS &amp; Math</span>
+    </div>
+
+    <!-- role + callout row -->
+    <div class="flex flex-col items-center gap-1 mb-6" data-load style="--i:2">
+      <p
+        class="font-display tracking-[0.25em] uppercase text-sm text-[var(--text-dim)]"
+        style="font-family:var(--font-display)"
+      >
+        CS and Math @UMichigan
+      </p>
+      <p
+        class="font-display tracking-[0.2em] uppercase text-xs text-[var(--accent-2)]"
+        style="font-family:var(--font-display)"
+      >
+        &rsaquo; NSF-backed research
+      </p>
+    </div>
+
+    <!-- desktop photo + blurb row -->
+    <div
+      class="hidden md:flex items-center gap-10 max-w-3xl mx-auto mt-4"
+      data-load
+      style="--i:3"
+    >
+      <Photo class="w-28 h-36 flex-shrink-0" />
+      <p class="text-[var(--text-dim)] text-sm leading-relaxed max-w-prose text-left">
+        Systems programming and AI infrastructure: on-device inference engines, fine-tuned
+        coding agents, and the tooling around them. NSF-backed research; contributor at
+        Cactus (YC S25).
+        <a
+          href="/AyushMadhavResume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block mt-3 text-[var(--accent)] tracking-widest uppercase text-xs"
+          style="font-family:var(--font-display)"
+        >
+          View Resume &rarr;
+        </a>
+      </p>
+    </div>
+
+    <!-- mobile blurb -->
+    <p
+      class="md:hidden text-[var(--text-dim)] text-sm leading-relaxed max-w-prose text-center mt-4"
+      data-load
+      style="--i:3"
+    >
+      Systems programming and AI infrastructure: on-device inference engines, fine-tuned
+      coding agents, and the tooling around them.
+      <a
+        href="/AyushMadhavResume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="block mt-3 text-[var(--accent)] tracking-widest uppercase text-xs"
+        style="font-family:var(--font-display)"
+      >
+        View Resume &rarr;
+      </a>
+    </p>
+
+    <!-- bottom chevron -->
+    <div class="deco-chevron mt-10" aria-hidden="true"></div>
+  </section>
+
+  <!-- ═══════════════════════ EXPERIENCE ════════════════════ -->
+  <section id="experience" class="deco-section-rule max-w-4xl mx-auto px-6 py-20">
+
+    <!-- section heading -->
+    <div class="text-center mb-12" data-load style="--i:0">
+      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent)] mb-2">I</p>
+      <h2 class="deco-heading text-2xl md:text-3xl">Experience</h2>
+      <div class="deco-rule w-64 mx-auto mt-4" aria-hidden="true">
+        <span class="deco-rule-span" aria-hidden="true">&#9670;</span>
+      </div>
+    </div>
+
+    <div class="space-y-8">
+      {experience.map((j, i) => (
+        <div class="deco-card" data-load style={`--i:${Math.min(i, 5)}`}>
+          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1">
+            <h3
+              class="deco-heading text-base tracking-[0.15em]"
+              style="font-family:var(--font-display)"
+            >
+              {j.company}
+            </h3>
+            {j.badge && <span class="deco-badge">{j.badge}</span>}
+          </div>
+          <p
+            class="text-[var(--accent)] text-xs tracking-widest uppercase mb-3"
+            style="font-family:var(--font-display)"
+          >
+            {j.role} &middot; {j.period}{j.location ? ` &middot; ${j.location}` : ''}
+          </p>
+          <ul class="space-y-1 text-sm text-[var(--text-dim)]">
+            {j.bullets.map((b) => (
+              <li class="flex gap-2 items-start">
+                <span class="text-[var(--accent)] mt-1 flex-shrink-0" aria-hidden="true">&#9656;</span>
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ PROJECTS ══════════════════════ -->
+  <section id="projects" class="deco-section-rule max-w-4xl mx-auto px-6 py-20">
+
+    <div class="text-center mb-12" data-load style="--i:0">
+      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent)] mb-2">II</p>
+      <h2 class="deco-heading text-2xl md:text-3xl">Projects</h2>
+      <div class="deco-rule w-64 mx-auto mt-4" aria-hidden="true">
+        <span class="deco-rule-span" aria-hidden="true">&#9670;</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {filteredProjects.map((p, i) => (
+        <div class="deco-ziggurat" data-load style={`--i:${Math.min(i, 5)}`}>
+          <h3
+            class="deco-heading text-sm tracking-[0.18em] mb-2"
+            style="font-family:var(--font-display)"
+          >
+            {p.title}
+          </h3>
+          <p class="text-[var(--text-dim)] text-sm leading-relaxed mb-3">{p.description}</p>
+          <div class="flex flex-wrap gap-2 mb-3">
+            {p.tags.slice(0, 4).map((t) => (
+              <span class="deco-tag">{t}</span>
+            ))}
+          </div>
+          {(p.githubUrl || p.websiteUrl) && (
+            <div class="flex gap-4 text-xs" style="font-family:var(--font-display)">
+              {p.githubUrl && (
+                <a
+                  href={p.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-[var(--accent)] tracking-widest uppercase hover:underline"
+                >
+                  GitHub &rarr;
+                </a>
+              )}
+              {p.websiteUrl && (
+                <a
+                  href={p.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-[var(--accent-2)] tracking-widest uppercase hover:underline"
+                >
+                  Live &rarr;
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ HACKATHONS ════════════════════ -->
+  <section id="hackathons" class="deco-section-rule max-w-4xl mx-auto px-6 py-20">
+
+    <div class="text-center mb-12" data-load style="--i:0">
+      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent)] mb-2">III</p>
+      <h2 class="deco-heading text-2xl md:text-3xl">Hackathons</h2>
+      <div class="deco-rule w-64 mx-auto mt-4" aria-hidden="true">
+        <span class="deco-rule-span" aria-hidden="true">&#9670;</span>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      {hackathons.map((h, i) => (
+        <div class="deco-card" data-load style={`--i:${Math.min(i, 4)}`}>
+          <p
+            class="text-[var(--accent)] text-xs tracking-[0.25em] uppercase mb-1"
+            style="font-family:var(--font-display)"
+          >
+            {h.placement}
+          </p>
+          <h3
+            class="deco-heading text-sm tracking-[0.15em] mb-1"
+            style="font-family:var(--font-display)"
+          >
+            {h.project} &mdash; {h.event}
+          </h3>
+          <p
+            class="text-[var(--text-dim)] text-xs tracking-widest uppercase mb-2"
+            style="font-family:var(--font-display)"
+          >
+            {h.organizer} &middot; {h.date}
+          </p>
+          <p class="text-sm text-[var(--text-dim)] leading-relaxed mb-3">{h.blurb}</p>
+          {(h.repoUrl || h.siteUrl) && (
+            <div class="flex gap-4 text-xs" style="font-family:var(--font-display)">
+              {h.repoUrl && (
+                <a
+                  href={h.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-[var(--accent)] tracking-widest uppercase hover:underline"
+                >
+                  GitHub &rarr;
+                </a>
+              )}
+              {h.siteUrl && (
+                <a
+                  href={h.siteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-[var(--accent-2)] tracking-widest uppercase hover:underline"
+                >
+                  Live &rarr;
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ SKILLS ════════════════════════ -->
+  <section id="skills" class="deco-section-rule max-w-4xl mx-auto px-6 py-20">
+
+    <div class="text-center mb-12" data-load style="--i:0">
+      <p class="deco-heading text-[0.6rem] tracking-[0.4em] text-[var(--accent)] mb-2">IV</p>
+      <h2 class="deco-heading text-2xl md:text-3xl">Stack</h2>
+      <div class="deco-rule w-64 mx-auto mt-4" aria-hidden="true">
+        <span class="deco-rule-span" aria-hidden="true">&#9670;</span>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      {Object.entries(resumeData.skills).map(([category, items], i) => (
+        <div data-load style={`--i:${Math.min(i, 4)}`}>
+          <div class="deco-rule mb-3" aria-hidden="true">
+            <span class="deco-rule-span">{category}</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            {(items as string[]).map((item) => (
+              <span class="deco-tag">{item}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ CONTACT ═══════════════════════ -->
+  <footer
+    id="contact"
+    class="deco-section-rule max-w-4xl mx-auto px-6 py-24 text-center"
+    data-load
+    style="--i:0"
+  >
+    <div class="deco-sunburst mb-6 mx-auto" aria-hidden="true"></div>
+    <p
+      class="deco-heading text-[0.6rem] tracking-[0.5em] text-[var(--accent)] mb-4"
+    >
+      Get In Touch
+    </p>
+    <div class="deco-rule w-56 mx-auto mb-6" aria-hidden="true">
+      <span class="deco-rule-span" aria-hidden="true">&#9670;</span>
+    </div>
+    <a
+      href="mailto:contactayushmadhav@gmail.com"
+      class="deco-heading text-xl md:text-2xl text-[var(--accent)] hover:text-[var(--accent-2)] transition-colors"
+      style="font-family:var(--font-display); letter-spacing:0.1em"
+    >
+      contactayushmadhav@gmail.com
+    </a>
+    <div class="deco-chevron mt-8" aria-hidden="true"></div>
+  </footer>
+
+</ThemeLayout>

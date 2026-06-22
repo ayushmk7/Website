@@ -1,4 +1,6 @@
 /* src/styles/themes/bauhaus.css */
+
+/* ── LIGHT (base) palette ───────────────────────────────────────────── */
 html[data-theme="bauhaus"] {
   --bg: #f4f1ea; --bg-2: #ffffff; --surface: #ffffff;
   --text: #141414; --text-dim: #555555;
@@ -11,6 +13,18 @@ html[data-theme="bauhaus"] {
   --w-display: 700; --w-body: 300;
   --radius: 0; --border: 3px solid #141414; --dur: 0.6s;
 }
+
+/* ── DARK palette ───────────────────────────────────────────────────── */
+html[data-theme="bauhaus"].dark {
+  --bg: #111111; --bg-2: #1a1a1a; --surface: #1e1e1e;
+  --text: #f0ece2; --text-dim: #a8a49a;
+  /* accent colours stay vivid – same red / blue / yellow */
+  --accent: #e63329;
+  --accent-2: #1f4ed8;
+  --bau-yellow: #f4c20d;
+  --border: 3px solid #d4cfc5;
+}
+
 html[data-theme="bauhaus"] .shape { position: absolute; z-index: 0; pointer-events: none; max-width: 100%; }
 html[data-theme="bauhaus"] .circle { border-radius: 50%; background: var(--accent); }
 html[data-theme="bauhaus"] .square { background: var(--accent-2); }
@@ -20,10 +34,11 @@ html[data-theme="bauhaus"] .tri {
   border-bottom: 104px solid var(--bau-yellow);
 }
 html[data-theme="bauhaus"] .block { border: var(--border); }
-/* hero section: clamp to viewport, clip decorative shapes */
+/* hero section: clamp to viewport, clip decorative shapes; pad top for fixed nav */
 html[data-theme="bauhaus"] section:first-of-type {
   min-height: 100svh;
   min-height: 100dvh;
+  padding-top: 64px;
   overflow: hidden;
 }
 /* alternate slide direction by nth */

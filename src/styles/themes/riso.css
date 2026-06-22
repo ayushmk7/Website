@@ -1,4 +1,6 @@
 /* src/styles/themes/riso.css */
+
+/* ── LIGHT palette (warm paper, riso blue ink, fluoro pink) ── */
 html[data-theme="riso"] {
   --bg: #f3ecdd; --bg-2: #f3ecdd; --surface: #fbf6ea;
   --text: #1d2bd4; --text-dim: #5a63c9;   /* riso blue as "ink 1" */
@@ -9,11 +11,23 @@ html[data-theme="riso"] {
   --w-display: 800; --w-body: 300;
   --radius: 1.5rem; --border: 2px solid var(--text); --dur: 0.6s;
 }
+
+/* ── DARK palette (deep indigo ground, glowing inks) ── */
+html[data-theme="riso"].dark {
+  --bg: #14112b; --bg-2: #14112b; --surface: #1e1a38;
+  --text: #7b8eff; --text-dim: #a0a8f8;   /* lightened blue ink — glows on dark */
+  --accent: #ff6ec7; --accent-2: #7b8eff; /* brightened pink ink */
+}
+
 html[data-theme="riso"] .misreg { position: relative; overflow: hidden; }
 html[data-theme="riso"] .misreg::before {
   content: attr(data-text); position: absolute; left: 3px; top: 3px;
   color: var(--accent); z-index: -1; mix-blend-mode: multiply;
   pointer-events: none;
+}
+/* in dark mode multiply washes out against dark bg — switch to screen */
+html[data-theme="riso"].dark .misreg::before {
+  mix-blend-mode: screen;
 }
 html[data-theme="riso"] body { overflow-x: hidden; }
 html[data-theme="riso"] [data-load] { animation-timing-function: cubic-bezier(0.34,1.56,0.64,1); }

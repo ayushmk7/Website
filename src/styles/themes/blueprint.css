@@ -1,27 +1,51 @@
 /* src/styles/themes/blueprint.css */
+
+/* ── LIGHT variant: white/pale-blue paper, navy hairline grid ─────────── */
 html[data-theme="blueprint"] {
-  --bg: #0a1929; --bg-2: #0c1f33; --surface: #0e2236;
-  --text: #d7e9f7; --text-dim: #5b86a8;
-  --accent: #00d9ff; --accent-2: #ffd23f;
+  --bg: #eef4fa; --bg-2: #e4edf6; --surface: #f5f9fd;
+  --text: #0a1929; --text-dim: #3d6080;
+  --accent: #0057a8; --accent-2: #c47c00;
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Space Grotesk', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --w-display: 700; --w-body: 300;
-  --radius: 0; --border: 1px dashed rgba(0,217,255,0.5);
+  --radius: 0; --border: 1px dashed rgba(0,87,168,0.35);
   --ease: cubic-bezier(0.16,1,0.3,1); --dur: 0.7s;
 }
+
+/* ── DARK variant: navy + cyan grid (original palette) ───────────────── */
+html[data-theme="blueprint"].dark {
+  --bg: #0a1929; --bg-2: #0c1f33; --surface: #0e2236;
+  --text: #d7e9f7; --text-dim: #5b86a8;
+  --accent: #00d9ff; --accent-2: #ffd23f;
+  --border: 1px dashed rgba(0,217,255,0.5);
+}
+
+/* ── LIGHT body: white paper with navy hairline grid ─────────────────── */
 html[data-theme="blueprint"] body {
+  background:
+    linear-gradient(rgba(0,87,168,0.08) 1px, transparent 1px) 0 0 / 100% 32px,
+    linear-gradient(90deg, rgba(0,87,168,0.08) 1px, transparent 1px) 0 0 / 32px 100%,
+    var(--bg);
+}
+
+/* ── DARK body: cyan-on-navy grid ────────────────────────────────────── */
+html[data-theme="blueprint"].dark body {
   background:
     linear-gradient(rgba(0,217,255,0.06) 1px, transparent 1px) 0 0 / 100% 32px,
     linear-gradient(90deg, rgba(0,217,255,0.06) 1px, transparent 1px) 0 0 / 32px 100%,
     var(--bg);
 }
+
+/* ── Hero: clear fixed nav (~56 px) with a small buffer ──────────────── */
 html[data-theme="blueprint"] .bp-hero {
   min-height: 100vh;
   min-height: 100svh;
   min-height: 100dvh;
+  padding-top: 72px;
   align-items: center;
 }
+
 html[data-theme="blueprint"] .fig-label {
   font-family: var(--font-mono); color: var(--accent); font-size: 0.7rem;
   letter-spacing: 0.2em; text-transform: uppercase;

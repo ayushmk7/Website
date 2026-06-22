@@ -1,4 +1,6 @@
 /* src/styles/themes/editorial.css */
+
+/* ── LIGHT (default) ───────────────────────────────────────── */
 html[data-theme="editorial"] {
   --bg: #f7f3ec; --bg-2: #efe9df; --surface: #fffdf8;
   --text: #1b1a17; --text-dim: #6b655b;
@@ -8,6 +10,14 @@ html[data-theme="editorial"] {
   --font-mono: 'Source Sans 3', sans-serif;
   --w-display: 900; --w-body: 300;
   --radius: 0; --border: 1px solid #1b1a17; --dur: 0.9s;
+}
+
+/* ── DARK variant ──────────────────────────────────────────── */
+html[data-theme="editorial"].dark {
+  --bg: #1a1813; --bg-2: #232018; --surface: #201e18;
+  --text: #f0ebe0; --text-dim: #9e9688;
+  --accent: #c9503a; --accent-2: #f0ebe0;
+  --border: 1px solid #f0ebe0;
 }
 html[data-theme="editorial"] .dropcap::first-letter {
   font-family: var(--font-display); font-weight: 900; font-size: 3.4em;
