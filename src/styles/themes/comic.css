@@ -287,8 +287,14 @@ html[data-theme="comic"] .skill-tag {
    ============================================================ */
 html[data-theme="comic"] .panel--burst {
   background-image: radial-gradient(circle at 90% 10%, var(--halftone-accent) 0%, var(--halftone-accent) 38%, transparent 40%);
-  /* yellow bg requires dark text in both modes for contrast */
+  /* light: yellow panel with dark text */
+  background-color: var(--accent-2);
   color: #141414;
+}
+/* dark: dark surface with white text (white on yellow would be illegible) */
+html[data-theme="comic"].dark .panel--burst {
+  background-color: var(--surface);
+  color: #f0f0f0;
 }
 
 /* ============================================================
