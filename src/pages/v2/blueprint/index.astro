@@ -26,7 +26,7 @@ const LABEL_MAP: Record<string, string> = {
       <div data-load style="--i:2">REV. 2026.06<br/>ANN ARBOR, MI</div>
     </aside>
     <div class="flex flex-col justify-center p-6 md:p-12">
-      <div class="mb-6" data-load style="--i:0"><Photo class="h-40 w-40 md:h-[19rem] md:w-[12.6rem] border border-[var(--accent)]/50" /></div>
+      <div class="mb-6" data-load style="--i:0"><Photo class="h-40 w-40 md:h-[19rem] md:w-[12.6rem] bp-photo-frame" /></div>
       <p class="fig-label" data-load style="--i:1">CS AND MATH @UMICHIGAN</p>
       <h1 class="text-5xl md:text-7xl my-3" data-load style="font-family:var(--font-display);font-weight:700;letter-spacing:-0.03em;--i:2">Ayush Madhav Kumar</h1>
       <p class="font-mono text-[var(--accent)] text-sm" data-load style="--i:3">&gt; NSF-backed research</p>
@@ -35,7 +35,7 @@ const LABEL_MAP: Record<string, string> = {
   </section>
 
   <Plate fig="01" title="Experience" id="experience">
-    <div class="grid md:grid-cols-2 gap-px bg-[var(--accent)]/20">
+    <div class="grid md:grid-cols-2 gap-px bp-grid">
       {experience.map((j, i) => (
         <div class="bg-[var(--bg)] p-5" data-load style={`--i:${Math.min(i,4)}`}>
           <p class="font-mono text-xs text-[var(--accent)]">{j.period}</p>
@@ -48,7 +48,7 @@ const LABEL_MAP: Record<string, string> = {
   </Plate>
 
   <Plate fig="02" title="Projects" id="projects">
-    <div class="grid md:grid-cols-3 gap-px bg-[var(--accent)]/20">
+    <div class="grid md:grid-cols-3 gap-px bp-grid">
       {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p, i) => (
         <div class="bp-card bg-[var(--bg)] p-5" data-load style={`--i:${Math.min(i,4)}`}>
           <h3 style="font-weight:700">{p.title}</h3>
@@ -74,7 +74,7 @@ const LABEL_MAP: Record<string, string> = {
   </Plate>
 
   <Plate fig="03" title="Hackathons" id="hackathons">
-    <div class="grid md:grid-cols-2 gap-px bg-[var(--accent)]/20">
+    <div class="grid md:grid-cols-2 gap-px bp-grid">
       {hackathons.map((h, i) => (
         <div class="bg-[var(--bg)] p-5" data-load style={`--i:${Math.min(i,4)}`}>
           <p class="font-mono text-xs text-[var(--accent)]">&gt; {h.placement}</p>

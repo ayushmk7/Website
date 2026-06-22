@@ -58,6 +58,19 @@ html[data-theme="blueprint"] .bp-rail-border {
   border-right: var(--border);
 }
 
+/* Photo frame + grid dividers + plate rule.
+   (Tailwind's /NN opacity modifier does not work on arbitrary CSS-var colors,
+   so these are defined here with color-mix.) */
+html[data-theme="blueprint"] .bp-photo-frame {
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+}
+html[data-theme="blueprint"] .bp-grid {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+html[data-theme="blueprint"] .bp-plate {
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 32%, transparent);
+}
+
 html[data-theme="blueprint"] .fig-label {
   font-family: var(--font-mono); color: var(--accent); font-size: 0.7rem;
   letter-spacing: 0.2em; text-transform: uppercase;

@@ -7,7 +7,7 @@ html[data-theme="aurora"] {
   --accent: #5e81ac; --accent-2: #a3be8c;
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
-  --w-display: 700; --w-body: 200;
+  --w-display: 700; --w-body: 300;
   --radius: 1.25rem; --border: 1px solid rgba(94,129,172,0.35); --dur: 0.8s;
 }
 html[data-theme="aurora"] body {
@@ -57,6 +57,13 @@ html[data-theme="aurora"] .glass {
 }
 html[data-theme="aurora"] section { box-sizing: border-box; width: 100%; }
 html[data-theme="aurora"] .grid { width: 100%; }
+
+/* Hero portrait: visible accent frame (the Tailwind /40 opacity modifier does not
+   work on an arbitrary CSS-var color, so define the border here) */
+html[data-theme="aurora"] .aurora-photo {
+  border: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: 0 8px 30px rgba(46, 52, 64, 0.18);
+}
 
 /* ── Hero: clear fixed ~56 px nav ────────────────────────────────────────── */
 html[data-theme="aurora"] section:first-of-type {

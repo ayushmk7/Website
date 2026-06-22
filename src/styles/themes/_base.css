@@ -26,6 +26,28 @@
   [data-load] { animation: none; opacity: 1; transform: none; }
 }
 
+/* Keyboard focus visibility — applies across every theme (a11y) */
+[data-theme] a:focus-visible,
+[data-theme] button:focus-visible,
+[data-theme] input:focus-visible,
+[data-theme] [tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Anchored sections clear the fixed top nav (~56px) when jumped to via nav links */
+[data-theme] section[id],
+[data-theme] footer[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Themed text selection */
+[data-theme] ::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
 /* Grain overlay helper (themes opt in via class) */
 .grain::after {
   content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
