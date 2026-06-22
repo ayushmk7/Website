@@ -410,12 +410,21 @@ html[data-theme="comic"] .cwm-stage {
   transform-origin: 0 0;
   will-change: transform;
 }
-html[data-theme="comic"] .cwm-map-img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  /* comic-tinted but readable NASA Blue Marble base */
-  filter: saturate(1.15) contrast(1.1);
-  -webkit-user-drag: none; user-select: none;
+/* real-geometry SVG map */
+html[data-theme="comic"] .cwm-svg { width: 100%; height: 100%; display: block; }
+html[data-theme="comic"] .cwm-land {
+  fill: color-mix(in srgb, var(--accent-2) 38%, var(--surface));
+  stroke: var(--outline);
+  stroke-width: 0.8;
+  stroke-linejoin: round;
 }
+/* expand-to-fullscreen overlay (keeps the map a 2:1 box so pins stay aligned) */
+html[data-theme="comic"] .cwm-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.65);
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+}
+html[data-theme="comic"] .cwm-overlay-inner { width: min(95vw, 180vh); }
 /* zoom controls */
 html[data-theme="comic"] .cwm-zoom {
   position: absolute; top: 0.5rem; right: 0.5rem; z-index: 5;

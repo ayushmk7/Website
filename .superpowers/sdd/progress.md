@@ -14,3 +14,4 @@ Uniqueness + parity pass (12 themes): custom buttons/boxes/icons, signature anim
 Consistency/uniqueness review + fixes (commit a822cb1)
 Spacing pass (8 themes + current): rhythm, padding, gaps, shadow clearance (commit 3b3805f)
 Harsh UI/UX audit + fixes (9 designs): contrast, focus, tap targets, overflow, hero (commit f2b324e)
+Comic world map: tasks 1-4 complete (623b2fa,e6e2c63,fcd8839,f90a243)
