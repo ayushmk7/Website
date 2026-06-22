@@ -227,6 +227,14 @@ html[data-theme="terminal"] .hero-name {
   font-weight: 800;
 }
 
+/* ── hero link row ─────────────────────────────────────────────── */
+html[data-theme="terminal"] .hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 /* ── icon buttons: inline-flex so SVG sits centered ───────────────── */
 html[data-theme="terminal"] .term-icon-btn {
   display: inline-flex;

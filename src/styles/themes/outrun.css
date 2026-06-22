@@ -348,6 +348,12 @@ html[data-theme="outrun"] .hero-tagline {
   font-size: clamp(0.75rem, 2vmin, 1.1rem);
   margin: 0;
 }
+html[data-theme="outrun"] .hero-cta-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
 html[data-theme="outrun"] .hero-cta {
   font-size: clamp(0.7rem, 1.8vmin, 0.9rem);
   padding: clamp(0.4rem, 1.2vmin, 0.6rem) clamp(1.1rem, 3.5vmin, 1.8rem);

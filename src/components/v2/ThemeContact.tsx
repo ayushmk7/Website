@@ -38,26 +38,26 @@ export function ThemeContact() {
           {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
         </button>
       </div>
-      <div className="flex items-center justify-center gap-3">
+      <div className="flex flex-col items-center gap-2">
         <a
           href="https://github.com/ayushmk7"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="GitHub"
-          className={iconBtn}
-          style={iconStyle}
+          className="inline-flex items-center gap-2 underline underline-offset-4 break-all"
+          style={{ color: 'var(--accent)' }}
         >
-          <Github className="w-5 h-5" />
+          <Github className="w-4 h-4 shrink-0" />
+          github.com/ayushmk7 <span aria-hidden="true">↗</span>
         </a>
         <a
           href="https://www.linkedin.com/in/ayushmk"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="LinkedIn"
-          className={iconBtn}
-          style={iconStyle}
+          className="inline-flex items-center gap-2 underline underline-offset-4 break-all"
+          style={{ color: 'var(--accent)' }}
         >
-          <Linkedin className="w-5 h-5" />
+          <Linkedin className="w-4 h-4 shrink-0" />
+          linkedin.com/in/ayushmk <span aria-hidden="true">↗</span>
         </a>
       </div>
     </div>
