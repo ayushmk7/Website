@@ -26,6 +26,14 @@ const def = themeByKey(themeKey);
     {def?.fontHrefs.map((href) => <link rel="stylesheet" href={href} />)}
     <Analytics />
     <script is:inline>
+      // dark/light init: apply saved or system preference before paint
+      try {
+        const t = localStorage.getItem('theme');
+        const dark = t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList[dark ? 'add' : 'remove']('dark');
+      } catch (e) {}
+    </script>
+    <script is:inline>
       // theme memory: remember last picked (dock handles writes)
       try {
         const saved = localStorage.getItem('v2-theme');
