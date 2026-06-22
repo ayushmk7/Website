@@ -17,6 +17,9 @@ export const THEMES: ThemeDef[] = [
   { key: 'aurora',    name: 'Aurora',    route: '/v2/aurora',    fontHrefs: ['https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Inter:wght@200;500&display=swap'] },
   { key: 'bauhaus',   name: 'Bauhaus',   route: '/v2/bauhaus',   fontHrefs: ['https://fonts.googleapis.com/css2?family=Jost:wght@300;500;700&display=swap'] },
   { key: 'comic',     name: 'Comic Pop', route: '/v2/comic',     fontHrefs: ['https://fonts.googleapis.com/css2?family=Bangers&family=Nunito+Sans:wght@300;800&display=swap'] },
+  { key: 'deco',      name: 'Art Deco',  route: '/v2/deco',      fontHrefs: ['https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Jost:wght@300;500&display=swap'] },
+  { key: 'memphis',   name: 'Memphis',   route: '/v2/memphis',   fontHrefs: ['https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Poppins:wght@300;800&display=swap'] },
+  { key: 'swiss',     name: 'Swiss',     route: '/v2/swiss',     fontHrefs: ['https://fonts.googleapis.com/css2?family=Archivo:wght@300;500;900&display=swap'] },
 ];
 
 export const themeByKey = (k: string) => THEMES.find((t) => t.key === k);

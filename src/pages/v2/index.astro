@@ -15,7 +15,7 @@ import { ThemeDock } from '../../components/v2/ThemeDock';
     try {
       const saved = localStorage.getItem('v2-theme');
       if (saved && saved !== 'current' && !location.search.includes('stay')) {
-        const r = {"blueprint":"/v2/blueprint","terminal":"/v2/terminal","editorial":"/v2/editorial","brutal":"/v2/brutal","riso":"/v2/riso","outrun":"/v2/outrun","aurora":"/v2/aurora","bauhaus":"/v2/bauhaus","comic":"/v2/comic"}[saved];
+        const r = {"blueprint":"/v2/blueprint","terminal":"/v2/terminal","editorial":"/v2/editorial","brutal":"/v2/brutal","riso":"/v2/riso","outrun":"/v2/outrun","aurora":"/v2/aurora","bauhaus":"/v2/bauhaus","comic":"/v2/comic","deco":"/v2/deco","memphis":"/v2/memphis","swiss":"/v2/swiss"}[saved];
         if (r) location.replace(r);
       }
     } catch (e) {}

@@ -1,0 +1,53 @@
+---
+// Token-driven nav shared by every theme page. Inherits the active theme's
+// fonts/colors via CSS vars, so it reads as designed for each theme.
+import { BB8Toggle } from './BB8Toggle';
+
+const links = [
+  { href: '#experience', label: 'Experience' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#hackathons', label: 'Hackathons' },
+  { href: '#skills', label: 'Stack' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+
+<header class="theme-nav-wrap fixed top-3 inset-x-0 z-40 flex justify-center px-4 pointer-events-none">
+  <nav class="theme-nav pointer-events-auto flex items-center gap-1 border px-2 py-1.5 backdrop-blur-md shadow-lg">
+    <a href="#top" class="theme-nav-brand px-3 py-1.5 text-sm font-semibold">AMK</a>
+    <span class="theme-nav-sep"></span>
+    {links.map((l) => (
+      <a href={l.href} class="theme-nav-link hidden sm:inline-block px-3 py-1.5 text-sm transition-colors">{l.label}</a>
+    ))}
+    <span class="theme-nav-sep hidden sm:inline-block"></span>
+    <BB8Toggle client:load size="5px" />
+  </nav>
+</header>
+
+<style>
+  .theme-nav {
+    background: var(--surface);
+    border-color: color-mix(in srgb, var(--text) 22%, transparent);
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    color: var(--text);
+  }
+  .theme-nav-brand {
+    font-family: var(--font-display);
+    color: var(--text);
+    border-radius: 9999px;
+    text-decoration: none;
+  }
+  .theme-nav-link {
+    color: var(--text-dim);
+    border-radius: 9999px;
+    text-decoration: none;
+  }
+  .theme-nav-link:hover { color: var(--accent); }
+  .theme-nav-sep {
+    width: 1px;
+    height: 1.25rem;
+    margin: 0 0.25rem;
+    background: color-mix(in srgb, var(--text) 22%, transparent);
+  }
+</style>
