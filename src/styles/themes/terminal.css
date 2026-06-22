@@ -57,19 +57,11 @@ html[data-theme="terminal"] .caret::after {
   html[data-theme="terminal"] .typewriter { animation: none; border-right: none; }
 }
 
-/* ── type-on effect on hero name ───────────────────────────────── */
+/* ── hero name: blinking-caret only (no width clip; that hid the name) ── */
 html[data-theme="terminal"] .typewriter {
-  overflow: hidden;
-  white-space: nowrap;
+  display: inline-block;
   border-right: 2px solid var(--accent);
-  width: 0;
-  animation:
-    tType 1.2s steps(18, end) 0.3s forwards,
-    tBlink 0.75s steps(1) 1.5s 4;
-}
-@keyframes tType {
-  from { width: 0; }
-  to   { width: 19ch; }
+  animation: tBlink 0.85s steps(1) infinite;
 }
 
 /* type-on: reuse [data-load] but with no transform, just sequential fade */
@@ -192,6 +184,8 @@ html[data-theme="terminal"] .hero-name {
   font-size: clamp(1.25rem, min(6vw, 4svh), 2.5rem);
   line-height: 1.2;
   margin: 0;
+  color: var(--accent);
+  font-weight: 800;
 }
 
 /* project links (legacy class kept for safety) */
