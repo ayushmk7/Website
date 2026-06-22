@@ -317,3 +317,69 @@ html[data-theme="comic"] .panel--burst {
     padding: 0.35rem 0.875rem;
   }
 }
+
+/* ============================================================
+   ComicHero unique-variant helpers
+   ============================================================ */
+/* Ben-day halftone-dot LETTERS (name made of red dots, black outline) */
+html[data-theme="comic"] .ch-halftone-text {
+  -webkit-text-fill-color: transparent;
+  background-image: radial-gradient(var(--accent) 34%, transparent 36%);
+  background-size: 0.16em 0.16em;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 1.6px var(--outline);
+  paint-order: stroke fill;
+  line-height: 0.95;
+}
+/* radiating action rays ring (sunburst) behind an element */
+html[data-theme="comic"] .ch-rays { position: relative; isolation: isolate; }
+html[data-theme="comic"] .ch-rays::before {
+  content: '';
+  position: absolute;
+  inset: -45%;
+  z-index: -1;
+  background: repeating-conic-gradient(from 0deg, var(--accent-2) 0deg 5deg, transparent 5deg 11deg);
+  border-radius: 50%;
+  -webkit-mask: radial-gradient(closest-side, transparent 38%, #000 40%);
+          mask: radial-gradient(closest-side, transparent 38%, #000 40%);
+  animation: chSpin 24s linear infinite;
+}
+@keyframes chSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { html[data-theme="comic"] .ch-rays::before { animation: none; } }
+/* jagged explosion (POW) shape */
+html[data-theme="comic"] .ch-burst {
+  display: inline-flex; align-items: center; justify-content: center; text-align: center;
+  background: var(--accent-2); color: #141414;
+  padding: clamp(1.4rem, 5vw, 3rem) clamp(1.8rem, 6vw, 3.5rem);
+  clip-path: polygon(50% 0,61% 14%,78% 6%,77% 25%,96% 26%,84% 41%,100% 50%,84% 59%,96% 74%,77% 75%,78% 94%,61% 86%,50% 100%,39% 86%,22% 94%,23% 75%,4% 74%,16% 59%,0 50%,16% 41%,4% 26%,23% 25%,22% 6%,39% 14%);
+  filter: drop-shadow(6px 6px 0 var(--outline));
+}
+/* angled sticker */
+html[data-theme="comic"] .ch-sticker {
+  background: var(--surface); border: 3px solid var(--outline);
+  border-radius: 0.5rem; box-shadow: 5px 5px 0 var(--panel-shadow);
+  padding: 0.5rem 1.1rem;
+}
+/* vertical upright lettering */
+html[data-theme="comic"] .ch-vertical {
+  writing-mode: vertical-rl; text-orientation: upright; line-height: 0.85; letter-spacing: -0.04em;
+}
+/* punchier pop-art photo */
+html[data-theme="comic"] .ch-photo-pop { filter: contrast(1.18) saturate(1.35); }
+/* comic page gutter grid */
+html[data-theme="comic"] .ch-page {
+  display: grid; gap: 0.9rem; width: 100%;
+  grid-template-columns: 1fr 1fr;
+}
+html[data-theme="comic"] .ch-cell {
+  border: 3px solid var(--outline); background: var(--surface);
+  box-shadow: 4px 4px 0 var(--panel-shadow); position: relative;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem; overflow: hidden; min-height: 0;
+}
+html[data-theme="comic"] .ch-cap {
+  position: absolute; top: 0; left: 0; background: var(--accent-2); color: #141414;
+  border-right: 3px solid var(--outline); border-bottom: 3px solid var(--outline);
+  font-family: var(--font-display); font-size: 0.85rem; padding: 0.05rem 0.5rem;
+}

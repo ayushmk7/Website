@@ -3,15 +3,17 @@ import React, { useEffect, useState } from 'react';
 const GH = 'https://github.com/ayushmk7';
 const LI = 'https://www.linkedin.com/in/ayushmk';
 const RESUME = '/AyushMadhavResume.pdf';
+const role = 'CS and Math @UMichigan';
 
-const LAYOUTS = ['stack', 'strip', 'bubble', 'cover', 'split'] as const;
+const LAYOUTS = ['stack', 'halftone', 'pow', 'stickers', 'panels', 'vertical'] as const;
 type Layout = (typeof LAYOUTS)[number];
 const LABELS: Record<Layout, string> = {
   stack: 'Stack',
-  strip: 'Strip',
-  bubble: 'Bubble',
-  cover: 'Cover',
-  split: 'Split',
+  halftone: 'Halftone',
+  pow: 'POW',
+  stickers: 'Stickers',
+  panels: 'Panels',
+  vertical: 'Vertical',
 };
 
 const githubSvg = (
@@ -21,53 +23,44 @@ const linkedinSvg = (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>
 );
 
-function PhotoBox({ className = '', style = {} }: { className?: string; style?: React.CSSProperties }) {
+function PhotoBox({ className = '', style = {}, round = false, size }: { className?: string; style?: React.CSSProperties; round?: boolean; size?: string }) {
+  const inner: React.CSSProperties = {
+    position: 'relative', display: 'grid', placeItems: 'center', fontWeight: 800, overflow: 'hidden',
+    background: 'var(--surface)',
+    ...(round ? { borderRadius: '50%' } : {}),
+    ...(size ? { width: size, height: size, aspectRatio: '1 / 1' } : {}),
+  };
   return (
-    <div className={`panel ${className}`} style={{ padding: '0.4rem', ...style }}>
-      <div
-        className="comic-hero-photo"
-        style={{ position: 'relative', display: 'grid', placeItems: 'center', fontWeight: 800, overflow: 'hidden', background: 'var(--surface)' }}
-      >
+    <div className={`panel ${className}`} style={{ padding: '0.4rem', ...(round ? { borderRadius: '50%' } : {}), ...style }}>
+      <div className="comic-hero-photo ch-photo-pop" style={inner}>
         AK
-        <img
-          src="/profile.jpg"
-          alt="Ayush Madhav Kumar"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-        />
+        <img src="/profile.jpg" alt="Ayush Madhav Kumar" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
       </div>
     </div>
   );
 }
 
-const nameStyle = (size: string): React.CSSProperties => ({
-  fontFamily: 'var(--font-display)',
-  WebkitTextStroke: '2px var(--outline)',
-  paintOrder: 'stroke fill',
-  color: 'var(--accent)',
-  fontSize: size,
-  lineHeight: 1,
+const bangers = (size: string, extra: React.CSSProperties = {}): React.CSSProperties => ({
+  fontFamily: 'var(--font-display)', WebkitTextStroke: '2px var(--outline)', paintOrder: 'stroke fill',
+  color: 'var(--accent)', fontSize: size, lineHeight: 1, ...extra,
 });
 
-const Nsf = () => (
-  <p style={{ fontFamily: 'var(--font-body)', fontWeight: 800, letterSpacing: '0.02em' }}>&gt; NSF-backed research</p>
+const Nsf = ({ style = {} }: { style?: React.CSSProperties }) => (
+  <p style={{ fontFamily: 'var(--font-body)', fontWeight: 800, letterSpacing: '0.02em', ...style }}>&gt; NSF-backed research</p>
+);
+const Role = ({ size = '1rem' }: { size?: string }) => (
+  <p style={{ fontWeight: 800, fontSize: size }}>{role}</p>
 );
 
-function Bubble({ children }: { children: React.ReactNode }) {
-  return <div className="bubble" style={{ padding: '0.5rem 1.25rem' }}>{children}</div>;
-}
-
-function Buttons() {
+function Buttons({ center = true }: { center?: boolean }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-      <a className="panel panel--burst" href={RESUME} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-display)', background: 'var(--accent-2)', color: '#141414', padding: '0.5rem 1.5rem', fontSize: '1.4rem', display: 'inline-block', boxShadow: '6px 6px 0 var(--panel-shadow)' }}>Résumé</a>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', flexWrap: 'wrap', justifyContent: center ? 'center' : 'flex-start' }}>
+      <a className="panel panel--burst" href={RESUME} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-display)', background: 'var(--accent-2)', color: '#141414', padding: '0.45rem 1.4rem', fontSize: '1.35rem', display: 'inline-block', boxShadow: '6px 6px 0 var(--panel-shadow)' }}>Résumé</a>
       <a className="comic-link-btn" href={GH} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" style={{ minWidth: 36, minHeight: 36, padding: '0.5rem' }}>{githubSvg}</a>
       <a className="comic-link-btn" href={LI} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" style={{ minWidth: 36, minHeight: 36, padding: '0.5rem' }}>{linkedinSvg}</a>
     </div>
   );
 }
-
-const role = 'CS and Math @UMichigan';
 
 export default function ComicHero() {
   const [layout, setLayout] = useState<Layout>('stack');
@@ -85,97 +78,79 @@ export default function ComicHero() {
   return (
     <section className="comic-hero" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       {/* left floating layout switcher */}
-      <div
-        style={{ position: 'fixed', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', zIndex: 60, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}
-      >
+      <div style={{ position: 'fixed', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', zIndex: 60, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
         {LAYOUTS.map((l) => (
-          <button
-            key={l}
-            onClick={() => pick(l)}
-            aria-pressed={layout === l}
-            className="panel"
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '0.9rem',
-              padding: '0.25rem 0.6rem',
-              background: layout === l ? 'var(--accent)' : 'var(--surface)',
-              color: layout === l ? '#fff' : 'var(--text)',
-              boxShadow: '3px 3px 0 var(--panel-shadow)',
-              cursor: 'pointer',
-            }}
-          >
+          <button key={l} onClick={() => pick(l)} aria-pressed={layout === l} className="panel" style={{ fontFamily: 'var(--font-display)', fontSize: '0.85rem', padding: '0.2rem 0.55rem', background: layout === l ? 'var(--accent)' : 'var(--surface)', color: layout === l ? '#fff' : 'var(--text)', boxShadow: '3px 3px 0 var(--panel-shadow)', cursor: 'pointer' }}>
             {LABELS[l]}
           </button>
         ))}
       </div>
 
-      {/* ===== STACK: centered column ===== */}
+      {/* STACK */}
       {layout === 'stack' && (
         <div className="flex flex-col justify-center items-center text-center px-6 w-full" style={{ gap: 'clamp(0.75rem,2.2vh,1.6rem)' }}>
           <PhotoBox />
-          <Bubble><p style={{ fontWeight: 800, fontSize: 'clamp(0.85rem,2.2vw,1.125rem)' }}>{role}</p></Bubble>
-          <h1 style={nameStyle('clamp(2.5rem,8vw,6rem)')}>Ayush Madhav Kumar!</h1>
+          <div className="bubble" style={{ padding: '0.5rem 1.25rem' }}><Role size="clamp(0.85rem,2.2vw,1.125rem)" /></div>
+          <h1 style={bangers('clamp(2.5rem,8vw,6rem)')}>Ayush Madhav Kumar!</h1>
           <Nsf />
           <Buttons />
         </div>
       )}
 
-      {/* ===== STRIP: three comic panels in a row ===== */}
-      {layout === 'strip' && (
-        <div className="px-4 w-full max-w-6xl mx-auto grid gap-4 md:grid-cols-3 items-stretch">
-          <div className="panel flex items-center justify-center" style={{ padding: '0.75rem' }}>
-            <PhotoBox style={{ boxShadow: 'none', border: 'none' }} />
-          </div>
-          <div className="panel flex flex-col justify-center items-center text-center" style={{ padding: '1rem', gap: '0.6rem' }}>
-            <h1 style={nameStyle('clamp(1.8rem,5vw,3rem)')}>Ayush Madhav Kumar!</h1>
-            <Nsf />
-          </div>
-          <div className="panel flex flex-col justify-center items-center" style={{ padding: '1rem', gap: '0.8rem' }}>
-            <Bubble><p style={{ fontWeight: 800, fontSize: '0.95rem', textAlign: 'center' }}>{role}</p></Bubble>
-            <Buttons />
-          </div>
-        </div>
-      )}
-
-      {/* ===== BUBBLE: photo character + giant speech bubble ===== */}
-      {layout === 'bubble' && (
-        <div className="px-6 w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center" style={{ gap: 'clamp(1rem,3vw,2.5rem)' }}>
-          <PhotoBox />
-          <div className="bubble" style={{ padding: '1.5rem 1.75rem', flex: 1 }}>
-            <p style={{ fontWeight: 800, fontSize: '0.95rem', marginBottom: '0.5rem' }}>{role}</p>
-            <h1 style={{ ...nameStyle('clamp(2rem,6vw,4rem)'), marginBottom: '0.75rem' }}>Ayush Madhav Kumar!</h1>
-            <div style={{ marginBottom: '1rem' }}><Nsf /></div>
-            <Buttons />
-          </div>
-        </div>
-      )}
-
-      {/* ===== COVER: comic-book cover ===== */}
-      {layout === 'cover' && (
-        <div className="px-6 w-full max-w-4xl mx-auto flex flex-col items-center text-center" style={{ gap: 'clamp(0.6rem,2vh,1.25rem)' }}>
-          <div className="panel" style={{ padding: '0.3rem 1rem', fontFamily: 'var(--font-display)', fontSize: '1rem', background: 'var(--accent)', color: '#fff' }}>
-            PORTFOLIO . ISSUE #1
-          </div>
-          <h1 style={nameStyle('clamp(2.5rem,9vw,6.5rem)')}>Ayush Madhav Kumar!</h1>
-          <div className="panel panel--burst" style={{ padding: '0.4rem' }}>
-            <PhotoBox style={{ boxShadow: 'none', border: 'none', padding: 0 }} />
-          </div>
-          <Bubble><p style={{ fontWeight: 800, fontSize: 'clamp(0.85rem,2.2vw,1.1rem)' }}>{role} . &gt; NSF-backed research</p></Bubble>
+      {/* HALFTONE: name built from ben-day dots, oversized */}
+      {layout === 'halftone' && (
+        <div className="flex flex-col justify-center items-center text-center px-6 w-full" style={{ gap: 'clamp(0.6rem,2vh,1.4rem)' }}>
+          <PhotoBox size="clamp(6rem,16vmin,9rem)" />
+          <h1 className="ch-halftone-text" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem,14vw,9rem)', textTransform: 'uppercase' }}>Ayush<br />Madhav Kumar</h1>
+          <div className="bubble" style={{ padding: '0.45rem 1.2rem' }}><Role size="clamp(0.8rem,2vw,1.05rem)" /></div>
           <Buttons />
         </div>
       )}
 
-      {/* ===== SPLIT: photo panel left, text right ===== */}
-      {layout === 'split' && (
-        <div className="px-6 w-full max-w-5xl mx-auto grid items-center" style={{ gap: 'clamp(1rem,4vw,3rem)', gridTemplateColumns: '1fr' }}>
-          <div className="md:grid" style={{ display: 'grid', gap: 'clamp(1rem,4vw,3rem)', gridTemplateColumns: 'auto 1fr', alignItems: 'center' }}>
-            <PhotoBox />
-            <div className="flex flex-col" style={{ gap: '0.8rem' }}>
-              <Bubble><p style={{ fontWeight: 800, fontSize: 'clamp(0.85rem,2vw,1.05rem)' }}>{role}</p></Bubble>
-              <h1 style={nameStyle('clamp(2rem,6vw,4.5rem)')}>Ayush Madhav Kumar!</h1>
-              <Nsf />
-              <Buttons />
+      {/* POW: name inside a jagged explosion with radiating action rays */}
+      {layout === 'pow' && (
+        <div className="flex flex-col justify-center items-center text-center px-6 w-full" style={{ gap: 'clamp(0.8rem,2.5vh,1.6rem)' }}>
+          <div className="ch-rays" style={{ display: 'grid', placeItems: 'center' }}>
+            <div className="ch-burst">
+              <h1 style={bangers('clamp(1.6rem,5.5vw,3.4rem)', { color: '#141414', WebkitTextStroke: '0', textTransform: 'uppercase' })}>Ayush<br />Madhav<br />Kumar!</h1>
             </div>
+          </div>
+          <PhotoBox round size="clamp(5rem,13vmin,7rem)" />
+          <div className="bubble" style={{ padding: '0.45rem 1.2rem' }}><Role size="0.95rem" /></div>
+          <Buttons />
+        </div>
+      )}
+
+      {/* STICKERS: scattered, rotated, overlapping sticker pieces */}
+      {layout === 'stickers' && (
+        <div className="flex flex-wrap items-center justify-center px-6" style={{ gap: '1rem', maxWidth: '60rem' }}>
+          <div style={{ transform: 'rotate(-5deg)' }}><PhotoBox size="clamp(6rem,15vmin,8.5rem)" /></div>
+          <h1 className="ch-sticker" style={{ ...bangers('clamp(2rem,6vw,4rem)'), transform: 'rotate(3deg)', padding: '0.4rem 1rem' }}>Ayush Madhav Kumar!</h1>
+          <div className="ch-sticker" style={{ transform: 'rotate(-3deg)', background: 'var(--accent-2)', color: '#141414' }}><Role size="1rem" /></div>
+          <div className="ch-sticker" style={{ transform: 'rotate(4deg)' }}><Nsf /></div>
+          <div style={{ transform: 'rotate(-2deg)' }}><Buttons /></div>
+        </div>
+      )}
+
+      {/* PANELS: a real 2x2 comic page with gutters + numbered captions */}
+      {layout === 'panels' && (
+        <div className="ch-page px-4 mx-auto" style={{ maxWidth: '54rem', maxHeight: '74vh' }}>
+          <div className="ch-cell"><span className="ch-cap">1</span><PhotoBox size="clamp(5rem,14vmin,8rem)" style={{ boxShadow: 'none', border: 'none', margin: 0 }} /></div>
+          <div className="ch-cell"><span className="ch-cap">2</span><h1 style={bangers('clamp(1.6rem,5vw,3rem)', { textTransform: 'uppercase' })}>Ayush Madhav Kumar!</h1></div>
+          <div className="ch-cell"><span className="ch-cap">3</span><div className="bubble" style={{ padding: '0.5rem 1.1rem' }}><Role size="0.95rem" /></div></div>
+          <div className="ch-cell" style={{ flexDirection: 'column', gap: '0.7rem' }}><span className="ch-cap">4</span><Nsf style={{ fontSize: '0.9rem' }} /><Buttons /></div>
+        </div>
+      )}
+
+      {/* VERTICAL: spine lettering running down the side */}
+      {layout === 'vertical' && (
+        <div className="flex items-center justify-center px-6" style={{ gap: 'clamp(1rem,4vw,2.5rem)' }}>
+          <h1 style={{ ...bangers('clamp(2.2rem,10vh,5.5rem)', { textTransform: 'uppercase' }), writingMode: 'vertical-rl' as React.CSSProperties['writingMode'] }}>Ayush Kumar</h1>
+          <div className="flex flex-col items-start" style={{ gap: '0.9rem' }}>
+            <PhotoBox size="clamp(6rem,16vmin,9rem)" />
+            <div className="bubble" style={{ padding: '0.5rem 1.2rem' }}><Role size="1rem" /></div>
+            <Nsf />
+            <Buttons center={false} />
           </div>
         </div>
       )}
