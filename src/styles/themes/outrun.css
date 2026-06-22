@@ -84,15 +84,14 @@ html[data-theme="outrun"].dark h2.glow,
 html[data-theme="outrun"].dark h3.glow {
   text-shadow: 0 0 12px var(--accent), 0 0 28px rgba(255,46,151,0.5);
 }
-/* hero name: deeper pink + dark blurry aura so it lifts off the night gradient */
+/* hero name (dark): deeper fill + dark outline so it reads against the sun glow
+   and the dark gradient alike; no neon bloom (that was washing it out) */
 html[data-theme="outrun"].dark .hero-name {
-  color: #ff1e7e;
+  color: #e3116f;
+  -webkit-text-stroke: 1px rgba(8,3,18,0.95);
   text-shadow:
-    0 0 18px rgba(8,3,18,0.9),
-    0 0 34px rgba(8,3,18,0.75),
-    0 2px 10px rgba(8,3,18,0.8),
-    0 0 12px var(--accent),
-    0 0 26px rgba(255,46,151,0.5);
+    0 2px 10px rgba(8,3,18,0.95),
+    0 0 3px rgba(8,3,18,0.9);
 }
 
 /* ── SHARED structural rules ── */
@@ -280,17 +279,24 @@ html[data-theme="outrun"] .hero-avatar {
   order: -1;
 }
 /* role line as a solid pill */
+/* role line: matches the .btn-outrun resume button idiom */
 html[data-theme="outrun"] .hero-subtitle {
-  font-size: clamp(0.6rem, 1.8vmin, 0.85rem);
-  letter-spacing: 0.25em;
-  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: clamp(0.55rem, 1.6vmin, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
   background: var(--bg-2);
-  color: var(--accent-2);
-  border: 1px solid var(--accent);
-  padding: 0.35rem 1rem;
-  border-radius: 9999px;
-  display: inline-block;
-  box-shadow: inset 1px 1px 0 var(--bevel-light);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.4rem 1.2rem;
+  margin: 0;
+  box-shadow: inset 1px 1px 0 var(--bevel-light), inset -1px -1px 0 var(--bevel-shadow),
+              var(--glow-btn-shadow);
 }
 html[data-theme="outrun"] .hero-name {
   font-size: clamp(1.5rem, 6vmin, 4.5rem);
