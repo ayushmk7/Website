@@ -39,13 +39,13 @@ const sectionBarColors = ['var(--accent)', 'var(--accent-2)', 'var(--bau-yellow)
     <div class="bau-grid-motif" aria-hidden="true"></div>
 
     <div class="bau-hero-grid">
-      <!-- decorative shapes -->
-      <div class="shape circle" style="width:clamp(100px,18vw,220px);height:clamp(100px,18vw,220px);top:-30px;right:-20px;z-index:1;pointer-events:none" aria-hidden="true"></div>
-      <div class="shape tri"    style="bottom:clamp(10px,3vh,40px);left:30%;z-index:1;pointer-events:none" aria-hidden="true"></div>
+      <!-- decorative shapes: z-index 0 keeps them behind text (z-10) -->
+      <div class="shape circle" style="width:clamp(100px,18vw,220px);height:clamp(100px,18vw,220px);top:-30px;right:-20px;z-index:0;pointer-events:none" aria-hidden="true"></div>
+      <div class="shape tri"    style="bottom:clamp(10px,3vh,40px);left:30%;z-index:0;pointer-events:none" aria-hidden="true"></div>
 
       <!-- photo -->
       <div class="bau-photo-panel relative z-10">
-        <Photo class="block border-[3px] border-[var(--text)]" style="max-height:100%;width:auto;object-fit:contain" />
+        <Photo />
       </div>
 
       <!-- text -->

@@ -38,11 +38,11 @@ const categoryLabels: Record<string, string> = {
       <p class="shell-prompt mb-3" data-load style="--i:5">{prompt} <span class="cmd-text">cat experience.md</span></p>
       {experience.map((j, i) => (
         <div class="term-box mt-4" data-load style={`--i:${6+Math.min(i,4)}`}>
-          <p class="box-top">┌─ <span class="text-[var(--accent)]">{j.company}</span> &nbsp;{j.role} &nbsp;<span class="text-[var(--text-dim)]">{j.period}</span></p>
+          <p class="box-top">&#x250C;&#x2500; <span class="text-[var(--accent)]">{j.company}</span>&nbsp;<span class="text-[var(--text-dim)]">{j.role} &middot; {j.period}</span></p>
           {j.bullets.map((b) => (
-            <p class="box-row break-words">│ <span class="text-[var(--text-dim)]">{b}</span></p>
+            <p class="box-row">&#x2502; <span class="text-[var(--text-dim)]">{b}</span></p>
           ))}
-          <p class="box-bot">└{'─'.repeat(32)}</p>
+          <p class="box-bot">&#x2514;<span class="box-rule" aria-hidden="true"></span></p>
         </div>
       ))}
     </section>
@@ -66,10 +66,10 @@ const categoryLabels: Record<string, string> = {
       <div data-load style="--i:17">
         {projects.filter((p) => !hackathons.some((h) => h.project === p.title)).map((p) => (
           <div class="term-box project-entry mt-4">
-            <p class="box-top">┌─ <span class="text-[var(--accent)] font-bold">{p.title}</span>&nbsp;<span class="text-[var(--text-dim)]"># {p.tags.slice(0,3).join(', ')}</span></p>
+            <p class="box-top">&#x250C;&#x2500; <span class="text-[var(--accent)] font-bold">{p.title}</span>&nbsp;<span class="text-[var(--text-dim)]"># {p.tags.slice(0,3).join(', ')}</span></p>
             {(p.githubUrl || p.websiteUrl) && (
               <p class="box-row flex flex-wrap gap-x-3 gap-y-1 items-center py-1">
-                <span>│</span>
+                <span>&#x2502;</span>
                 {p.githubUrl && (
                   <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="term-btn-sm">[ open github ]</a>
                 )}
@@ -78,7 +78,7 @@ const categoryLabels: Record<string, string> = {
                 )}
               </p>
             )}
-            <p class="box-bot">└{'─'.repeat(32)}</p>
+            <p class="box-bot">&#x2514;<span class="box-rule" aria-hidden="true"></span></p>
           </div>
         ))}
       </div>

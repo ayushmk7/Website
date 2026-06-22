@@ -22,7 +22,8 @@ html[data-theme="brutal"] {
 html[data-theme="brutal"].dark {
   --bg: #1a1917; --bg-2: #252320; --surface: #252320;
   --text: #ede9df; --text-dim: #a09c94;
-  --accent: #ff2200; --accent-text: #ff4422; --accent-2: #ede9df;
+  /* accent-text in dark: bright enough on dark bg AND on white bg */
+  --accent: #ff2200; --accent-text: #ff5533; --accent-2: #ede9df;
   --shadow-hard: #ede9df;
   --btn-shadow: 5px 5px 0 var(--text);
   --btn-shadow-accent: 5px 5px 0 var(--accent);
@@ -40,9 +41,10 @@ html[data-theme="brutal"] .b-first-screen {
 }
 html[data-theme="brutal"] .b-hero {
   flex: 1;
-  overflow: hidden;
+  overflow: visible; /* allow hard shadows and card-num tabs to show at edges */
   display: grid;
   align-items: center;
+  padding-bottom: 0.75rem; /* clear photo shadow at bottom edge */
 }
 
 /* Name: fluid from small mobile to wide desktop */
@@ -59,6 +61,7 @@ html[data-theme="brutal"] .b-photo {
 }
 html[data-theme="brutal"] .b-photo-wrap {
   align-self: center;
+  overflow: visible; /* hard shadow must not be clipped */
 }
 
 /* Short screens: tighten further */
@@ -79,6 +82,7 @@ html[data-theme="brutal"] .hard {
   border: var(--border);
   box-shadow: var(--card-shadow);
   background: var(--surface);
+  overflow: visible; /* never clip the shadow */
 }
 html[data-theme="brutal"] .hard-accent {
   box-shadow: var(--card-shadow-accent);
@@ -90,7 +94,9 @@ html[data-theme="brutal"] .marquee {
   white-space: nowrap;
   border-block: var(--border);
   background: var(--accent);
-  color: #fff;
+  color: #ffffff;
+  /* force white for contrast on red in both modes */
+  --marquee-fg: #ffffff;
 }
 html[data-theme="brutal"] .marquee span {
   display: inline-block;
@@ -98,6 +104,8 @@ html[data-theme="brutal"] .marquee span {
   animation: bMarq 18s linear infinite;
   font-family: var(--font-display);
   letter-spacing: 0.05em;
+  color: #ffffff; /* explicit: white on red passes contrast in both modes */
+  font-size: 0.9rem; /* legible but not oversized */
 }
 @keyframes bMarq { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
@@ -110,7 +118,10 @@ html[data-theme="brutal"] .marquee span {
    Default: black shadow. Accent: red shadow.
 ───────────────────────────────────────────── */
 html[data-theme="brutal"] .b-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem; /* 40px tap target */
   font-family: var(--font-display);
   font-size: 0.9rem;
   letter-spacing: 0.06em;
@@ -127,6 +138,10 @@ html[data-theme="brutal"] .b-btn {
   transition:
     box-shadow var(--dur) var(--ease),
     transform   var(--dur) var(--ease);
+}
+html[data-theme="brutal"] .b-btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
 }
 html[data-theme="brutal"] .b-btn:hover {
   box-shadow: 2px 2px 0 var(--text);
@@ -145,11 +160,12 @@ html[data-theme="brutal"] .b-btn:active {
   }
 }
 
-/* Accent variant — red shadow */
+/* Accent variant — red shadow, filled background for contrast */
 html[data-theme="brutal"] .b-btn-accent {
   box-shadow: var(--btn-shadow-accent);
   color: var(--accent-text);
   border-color: var(--accent);
+  background: var(--bg-2); /* ensures text is on a neutral field not colored */
 }
 html[data-theme="brutal"] .b-btn-accent:hover {
   box-shadow: 2px 2px 0 var(--accent);
@@ -163,24 +179,26 @@ html[data-theme="brutal"] .b-btn-accent:active {
 /* ── Stamp label on cards (top-left tab) ── */
 html[data-theme="brutal"] .b-card {
   position: relative;
+  overflow: visible; /* card-num tab and hover shadow must not be clipped */
   /* inherits .hard styles */
 }
 html[data-theme="brutal"] .b-card-num {
   position: absolute;
-  top: -1px;
-  left: -1px;
+  top: 0;    /* sits on inner edge of the border, not bleeding outside */
+  left: 0;
   background: var(--text);
   color: var(--bg);
   font-family: var(--font-display);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
-  padding: 2px 7px;
+  padding: 3px 8px;
   text-transform: uppercase;
   line-height: 1.4;
-  /* stamp tab shape */
+  /* stamp tab: punches through inner top-left corner */
 }
 
-/* Accent card: tab is red */
+/* Accent card: tab is red (hard-accent is the class used in markup) */
+html[data-theme="brutal"] .b-card.hard-accent .b-card-num,
 html[data-theme="brutal"] .b-card-accent .b-card-num {
   background: var(--accent);
   color: #fff;
@@ -248,10 +266,16 @@ html[data-theme="brutal"] .b-chip {
   border: var(--border);
   box-shadow: 3px 3px 0 var(--shadow-hard);
   background: var(--surface);
-  padding: 0.25rem 0.75rem;
+  padding: 0.4rem 0.75rem; /* increased from 0.25rem to meet ~36px tap target */
   font-size: 0.82rem;
   font-weight: 700;
   transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  min-height: 2.25rem; /* 36px minimum tap target */
+  line-height: 1.4;    /* prevent text clipping at increased height */
+}
+html[data-theme="brutal"] .b-chip:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 @media (prefers-reduced-motion: no-preference) {
   html[data-theme="brutal"] .b-chip:hover {
@@ -260,10 +284,13 @@ html[data-theme="brutal"] .b-chip {
   }
 }
 
-/* ── Card grid shadow clearance: bottom/right must clear the hard shadow offset ── */
+/* ── Card grid shadow clearance: all sides must clear hard shadow and tab bleed ── */
 html[data-theme="brutal"] .b-card-grid {
-  padding-bottom: 0.75rem;
-  padding-right: 0.75rem;
+  padding-bottom: 0.75rem; /* clears bottom shadow offset */
+  padding-right: 0.75rem;  /* clears right shadow offset */
+  padding-top: 0.5rem;     /* clears b-card-num tab bleeding above card */
+  padding-left: 0.25rem;   /* clears left hover shadow bleed */
+  overflow: visible;       /* never clip card shadows or the number tab */
 }
 
 /* ── Mobile spacing overrides ── */
@@ -273,9 +300,11 @@ html[data-theme="brutal"] .b-card-grid {
   }
   html[data-theme="brutal"] .b-btn {
     padding: 0.5rem 1rem;
+    min-height: 2.5rem; /* keep tap target on mobile */
   }
+  /* chips: keep tap target, just narrow horizontal padding */
   html[data-theme="brutal"] .b-chip {
-    padding: 0.2rem 0.6rem;
+    padding: 0.4rem 0.55rem;
   }
 }
 

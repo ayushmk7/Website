@@ -10,10 +10,10 @@ html[data-theme="comic"] {
   --font-display: 'Bangers', cursive;
   --font-body: 'Nunito Sans', sans-serif;
   --font-mono: 'Nunito Sans', monospace;
-  --w-display: 400; --w-body: 300;
+  --w-display: 400; --w-body: 400;
   --radius: 0.75rem; --border: 3px solid #141414; --dur: 0.5s;
   --outline: #141414;
-  --dot-color: rgba(0,0,0,0.14);
+  --dot-color: rgba(0,0,0,0.07);
   --panel-shadow: #141414;
   --link-btn-bg: #ffffff;
   --link-btn-text: #141414;
@@ -38,7 +38,7 @@ html[data-theme="comic"].dark {
   --accent-2: #ffd400;
   --comic-blue: #5b8fff;
   --outline: #e8e8e8;
-  --dot-color: rgba(255,255,255,0.10);
+  --dot-color: rgba(255,255,255,0.07);
   --panel-shadow: #e8e8e8;
   --border: 3px solid #e8e8e8;
   --link-btn-bg: #1c2230;
@@ -61,8 +61,9 @@ html[data-theme="comic"] body {
   background-size: 14px 14px; background-color: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
+  font-weight: var(--w-body);
   font-size: 0.9375rem;
-  line-height: 1.55;
+  line-height: 1.6;
   overflow-x: hidden;
 }
 
@@ -108,10 +109,10 @@ html[data-theme="comic"] .panel {
   border: var(--border);
   border-radius: var(--radius);
   background: var(--surface);
-  /* 8px right+bottom margin reserve keeps 6px hard shadow unclipped */
+  /* 12px right+bottom margin reserve keeps 9px hover shadow unclipped */
   box-shadow: 6px 6px 0 var(--panel-shadow);
-  margin-right: 8px;
-  margin-bottom: 8px;
+  margin-right: 12px;
+  margin-bottom: 12px;
   color: var(--text);
   transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s cubic-bezier(0.34,1.56,0.64,1);
 }
@@ -137,6 +138,21 @@ html[data-theme="comic"] [data-load] { animation-timing-function: cubic-bezier(0
 
 /* prevent panel shadows from causing horizontal scroll */
 html[data-theme="comic"] section { overflow-x: clip; }
+
+/* ============================================================
+   FOCUS-VISIBLE: accessible keyboard outline for all interactive elements
+   ============================================================ */
+html[data-theme="comic"] a:focus-visible,
+html[data-theme="comic"] button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+html[data-theme="comic"] .comic-link-btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
 
 /* ============================================================
    STARBURST / ACTION-BURST BUTTON
@@ -198,9 +214,9 @@ html[data-theme="comic"] .comic-link-btn {
   min-height: 36px;
   padding: 0.4rem 1rem;
   font-size: 0.85rem;
-  font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: 0.06em;
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: 0.04em;
   border: 3px solid var(--link-btn-border);
   border-radius: 6px;
   background: var(--link-btn-bg);
@@ -295,6 +311,8 @@ html[data-theme="comic"] .skill-tag {
    ============================================================ */
 html[data-theme="comic"] .panel--burst {
   background-image: radial-gradient(circle at 90% 10%, var(--halftone-accent) 0%, var(--halftone-accent) 38%, transparent 40%);
+  /* yellow bg requires dark text in both modes for contrast */
+  color: #141414;
 }
 
 /* ============================================================

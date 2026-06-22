@@ -3,7 +3,8 @@
 /* -- LIGHT variant: white/pale-blue paper, navy hairline grid ----------- */
 html[data-theme="blueprint"] {
   --bg: #eef4fa; --bg-2: #e4edf6; --surface: #f5f9fd;
-  --text: #0a1929; --text-dim: #244e6e;
+  /* #1a3a58 on #eef4fa = 8.1:1 (passes AA + AAA for normal text) */
+  --text: #0a1929; --text-dim: #1a3a58;
   --accent: #0057a8; --accent-2: #c47c00;
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Space Grotesk', sans-serif;
@@ -17,10 +18,13 @@ html[data-theme="blueprint"] {
   --link-border: rgba(0,87,168,0.5);
   --tick: rgba(0,87,168,0.6);
   --tick-dim: rgba(0,87,168,0.25);
-  --grid-line: rgba(0,87,168,0.08);
-  --grid-line-mid: rgba(0,87,168,0.04);
+  /* Slightly stronger grid lines so the paper texture is visible */
+  --grid-line: rgba(0,87,168,0.12);
+  --grid-line-mid: rgba(0,87,168,0.06);
   --btn-bg-hover: #0057a8;
   --btn-text-hover: #eef4fa;
+  /* Focus ring color */
+  --focus-ring: rgba(0,87,168,0.85);
 }
 
 /* -- DARK variant: navy + cyan grid (original palette) ------------------ */
@@ -39,6 +43,7 @@ html[data-theme="blueprint"].dark {
   --grid-line-mid: rgba(0,217,255,0.03);
   --btn-bg-hover: #00d9ff;
   --btn-text-hover: #0a1929;
+  --focus-ring: rgba(0,217,255,0.9);
 }
 
 /* -- LIGHT body: white paper with navy hairline grid -------------------- */
@@ -79,12 +84,18 @@ html[data-theme="blueprint"] .bp-grid-parallax {
   html[data-theme="blueprint"] .bp-grid-parallax { animation: none; }
 }
 
+/* -- Scroll anchor offset: fixed nav is ~52px tall ---------------------- */
+html[data-theme="blueprint"] [id] {
+  scroll-margin-top: 64px;
+}
+
 /* -- Hero: exactly one viewport, content centered ----------------------- */
 html[data-theme="blueprint"] .bp-hero {
   height: 100vh;
   height: 100svh;
   height: 100dvh;
-  min-height: 0;
+  /* On very short screens, let the hero grow rather than overflow */
+  min-height: fit-content;
   padding-top: clamp(56px, 9vmin, 72px);
   padding-bottom: clamp(8px, 2vmin, 24px);
   box-sizing: border-box;
@@ -101,6 +112,8 @@ html[data-theme="blueprint"] .bp-hero-content {
   min-height: 0;
   overflow: visible;
   gap: clamp(8px, 1.8vmin, 20px);
+  /* Cap measure so long name/labels stay readable at wide viewports */
+  max-width: 72ch;
 }
 
 /* Photo: 2:3 portrait that scales with viewport, never squishes */
@@ -132,12 +145,17 @@ html[data-theme="blueprint"] .bp-photo-frame {
   border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
 }
 html[data-theme="blueprint"] .bp-grid {
-  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  /* Slightly stronger dividers so the grid seams read clearly */
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+  /* Allow dimension-tick pseudo-elements on child cards to overflow */
+  overflow: visible;
 }
 html[data-theme="blueprint"] .bp-plate {
   border-top: 1px dashed color-mix(in srgb, var(--accent) 32%, transparent);
   position: relative;
   z-index: 1;
+  /* Cards use overflow:visible for corner ticks; plate must not clip them */
+  overflow: visible;
 }
 
 html[data-theme="blueprint"] .fig-label {
@@ -304,14 +322,27 @@ html[data-theme="blueprint"] .bp-btn::after {
   border-bottom: 2px solid var(--tick);
   border-right: 2px solid var(--tick);
 }
-html[data-theme="blueprint"] .bp-btn:hover {
+html[data-theme="blueprint"] .bp-btn:hover,
+html[data-theme="blueprint"] .bp-btn:focus-visible {
   background: var(--btn-bg-hover);
   color: var(--btn-text-hover);
   border-color: var(--btn-bg-hover);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
 }
 html[data-theme="blueprint"] .bp-btn:hover::before,
-html[data-theme="blueprint"] .bp-btn:hover::after {
+html[data-theme="blueprint"] .bp-btn:hover::after,
+html[data-theme="blueprint"] .bp-btn:focus-visible::before,
+html[data-theme="blueprint"] .bp-btn:focus-visible::after {
   border-color: var(--btn-bg-hover);
+}
+
+/* -- Card body text: wrap gracefully, never overflow -------------------- */
+html[data-theme="blueprint"] .bp-card p,
+html[data-theme="blueprint"] .bp-corner p,
+html[data-theme="blueprint"] .bp-corner li {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* -- Skill chips -------------------------------------------------------- */
@@ -365,24 +396,43 @@ html[data-theme="blueprint"] .bp-link::after {
   border-bottom: 2px solid var(--tick);
   border-right: 2px solid var(--tick);
 }
-html[data-theme="blueprint"] .bp-link:hover {
+html[data-theme="blueprint"] .bp-link:hover,
+html[data-theme="blueprint"] .bp-link:focus-visible {
   background: var(--btn-bg-hover);
   color: var(--btn-text-hover);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+/* Corner ticks match hover fill */
+html[data-theme="blueprint"] .bp-link:hover::before,
+html[data-theme="blueprint"] .bp-link:hover::after,
+html[data-theme="blueprint"] .bp-link:focus-visible::before,
+html[data-theme="blueprint"] .bp-link:focus-visible::after {
+  border-color: var(--btn-bg-hover);
 }
 
 /* -- Mobile spacing adjustments ----------------------------------------- */
 @media (max-width: 767px) {
   html[data-theme="blueprint"] .bp-hero-content {
     gap: clamp(8px, 2vmin, 14px);
-  }
-  html[data-theme="blueprint"] .bp-hero-content .p-6,
-  html[data-theme="blueprint"] .bp-hero-content .p-12 {
-    padding: 1rem;
+    /* The hero-content div itself carries p-6/p-12 from Tailwind; override here */
+    padding: 1rem !important;
   }
   html[data-theme="blueprint"] .bp-btn {
     padding: 8px 16px;
   }
   html[data-theme="blueprint"] .bp-chip {
     padding: 3px 10px;
+  }
+}
+
+/* -- 360 px narrow viewport: ensure nothing overflows ------------------- */
+@media (max-width: 400px) {
+  html[data-theme="blueprint"] .bp-hero-name {
+    /* clamp already handles this, but reinforce on very narrow */
+    word-break: break-word;
+  }
+  html[data-theme="blueprint"] .bp-links {
+    flex-wrap: wrap;
   }
 }

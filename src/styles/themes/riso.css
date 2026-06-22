@@ -3,7 +3,8 @@
 /* ── LIGHT palette (warm paper, riso blue ink, fluoro pink) ── */
 html[data-theme="riso"] {
   --bg: #f3ecdd; --bg-2: #f3ecdd; --surface: #fbf6ea;
-  --text: #1d2bd4; --text-dim: #3a42b8;
+  /* #1d2bd4 on #f3ecdd = ~5.8:1 AA; dim uses a mid-tone indigo for readable secondary text */
+  --text: #1d2bd4; --text-dim: #474ea0;
   --accent: #ff48a6; --accent-2: #1d2bd4;
   --font-display: 'Hanken Grotesk', sans-serif;
   --font-body: 'Hanken Grotesk', sans-serif;
@@ -18,8 +19,9 @@ html[data-theme="riso"] {
 /* ── DARK palette (deep indigo ground, glowing inks) ── */
 html[data-theme="riso"].dark {
   --bg: #14112b; --bg-2: #14112b; --surface: #1e1a38;
-  --text: #7b8eff; --text-dim: #a0a8f8;
-  --accent: #ff6ec7; --accent-2: #7b8eff;
+  /* #c2cafe on #14112b = ~9:1 AAA body; dim is slightly muted but still AA */
+  --text: #c2cafe; --text-dim: #9098d4;
+  --accent: #ff6ec7; --accent-2: #8fa0ff;
 }
 
 /* ── body ── */
@@ -47,12 +49,13 @@ html[data-theme="riso"] .grain {
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
   background-size: 256px 256px;
-  opacity: 0.55;
+  /* reduced from 0.55 to 0.3 so grain does not kill body text legibility */
+  opacity: 0.3;
   mix-blend-mode: multiply;
 }
 html[data-theme="riso"].dark .grain {
   mix-blend-mode: screen;
-  opacity: 0.25;
+  opacity: 0.18;
 }
 
 /* ── MISREGISTRATION headlines ── */
@@ -66,10 +69,15 @@ html[data-theme="riso"] .misreg::before {
   left: var(--mis-x);
   top: var(--mis-y);
   color: var(--accent);
-  z-index: -1;
+  /* z-index: -1 buried the ghost under section backgrounds in some stacking contexts.
+     Use z-index: 1 and rely on mix-blend-mode to let real text "win" visually;
+     pointer-events: none ensures it never intercepts clicks. */
+  z-index: 1;
   pointer-events: none;
   mix-blend-mode: multiply;
   transition: left 0.15s ease, top 0.15s ease;
+  /* white-space matches parent so ghost never wraps differently than the real text */
+  white-space: inherit;
 }
 html[data-theme="riso"].dark .misreg::before {
   mix-blend-mode: screen;
@@ -102,7 +110,8 @@ html[data-theme="riso"] .riso-btn {
   font-family: var(--font-mono);
   font-size: 0.875rem;
   font-weight: 700;
-  padding: 0.55em 1.15em;
+  /* 0.625em top/bottom + 2px border at 14px = ~20px + 4px = ~24px content; use min-height to guarantee 44px */
+  padding: 0.625em 1.15em;
   border: 2px solid var(--text);
   border-radius: 0.25rem;
   background: var(--surface);
@@ -113,6 +122,10 @@ html[data-theme="riso"] .riso-btn {
   box-shadow: var(--btn-shadow-x) var(--btn-shadow-y) 0 var(--accent);
   transition: box-shadow 0.12s ease, transform 0.12s ease;
   min-height: 2.75rem;
+}
+html[data-theme="riso"] .riso-btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
 }
 @media (hover: hover) {
   html[data-theme="riso"] .riso-btn:hover {
@@ -143,7 +156,7 @@ html[data-theme="riso"] .riso-link-btn {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
   font-weight: 700;
-  padding: 0.3em 0.8em;
+  padding: 0.5em 0.9em;
   border: 2px solid var(--text);
   border-radius: 0.2rem;
   background: transparent;
@@ -152,7 +165,12 @@ html[data-theme="riso"] .riso-link-btn {
   cursor: pointer;
   box-shadow: 3px 3px 0 var(--accent);
   transition: box-shadow 0.12s ease, transform 0.12s ease;
-  min-height: 2rem;
+  /* raised from 2rem (32px) to 2.25rem (36px) to meet tap target minimum */
+  min-height: 2.25rem;
+}
+html[data-theme="riso"] .riso-link-btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
 }
 @media (hover: hover) {
   html[data-theme="riso"] .riso-link-btn:hover {
@@ -187,7 +205,9 @@ html[data-theme="riso"] ul li::before {
   content: '';
   position: absolute;
   left: -1.2em;
-  top: 0.55em;
+  /* align dot with cap-height: at 0.9375rem/1.6 lh, cap sits ~0.68em from top of line box;
+     dot is 0.55em tall so center it: 0.68 - 0.275 = ~0.4em */
+  top: 0.4em;
   width: 0.55em;
   height: 0.55em;
   border-radius: 50%;
@@ -270,12 +290,12 @@ html[data-theme="riso"] .riso-card {
   background: var(--surface);
   border: 2px solid var(--text);
   border-radius: 1.5rem;
-  /* extra right/bottom room so 8px ink-offset shadow is never clipped */
   padding: 1.5rem 1.75rem 1.75rem;
   /* ink-offset card shadow identical in both modes */
   box-shadow: 6px 6px 0 var(--accent);
   transition: box-shadow 0.12s ease, transform 0.12s ease;
-  overflow: hidden;
+  /* removed overflow:hidden -- it clips the ink-offset box-shadow */
+  overflow: visible;
 }
 @media (hover: hover) {
   html[data-theme="riso"] .riso-card:hover {
@@ -299,13 +319,15 @@ html[data-theme="riso"] .riso-chip {
   align-items: center;
   border: 2px solid var(--text);
   border-radius: 0.25rem;
-  /* taller hit area, wider so ink-shadow has room */
-  padding: 0.3em 0.8em;
+  /* increased padding to ensure ~36px min height for chips used as interactive targets */
+  padding: 0.45em 0.8em;
   font-size: 0.8125rem;
+  line-height: 1.4;
   background: transparent;
   color: var(--text);
   box-shadow: 2px 2px 0 var(--accent);
   transition: box-shadow 0.1s ease, transform 0.1s ease;
+  min-height: 2.25rem;
 }
 @media (hover: hover) {
   html[data-theme="riso"] .riso-chip:hover {
@@ -333,7 +355,9 @@ html[data-theme="riso"] .riso-hero {
   padding-top: 56px;
   padding-bottom: clamp(0.5rem, 2vh, 1.5rem);
   gap: clamp(0.35rem, 1.2vh, 0.9rem);
-  overflow: hidden;
+  /* removed overflow:hidden -- it clips misreg ghost (overflow:visible on .misreg);
+     x-clip handled at body level via overflow-x:hidden */
+  overflow: visible;
 }
 
 html[data-theme="riso"] .riso-hero-photo {
@@ -389,15 +413,15 @@ html[data-theme="riso"] .riso-hero-line {
   }
 }
 
-/* touch targets */
-html[data-theme="riso"] a {
+/* touch targets: only apply to standalone action links, not inline prose links */
+html[data-theme="riso"] .riso-btn,
+html[data-theme="riso"] .riso-link-btn {
   min-height: 2.75rem;
-  display: inline-flex;
-  align-items: center;
 }
-html[data-theme="riso"] .flex a,
-html[data-theme="riso"] a.font-mono {
-  display: inline-flex;
+/* chip focus */
+html[data-theme="riso"] .riso-chip:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* load animation timing */
@@ -413,6 +437,11 @@ html[data-theme="riso"] #contact button {
   box-shadow: 3px 3px 0 var(--accent);
   transition: box-shadow 0.12s ease, transform 0.12s ease;
   min-height: 2.75rem;
+  color: var(--text);
+}
+html[data-theme="riso"] #contact button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
 }
 @media (hover: hover) {
   html[data-theme="riso"] #contact button:hover {
@@ -428,4 +457,14 @@ html[data-theme="riso"] #contact button {
     box-shadow: 3px 3px 0 var(--accent);
     transform: none;
   }
+}
+
+/* ── SECTION blob containment ── */
+/* Sections use position:relative for blobs; clip x overflow to prevent
+   negative-offset blobs causing horizontal scroll on narrow viewports.
+   padding-bottom accommodates downward card box-shadows before the clip. */
+html[data-theme="riso"] section,
+html[data-theme="riso"] footer {
+  overflow-x: clip;
+  /* clip does not create a scroll container, so vertical box-shadows still paint */
 }

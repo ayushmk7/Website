@@ -27,7 +27,7 @@ export default function ProjectsV2() {
                     href={p.websiteUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-lg border border-foreground hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors"
+                    className="p-2.5 rounded-lg border border-foreground hover:bg-blue-600 hover:border-blue-600 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition-colors"
                     aria-label={`Visit ${p.title}`}
                   >
                     <ExternalLink className="w-4 h-4" />
@@ -38,7 +38,7 @@ export default function ProjectsV2() {
                     href={p.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-lg border border-foreground hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors"
+                    className="p-2.5 rounded-lg border border-foreground hover:bg-blue-600 hover:border-blue-600 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition-colors"
                     aria-label={`${p.title} on GitHub`}
                   >
                     <Github className="w-4 h-4" />
@@ -46,7 +46,7 @@ export default function ProjectsV2() {
                 )}
               </div>
             </div>
-            <p className="text-muted-foreground text-sm leading-relaxed flex-grow">{p.description}</p>
+            <p className="text-foreground/75 text-sm leading-relaxed flex-grow">{p.description}</p>
             <div className="flex flex-wrap gap-2 mt-5">
               {p.tags.map((t) => (
                 <span key={t} className="px-3 py-1 text-xs rounded-full border border-foreground font-mono">{t}</span>
@@ -60,9 +60,9 @@ export default function ProjectsV2() {
         <div className="flex justify-center">
           <button
             onClick={() => setShowAll(!showAll)}
-            className="group flex items-center gap-2 px-6 py-3 rounded-2xl border-2 border-black dark:border-white bg-background hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors duration-200 font-medium"
+            className="group flex items-center gap-2 px-6 py-3 rounded-2xl border-2 border-black dark:border-white bg-background hover:bg-blue-600 hover:border-blue-600 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition-colors duration-200 font-medium"
           >
-            {showAll ? <>Show less <ChevronUp className="w-5 h-5" /></> : <>Show all <ChevronDown className="w-5 h-5" /></>}
+            {showAll ? <>Show less <ChevronUp className="w-5 h-5" /></> : <>Show all {list.length} <ChevronDown className="w-5 h-5" /></>}
           </button>
         </div>
       )}

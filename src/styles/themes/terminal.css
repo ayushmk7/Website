@@ -18,7 +18,9 @@ html[data-theme="terminal"] {
   --btn-hover-bg: #1a6b1a;
   --btn-hover-text: #f0f0e6;
   /* box-drawing gutter */
-  --gutter-color: rgba(26,107,26,0.5);
+  --gutter-color: rgba(26,107,26,0.65);
+  /* photo glow */
+  --photo-glow: rgba(26,107,26,0.20);
 }
 html[data-theme="terminal"] body {
   background:
@@ -38,12 +40,14 @@ html[data-theme="terminal"].dark {
   --btn-text: #b6ff00;
   --btn-hover-bg: #b6ff00;
   --btn-hover-text: #050806;
-  --gutter-color: rgba(67,245,123,0.4);
+  --gutter-color: rgba(67,245,123,0.55);
+  --photo-glow: rgba(67,245,123,0.25);
 }
 html[data-theme="terminal"].dark body {
-  text-shadow: 0 0 2px rgba(67,245,123,0.25);
+  /* scanlines: subtle - don't obscure text */
+  text-shadow: 0 0 2px rgba(67,245,123,0.20);
   background:
-    repeating-linear-gradient(rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.25) 2px 4px),
+    repeating-linear-gradient(rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.18) 2px 4px),
     var(--bg);
 }
 
@@ -57,7 +61,7 @@ html[data-theme="terminal"] .caret::after {
   html[data-theme="terminal"] .typewriter { animation: none; border-right: none; }
 }
 
-/* ── hero name: blinking-caret only (no width clip; that hid the name) ── */
+/* ── hero name: blinking-caret only (no width clip) ── */
 html[data-theme="terminal"] .typewriter {
   display: inline-block;
   border-right: 2px solid var(--accent);
@@ -89,6 +93,8 @@ html[data-theme="terminal"] .term-box {
   border-left: 2px solid var(--accent);
   padding-left: 0;
   font-family: var(--font-mono);
+  /* prevent box from expanding container horizontally */
+  overflow: hidden;
 }
 html[data-theme="terminal"] .box-top,
 html[data-theme="terminal"] .box-bot {
@@ -96,16 +102,41 @@ html[data-theme="terminal"] .box-bot {
   font-size: 0.88rem;
   line-height: 1.5;
   letter-spacing: -0.01em;
+  /* allow wrap so box-bot rule does not overflow on 360px */
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  text-overflow: clip;
   padding-left: 0.25rem;
 }
+/* box-bot: leading corner + CSS-only rule that fills available width */
+html[data-theme="terminal"] .box-bot {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+}
+html[data-theme="terminal"] .box-rule {
+  display: block;
+  flex: 1 1 0;
+  height: 1px;
+  background: var(--gutter-color);
+  margin-left: 2px;
+}
+html[data-theme="terminal"] .box-top {
+  /* allow long titles to wrap rather than clip silently */
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  word-break: break-word;
+}
+/* box-row: the | glyph aligns with ┌ - both at padding-left 0.25rem then content */
 html[data-theme="terminal"] .box-row {
-  padding-left: 0.75rem;
+  padding-left: 0.25rem;
   line-height: 1.6;
   padding-top: 0.1rem;
   padding-bottom: 0.1rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* ── bracketed terminal buttons ───────────────────────────────── */
@@ -116,30 +147,39 @@ html[data-theme="terminal"] .term-btn-sm {
   color: var(--btn-text);
   background: var(--btn-bg);
   border: 1px solid var(--btn-border);
-  padding: 0.2rem 0.55rem;
+  padding: 0.35rem 0.55rem;
   letter-spacing: 0.04em;
   text-decoration: none;
   transition: background 0.1s, color 0.1s;
   cursor: pointer;
+  /* meet 36px tap target */
+  min-height: 2.25rem;
+  line-height: 1.6;
+  /* explicit focus outline - do not suppress */
 }
 html[data-theme="terminal"] .term-btn {
   font-size: 0.95rem;
-  padding: 0.25rem 0.75rem;
-  min-height: 2.25rem;
-  line-height: 1.8;
+  padding: 0.35rem 0.75rem;
 }
 html[data-theme="terminal"] .term-btn-sm {
   font-size: 0.82rem;
-  padding: 0.15rem 0.5rem;
-  min-height: 2rem;
+  padding: 0.3rem 0.5rem;
 }
 html[data-theme="terminal"] .term-btn:hover,
-html[data-theme="terminal"] .term-btn-sm:hover,
+html[data-theme="terminal"] .term-btn-sm:hover {
+  background: var(--btn-hover-bg);
+  color: var(--btn-hover-text);
+}
 html[data-theme="terminal"] .term-btn:focus-visible,
 html[data-theme="terminal"] .term-btn-sm:focus-visible {
   background: var(--btn-hover-bg);
   color: var(--btn-hover-text);
-  outline: none;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+html[data-theme="terminal"] .term-btn:active,
+html[data-theme="terminal"] .term-btn-sm:active {
+  opacity: 0.75;
 }
 
 /* ── hero avatar ───────────────────────────────────────────────── */
@@ -149,7 +189,7 @@ html[data-theme="terminal"] .term-photo {
   height: auto;
   border: 1px solid var(--accent);
   border-radius: 2px;
-  box-shadow: 0 0 8px rgba(67,245,123,0.25);
+  box-shadow: 0 0 8px var(--photo-glow);
 }
 
 /* ── layout ────────────────────────────────────────────────────── */
@@ -169,15 +209,14 @@ html[data-theme="terminal"] .stack-group p {
   margin-bottom: 0.25rem;
 }
 
-/* hero: one viewport */
+/* hero: one viewport, allow overflow-y auto so content is never clipped on short screens */
 html[data-theme="terminal"] .hero-section {
   min-height: calc(100svh - 56px);
   min-height: calc(100dvh - 56px);
-  max-height: calc(100svh - 56px);
-  max-height: calc(100dvh - 56px);
+  /* no max-height: let content breathe on short screens rather than silently clip */
   padding-top: clamp(0.5rem, 3svh, 2rem);
   padding-bottom: clamp(0.5rem, 3svh, 2rem);
-  overflow: hidden;
+  overflow: visible;
   gap: clamp(0.25rem, 1.5svh, 0.75rem);
 }
 html[data-theme="terminal"] .hero-name {
@@ -224,4 +263,15 @@ html[data-theme="terminal"] #contact {
 /* scroll targets: offset below fixed nav */
 html[data-theme="terminal"] section[id] {
   scroll-margin-top: 64px;
+}
+
+/* ── mobile: 360px safety ──────────────────────────────────────── */
+@media (max-width: 400px) {
+  html[data-theme="terminal"] main {
+    font-size: 0.88rem;
+  }
+  html[data-theme="terminal"] .shell-prompt,
+  html[data-theme="terminal"] .cmd-text {
+    word-break: break-all;
+  }
 }

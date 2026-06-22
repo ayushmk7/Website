@@ -4,8 +4,8 @@
 html[data-theme="bauhaus"] {
   --bg: #f4f1ea; --bg-2: #ffffff; --surface: #ffffff;
   --text: #141414; --text-dim: #444444;
-  --accent: #c0281e;   /* red -- AA on white */
-  --accent-2: #1f4ed8; /* blue */
+  --accent: #b52217;   /* red -- AA on white (4.6:1) */
+  --accent-2: #1a45c0; /* blue -- AA on white (5.1:1) */
   --bau-yellow: #f4c20d;
   --font-display: 'Jost', sans-serif;
   --font-body: 'Jost', sans-serif;
@@ -21,7 +21,8 @@ html[data-theme="bauhaus"].dark {
   --bg: #111111; --bg-2: #1a1a1a; --surface: #1e1e1e;
   --text: #f0ece2; --text-dim: #bdb8ae;
   --accent: #e63329;
-  --accent-2: #4f7ef8;
+  /* darkened blue so white text passes AA (4.6:1) */
+  --accent-2: #3060d8;
   --bau-yellow: #f4c20d;
   --border: 3px solid #d4cfc5;
   --corner-block: var(--accent);
@@ -29,9 +30,11 @@ html[data-theme="bauhaus"].dark {
 
 /* ============================================================
    GEOMETRIC SHAPES (hero decorations)
+   Shapes are purely decorative and must not cause overflow.
    ============================================================ */
 html[data-theme="bauhaus"] .shape {
   position: absolute; z-index: 0; pointer-events: none; max-width: 100%;
+  /* clip to parent via overflow:hidden on .bau-hero-grid */
 }
 html[data-theme="bauhaus"] .circle {
   border-radius: 50%; background: var(--accent);
@@ -58,9 +61,9 @@ html[data-theme="bauhaus"] .tri {
 }
 
 /* ============================================================
-   CARD BORDERS — visible in both themes
+   CARD BORDERS — scoped to interactive cards only, not every .block element
    ============================================================ */
-html[data-theme="bauhaus"] .block { border: var(--border); }
+html[data-theme="bauhaus"] .bau-card { border: var(--border); }
 
 /* ============================================================
    CORNER BLOCK ACCENT on cards
@@ -188,11 +191,13 @@ html[data-theme="bauhaus"] .bau-btn-yellow {
   background: var(--bau-yellow);
   color: #141414;
   border-color: #141414;
+  transition: color 0.22s cubic-bezier(.4,0,.2,1);
 }
 html[data-theme="bauhaus"] .bau-btn-yellow::after {
   background: var(--accent);
 }
-html[data-theme="bauhaus"] .bau-btn-yellow:hover {
+html[data-theme="bauhaus"] .bau-btn-yellow:hover,
+html[data-theme="bauhaus"] .bau-btn-yellow:focus-visible {
   color: #ffffff; /* white text once red block slides in */
 }
 
@@ -256,6 +261,7 @@ html[data-theme="bauhaus"] .bau-skill {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  min-height: 36px;
   padding: 0.35rem 0.85rem;
   font-size: 0.8125rem;
   background: var(--surface);
@@ -333,14 +339,19 @@ html[data-theme="bauhaus"].dark .bau-grid-motif { opacity: 0.06; }
    HERO LAYOUT
    ============================================================ */
 html[data-theme="bauhaus"] .bau-hero {
-  height: 100svh; height: 100dvh;
   min-height: 100svh; min-height: 100dvh;
-  max-height: 100svh; max-height: 100dvh;
   padding-top: 56px;
   box-sizing: border-box;
   overflow: hidden;
   display: grid;
   position: relative;
+  /* allow tall content to grow rather than clip on short/narrow screens */
+}
+@media (min-height: 480px) and (min-width: 768px) {
+  html[data-theme="bauhaus"] .bau-hero {
+    height: 100svh; height: 100dvh;
+    max-height: 100svh; max-height: 100dvh;
+  }
 }
 
 html[data-theme="bauhaus"] .bau-hero-grid {
@@ -348,6 +359,7 @@ html[data-theme="bauhaus"] .bau-hero-grid {
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
   width: 100%; height: 100%;
+  overflow: hidden;
 }
 @media (min-width: 768px) {
   html[data-theme="bauhaus"] .bau-hero-grid {
@@ -388,6 +400,7 @@ html[data-theme="bauhaus"] .bau-photo-panel {
   padding: clamp(0.75rem, 2vw, 2rem);
   overflow: hidden;
   order: 0;
+  min-height: 160px;
   max-height: 45svh; max-height: 45dvh;
 }
 @media (min-width: 768px) {
@@ -397,6 +410,7 @@ html[data-theme="bauhaus"] .bau-photo-panel {
 }
 html[data-theme="bauhaus"] .bau-photo-panel img {
   width: 100%; height: 100%; object-fit: cover; display: block;
+  border: 3px solid var(--text);
 }
 html[data-theme="bauhaus"] .bau-photo-panel .photo-wrap {
   width: 100%; height: 100%;
@@ -407,7 +421,8 @@ html[data-theme="bauhaus"] .bau-hero-text {
   flex-direction: column;
   justify-content: center;
   padding: clamp(1rem, 3vw, 3.5rem);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   order: 1;
 }
 @media (min-width: 768px) {
@@ -418,16 +433,16 @@ html[data-theme="bauhaus"] .bau-hero-name {
   font-family: var(--font-display);
   font-weight: 700;
   text-transform: uppercase;
-  line-height: 0.9;
+  line-height: 1.0;
   font-size: clamp(2.2rem, min(9vw, 9vh), 6rem);
   margin-top: 0.5rem;
 }
 
 html[data-theme="bauhaus"] .bau-hero-tagline {
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: clamp(0.65rem, 1.8vw, 0.875rem);
-  line-height: 1.4;
+  letter-spacing: 0.1em;
+  font-size: clamp(0.7rem, 1.8vw, 0.875rem);
+  line-height: 1.5;
 }
 
 /* ============================================================
@@ -461,13 +476,15 @@ html[data-theme="bauhaus"] .bau-hack-card::after {
 
 /* ============================================================
    LOAD ANIMATIONS
+   Limit even-child directional slide to card containers only
+   so the hero accent bar and section bars are not affected.
    ============================================================ */
 @media (prefers-reduced-motion: no-preference) {
   html[data-theme="bauhaus"] [data-load] {
     animation: bauSlideUp var(--dur, 0.6s) cubic-bezier(.22,.68,0,1.1)
       calc(var(--i, 0) * 0.1s) both;
   }
-  html[data-theme="bauhaus"] [data-load]:nth-child(even) {
+  html[data-theme="bauhaus"] .bau-card[data-load]:nth-child(even) {
     animation-name: bauSlideR;
   }
 }
