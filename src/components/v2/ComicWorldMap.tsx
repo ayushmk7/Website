@@ -67,7 +67,7 @@ export default function ComicWorldMap() {
 
       // cover-fill: zoom so tiles fill both axes, no empty band, no duplicates
       const fill = () => {
-        map.invalidateSize();
+        map.invalidateSize({ animate: false, pan: false });
         map.setMinZoom(0);
         const z = map.getBoundsZoom(worldBounds, true);
         map.setView(worldBounds.getCenter(), z, { animate: false });
@@ -89,6 +89,11 @@ export default function ComicWorldMap() {
       if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; }
     };
   }, []);
+
+  // refit instantly when expanding/collapsing (don't wait for ResizeObserver)
+  useEffect(() => {
+    if (fillRef.current) requestAnimationFrame(() => fillRef.current && fillRef.current());
+  }, [expanded]);
 
   // close expanded view on Escape
   useEffect(() => {
