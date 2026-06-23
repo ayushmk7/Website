@@ -29,9 +29,9 @@ export default function ComicHero() {
         <p style={{ fontFamily: 'var(--font-body)', fontWeight: 800, letterSpacing: '0.02em' }}>&gt; NSF-backed research</p>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <a className="panel panel--burst" href={RESUME} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-display)', background: 'var(--accent-2)', color: '#141414', height: '2.7rem', padding: '0 1.4rem', fontSize: '1.35rem', display: 'inline-flex', alignItems: 'center', boxShadow: '6px 6px 0 var(--panel-shadow)' }}>Résumé</a>
-          <a className="comic-link-btn" href={GH} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" style={{ width: '2.7rem', height: '2.7rem', padding: 0 }}>{githubSvg}</a>
-          <a className="comic-link-btn" href={LI} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" style={{ width: '2.7rem', height: '2.7rem', padding: 0 }}>{linkedinSvg}</a>
+          <a className="panel panel--burst" href={RESUME} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-display)', background: 'var(--accent-2)', color: '#141414', height: '2.7rem', margin: 0, padding: '0 1.4rem', fontSize: '1.35rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxShadow: '4px 4px 0 var(--panel-shadow)' }}>Résumé</a>
+          <a className="comic-link-btn" href={GH} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" style={{ width: '2.7rem', height: '2.7rem', margin: 0, padding: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>{githubSvg}</a>
+          <a className="comic-link-btn" href={LI} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" style={{ width: '2.7rem', height: '2.7rem', margin: 0, padding: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>{linkedinSvg}</a>
         </div>
       </div>
     </section>
