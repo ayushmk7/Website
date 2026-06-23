@@ -1,131 +1,51 @@
 // src/components/v2/ComicWorldMap.tsx
 import React, { useEffect, useRef, useState } from 'react';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 import { places } from '../../data/places';
-import { projectLatLng, gibsSnapshotUrl, weatherLabel, yesterdayUTC } from '../../lib/geo';
+import { gibsSnapshotUrl, weatherLabel, yesterdayUTC } from '../../lib/geo';
 
 interface Weather { temp: number; label: string; wind: number }
-const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
-const MIN_SCALE = 1;
-const MAX_SCALE = 8;
-const VW = 1000, VH = 500; // svg viewBox, 2:1 equirectangular
-
-// equirectangular: lon/lat -> viewBox units (same math as projectLatLng, scaled to viewBox)
-const sx = (lng: number) => ((lng + 180) / 360) * VW;
-const sy = (lat: number) => ((90 - lat) / 180) * VH;
-function ringPath(ring: number[][]): string {
-  return ring.map((c, i) => `${i ? 'L' : 'M'}${sx(c[0]).toFixed(1)} ${sy(c[1]).toFixed(1)}`).join(' ') + 'Z';
-}
-function featurePath(geom: any): string {
-  if (!geom) return '';
-  const polys = geom.type === 'Polygon' ? [geom.coordinates] : geom.type === 'MultiPolygon' ? geom.coordinates : [];
-  return polys.map((poly: number[][][]) => poly.map(ringPath).join(' ')).join(' ');
-}
 
 export default function ComicWorldMap() {
-  const [paths, setPaths] = useState<string[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
   const [weather, setWeather] = useState<Weather | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [expanded, setExpanded] = useState(false);
 
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
-  const [tx, setTx] = useState(0);
-  const [ty, setTy] = useState(0);
-  const tyRef = useRef(0);
-  const drag = useRef<{ x: number; y: number; tx: number; ty: number } | null>(null);
-  const pointers = useRef<Map<number, { x: number; y: number }>>(new Map());
-  const pinchStart = useRef<{ dist: number; scale: number } | null>(null);
-  const movedRef = useRef(false);
+  const elRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<L.Map | null>(null);
 
   const place = selected === null ? null : places[selected];
 
-  // load real country geometry once
+  // init the real map once
   useEffect(() => {
-    let cancelled = false;
-    fetch('/world.geojson')
-      .then((r) => r.json())
-      .then((g) => { if (!cancelled) setPaths(g.features.map((f: any) => featurePath(f.geometry))); })
-      .catch(() => {});
-    return () => { cancelled = true; };
+    if (!elRef.current || mapRef.current) return;
+    const dark = document.documentElement.classList.contains('dark');
+    const map = L.map(elRef.current, { worldCopyJump: true, minZoom: 1, maxZoom: 18 }).setView([25, -30], 2);
+    const tiles = dark
+      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+    L.tileLayer(tiles, { subdomains: 'abcd', maxZoom: 19, attribution: '&copy; OpenStreetMap &copy; CARTO' }).addTo(map);
+
+    const icon = L.divIcon({ className: 'cwm-pin-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
+    places.forEach((p, i) => {
+      L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}`, keyboard: true })
+        .addTo(map)
+        .on('click', () => setSelected(i));
+    });
+
+    mapRef.current = map;
+    return () => { map.remove(); mapRef.current = null; };
   }, []);
 
-  useEffect(() => { tyRef.current = ty; }, [ty]);
-
-  const clampPan = (nx: number, ny: number, s: number) => {
-    const el = wrapRef.current;
-    if (!el) return { x: nx, y: ny };
-    const w = el.clientWidth, h = el.clientHeight;
-    return { x: clamp(nx, -(s - 1) * w, 0), y: clamp(ny, -(s - 1) * h, 0) };
-  };
-
-  const zoomAt = (px: number, py: number, factor: number) => {
-    setScale((prev) => {
-      const ns = clamp(prev * factor, MIN_SCALE, MAX_SCALE);
-      const k = ns / prev;
-      setTx((ptx) => {
-        const c = clampPan(px - (px - ptx) * k, py - (py - tyRef.current) * k, ns);
-        setTy(c.y);
-        return c.x;
-      });
-      return ns;
-    });
-  };
-
+  // resize the map when toggling fullscreen
   useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const rect = el.getBoundingClientRect();
-      zoomAt(e.clientX - rect.left, e.clientY - rect.top, e.deltaY < 0 ? 1.15 : 0.87);
-    };
-    el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
+    const m = mapRef.current;
+    if (m) setTimeout(() => m.invalidateSize(), 60);
   }, [expanded]);
 
-  const onPointerDown = (e: React.PointerEvent) => {
-    (e.target as Element).setPointerCapture?.(e.pointerId);
-    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    movedRef.current = false;
-    if (pointers.current.size === 2) {
-      const [a, b] = [...pointers.current.values()];
-      pinchStart.current = { dist: Math.hypot(a.x - b.x, a.y - b.y), scale };
-      drag.current = null;
-    } else {
-      drag.current = { x: e.clientX, y: e.clientY, tx, ty };
-    }
-  };
-  const onPointerMove = (e: React.PointerEvent) => {
-    if (!pointers.current.has(e.pointerId)) return;
-    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (pointers.current.size === 2 && pinchStart.current) {
-      const [a, b] = [...pointers.current.values()];
-      const dist = Math.hypot(a.x - b.x, a.y - b.y);
-      const rect = wrapRef.current!.getBoundingClientRect();
-      const cx = (a.x + b.x) / 2 - rect.left, cy = (a.y + b.y) / 2 - rect.top;
-      const target = clamp(pinchStart.current.scale * (dist / pinchStart.current.dist), MIN_SCALE, MAX_SCALE);
-      zoomAt(cx, cy, target / scale);
-      movedRef.current = true;
-      return;
-    }
-    if (drag.current) {
-      const dx = e.clientX - drag.current.x, dy = e.clientY - drag.current.y;
-      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) movedRef.current = true;
-      const c = clampPan(drag.current.tx + dx, drag.current.ty + dy, scale);
-      setTx(c.x); setTy(c.y);
-    }
-  };
-  const onPointerUp = (e: React.PointerEvent) => {
-    pointers.current.delete(e.pointerId);
-    if (pointers.current.size < 2) pinchStart.current = null;
-    if (pointers.current.size === 0) drag.current = null;
-  };
-
-  const reset = () => { setScale(1); setTx(0); setTy(0); };
-  const zoomBtn = (f: number) => { const el = wrapRef.current; if (el) zoomAt(el.clientWidth / 2, el.clientHeight / 2, f); };
-  const onMapClick = () => { if (!movedRef.current && !expanded) setExpanded(true); };
-
+  // live weather for the selected place
   useEffect(() => {
     if (!place) return;
     let cancelled = false;
@@ -139,50 +59,14 @@ export default function ComicWorldMap() {
 
   const date = yesterdayUTC();
 
-  const mapInner = (
-    <div ref={wrapRef} className="cwm-map" onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp} onClick={onMapClick}>
-      <div className="cwm-stage" style={{ transform: `translate(${tx}px, ${ty}px) scale(${scale})` }}>
-        <svg className="cwm-svg" viewBox={`0 0 ${VW} ${VH}`} preserveAspectRatio="xMidYMid meet" aria-label="World map">
-          {paths.map((d, i) => <path key={i} d={d} className="cwm-land" />)}
-          {places.map((p, i) => {
-            const cx = sx(p.lng), cy = sy(p.lat);
-            const select = () => { if (!movedRef.current) setSelected(i); };
-            return (
-              <g
-                key={p.name}
-                className={`cwm-pin${selected === i ? ' is-active' : ''}`}
-                transform={`translate(${cx} ${cy}) scale(${1 / scale})`}
-                role="button"
-                tabIndex={0}
-                aria-label={`${p.name}, ${p.country}`}
-                onClick={(e) => { e.stopPropagation(); select(); }}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); select(); } }}
-              >
-                <circle className="cwm-pin-hit" cx="0" cy="0" r="16" />
-                <circle className="cwm-pin-dot" cx="0" cy="0" r="9" />
-                <text className="cwm-pin-label" x="14" y="5">{p.name}</text>
-              </g>
-            );
-          })}
-        </svg>
-        <div className="cwm-halftone" aria-hidden="true" />
-      </div>
-      <div className="cwm-zoom">
-        <button className="cwm-zoom-btn" aria-label="Zoom in" onClick={(e) => { e.stopPropagation(); zoomBtn(1.4); }}>+</button>
-        <button className="cwm-zoom-btn" aria-label="Zoom out" onClick={(e) => { e.stopPropagation(); zoomBtn(0.71); }}>-</button>
-        <button className="cwm-zoom-btn" aria-label="Reset map" onClick={(e) => { e.stopPropagation(); reset(); }}>o</button>
-        <button className="cwm-zoom-btn" aria-label={expanded ? 'Shrink map' : 'Expand map'} onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}>{expanded ? '><' : '<>'}</button>
-      </div>
-    </div>
-  );
-
   return (
-    <div className="cwm-wrap">
-      {expanded ? (
-        <div className="cwm-overlay" onClick={() => setExpanded(false)}>
-          <div className="cwm-overlay-inner" onClick={(e) => e.stopPropagation()}>{mapInner}</div>
-        </div>
-      ) : mapInner}
+    <div className={`cwm-wrap${expanded ? ' is-expanded' : ''}`}>
+      <div className="cwm-map">
+        <div ref={elRef} className="cwm-leaflet" />
+        <button className="cwm-expand" aria-label={expanded ? 'Shrink map' : 'Expand map'} onClick={() => setExpanded(!expanded)}>
+          {expanded ? '><' : '<>'}
+        </button>
+      </div>
 
       {place && (
         <div className="cwm-panel" role="status">
