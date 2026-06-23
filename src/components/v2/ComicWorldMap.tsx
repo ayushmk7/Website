@@ -1,14 +1,18 @@
 // src/components/v2/ComicWorldMap.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css';
 import { places, type Place } from '../../data/places';
 import { weatherLabel } from '../../lib/geo';
 
-function popupHtml(p: Place, wx: string): string {
+function popupHtml(p: Place, main: string, sub?: string): string {
   return `<div class="cwm-pop">
     <div class="cwm-pop-body">
-      <h3 class="cwm-pop-title">${p.name}, ${p.country}</h3>
-      <p class="cwm-pop-wx">${wx}</p>
+      <h3 class="cwm-pop-title">${p.name}</h3>
+      <p class="cwm-pop-country">${p.country}</p>
+      <p class="cwm-pop-wx">${main}</p>
+      ${sub ? `<p class="cwm-pop-sub">${sub}</p>` : ''}
     </div>
   </div>`;
 }
@@ -23,27 +27,26 @@ export default function ComicWorldMap() {
     if (!elRef.current || mapRef.current) return;
     let disposed = false;
     let ro: ResizeObserver | null = null;
-    import('leaflet').then((mod) => {
-      const L = mod.default;
+    (async () => {
+      const L = (await import('leaflet')).default;
+      await import('leaflet.markercluster');
+      const gh = await import('leaflet-gesture-handling');
+      L.Map.addInitHook('addHandler', 'gestureHandling', gh.GestureHandling);
       if (disposed || !elRef.current || mapRef.current) return;
+
       const worldBounds = L.latLngBounds([[-58, -179], [80, 179]]);
       const map = L.map(elRef.current, {
         worldCopyJump: false,
         maxZoom: 18,
         zoomSnap: 0,
-        scrollWheelZoom: false, // don't hijack page scroll; activated on click below
+        // scroll scrolls the page; ctrl/cmd+scroll or two fingers zoom the map
+        gestureHandling: true,
         maxBounds: worldBounds,
         maxBoundsViscosity: 0.9,
         attributionControl: false,
-      });
+      } as any);
 
-      // wheel zoom only after the user clicks into the map; released when the
-      // pointer leaves. stops accidental zoom while scrolling the page past it.
-      map.on('click', () => map.scrollWheelZoom.enable());
-      map.getContainer().addEventListener('mouseleave', () => map.scrollWheelZoom.disable());
-
-      const base = 'dark_nolabels';
-      L.tileLayer(`https://{s}.basemaps.cartocdn.com/${base}/{z}/{x}/{y}{r}.png`, {
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
         subdomains: 'abcd',
         maxZoom: 19,
         noWrap: true,
@@ -51,20 +54,31 @@ export default function ComicWorldMap() {
       }).addTo(map);
 
       const icon = L.divIcon({ className: 'cwm-pin-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
+      const cluster = (L as any).markerClusterGroup({
+        maxClusterRadius: 40,
+        showCoverageOnHover: false,
+        spiderfyDistanceMultiplier: 1.4,
+        iconCreateFunction: (c: any) =>
+          L.divIcon({ html: `<span>${c.getChildCount()}</span>`, className: 'cwm-cluster', iconSize: [36, 36], iconAnchor: [18, 18] }),
+      });
+
       places.forEach((p) => {
-        const m = L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}` }).addTo(map);
-        m.bindPopup(popupHtml(p, 'Loading live weather...'), { maxWidth: 250, minWidth: 170, className: 'cwm-pop-wrap', autoPanPadding: [24, 24] });
+        const m = L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}` });
+        m.bindPopup(popupHtml(p, 'Loading weather...'), { maxWidth: 240, minWidth: 168, className: 'cwm-pop-wrap', autoPanPadding: [24, 24] });
         m.on('popupopen', () => {
           fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=celsius`)
             .then((r) => { if (!r.ok) throw new Error('bad'); return r.json(); })
             .then((d) => {
               const c = d.current;
-              const wx = `Right now: ${Math.round(c.temperature_2m)}°C, ${weatherLabel(c.weather_code)}, wind ${Math.round(c.wind_speed_10m)} km/h`;
-              if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, wx));
+              const main = `${Math.round(c.temperature_2m)}°C · ${weatherLabel(c.weather_code)}`;
+              const sub = `Wind ${Math.round(c.wind_speed_10m)} km/h`;
+              if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, main, sub));
             })
-            .catch(() => { if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, 'Weather unavailable right now.')); });
+            .catch(() => { if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, 'Weather unavailable')); });
         });
+        cluster.addLayer(m);
       });
+      map.addLayer(cluster);
 
       // cover-fill: zoom so tiles fill both axes, no empty band, no duplicates
       const fill = () => {
@@ -79,11 +93,11 @@ export default function ComicWorldMap() {
       setTimeout(fill, 60);
       setTimeout(fill, 300);
       window.addEventListener('resize', fill);
-      // one-shot: settle the initial layout (kills uncovered edges), then stop
-      // so it never fights the user's own zoom/pan afterward.
+      // one-shot: settle initial layout (kills uncovered edges), then stop so it
+      // never fights the user's own zoom/pan afterward.
       ro = new ResizeObserver(() => { fill(); if (ro) { ro.disconnect(); ro = null; } });
       ro.observe(elRef.current);
-    });
+    })();
     return () => {
       disposed = true;
       if (ro) ro.disconnect();
