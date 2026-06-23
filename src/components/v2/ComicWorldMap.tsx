@@ -11,7 +11,6 @@ function popupHtml(p: Place, wx: string): string {
     <img class="cwm-pop-sat" src="${gibsSnapshotUrl(p.lat, p.lng, date)}" alt="NASA satellite view of ${p.name}" loading="lazy" onerror="this.style.display='none'" />
     <div class="cwm-pop-body">
       <h3 class="cwm-pop-title">${p.name}, ${p.country}</h3>
-      ${p.blurb ? `<p class="cwm-pop-blurb">${p.blurb}</p>` : ''}
       <p class="cwm-pop-wx">${wx}</p>
       <p class="cwm-pop-credit">Satellite: NASA GIBS, ${date}</p>
     </div>
