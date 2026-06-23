@@ -15,8 +15,6 @@
         "astro": "^5.14.1",
         "clsx": "^2.1.1",
         "leaflet": "^1.9.4",
-        "leaflet-gesture-handling": "^1.2.2",
-        "leaflet.markercluster": "^1.5.3",
         "lucide-react": "^0.562.0",
         "motion": "^12.38.0",
         "react": "^19.2.3",
