@@ -443,29 +443,21 @@ html[data-theme="comic"] .cwm-halftone {
   background-size: 10px 10px; opacity: 0.18;
 }
 /* pins */
-html[data-theme="comic"] .cwm-pin {
-  position: absolute; transform: translate(-50%, -50%);
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  background: transparent; border: none; cursor: pointer;
-  min-width: 36px; min-height: 36px; padding: 0;
-}
-html[data-theme="comic"] .cwm-pin-dot {
-  width: 14px; height: 14px; border-radius: 50%;
-  background: var(--accent); border: 3px solid var(--outline);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 35%, transparent);
-}
-html[data-theme="comic"] .cwm-pin.is-active .cwm-pin-dot { background: var(--accent-2); }
+/* in-SVG pins (share the map's exact projection) */
+html[data-theme="comic"] .cwm-pin { cursor: pointer; }
+html[data-theme="comic"] .cwm-pin-hit { fill: transparent; }
+html[data-theme="comic"] .cwm-pin-dot { fill: var(--accent); stroke: var(--outline); stroke-width: 3; }
+html[data-theme="comic"] .cwm-pin.is-active .cwm-pin-dot { fill: var(--accent-2); }
 html[data-theme="comic"] .cwm-pin-label {
-  font-family: var(--font-display); font-size: 0.85rem; color: var(--text);
-  background: var(--surface); border: 2px solid var(--outline);
-  padding: 0 0.3rem; border-radius: 0.3rem; white-space: nowrap;
+  font-family: var(--font-display); font-size: 18px; fill: var(--text);
+  stroke: var(--surface); stroke-width: 4; paint-order: stroke; dominant-baseline: middle;
 }
-html[data-theme="comic"] .cwm-pin:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+html[data-theme="comic"] .cwm-pin:focus { outline: none; }
+html[data-theme="comic"] .cwm-pin:focus-visible .cwm-pin-dot { stroke: var(--accent); stroke-width: 5; }
 @media (prefers-reduced-motion: no-preference) {
-  html[data-theme="comic"] .cwm-pin-dot { animation: cwmPulse 1.8s ease-in-out infinite; }
-  @keyframes cwmPulse { 0%,100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent); } 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 10%, transparent); } }
+  html[data-theme="comic"] .cwm-pin-dot { transform-box: fill-box; transform-origin: center; animation: cwmPulse 1.8s ease-in-out infinite; }
+  @keyframes cwmPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.25); } }
 }
-/* on small screens hide the text label, keep dots */
 @media (max-width: 640px) {
   html[data-theme="comic"] .cwm-pin-label { display: none; }
 }

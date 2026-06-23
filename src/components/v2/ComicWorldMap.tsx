@@ -144,17 +144,28 @@ export default function ComicWorldMap() {
       <div className="cwm-stage" style={{ transform: `translate(${tx}px, ${ty}px) scale(${scale})` }}>
         <svg className="cwm-svg" viewBox={`0 0 ${VW} ${VH}`} preserveAspectRatio="xMidYMid meet" aria-label="World map">
           {paths.map((d, i) => <path key={i} d={d} className="cwm-land" />)}
+          {places.map((p, i) => {
+            const cx = sx(p.lng), cy = sy(p.lat);
+            const select = () => { if (!movedRef.current) setSelected(i); };
+            return (
+              <g
+                key={p.name}
+                className={`cwm-pin${selected === i ? ' is-active' : ''}`}
+                transform={`translate(${cx} ${cy}) scale(${1 / scale})`}
+                role="button"
+                tabIndex={0}
+                aria-label={`${p.name}, ${p.country}`}
+                onClick={(e) => { e.stopPropagation(); select(); }}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); select(); } }}
+              >
+                <circle className="cwm-pin-hit" cx="0" cy="0" r="16" />
+                <circle className="cwm-pin-dot" cx="0" cy="0" r="9" />
+                <text className="cwm-pin-label" x="14" y="5">{p.name}</text>
+              </g>
+            );
+          })}
         </svg>
         <div className="cwm-halftone" aria-hidden="true" />
-        {places.map((p, i) => {
-          const { x, y } = projectLatLng(p.lat, p.lng);
-          return (
-            <button key={p.name} className={`cwm-pin${selected === i ? ' is-active' : ''}`} style={{ left: `${x}%`, top: `${y}%`, transform: `translate(-50%, -50%) scale(${1 / scale})` }} aria-label={`${p.name}, ${p.country}`} onClick={(e) => { e.stopPropagation(); if (!movedRef.current) setSelected(i); }}>
-              <span className="cwm-pin-dot" aria-hidden="true" />
-              <span className="cwm-pin-label">{p.name}</span>
-            </button>
-          );
-        })}
       </div>
       <div className="cwm-zoom">
         <button className="cwm-zoom-btn" aria-label="Zoom in" onClick={(e) => { e.stopPropagation(); zoomBtn(1.4); }}>+</button>
