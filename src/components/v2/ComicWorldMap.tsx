@@ -21,6 +21,7 @@ function popupHtml(p: Place, wx: string): string {
 export default function ComicWorldMap() {
   const elRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
+  const fillRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     if (!elRef.current || mapRef.current) return;
@@ -29,13 +30,14 @@ export default function ComicWorldMap() {
       const L = mod.default;
       if (disposed || !elRef.current || mapRef.current) return;
       const dark = document.documentElement.classList.contains('dark');
+      const worldBounds = L.latLngBounds([[-58, -179], [80, 179]]);
       const map = L.map(elRef.current, {
         worldCopyJump: false,
-        minZoom: 1,
         maxZoom: 18,
-        maxBounds: [[-85, -180], [85, 180]],
+        maxBounds: worldBounds,
         maxBoundsViscosity: 1.0,
-      }).setView([22, -10], 2);
+        attributionControl: false,
+      });
 
       const base = dark ? 'dark_nolabels' : 'light_nolabels';
       L.tileLayer(`https://{s}.basemaps.cartocdn.com/${base}/{z}/{x}/{y}{r}.png`, {
@@ -43,7 +45,6 @@ export default function ComicWorldMap() {
         maxZoom: 19,
         noWrap: true,
         bounds: [[-85, -180], [85, 180]],
-        attribution: '&copy; OpenStreetMap &copy; CARTO',
       }).addTo(map);
 
       const icon = L.divIcon({ className: 'cwm-pin-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
@@ -62,10 +63,23 @@ export default function ComicWorldMap() {
         });
       });
 
+      // fill the frame exactly (cover): no empty border, no world duplicates
+      const fill = () => {
+        map.invalidateSize();
+        const z = map.getBoundsZoom(worldBounds, true);
+        map.setMinZoom(z);
+        map.setView(worldBounds.getCenter(), z, { animate: false });
+      };
       mapRef.current = map;
-      setTimeout(() => map.invalidateSize(), 60);
+      fillRef.current = fill;
+      setTimeout(fill, 60);
+      window.addEventListener('resize', fill);
     });
-    return () => { disposed = true; if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; } };
+    return () => {
+      disposed = true;
+      if (fillRef.current) window.removeEventListener('resize', fillRef.current);
+      if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; }
+    };
   }, []);
 
   return (

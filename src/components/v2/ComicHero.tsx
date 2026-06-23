@@ -17,7 +17,7 @@ export default function ComicHero() {
     <section className="comic-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="flex flex-col items-center text-center px-6 w-full" style={{ gap: 'clamp(0.5rem,1.8vh,1.1rem)' }}>
         <div className="panel" style={{ padding: '0.4rem' }}>
-          <div className="comic-hero-photo ch-photo-pop" style={{ position: 'relative', display: 'grid', placeItems: 'center', fontWeight: 800, overflow: 'hidden', background: 'var(--surface)', width: 'clamp(9rem,24vmin,14rem)' }}>
+          <div className="comic-hero-photo" style={{ position: 'relative', display: 'grid', placeItems: 'center', fontWeight: 800, overflow: 'hidden', background: 'var(--surface)', width: 'clamp(9rem,24vmin,14rem)' }}>
             AK
             <img src="/profile.jpg" alt="Ayush Madhav Kumar" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
           </div>
@@ -29,9 +29,9 @@ export default function ComicHero() {
         <p style={{ fontFamily: 'var(--font-body)', fontWeight: 800, letterSpacing: '0.02em' }}>&gt; NSF-backed research</p>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <a className="panel panel--burst" href={RESUME} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-display)', background: 'var(--accent-2)', color: '#141414', padding: '0.45rem 1.4rem', fontSize: '1.35rem', display: 'inline-block', boxShadow: '6px 6px 0 var(--panel-shadow)' }}>Résumé</a>
-          <a className="comic-link-btn" href={GH} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" style={{ minWidth: 36, minHeight: 36, padding: '0.5rem' }}>{githubSvg}</a>
-          <a className="comic-link-btn" href={LI} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" style={{ minWidth: 36, minHeight: 36, padding: '0.5rem' }}>{linkedinSvg}</a>
+          <a className="panel panel--burst" href={RESUME} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-display)', background: 'var(--accent-2)', color: '#141414', height: '2.7rem', padding: '0 1.4rem', fontSize: '1.35rem', display: 'inline-flex', alignItems: 'center', boxShadow: '6px 6px 0 var(--panel-shadow)' }}>Résumé</a>
+          <a className="comic-link-btn" href={GH} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" style={{ width: '2.7rem', height: '2.7rem', padding: 0 }}>{githubSvg}</a>
+          <a className="comic-link-btn" href={LI} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" style={{ width: '2.7rem', height: '2.7rem', padding: 0 }}>{linkedinSvg}</a>
         </div>
       </div>
     </section>
