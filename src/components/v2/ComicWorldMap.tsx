@@ -40,7 +40,7 @@ export default function ComicWorldMap() {
         attributionControl: false,
       });
 
-      const base = dark ? 'dark_nolabels' : 'light_nolabels';
+      const base = 'dark_nolabels';
       L.tileLayer(`https://{s}.basemaps.cartocdn.com/${base}/{z}/{x}/{y}{r}.png`, {
         subdomains: 'abcd',
         maxZoom: 19,
