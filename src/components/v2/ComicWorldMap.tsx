@@ -2,17 +2,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { places, type Place } from '../../data/places';
-import { gibsSnapshotUrl, weatherLabel, yesterdayUTC } from '../../lib/geo';
-
-const date = yesterdayUTC();
+import { weatherLabel } from '../../lib/geo';
 
 function popupHtml(p: Place, wx: string): string {
   return `<div class="cwm-pop">
-    <img class="cwm-pop-sat" src="${gibsSnapshotUrl(p.lat, p.lng, date)}" alt="NASA satellite view of ${p.name}" loading="lazy" onerror="this.style.display='none'" />
     <div class="cwm-pop-body">
       <h3 class="cwm-pop-title">${p.name}, ${p.country}</h3>
       <p class="cwm-pop-wx">${wx}</p>
-      <p class="cwm-pop-credit">Satellite: NASA GIBS, ${date}</p>
     </div>
   </div>`;
 }
