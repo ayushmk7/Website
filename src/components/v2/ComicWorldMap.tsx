@@ -34,6 +34,7 @@ export default function ComicWorldMap() {
       const map = L.map(elRef.current, {
         worldCopyJump: false,
         maxZoom: 18,
+        zoomSnap: 0,
         maxBounds: worldBounds,
         maxBoundsViscosity: 1.0,
         attributionControl: false,
@@ -67,8 +68,10 @@ export default function ComicWorldMap() {
       const fill = () => {
         map.invalidateSize();
         map.setMinZoom(0);
-        map.fitBounds(worldBounds, { padding: [0, 0], animate: false });
-        map.setMinZoom(map.getZoom());
+        // cover-fill: zoom so tiles fill both axes (no letterbox band)
+        const z = map.getBoundsZoom(worldBounds, true);
+        map.setView(worldBounds.getCenter(), z, { animate: false });
+        map.setMinZoom(z);
       };
       mapRef.current = map;
       fillRef.current = fill;
