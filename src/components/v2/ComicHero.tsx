@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const GH = 'https://github.com/ayushmk7';
 const LI = 'https://www.linkedin.com/in/ayushmk';
@@ -13,25 +13,15 @@ const linkedinSvg = (
 );
 
 export default function ComicHero() {
-  const [open, setOpen] = useState(false);
   return (
     <section className="comic-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="flex flex-col items-center text-center px-6 w-full" style={{ gap: 'clamp(0.5rem,1.8vh,1.1rem)' }}>
-        <button type="button" className="panel" onClick={() => setOpen(true)} aria-label="Expand photo" style={{ padding: '0.4rem', cursor: 'zoom-in', background: 'var(--surface)' }}>
+        <div className="panel" style={{ padding: '0.4rem' }}>
           <div className="comic-hero-photo" style={{ position: 'relative', display: 'grid', placeItems: 'center', fontWeight: 800, overflow: 'hidden', background: 'var(--surface)', width: 'clamp(9rem,24vmin,14rem)' }}>
             AK
             <img src="/profile.jpg" alt="Ayush Madhav Kumar" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
           </div>
-        </button>
-
-        {open && (
-          <div className="comic-lightbox" role="dialog" aria-modal="true" onClick={() => setOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 2000, display: 'grid', placeItems: 'center', padding: '1.5rem', background: 'rgba(0,0,0,0.72)', cursor: 'zoom-out' }}>
-            <div className="panel" onClick={(e) => e.stopPropagation()} style={{ position: 'relative', padding: '0.5rem', background: 'var(--surface)', maxWidth: 'min(90vw, 34rem)' }}>
-              <img src="/profile.jpg" alt="Ayush Madhav Kumar" style={{ display: 'block', width: '100%', height: 'auto', borderRadius: '2px' }} />
-              <button type="button" className="comic-link-btn" onClick={() => setOpen(false)} aria-label="Close" style={{ position: 'absolute', top: '-0.9rem', right: '-0.9rem', width: '2.4rem', height: '2.4rem', padding: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontSize: '1.3rem' }}>X</button>
-            </div>
-          </div>
-        )}
+        </div>
 
         <h1 style={{ fontFamily: 'var(--font-display)', WebkitTextStroke: '2px var(--outline)', paintOrder: 'stroke fill', color: 'var(--accent)', fontSize: 'clamp(2.6rem,10vw,7.5rem)', lineHeight: 1, width: '100%', maxWidth: '20ch', padding: '0 0.5rem', overflowWrap: 'break-word' }}>Ayush Madhav Kumar</h1>
 
