@@ -1,6 +1,8 @@
 // src/components/v2/ComicWorldMap.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css';
 import { places, type Place } from '../../data/places';
 import { weatherLabel } from '../../lib/geo';
 
@@ -27,6 +29,9 @@ export default function ComicWorldMap() {
     let ro: ResizeObserver | null = null;
     (async () => {
       const L = (await import('leaflet')).default;
+      await import('leaflet.markercluster');
+      const gh = await import('leaflet-gesture-handling');
+      L.Map.addInitHook('addHandler', 'gestureHandling', gh.GestureHandling);
       if (disposed || !elRef.current || mapRef.current) return;
 
       const worldBounds = L.latLngBounds([[-58, -179], [80, 179]]);
@@ -34,10 +39,12 @@ export default function ComicWorldMap() {
         worldCopyJump: false,
         maxZoom: 18,
         zoomSnap: 0,
+        // scroll scrolls the page; ctrl/cmd+scroll or two fingers zoom the map
+        gestureHandling: true,
         maxBounds: worldBounds,
         maxBoundsViscosity: 0.9,
         attributionControl: false,
-      });
+      } as any);
 
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
         subdomains: 'abcd',
@@ -47,8 +54,16 @@ export default function ComicWorldMap() {
       }).addTo(map);
 
       const icon = L.divIcon({ className: 'cwm-pin-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
+      const cluster = (L as any).markerClusterGroup({
+        maxClusterRadius: 40,
+        showCoverageOnHover: false,
+        spiderfyDistanceMultiplier: 1.4,
+        iconCreateFunction: (c: any) =>
+          L.divIcon({ html: `<span>${c.getChildCount()}</span>`, className: 'cwm-cluster', iconSize: [36, 36], iconAnchor: [18, 18] }),
+      });
+
       places.forEach((p) => {
-        const m = L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}` }).addTo(map);
+        const m = L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}` });
         m.bindPopup(popupHtml(p, 'Loading weather...'), { maxWidth: 240, minWidth: 168, className: 'cwm-pop-wrap', autoPanPadding: [24, 24] });
         m.on('popupopen', () => {
           fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=celsius`)
@@ -61,7 +76,9 @@ export default function ComicWorldMap() {
             })
             .catch(() => { if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, 'Weather unavailable')); });
         });
+        cluster.addLayer(m);
       });
+      map.addLayer(cluster);
 
       // cover-fill: zoom so tiles fill both axes, no empty band, no duplicates
       const fill = () => {
