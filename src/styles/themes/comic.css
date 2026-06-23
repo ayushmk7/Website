@@ -417,6 +417,31 @@ html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom a {
 html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom a:first-child { border-radius: 5px 5px 0 0; }
 html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom a:last-child { border-radius: 0 0 5px 5px; border-top: none; }
 html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom a:hover { background: var(--comic-blue); }
+
+/* comic expand/collapse button, top-right over the map */
+html[data-theme="comic"] .cwm-expand-btn {
+  position: absolute; top: 0.6rem; right: 0.6rem; z-index: 1200;
+  width: 2.4rem; height: 2.4rem; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--accent); color: #fff;
+  border: 2px solid #000; border-radius: 6px;
+  box-shadow: 3px 3px 0 #000; cursor: pointer;
+  font-family: var(--font-display);
+}
+html[data-theme="comic"] .cwm-expand-btn:hover { background: var(--comic-blue); }
+html[data-theme="comic"] .cwm-expand-x { font-size: 1.25rem; line-height: 1; }
+
+/* expanded fullscreen view */
+html[data-theme="comic"] .cwm-wrap--expanded {
+  position: fixed; inset: 0; z-index: 2000;
+  max-width: none; margin: 0; padding: clamp(1rem, 3vw, 2rem);
+  display: grid; place-items: center;
+  background: rgba(0, 0, 0, 0.72);
+}
+html[data-theme="comic"] .cwm-wrap--expanded .cwm-map {
+  width: min(94vw, 80rem); height: min(86vh, 52rem);
+  aspect-ratio: auto;
+}
 /* comic pin marker (divIcon) */
 html[data-theme="comic"] .cwm-pin-icon span {
   display: block; width: 16px; height: 16px; border-radius: 50%;

@@ -22,14 +22,15 @@ export default function ComicWorldMap() {
   const elRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const fillRef = useRef<(() => void) | null>(null);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     if (!elRef.current || mapRef.current) return;
     let disposed = false;
+    let ro: ResizeObserver | null = null;
     import('leaflet').then((mod) => {
       const L = mod.default;
       if (disposed || !elRef.current || mapRef.current) return;
-      const dark = document.documentElement.classList.contains('dark');
       const worldBounds = L.latLngBounds([[-58, -179], [80, 179]]);
       const map = L.map(elRef.current, {
         worldCopyJump: false,
@@ -64,11 +65,10 @@ export default function ComicWorldMap() {
         });
       });
 
-      // fill the frame exactly (cover): no empty border, no world duplicates
+      // cover-fill: zoom so tiles fill both axes, no empty band, no duplicates
       const fill = () => {
         map.invalidateSize();
         map.setMinZoom(0);
-        // cover-fill: zoom so tiles fill both axes (no letterbox band)
         const z = map.getBoundsZoom(worldBounds, true);
         map.setView(worldBounds.getCenter(), z, { animate: false });
         map.setMinZoom(z);
@@ -76,19 +76,44 @@ export default function ComicWorldMap() {
       mapRef.current = map;
       fillRef.current = fill;
       setTimeout(fill, 60);
+      setTimeout(fill, 300);
       window.addEventListener('resize', fill);
+      // re-fill whenever the container resizes (late layout, expand/collapse)
+      ro = new ResizeObserver(() => fill());
+      ro.observe(elRef.current);
     });
     return () => {
       disposed = true;
+      if (ro) ro.disconnect();
       if (fillRef.current) window.removeEventListener('resize', fillRef.current);
       if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; }
     };
   }, []);
 
+  // close expanded view on Escape
+  useEffect(() => {
+    if (!expanded) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setExpanded(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [expanded]);
+
+  const expandIcon = (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 3h6v6" /><path d="M9 21H3v-6" /><path d="M21 3l-7 7" /><path d="M3 21l7-7" /></svg>
+  );
+
   return (
-    <div className="cwm-wrap">
+    <div className={`cwm-wrap${expanded ? ' cwm-wrap--expanded' : ''}`}>
       <div className="cwm-map">
         <div ref={elRef} className="cwm-leaflet" />
+        <button
+          type="button"
+          className="cwm-expand-btn"
+          onClick={() => setExpanded((v) => !v)}
+          aria-label={expanded ? 'Close expanded map' : 'Expand map'}
+        >
+          {expanded ? <span className="cwm-expand-x">X</span> : expandIcon}
+        </button>
       </div>
     </div>
   );
