@@ -14,7 +14,7 @@ const links = [
 
 <header class="theme-nav-wrap fixed top-3 inset-x-0 z-40 flex justify-center px-4 pointer-events-none">
   <nav class="theme-nav pointer-events-auto flex items-center gap-1 px-2 py-1.5">
-    <a href="#" class="theme-nav-brand px-3 py-1.5 text-sm font-semibold" aria-label="Back to top">AMK</a>
+    <a href="#" class="theme-nav-brand px-4 py-1.5 mr-1 text-sm font-semibold" aria-label="Back to top">AMK</a>
     <span class="theme-nav-sep"></span>
     {links.map((l) => (
       <a href={l.href} class="theme-nav-link hidden sm:inline-block px-3 py-1.5 text-sm transition-colors">{l.label}</a>
@@ -49,6 +49,7 @@ const links = [
     color: #141414;
     border: 2px solid #000;
     border-radius: 9999px;
+    letter-spacing: 0.06em;
     text-decoration: none;
   }
   .theme-nav-link {
