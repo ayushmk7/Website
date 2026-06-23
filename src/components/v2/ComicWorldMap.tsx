@@ -31,10 +31,16 @@ export default function ComicWorldMap() {
         worldCopyJump: false,
         maxZoom: 18,
         zoomSnap: 0,
+        scrollWheelZoom: false, // don't hijack page scroll; activated on click below
         maxBounds: worldBounds,
-        maxBoundsViscosity: 1.0,
+        maxBoundsViscosity: 0.9,
         attributionControl: false,
       });
+
+      // wheel zoom only after the user clicks into the map; released when the
+      // pointer leaves. stops accidental zoom while scrolling the page past it.
+      map.on('click', () => map.scrollWheelZoom.enable());
+      map.getContainer().addEventListener('mouseleave', () => map.scrollWheelZoom.disable());
 
       const base = 'dark_nolabels';
       L.tileLayer(`https://{s}.basemaps.cartocdn.com/${base}/{z}/{x}/{y}{r}.png`, {
@@ -47,13 +53,13 @@ export default function ComicWorldMap() {
       const icon = L.divIcon({ className: 'cwm-pin-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
       places.forEach((p) => {
         const m = L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}` }).addTo(map);
-        m.bindPopup(popupHtml(p, 'Loading live weather...'), { maxWidth: 280, minWidth: 220, className: 'cwm-pop-wrap', autoPanPadding: [24, 24] });
+        m.bindPopup(popupHtml(p, 'Loading live weather...'), { maxWidth: 250, minWidth: 170, className: 'cwm-pop-wrap', autoPanPadding: [24, 24] });
         m.on('popupopen', () => {
           fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=celsius`)
             .then((r) => { if (!r.ok) throw new Error('bad'); return r.json(); })
             .then((d) => {
               const c = d.current;
-              const wx = `Right now: ${Math.round(c.temperature_2m)}C, ${weatherLabel(c.weather_code)}, wind ${Math.round(c.wind_speed_10m)} km/h`;
+              const wx = `Right now: ${Math.round(c.temperature_2m)}°C, ${weatherLabel(c.weather_code)}, wind ${Math.round(c.wind_speed_10m)} km/h`;
               if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, wx));
             })
             .catch(() => { if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, 'Weather unavailable right now.')); });
@@ -73,8 +79,9 @@ export default function ComicWorldMap() {
       setTimeout(fill, 60);
       setTimeout(fill, 300);
       window.addEventListener('resize', fill);
-      // re-fill whenever the container resizes (late layout, expand/collapse)
-      ro = new ResizeObserver(() => fill());
+      // one-shot: settle the initial layout (kills uncovered edges), then stop
+      // so it never fights the user's own zoom/pan afterward.
+      ro = new ResizeObserver(() => { fill(); if (ro) { ro.disconnect(); ro = null; } });
       ro.observe(elRef.current);
     });
     return () => {
