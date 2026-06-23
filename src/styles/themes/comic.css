@@ -414,19 +414,6 @@ html[data-theme="comic"] .cwm-pin-icon span {
   html[data-theme="comic"] .cwm-pin-icon span { animation: cwmPulse 1.8s ease-in-out infinite; }
   @keyframes cwmPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
 }
-/* expand to fullscreen */
-html[data-theme="comic"] .cwm-wrap.is-expanded {
-  position: fixed; inset: 0; z-index: 1000; max-width: none; margin: 0;
-  background: var(--bg); display: flex; flex-direction: column; padding: 0.75rem;
-}
-html[data-theme="comic"] .cwm-wrap.is-expanded .cwm-map { flex: 1; height: auto; }
-html[data-theme="comic"] .cwm-expand {
-  position: absolute; top: 0.5rem; right: 0.5rem; z-index: 500;
-  width: 2.2rem; height: 2.2rem; font-family: var(--font-display); font-size: 1.1rem; line-height: 1;
-  background: var(--surface); color: var(--text); border: var(--border);
-  box-shadow: 2px 2px 0 var(--panel-shadow); border-radius: 4px; cursor: pointer;
-}
-html[data-theme="comic"] .cwm-expand:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
 /* on-map comic popups (name + blurb + weather + NASA image) */
 html[data-theme="comic"] .cwm-pop-wrap .leaflet-popup-content-wrapper {
@@ -437,14 +424,13 @@ html[data-theme="comic"] .cwm-pop-wrap .leaflet-popup-content-wrapper {
 html[data-theme="comic"] .cwm-pop-wrap .leaflet-popup-content { margin: 0; width: auto !important; }
 html[data-theme="comic"] .cwm-pop-wrap .leaflet-popup-tip { background: var(--surface); border: var(--border); }
 html[data-theme="comic"] .cwm-pop-wrap a.leaflet-popup-close-button { color: var(--text); font-size: 1.3rem; padding: 4px 7px 0 0; }
-html[data-theme="comic"] .cwm-pop { display: flex; flex-direction: column; }
-html[data-theme="comic"] .cwm-pop-sat { width: 100%; height: 120px; object-fit: cover; display: block; border-bottom: var(--border); background: var(--bg-2); }
-html[data-theme="comic"] .cwm-pop-body { padding: 0.6rem 0.85rem; }
-html[data-theme="comic"] .cwm-pop-title { font-family: var(--font-display); color: var(--accent); font-size: 1.35rem; line-height: 1; margin: 0 0 0.25rem; }
-html[data-theme="comic"] .cwm-pop-blurb { font-weight: 700; font-size: 0.85rem; margin: 0 0 0.3rem; }
-html[data-theme="comic"] .cwm-pop-wx { font-weight: 700; font-size: 0.9rem; margin: 0 0 0.3rem; }
-html[data-theme="comic"] .cwm-pop-credit { font-size: 0.68rem; color: var(--text-dim); margin: 0; }
+html[data-theme="comic"] .cwm-pop { display: flex; flex-direction: column; width: 240px; max-width: 100%; }
+html[data-theme="comic"] .cwm-pop-sat { width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover; display: block; border-bottom: var(--border); background: var(--bg-2); }
+html[data-theme="comic"] .cwm-pop-body { padding: 0.55rem 0.8rem 0.65rem; }
+html[data-theme="comic"] .cwm-pop-title { font-family: var(--font-display); color: var(--accent); font-size: 1.25rem; line-height: 1.05; margin: 0 0 0.2rem; }
+html[data-theme="comic"] .cwm-pop-blurb { font-weight: 700; font-size: 0.8rem; line-height: 1.35; margin: 0 0 0.3rem; }
+html[data-theme="comic"] .cwm-pop-wx { font-weight: 700; font-size: 0.85rem; line-height: 1.35; margin: 0 0 0.3rem; }
+html[data-theme="comic"] .cwm-pop-credit { font-size: 0.65rem; color: var(--text-dim); margin: 0; }
 @media (max-width: 480px) {
-  html[data-theme="comic"] .cwm-pop-wrap .leaflet-popup-content-wrapper { max-width: 78vw; }
-  html[data-theme="comic"] .cwm-pop-sat { height: 96px; }
+  html[data-theme="comic"] .cwm-pop { width: 70vw; }
 }

@@ -19,7 +19,6 @@ function popupHtml(p: Place, wx: string): string {
 }
 
 export default function ComicWorldMap() {
-  const [expanded, setExpanded] = useState(false);
   const elRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
 
@@ -64,22 +63,15 @@ export default function ComicWorldMap() {
       });
 
       mapRef.current = map;
+      setTimeout(() => map.invalidateSize(), 60);
     });
     return () => { disposed = true; if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; } };
   }, []);
 
-  useEffect(() => {
-    const m = mapRef.current;
-    if (m) setTimeout(() => m.invalidateSize(), 60);
-  }, [expanded]);
-
   return (
-    <div className={`cwm-wrap${expanded ? ' is-expanded' : ''}`}>
+    <div className="cwm-wrap">
       <div className="cwm-map">
         <div ref={elRef} className="cwm-leaflet" />
-        <button className="cwm-expand" aria-label={expanded ? 'Shrink map' : 'Expand map'} onClick={() => setExpanded(!expanded)}>
-          {expanded ? '><' : '<>'}
-        </button>
       </div>
     </div>
   );
