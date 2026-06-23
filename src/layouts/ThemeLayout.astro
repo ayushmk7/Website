@@ -3,7 +3,6 @@
 import '../styles/global.css';
 import './../styles/themes/_base.css';
 import Analytics from '@vercel/analytics/astro';
-import { ThemeDock } from '../components/v2/ThemeDock';
 import ThemeNav from '../components/v2/ThemeNav.astro';
 import { themeByKey } from '../lib/themes';
 
@@ -49,6 +48,5 @@ const def = themeByKey(themeKey);
   <body class="bg-[var(--bg)] text-[var(--text)] min-h-screen antialiased" style="font-family: var(--font-body); font-weight: var(--w-body);">
     <ThemeNav />
     <slot />
-    <ThemeDock client:load current={themeKey} />
   </body>
 </html>

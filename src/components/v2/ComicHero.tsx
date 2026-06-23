@@ -23,7 +23,7 @@ export default function ComicHero() {
           </div>
         </div>
 
-        <h1 style={{ fontFamily: 'var(--font-display)', WebkitTextStroke: '2px var(--outline)', paintOrder: 'stroke fill', color: 'var(--accent)', fontSize: 'clamp(3rem,11vw,7.5rem)', lineHeight: 1 }}>Ayush Madhav Kumar!</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', WebkitTextStroke: '2px var(--outline)', paintOrder: 'stroke fill', color: 'var(--accent)', fontSize: 'clamp(3rem,11vw,7.5rem)', lineHeight: 1 }}>Ayush Madhav Kumar</h1>
 
         <div className="bubble" style={{ padding: '0.45rem 1.2rem' }}><p style={{ fontWeight: 800, fontSize: 'clamp(0.85rem,2.2vw,1.1rem)' }}>{role}</p></div>
         <p style={{ fontFamily: 'var(--font-body)', fontWeight: 800, letterSpacing: '0.02em' }}>&gt; NSF-backed research</p>
