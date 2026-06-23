@@ -1,7 +1,6 @@
 // src/components/v2/ComicWorldMap.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
 import { places } from '../../data/places';
 import { gibsSnapshotUrl, weatherLabel, yesterdayUTC } from '../../lib/geo';
 
@@ -14,29 +13,32 @@ export default function ComicWorldMap() {
   const [expanded, setExpanded] = useState(false);
 
   const elRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<L.Map | null>(null);
+  const mapRef = useRef<any>(null);
 
   const place = selected === null ? null : places[selected];
 
-  // init the real map once
+  // init the real map once (Leaflet loaded dynamically so it never runs during static build)
   useEffect(() => {
     if (!elRef.current || mapRef.current) return;
-    const dark = document.documentElement.classList.contains('dark');
-    const map = L.map(elRef.current, { worldCopyJump: true, minZoom: 1, maxZoom: 18 }).setView([25, -30], 2);
-    const tiles = dark
-      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-      : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-    L.tileLayer(tiles, { subdomains: 'abcd', maxZoom: 19, attribution: '&copy; OpenStreetMap &copy; CARTO' }).addTo(map);
-
-    const icon = L.divIcon({ className: 'cwm-pin-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
-    places.forEach((p, i) => {
-      L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}`, keyboard: true })
-        .addTo(map)
-        .on('click', () => setSelected(i));
+    let disposed = false;
+    import('leaflet').then((mod) => {
+      const L = mod.default;
+      if (disposed || !elRef.current || mapRef.current) return;
+      const dark = document.documentElement.classList.contains('dark');
+      const map = L.map(elRef.current, { worldCopyJump: true, minZoom: 1, maxZoom: 18 }).setView([25, -30], 2);
+      const tiles = dark
+        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+      L.tileLayer(tiles, { subdomains: 'abcd', maxZoom: 19, attribution: '&copy; OpenStreetMap &copy; CARTO' }).addTo(map);
+      const icon = L.divIcon({ className: 'cwm-pin-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
+      places.forEach((p, i) => {
+        L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}`, keyboard: true })
+          .addTo(map)
+          .on('click', () => setSelected(i));
+      });
+      mapRef.current = map;
     });
-
-    mapRef.current = map;
-    return () => { map.remove(); mapRef.current = null; };
+    return () => { disposed = true; if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; } };
   }, []);
 
   // resize the map when toggling fullscreen
