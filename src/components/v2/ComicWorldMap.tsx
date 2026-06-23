@@ -1,23 +1,28 @@
 // src/components/v2/ComicWorldMap.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
-import { places } from '../../data/places';
+import { places, type Place } from '../../data/places';
 import { gibsSnapshotUrl, weatherLabel, yesterdayUTC } from '../../lib/geo';
 
-interface Weather { temp: number; label: string; wind: number }
+const date = yesterdayUTC();
+
+function popupHtml(p: Place, wx: string): string {
+  return `<div class="cwm-pop">
+    <img class="cwm-pop-sat" src="${gibsSnapshotUrl(p.lat, p.lng, date)}" alt="NASA satellite view of ${p.name}" loading="lazy" onerror="this.style.display='none'" />
+    <div class="cwm-pop-body">
+      <h3 class="cwm-pop-title">${p.name}, ${p.country}</h3>
+      ${p.blurb ? `<p class="cwm-pop-blurb">${p.blurb}</p>` : ''}
+      <p class="cwm-pop-wx">${wx}</p>
+      <p class="cwm-pop-credit">Satellite: NASA GIBS, ${date}</p>
+    </div>
+  </div>`;
+}
 
 export default function ComicWorldMap() {
-  const [selected, setSelected] = useState<number | null>(null);
-  const [weather, setWeather] = useState<Weather | null>(null);
-  const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [expanded, setExpanded] = useState(false);
-
   const elRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
 
-  const place = selected === null ? null : places[selected];
-
-  // init the real map once (Leaflet loaded dynamically so it never runs during static build)
   useEffect(() => {
     if (!elRef.current || mapRef.current) return;
     let disposed = false;
@@ -25,41 +30,48 @@ export default function ComicWorldMap() {
       const L = mod.default;
       if (disposed || !elRef.current || mapRef.current) return;
       const dark = document.documentElement.classList.contains('dark');
-      const map = L.map(elRef.current, { worldCopyJump: true, minZoom: 1, maxZoom: 18 }).setView([25, -30], 2);
-      const tiles = dark
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-      L.tileLayer(tiles, { subdomains: 'abcd', maxZoom: 19, attribution: '&copy; OpenStreetMap &copy; CARTO' }).addTo(map);
+      const map = L.map(elRef.current, {
+        worldCopyJump: false,
+        minZoom: 1,
+        maxZoom: 18,
+        maxBounds: [[-85, -180], [85, 180]],
+        maxBoundsViscosity: 1.0,
+      }).setView([22, -10], 2);
+
+      const base = dark ? 'dark_nolabels' : 'light_nolabels';
+      L.tileLayer(`https://{s}.basemaps.cartocdn.com/${base}/{z}/{x}/{y}{r}.png`, {
+        subdomains: 'abcd',
+        maxZoom: 19,
+        noWrap: true,
+        bounds: [[-85, -180], [85, 180]],
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+      }).addTo(map);
+
       const icon = L.divIcon({ className: 'cwm-pin-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
-      places.forEach((p, i) => {
-        L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}`, keyboard: true })
-          .addTo(map)
-          .on('click', () => setSelected(i));
+      places.forEach((p) => {
+        const m = L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}` }).addTo(map);
+        m.bindPopup(popupHtml(p, 'Loading live weather...'), { maxWidth: 280, minWidth: 220, className: 'cwm-pop-wrap', autoPanPadding: [24, 24] });
+        m.on('popupopen', () => {
+          fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=celsius`)
+            .then((r) => { if (!r.ok) throw new Error('bad'); return r.json(); })
+            .then((d) => {
+              const c = d.current;
+              const wx = `Right now: ${Math.round(c.temperature_2m)}C, ${weatherLabel(c.weather_code)}, wind ${Math.round(c.wind_speed_10m)} km/h`;
+              if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, wx));
+            })
+            .catch(() => { if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, 'Weather unavailable right now.')); });
+        });
       });
+
       mapRef.current = map;
     });
     return () => { disposed = true; if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; } };
   }, []);
 
-  // resize the map when toggling fullscreen
   useEffect(() => {
     const m = mapRef.current;
     if (m) setTimeout(() => m.invalidateSize(), 60);
   }, [expanded]);
-
-  // live weather for the selected place
-  useEffect(() => {
-    if (!place) return;
-    let cancelled = false;
-    setStatus('loading'); setWeather(null);
-    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.lat}&longitude=${place.lng}&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=celsius`)
-      .then((r) => { if (!r.ok) throw new Error('bad'); return r.json(); })
-      .then((d) => { if (cancelled) return; const c = d.current; setWeather({ temp: Math.round(c.temperature_2m), label: weatherLabel(c.weather_code), wind: Math.round(c.wind_speed_10m) }); setStatus('idle'); })
-      .catch(() => { if (!cancelled) setStatus('error'); });
-    return () => { cancelled = true; };
-  }, [selected]);
-
-  const date = yesterdayUTC();
 
   return (
     <div className={`cwm-wrap${expanded ? ' is-expanded' : ''}`}>
@@ -69,21 +81,6 @@ export default function ComicWorldMap() {
           {expanded ? '><' : '<>'}
         </button>
       </div>
-
-      {place && (
-        <div className="cwm-panel" role="status">
-          <button className="cwm-close" aria-label="Close" onClick={() => setSelected(null)}>x</button>
-          <img className="cwm-sat" src={gibsSnapshotUrl(place.lat, place.lng, date)} alt={`NASA satellite view of ${place.name}`} loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
-          <div className="cwm-info">
-            <h3 className="cwm-place">{place.name}, {place.country}</h3>
-            {place.blurb && <p className="cwm-blurb">{place.blurb}</p>}
-            {status === 'loading' && <p className="cwm-wx">Loading live weather...</p>}
-            {status === 'error' && <p className="cwm-wx">Weather unavailable right now.</p>}
-            {weather && <p className="cwm-wx">Right now: {weather.temp}C, {weather.label}, wind {weather.wind} km/h</p>}
-            <p className="cwm-credit">Satellite: NASA GIBS (MODIS Terra), {date}</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
