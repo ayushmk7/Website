@@ -66,9 +66,9 @@ export default function ComicWorldMap() {
       // fill the frame exactly (cover): no empty border, no world duplicates
       const fill = () => {
         map.invalidateSize();
-        const z = map.getBoundsZoom(worldBounds, true);
-        map.setMinZoom(z);
-        map.setView(worldBounds.getCenter(), z, { animate: false });
+        map.setMinZoom(0);
+        map.fitBounds(worldBounds, { padding: [2, 2], animate: false });
+        map.setMinZoom(map.getZoom());
       };
       mapRef.current = map;
       fillRef.current = fill;
