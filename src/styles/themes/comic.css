@@ -396,15 +396,15 @@ html[data-theme="comic"] .cwm-map {
   position: relative;
   border: var(--border);
   border-radius: var(--radius);
-  background: var(--surface);
   box-shadow: 6px 6px 0 var(--panel-shadow);
   overflow: hidden;
+  background: var(--bg);
   /* match the rendered world's mercator aspect so there is no empty border */
   aspect-ratio: 1.7 / 1;
 }
 /* the real Leaflet map fills the framed box */
-html[data-theme="comic"] .cwm-leaflet { position: absolute; inset: 0; width: 100%; height: 100%; background: var(--surface); }
-html[data-theme="comic"] .cwm-leaflet .leaflet-container { background: var(--surface); }
+html[data-theme="comic"] .cwm-leaflet { position: absolute; inset: 0; width: 100%; height: 100%; background: var(--bg); }
+html[data-theme="comic"] .cwm-leaflet .leaflet-container { background: var(--bg); }
 html[data-theme="comic"] .cwm-leaflet .leaflet-control-attribution { display: none; }
 /* red comic +/- zoom control over the map */
 html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom { border: none; box-shadow: 3px 3px 0 var(--panel-shadow); }
