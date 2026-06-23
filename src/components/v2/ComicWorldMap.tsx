@@ -67,7 +67,7 @@ export default function ComicWorldMap() {
       const fill = () => {
         map.invalidateSize();
         map.setMinZoom(0);
-        map.fitBounds(worldBounds, { padding: [2, 2], animate: false });
+        map.fitBounds(worldBounds, { padding: [0, 0], animate: false });
         map.setMinZoom(map.getZoom());
       };
       mapRef.current = map;
