@@ -133,8 +133,9 @@ function Banner() {
       <p style={{ fontWeight: 700, marginBottom: '1.5rem', color: 'var(--burst-text)' }}>I am open to roles and collaborations. Let us make it happen.</p>
       <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', justifyContent: 'center' }}>
         <a className="comic-link-btn" href={`mailto:${EMAIL}`} style={{ height: '2.7rem' }}><Mail className="w-4 h-4" />Email me</a>
-        <a className="comic-link-btn" href={RESUME} target="_blank" rel="noopener noreferrer" style={{ height: '2.7rem' }}>Résumé</a>
+        <a className="comic-link-btn" href={GH} target="_blank" rel="noopener noreferrer" style={{ height: '2.7rem' }}><Github className="w-4 h-4" />GitHub</a>
         <a className="comic-link-btn" href={LI} target="_blank" rel="noopener noreferrer" style={{ height: '2.7rem' }}><Linkedin className="w-4 h-4" />LinkedIn</a>
+        <a className="comic-link-btn" href={RESUME} target="_blank" rel="noopener noreferrer" style={{ height: '2.7rem' }}>Résumé</a>
       </div>
     </div>
   );
