@@ -441,8 +441,11 @@ html[data-theme="comic"] .cwm-wrap--expanded {
 }
 @keyframes cwmFade { from { opacity: 0; } to { opacity: 1; } }
 html[data-theme="comic"] .cwm-wrap--expanded .cwm-map {
-  width: min(94vw, 80rem); height: min(86vh, 52rem);
-  aspect-ratio: auto;
+  /* keep the inline 1.7:1 aspect so nothing gets cropped, just bigger.
+     width capped by viewport width AND by height*1.7 so it always fits. */
+  width: min(94vw, calc(86vh * 1.7), 80rem);
+  height: auto;
+  aspect-ratio: 1.7 / 1;
 }
 /* comic pin marker (divIcon): static dot, grows on hover (no constant motion) */
 html[data-theme="comic"] .cwm-pin-icon span {
