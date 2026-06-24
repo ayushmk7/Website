@@ -29,7 +29,7 @@ export default function ComicWorldMap() {
       const L = (await import('leaflet')).default;
       if (disposed || !elRef.current || mapRef.current) return;
 
-      const worldBounds = L.latLngBounds([[-58, -179], [80, 179]]);
+      const worldBounds = L.latLngBounds([[-58, -179], [84, 179]]);
       const map = L.map(elRef.current, {
         worldCopyJump: false,
         maxZoom: 18,
