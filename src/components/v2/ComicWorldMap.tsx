@@ -65,11 +65,12 @@ export default function ComicWorldMap() {
         });
       });
 
-      // cover-fill: zoom so tiles fill both axes, no empty band, no duplicates
+      // contain-fit: whole world visible (Greenland included), no crop. Frame
+      // aspect (1.695:1) matches the world's mercator aspect, so no letterbox.
       const fill = () => {
         map.invalidateSize({ animate: false, pan: false });
         map.setMinZoom(0);
-        const z = map.getBoundsZoom(worldBounds, true);
+        const z = map.getBoundsZoom(worldBounds, false);
         map.setView(worldBounds.getCenter(), z, { animate: false });
         map.setMinZoom(z);
       };
