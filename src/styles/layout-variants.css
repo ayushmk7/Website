@@ -65,6 +65,26 @@ html[data-theme="comic"] .cwm-pop-sub { color: color-mix(in srgb, var(--ink) 65%
 .cscroll::-webkit-scrollbar-thumb { background: var(--accent); border: 3px solid var(--outline); border-radius: 999px; }
 .cscroll::-webkit-scrollbar-thumb:hover { background: var(--comic-blue); }
 
+/* ---- Map popup: banner (name left | weather right). Prefixed to beat the
+   old comic.css .cwm-pop rules. Right padding leaves room for the close X. ---- */
+html[data-theme="comic"] .cwm-pop { display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 0.9rem; padding: 0.6rem 1.7rem 0.6rem 0.9rem; }
+html[data-theme="comic"] .cwm-pop-head { display: block; }
+html[data-theme="comic"] .cwm-pop-title { font-family: var(--font-display); color: var(--accent); font-size: 1.15rem; line-height: 1; margin: 0; white-space: nowrap; }
+html[data-theme="comic"] .cwm-pop-country { font-weight: 800; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--ink) 60%, var(--paper)); margin: 0.12rem 0 0; }
+html[data-theme="comic"] .cwm-pop-wx { display: flex; align-items: baseline; gap: 0.5rem; }
+html[data-theme="comic"] .cwm-pop-temp { font-family: var(--font-display); line-height: 1; font-size: 1.6rem; }
+html[data-theme="comic"] .cwm-pop-meta { display: flex; flex-direction: column; text-align: left; }
+html[data-theme="comic"] .cwm-pop-cond { font-weight: 800; font-size: 0.8rem; white-space: nowrap; }
+html[data-theme="comic"] .cwm-pop-wind { font-weight: 700; font-size: 0.7rem; opacity: 0.78; white-space: nowrap; }
+html[data-theme="comic"] .cwm-pop-status { font-weight: 800; font-size: 0.85rem; }
+html[data-theme="comic"] .cwm-pop-wrap a.leaflet-popup-close-button { top: 3px; right: 5px; padding: 0; font-size: 1.1rem; line-height: 1; }
+
+/* ocean-colored margin around the world so edge pins aren't clipped at the frame */
+:where(html) { --map-bg: #d3dadd; }
+html.dark { --map-bg: #12161d; }
+html[data-theme="comic"] .cwm-leaflet { background: var(--map-bg); }
+html[data-theme="comic"] .cwm-leaflet .leaflet-container { background: var(--map-bg); }
+
 /* ---- Hackathons: newspaper clippings ---- */
 .hack-news { column-width: 18rem; column-gap: 1.25rem; }
 .news { --paper: #fbf7ea; --ink: #1a1a1a; break-inside: avoid; margin-bottom: 1.25rem; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--panel-shadow); padding: 1rem 1.1rem; }

@@ -4,14 +4,18 @@ import 'leaflet/dist/leaflet.css';
 import { places, type Place } from '../../data/places';
 import { weatherLabel } from '../../lib/geo';
 
-function popupHtml(p: Place, main: string, sub?: string): string {
+type WxParts = { temp?: string; cond?: string; wind?: string; status?: string };
+function popupHtml(p: Place, parts: WxParts): string {
+  const wx = parts.temp != null
+    ? `<span class="cwm-pop-temp">${parts.temp}</span>
+       <span class="cwm-pop-meta"><span class="cwm-pop-cond">${parts.cond}</span><span class="cwm-pop-wind">${parts.wind}</span></span>`
+    : `<span class="cwm-pop-status">${parts.status}</span>`;
   return `<div class="cwm-pop">
-    <div class="cwm-pop-body">
+    <div class="cwm-pop-head">
       <h3 class="cwm-pop-title">${p.name}</h3>
       <p class="cwm-pop-country">${p.country}</p>
-      <p class="cwm-pop-wx">${main}</p>
-      ${sub ? `<p class="cwm-pop-sub">${sub}</p>` : ''}
     </div>
+    <div class="cwm-pop-wx">${wx}</div>
   </div>`;
 }
 
@@ -62,17 +66,20 @@ export default function ComicWorldMap() {
       const icon = L.divIcon({ className: 'cwm-pin-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
       places.forEach((p) => {
         const m = L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}` }).addTo(map);
-        m.bindPopup(popupHtml(p, 'Loading weather...'), { maxWidth: 240, minWidth: 168, className: 'cwm-pop-wrap', autoPanPadding: [24, 24] });
+        m.bindPopup(popupHtml(p, { status: 'Loading weather…' }), { maxWidth: 360, minWidth: 200, className: 'cwm-pop-wrap', autoPanPadding: [24, 24] });
         m.on('popupopen', () => {
           fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=celsius`)
             .then((r) => { if (!r.ok) throw new Error('bad'); return r.json(); })
             .then((d) => {
               const c = d.current;
-              const main = `${Math.round(c.temperature_2m)}°C · ${weatherLabel(c.weather_code)}`;
-              const sub = `Wind ${Math.round(c.wind_speed_10m)} km/h`;
-              if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, main, sub));
+              const parts = {
+                temp: `${Math.round(c.temperature_2m)}°C`,
+                cond: weatherLabel(c.weather_code),
+                wind: `Wind ${Math.round(c.wind_speed_10m)} km/h`,
+              };
+              if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, parts));
             })
-            .catch(() => { if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, 'Weather unavailable')); });
+            .catch(() => { if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, { status: 'Weather unavailable' })); });
         });
       });
 
@@ -81,7 +88,9 @@ export default function ComicWorldMap() {
       const fill = () => {
         map.invalidateSize({ animate: false, pan: false });
         map.setMinZoom(0);
-        const z = map.getBoundsZoom(worldBounds, false);
+        // slight zoom-out so the world sits inside the frame with a thin
+        // ocean-colored margin — keeps edge cities from being clipped.
+        const z = map.getBoundsZoom(worldBounds, false) - 0.12;
         map.setView(worldBounds.getCenter(), z, { animate: false });
         map.setMinZoom(z);
       };
