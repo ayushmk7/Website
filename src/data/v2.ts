@@ -182,31 +182,4 @@ export const experience: Experience[] = [
       "Wrote Python tooling scripts to automate backend processes and reduce manual overhead.",
     ],
   },
-  {
-    "company": "NASA CLAWS",
-    "role": "Artificial Intelligence Engineer",
-    "period": "September 2025 – Present",
-    "location": "Ann Arbor, Michigan",
-    "kind": "Work",
-    "url": "https://claws.engin.umich.edu/",
-    "bullets": [
-      "Engineering, a dual inference AI assistant for NASA SUITS and RASC AL challenges, integrating lightweight transformers (TinyBERT) on Jetson Orin Nano via ONNX Runtime for sub 350 ms inference, including troubleshooting deployments",
-      "Designing an edge cloud architecture that routes inference based on query complexity, latency, and network state",
-      "Implementing DSPy based orchestration and Pydantic validated NLP pipelines within Unity Inference Engine",
-      "Integrating WebSockets and Whisper based preprocessing to synchronize telemetry in high noise environments"
-    ]
-  },
-  {
-    "company": "Patch",
-    "role": "2025 Cohort Founder",
-    "period": "June 2025 – August 2025",
-    "location": "Dublin, Ireland",
-    "kind": "Founder",
-    "url": "https://www.joinpatch.org/",
-    "bullets": [
-      "Built a startup in 7 weeks as part of the Patch Summer Accelerator, leading end to end technical full stack development",
-      "Offsited at Stripe Dublin and Developed the mobile frontend using React Native, optimizing UI responsiveness and UX",
-      "Implemented a scalable backend with Django and PostgreSQL to manage health data, authentication, and notifications"
-    ]
-  },
 ];
