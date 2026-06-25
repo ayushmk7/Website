@@ -3,12 +3,14 @@
 import ThemeLayout from '../layouts/ThemeLayout.astro';
 import '../styles/themes/comic.css';
 import '../styles/layout-variants.css';
+import '../styles/accent-lab.css';
 import ComicHero from '../components/v2/ComicHero';
 import ComicWorldMap from '../components/v2/ComicWorldMap';
 import ExperienceLayouts from '../components/v2/ExperienceLayouts.astro';
 import ProjectLayouts from '../components/v2/ProjectLayouts.astro';
 import HackathonLayouts from '../components/v2/HackathonLayouts.astro';
 import StackLayouts from '../components/v2/StackLayouts.astro';
+import AccentLab from '../components/v2/AccentLab.astro';
 ---
 <ThemeLayout themeKey="comic" title="Ayush Madhav Kumar. Comic Pop">
   <ComicHero client:load />
@@ -116,4 +118,6 @@ import StackLayouts from '../components/v2/StackLayouts.astro';
       });
     })();
   </script>
+
+  <AccentLab />
 </ThemeLayout>

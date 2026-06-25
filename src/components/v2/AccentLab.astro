@@ -1,0 +1,43 @@
+---
+// DEV-ONLY: preview the red-semicircle comic accents. Sets html[data-accent].
+// Once you pick: set data-accent on <html> in ThemeLayout (or hardcode the
+// chosen rules), delete this component + its import, and trim accent-lab.css.
+const opts = [
+  ['off', 'None'],
+  ['hero-sunburst', 'Hero — sunburst (rays + disc)'],
+  ['hero-disc', 'Hero — solid half-disc'],
+  ['hero-halftone', 'Hero — halftone semicircle'],
+  ['hero-rays', 'Hero — speed-line rays'],
+  ['headings', 'Behind each section heading'],
+  ['contact', 'Behind the Contact CTA'],
+];
+---
+<button class="alab-toggle" type="button" aria-expanded="false" aria-controls="alab-panel">◓ Accent Lab</button>
+<div class="alab" id="alab-panel" hidden>
+  <h4>Red Semicircle</h4>
+  <p class="alab-sub">Preview comic accents. Pick one, then I'll bake it.</p>
+  {opts.map(([val, label]) => (
+    <label><input type="radio" name="accent" value={val} checked={val === 'off'} />{label}</label>
+  ))}
+</div>
+
+<script is:inline>
+  (function () {
+    var DEF = 'off';
+    function load() { try { return localStorage.getItem('accent') || DEF; } catch (e) { return DEF; } }
+    function apply(v) { document.documentElement.setAttribute('data-accent', v); }
+    var cur = load();
+    apply(cur);
+    var r = document.querySelector('.alab input[value="' + cur + '"]');
+    if (r) r.checked = true;
+    document.querySelectorAll('.alab input[name="accent"]').forEach(function (inp) {
+      inp.addEventListener('change', function () {
+        apply(inp.value);
+        try { localStorage.setItem('accent', inp.value); } catch (e) {}
+      });
+    });
+    var t = document.querySelector('.alab-toggle');
+    var panel = document.getElementById('alab-panel');
+    if (t && panel) t.addEventListener('click', function () { panel.hidden = !panel.hidden; t.setAttribute('aria-expanded', String(!panel.hidden)); });
+  })();
+</script>
