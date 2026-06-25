@@ -222,6 +222,23 @@ html.dark .news { --paper: #14181f; --ink: #ece7d8; }
 .stack-rail:hover .rail-track { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .stack-rail { overflow-x: auto; -webkit-mask-image: none; mask-image: none; } .stack-rail .rail-track { animation: none; width: auto; } }
 
+/* ---------- STACK: badges (sticker wall) ---------- */
+.stack-badges { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; }
+.badge-chip { display: inline-flex; align-items: center; justify-content: center; text-align: center; padding: 0.55rem 0.95rem; border: 3px solid var(--outline); border-radius: 999px; background: var(--surface); box-shadow: 3px 3px 0 var(--panel-shadow); font-weight: 800; font-size: 0.82rem; transition: transform 0.15s; }
+.badge-chip:hover { transform: translate(-1px, -1px) rotate(-2deg); }
+.stack-badges .badge-chip:nth-child(4n+1) { background: var(--accent-2); color: #141414; }
+.stack-badges .badge-chip:nth-child(5n+3) { background: var(--comic-blue); color: #fff; }
+.stack-badges .badge-chip:nth-child(7n+5) { background: var(--accent); color: #fff; }
+
+/* ---------- STACK: spotlight (featured first group) ---------- */
+.stack-spotlight { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+.spot-hero { grid-column: 1 / -1; background: var(--accent); color: #fff; border: 3px solid var(--outline); box-shadow: 6px 6px 0 var(--panel-shadow); border-radius: var(--radius); padding: 1.3rem 1.4rem; }
+.spot-hero h3 { font-family: var(--font-display); font-size: 2rem; -webkit-text-stroke: 1px var(--outline); margin-bottom: 0.7rem; }
+.spot-hero .spanel-tags, .stack-spotlight .spanel-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+/* stack carousel reuses .proj-carousel-auto / .carousel-track; each card: */
+.stack-carousel .vcard { flex-direction: column; display: flex; }
+
 /* ============================================================
    The Layout Lab sidebar (dev-only chooser)
    ============================================================ */

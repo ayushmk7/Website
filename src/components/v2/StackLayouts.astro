@@ -107,3 +107,59 @@ const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
     </div>
   </div>
 </div>
+
+<!-- table: category × skills -->
+<div class="lv lv--stack" data-variant="table" style={hide('table')}>
+  <div class="proj-table">
+    <table>
+      <thead><tr><th>Category</th><th>Skills</th></tr></thead>
+      <tbody>
+        {groups.map(([key, items]) => (
+          <tr>
+            <td class="pt-title" style="white-space:nowrap">{labels[key] ?? key}</td>
+            <td class="pt-tags">{items.join(', ')}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- badges: sticker wall -->
+<div class="lv lv--stack" data-variant="badges" style={hide('badges')}>
+  <div class="stack-badges">
+    {allTags.map((s) => <span class="badge-chip">{s}</span>)}
+  </div>
+</div>
+
+<!-- carousel: auto-scrolling category cards -->
+<div class="lv lv--stack" data-variant="carousel" style={hide('carousel')}>
+  <div class="proj-carousel-auto stack-carousel">
+    <div class="carousel-track">
+      {[...groups, ...groups].map(([key, items]) => (
+        <div class="vcard">
+          <h3 class="vco" style="font-size:1.3rem;margin-bottom:0.55rem">{labels[key] ?? key}</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<!-- spotlight: featured first group + compact rest -->
+<div class="lv lv--stack" data-variant="spotlight" style={hide('spotlight')}>
+  <div class="stack-spotlight">
+    {groups.length > 0 && (
+      <div class="spot-hero">
+        <h3>{labels[groups[0][0]] ?? groups[0][0]}</h3>
+        <div class="spanel-tags">{groups[0][1].map((s) => <span class="skill-tag">{s}</span>)}</div>
+      </div>
+    )}
+    {groups.slice(1).map(([key, items]) => (
+      <div class="spanel" style="padding-top:1.1rem">
+        <span class="spanel-cap">{labels[key] ?? key}</span>
+        <div class="spanel-tags">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
+      </div>
+    ))}
+  </div>
+</div>
