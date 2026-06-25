@@ -4,9 +4,10 @@
    (paper + ink) skin that flips with light/dark.
    ============================================================ */
 
-/* ---- newspaper paper/ink tokens ---- */
-:where(html) { --paper: #fbf7ea; --ink: #1a1a1a; }
-html.dark { --paper: #14181f; --ink: #ece7d8; }
+/* ---- newspaper paper/ink tokens (ink matches the base outline/shadow black
+   so card borders, shadows and text are one consistent value) ---- */
+:where(html) { --paper: #fbf7ea; --ink: #141414; }
+html.dark { --paper: #14181f; --ink: #e8e8e8; }
 
 /* every content card -> newspaper paper + ink */
 html[data-theme="comic"] .panel,
@@ -87,8 +88,8 @@ html[data-theme="comic"] .cwm-leaflet .leaflet-container { background: var(--map
 
 /* ---- Hackathons: newspaper clippings ---- */
 .hack-news { column-width: 18rem; column-gap: 1.25rem; }
-.news { --paper: #fbf7ea; --ink: #1a1a1a; break-inside: avoid; margin-bottom: 1.25rem; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--panel-shadow); padding: 1rem 1.1rem; }
-html.dark .news { --paper: #14181f; --ink: #ece7d8; }
+.news { --paper: #fbf7ea; --ink: #141414; break-inside: avoid; margin-bottom: 1.25rem; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--panel-shadow); padding: 1rem 1.1rem; }
+html.dark .news { --paper: #14181f; --ink: #e8e8e8; }
 .news-kicker { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-bottom: 2px solid currentColor; padding-bottom: 0.3rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; gap: 0.5rem; }
 .news-head { font-family: var(--font-display); font-size: 1.55rem; line-height: 1; margin-bottom: 0.4rem; color: var(--accent); }
 .news-body { font-size: 0.82rem; }

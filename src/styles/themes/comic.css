@@ -274,6 +274,8 @@ html[data-theme="comic"] .cwm-map {
      shows the whole world incl. Greenland with no crop and no letterbox */
   aspect-ratio: 1.49 / 1;
 }
+/* dark mode: drop the black newspaper frame so it reads as edge-to-edge dark map */
+html[data-theme="comic"].dark .cwm-map { border-color: transparent; box-shadow: none; }
 /* the real Leaflet map fills the framed box */
 html[data-theme="comic"] .cwm-leaflet { position: absolute; inset: 0; width: 100%; height: 100%; background: #1b1b1b; }
 html[data-theme="comic"] .cwm-leaflet .leaflet-container { background: #1b1b1b; }
