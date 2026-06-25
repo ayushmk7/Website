@@ -226,14 +226,16 @@ def find_matching_bracket(s, i):
 
 
 def merge_skills(existing, new):
-    """Union new skill items into existing, preserving order. Additive only."""
+    """Union new skills into existing: dedupe on a normalized key (so
+    'Scikit learn' == 'Scikit-learn'), then sort each touched group A->Z."""
     for cat, items in new.items():
         cur = existing.setdefault(cat, [])
-        have = {x.lower() for x in cur}
+        have = {_norm(x) for x in cur}
         for it in items:
-            if it.lower() not in have:
+            if _norm(it) not in have:
                 cur.append(it)
-                have.add(it.lower())
+                have.add(_norm(it))
+        cur.sort(key=lambda s: s.lower())
     return existing
 
 
@@ -385,8 +387,10 @@ def selfcheck():
 
     # additive skills merge: keep existing, union new, no dupes
     sk = {"programmingLanguages": ["Python", "Go"]}
-    merge_skills(sk, {"programmingLanguages": ["Python", "Rust"], "cybersecurity": ["Nmap"]})
-    assert sk["programmingLanguages"] == ["Python", "Go", "Rust"], sk
+    merge_skills(sk, {"programmingLanguages": ["Python", "Rust", "Scikit learn"], "cybersecurity": ["Nmap"]})
+    assert sk["programmingLanguages"] == ["Go", "Python", "Rust", "Scikit learn"], sk  # deduped + sorted
+    merge_skills(sk, {"programmingLanguages": ["Scikit-learn"]})  # normalized dup -> ignored
+    assert sk["programmingLanguages"] == ["Go", "Python", "Rust", "Scikit learn"], sk
     assert sk["cybersecurity"] == ["Nmap"]
 
     # append only NEW companies; preserve curated; produce valid TS
