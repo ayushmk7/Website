@@ -72,8 +72,7 @@ export const projects: Project[] = [
     title: "COGnitiveStudy",
     description: "A study platform that records your lectures and gives you a summary of the lecture with notes with backend API, frontend interface, and AI features.",
     tags: ["Hono", "Next.js", "React", "TypeScript", "Drizzle ORM", "LangChain", "OpenAI"],
-    websiteUrl: "https://cog-nitive.vercel.app",
-    githubUrl: "https://github.com/ayushmk7/COGnitiveStudy"
+    websiteUrl: "https://cog-nitive.vercel.app"
   },
   {
     title: "CompVis",
@@ -91,8 +90,7 @@ export const projects: Project[] = [
   {
     title: "MkLearns",
     description: "TurboLearn AI - Next.js app that transforms learning material into structured study content using AI.",
-    tags: ["Next.js", "React", "TypeScript"],
-    githubUrl: "https://github.com/ayushmk7/MkLearns"
+    tags: ["Next.js", "React", "TypeScript"]
   },
   {
     title: "SMS_Classifier_Ayush",
