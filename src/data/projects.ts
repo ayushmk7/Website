@@ -90,7 +90,8 @@ export const projects: Project[] = [
   {
     title: "MkLearns",
     description: "TurboLearn AI - Next.js app that transforms learning material into structured study content using AI.",
-    tags: ["Next.js", "React", "TypeScript"]
+    tags: ["Next.js", "React", "TypeScript"],
+    websiteUrl: "https://turbolearn.vercel.app"
   },
   {
     title: "SMS_Classifier_Ayush",
