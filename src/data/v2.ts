@@ -84,19 +84,103 @@ export interface Experience {
 // Full picture from the LinkedIn profile. The v1 site only showed a fraction of this.
 export const experience: Experience[] = [
   {
-    "company": "Cactus",
-    "role": "Core Contributor",
-    "period": "January 2026 – Present",
-    "location": "Ann Arbor, Michigan",
-    "kind": "Work",
-    "badge": "YC S25",
-    "url": "https://cactuscompute.com/",
-    "bullets": [
-      "Contributing to an open source mobile AI inference engine optimized for smartphones and low power devices",
-      "Implementing ARM specific SIMD kernels for matrix multiplication and attention mechanisms with KV cache quantization",
-      "Developing zero copy computation graphs for efficient on device transformer inference with sub 50ms time to first token",
-      "Building OpenAI compatible FFI APIs for cross platform SDK integration across Flutter, React Native, and Kotlin"
-    ]
+    company: "Jaseci Labs",
+    role: "Software Engineering Intern",
+    period: "May 2026 to Present",
+    location: "Ann Arbor, MI",
+    kind: "Work",
+    bullets: [
+      "Engineering a domain-specialized coding agent for the Jac language, fine-tuning Gemma 4 26B with Unsloth and 4-bit QLoRA on an object-spatial superset of Python where general-purpose models have no usable priors.",
+      "Architecting a multi-recipe synthetic-data pipeline (Python to Jac translation, adversarial DPO negatives, evol-instruct, self-distillation) targeting 300k+ examples behind a compiler and unit-test hard-gate.",
+      "Designing a four-stage training curriculum across core SFT, debugging and reasoning, DPO alignment, and multi-turn agentic data to lock in idiomatic walker, node, and edge constructs and prevent Python-pattern fallback.",
+    ],
+  },
+  {
+    company: "University of Michigan, College of Engineering",
+    role: "Student Researcher (POSE)",
+    period: "May 2026 to Present",
+    location: "Ann Arbor, MI",
+    kind: "Research",
+    badge: "NSF, $300K",
+    bullets: [
+      "PhD-level research as an undergrad on NSF Phase I POSE, growing an open-source ecosystem around the data-spatial Jac language.",
+      "Building the project's digital infrastructure, docs site, CI, and contributor onboarding tooling to lower the barrier to entry and grow a distributed contributor community.",
+      "Authoring tutorials and educational materials, and analyzing developer feedback and usage telemetry to refine onboarding and inform long-term governance models.",
+    ],
+  },
+  {
+    company: "CLAWS UM",
+    role: "AI Lead, formerly AI Software Developer",
+    period: "Aug 2025 to Present",
+    location: "Ann Arbor, MI",
+    kind: "Leadership",
+    badge: "NASA SUITS / RASC-AL",
+    bullets: [
+      "Lead the CLAWS AI team across the NASA SUITS and RASC-AL challenges.",
+      "Designed CORVUS, a dual-inference AI architecture for Project GEMINI, with edge transformers (TinyBERT, DistilBERT) on a Jetson Orin Nano via ONNX Runtime hitting sub-350ms deterministic responses.",
+      "Integrated DSPy for multi-step reasoning, Instructor and Pydantic for type-safe validation, and MongoDB/WebSocket sync for real-time telemetry, with command-routing microservices and fail-safe fallbacks for any network condition.",
+      "Led rover self-driving and sample-detection ML for the RASC-AL challenge.",
+    ],
+  },
+  {
+    company: "WolvSec",
+    role: "Vice President and Cybersecurity Engineer",
+    period: "Aug 2025 to Present",
+    location: "Ann Arbor, MI",
+    kind: "Leadership",
+    bullets: [
+      "Vice President of WolvSec, the University of Michigan's cybersecurity club.",
+      "Developer role authoring internal CTFs for the university and representing Michigan at national and international CTF competitions.",
+      "Weekly CTFs, hands-on offensive and defensive security, and exposure to industry security experts.",
+    ],
+  },
+  {
+    company: "Cactus",
+    role: "Core Contributor",
+    period: "Jan 2026 to Present",
+    location: "Ann Arbor, MI",
+    kind: "Work",
+    badge: "YC S25",
+    url: "https://cactuscompute.com/",
+    bullets: [
+      "Core contributor on an open-source mobile AI inference engine for smartphones and low-power devices.",
+      "Implementing ARM SIMD kernels for matmul and attention with KV-cache quantization, and zero-copy computation graphs for on-device transformer inference at sub-50ms time-to-first-token.",
+      "Integrating NPU acceleration and INT4 quantization, plus streaming inference and cloud-handoff logic, and building OpenAI-compatible FFI APIs for Flutter, React Native, and Kotlin.",
+    ],
+  },
+  {
+    company: "MSAIL",
+    role: "AI Developer",
+    period: "Sep 2025 to Present",
+    location: "Ann Arbor, MI",
+    kind: "Leadership",
+    bullets: [
+      "AI developer at MSAIL, building low-level inference tooling and running AI on mobile devices alongside a YC company.",
+    ],
+  },
+  {
+    company: "CareTether",
+    role: "Co-Founder, Frontend and Outreach",
+    period: "Jul to Aug 2025",
+    location: "Dublin, Ireland",
+    kind: "Founder",
+    badge: "Patch accelerator",
+    bullets: [
+      "Co-founded a wearable and app system for seniors with cognitive difficulties, built on-site at the Patch entrepreneurship accelerator.",
+      "Piloted with 5+ families and reached 20,000+ people on social media, and pitched venture possibilities to NGOs and care homes.",
+    ],
+  },
+  {
+    company: "GIIT Solutions",
+    role: "Associate Software Intern",
+    period: "2024 to 2025",
+    location: "Cork, Ireland",
+    kind: "Work",
+    url: "https://giitsolutions.com/",
+    bullets: [
+      "Built and maintained CI/CD-based deployments on AWS.",
+      "Wrote Python tooling scripts to automate backend processes and reduce manual overhead.",
+    ],
   },
   {
     "company": "NASA CLAWS",
@@ -125,18 +209,4 @@ export const experience: Experience[] = [
       "Implemented a scalable backend with Django and PostgreSQL to manage health data, authentication, and notifications"
     ]
   },
-  {
-    "company": "GIIT Solutions",
-    "role": "Associate Software Intern",
-    "period": "June 2024 – July 2024, April 2025",
-    "location": "Remote",
-    "kind": "Work",
-    "url": "https://giitsolutions.com/",
-    "bullets": [
-      "Maintained CI/CD pipelines on AWS, automating deployments across 12+ microservices and improving reliability by 28%",
-      "Developed Python scripts to streamline backend processes, reducing manual overhead by 40% and saving 15+ hours weekly",
-      "Collaborated with senior devs to optimize cloud infrastructure, achieving 35% cost reduction through resource management",
-      "Deployed cloud native solutions with AWS CI/CD tools, improving system scalability and achieving 99.7% uptime"
-    ]
-  }
 ];

@@ -1,10 +1,31 @@
 {
-  "name": "Ayush Madhav Kumar",
   "experience": [
+    {
+      "title": "Software Engineering Intern",
+      "company": "Jaseci Labs",
+      "period": "May 2026 – Present",
+      "location": "Ann Arbor, Michigan",
+      "achievements": [
+        "Engineering a domain-specialized coding agent for the Jac programming language, fine tuning Gemma 4 26B with Unsloth and 4-bit QLoRA on an object-spatial superset of Python where general-purpose models lack usable priors",
+        "Architecting a multi-recipe synthetic data pipeline with Python-to-Jac parallel translation, adversarial DPO negatives, evol-instruct, and self-distillation, targeting 300k+ examples verified behind a compiler and unit-test hard-gate",
+        "Designing a four-stage training curriculum spanning core SFT, debugging and reasoning, DPO alignment, and multi-turn agentic data to prevent Python-pattern fallback and lock in idiomatic walker, node, and edge constructs"
+      ]
+    },
+    {
+      "title": "Professor Misc. (Temp.) / Student Researcher",
+      "company": "Pathways for Open Source Ecosystems (POSE) Research",
+      "period": "May 2026 – Present",
+      "location": "Ann Arbor, Michigan",
+      "achievements": [
+        "Part of NSF Phase I POSE research ($300K) to grow an open-source ecosystem around the data spatial Jac language",
+        "Enhancing the project's digital infrastructure, documentation site, CI, and contributor onboarding tooling to lower the barrier to entry for new developers and grow an active, distributed Jac contributor community",
+        "Authoring tutorials, code samples, and educational materials, and analyzing developer feedback and usage telemetry to refine onboarding workflows and inform governance models for long-term ecosystem sustainability"
+      ]
+    },
     {
       "title": "Core Contributor",
       "company": "Cactus (YC S25)",
-      "period": "January 2026 – Present",
+      "period": "Jan 2026 – Present",
       "location": "Ann Arbor, Michigan",
       "url": "https://cactuscompute.com/",
       "achievements": [
@@ -12,6 +33,19 @@
         "Implementing ARM specific SIMD kernels for matrix multiplication and attention mechanisms with KV cache quantization",
         "Developing zero copy computation graphs for efficient on device transformer inference with sub 50ms time to first token",
         "Building OpenAI compatible FFI APIs for cross platform SDK integration across Flutter, React Native, and Kotlin"
+      ]
+    },
+    {
+      "title": "Associate Software Intern",
+      "company": "GIIT Solutions",
+      "period": "June 2024 – July 2024, April 2025",
+      "location": "Remote",
+      "url": "https://giitsolutions.com/",
+      "achievements": [
+        "Maintained CI/CD pipelines on AWS, automating deployments across 12+ microservices and improving reliability by 28%",
+        "Developed Python scripts to streamline backend processes, reducing manual overhead by 40% and saving 15+ hours weekly",
+        "Collaborated with senior devs to optimize cloud infrastructure, achieving 35% cost reduction through resource management",
+        "Deployed cloud native solutions with AWS CI/CD tools, improving system scalability and achieving 99.7% uptime"
       ]
     },
     {
@@ -38,40 +72,36 @@
         "Offsited at Stripe Dublin and Developed the mobile frontend using React Native, optimizing UI responsiveness and UX",
         "Implemented a scalable backend with Django and PostgreSQL to manage health data, authentication, and notifications"
       ]
-    },
-    {
-      "title": "Associate Software Intern",
-      "company": "GIIT Solutions",
-      "period": "June 2024 – July 2024, April 2025",
-      "location": "Remote",
-      "url": "https://giitsolutions.com/",
-      "achievements": [
-        "Maintained CI/CD pipelines on AWS, automating deployments across 12+ microservices and improving reliability by 28%",
-        "Developed Python scripts to streamline backend processes, reducing manual overhead by 40% and saving 15+ hours weekly",
-        "Collaborated with senior devs to optimize cloud infrastructure, achieving 35% cost reduction through resource management",
-        "Deployed cloud native solutions with AWS CI/CD tools, improving system scalability and achieving 99.7% uptime"
-      ]
     }
   ],
   "education": [
     {
-      "degree": "Bachelor of Science in Computer Science; Minor in Business and Mathematics",
+      "degree": "Bachelor of Science in Computer Science; Minor in Mathematics",
       "institution": "University of Michigan, College of Engineering",
       "url": "https://www.engin.umich.edu/",
-      "period": "Aug 2025 – May 2028",
+      "period": "Aug 2025 – Dec 2028",
       "location": "Ann Arbor, Michigan"
     }
   ],
   "projects": [
     {
+      "title": "NASA SUITS Challenge",
+      "technologies": "AI Lead; Python, PyTorch, A*/JPS, Unity",
+      "achievements": [
+        "Built autonomous lunar-EVA navigation with A*/Jump Point Search planners over a 3-layer occupancy grid, 17-ray LiDAR fusion, PD heading control with curvature lookahead, and RSSI trilateration via inverse log-distance modeling",
+        "Designed PyTorch obstacle detection models, a temporal ResidualBeamCNN and a BEV cross-attention transformer with learnable query embeddings, served in real time behind a hot-swappable multi-backend inference framework",
+        "Engineered the voice pipeline, streaming 16 kHz PCM over WebSocket to a faster-whisper and a neural intent classifier"
+      ]
+    },
+    {
       "title": "Machine Learning Model Serving Microservice",
       "technologies": "Python, Flask, RabbitMQ, MongoDB, Docker",
+      "githubUrl": "https://github.com/ayushmk7/Inferno",
       "achievements": [
         "Developed a backend microservice to host ML models through Flask REST APIs, for model loading, inference, health checks",
         "Handled inference requests using RabbitMQ for scalable task queuing, enabling reliable processing of high-volume workloads",
         "Persisted model outputs and user queries in MongoDB for analytics and logging, and containerized the system using Docker"
-      ],
-      "githubUrl": "https://github.com/ayushmk7/Inferno"
+      ]
     },
     {
       "title": "NeRF Based 3D Modelling",
@@ -92,70 +122,103 @@
       "Java",
       "C",
       "C++",
-      "C sharp",
+      "Go",
+      "Rust",
       "Ruby",
-      "PHP",
       "SQL",
+      "Jac",
       "HTML",
-      "CSS"
+      "CSS",
+      "C sharp",
+      "PHP"
     ],
     "aiMl": [
       "PyTorch",
       "TensorFlow",
       "JAX",
       "HuggingFace Transformers",
+      "Unsloth",
+      "LoRA/QLoRA fine tuning",
+      "RLHF/DPO",
       "ONNX Runtime",
-      "Scikit learn",
+      "vLLM",
+      "Scikit-learn",
       "OpenAI APIs",
       "LLMs",
+      "RAG",
+      "Mixture of Experts",
       "NLP",
       "Computer Vision",
       "Reinforcement Learning",
-      "Edge AI deployment",
-      "Model optimization"
+      "Edge AI",
+      "Quantization",
+      "Model optimization",
+      "Agentic systems",
+      "MCP",
+      "Scikit learn",
+      "Edge AI deployment"
     ],
     "softwareDevelopment": [
       "React",
       "Next.js",
       "React Native",
       "Node.js",
+      "Express",
       "Django",
       "Flask",
       "FastAPI",
       "REST",
       "GraphQL",
+      "gRPC",
       "Flutter",
       "Dart",
       "WebSockets",
-      "Progressive Web Apps",
+      "Tailwind CSS",
       "Vue",
       "Git",
       "GitHub",
       "GitHub Actions",
       "GitLab",
-      "APIs"
+      "CI/CD",
+      "APIs",
+      "Progressive Web Apps"
     ],
     "databases": [
       "MongoDB",
       "PostgreSQL",
       "Redis",
       "MySQL",
-      "Data modeling",
-      "ETL pipelines"
+      "Vector databases",
+      "ETL pipelines",
+      "Pandas",
+      "Data modeling"
     ],
     "devOps": [
       "Docker",
       "Kubernetes",
-      "CI CD pipelines",
+      "CI/CD pipelines",
       "RabbitMQ",
       "Linux",
       "AWS EC2",
       "AWS Lambda",
       "AWS S3",
-      "Google Cloud",
+      "GCP",
+      "Terraform",
+      "Nginx",
       "Edge deployment",
       "Serverless architecture",
-      "Scalable ML inference orchestration"
+      "Scalable ML inference orchestration",
+      "CI CD pipelines",
+      "Google Cloud"
+    ],
+    "coreCs": [
+      "Data Structures",
+      "Algorithms",
+      "Time and Space Complexity Analysis",
+      "Object Oriented Design",
+      "Memory Management",
+      "Concurrency and Multithreading",
+      "Operating Systems Basics"
     ],
     "cybersecurity": [
       "Nmap automation",
@@ -166,16 +229,8 @@
       "YARA based malware triage",
       "cryptographic weakness detection",
       "AWS IAM and S3 security"
-    ],
-    "coreCs": [
-      "Data Structures",
-      "Algorithms",
-      "Time and Space Complexity Analysis",
-      "Object Oriented Design",
-      "Memory Management",
-      "Concurrency and Multithreading",
-      "Operating Systems Basics"
     ]
   },
-  "certifications": []
+  "certifications": [],
+  "name": "Ayush Madhav Kumar"
 }

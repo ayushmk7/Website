@@ -207,33 +207,91 @@ def parse_resume(tex):
             "education": edu, "projects": projs, "skills": skills}
 
 
-def to_resume_json(parsed):
-    return {
-        "name": parsed["name"],
-        "experience": [
-            {k: v for k, v in (
-                ("title", e["title"]), ("company", e["org"]),
-                ("period", e["period"]), ("location", e["location"]),
-                ("url", e["url"]), ("achievements", e["bullets"]),
-            ) if v} for e in parsed["experience"]
-        ],
-        "education": [
-            {k: v for k, v in (
-                ("degree", e["title"]), ("institution", e["org"]),
-                ("url", e["url"]), ("period", e["period"]),
-                ("location", e["location"]),
-            ) if v} for e in parsed["education"]
-        ],
-        "projects": parsed["projects"],
-        "skills": parsed["skills"],
-        "certifications": [],
-    }
+def _norm(s):
+    return re.sub(r"[^a-z0-9]", "", (s or "").lower())
 
 
-def to_v2_experience(parsed):
-    out = []
+def find_matching_bracket(s, i):
+    """s[i] must be '['. Return index of the matching ']'."""
+    depth = 0
+    while i < len(s):
+        if s[i] == "[":
+            depth += 1
+        elif s[i] == "]":
+            depth -= 1
+            if depth == 0:
+                return i
+        i += 1
+    raise ValueError("unbalanced []")
+
+
+def merge_skills(existing, new):
+    """Union new skill items into existing, preserving order. Additive only."""
+    for cat, items in new.items():
+        cur = existing.setdefault(cat, [])
+        have = {x.lower() for x in cur}
+        for it in items:
+            if it.lower() not in have:
+                cur.append(it)
+                have.add(it.lower())
+    return existing
+
+
+def merge_resume_json(existing, parsed):
+    """Additively merge parsed resume into resume.json. Never deletes."""
+    rj = dict(existing)
+    merge_skills(rj.setdefault("skills", {}), parsed["skills"])
+
+    exp = rj.setdefault("experience", [])
+    have = {_norm(e.get("company", "")) for e in exp}
+    for e in parsed["experience"]:
+        if _norm(e["org"]) in have:
+            continue
+        exp.append({k: v for k, v in (
+            ("title", e["title"]), ("company", e["org"]), ("period", e["period"]),
+            ("location", e["location"]), ("url", e["url"]), ("achievements", e["bullets"]),
+        ) if v})
+        have.add(_norm(e["org"]))
+
+    projs = rj.setdefault("projects", [])
+    phave = {_norm(p.get("title", "")) for p in projs}
+    for p in parsed["projects"]:
+        if _norm(p["title"]) not in phave:
+            projs.append(p)
+            phave.add(_norm(p["title"]))
+
+    edu = rj.setdefault("education", [])
+    ehave = {_norm(e.get("institution", "")) for e in edu}
+    for e in parsed["education"]:
+        if _norm(e["org"]) in ehave:
+            continue
+        edu.append({k: v for k, v in (
+            ("degree", e["title"]), ("institution", e["org"]), ("url", e["url"]),
+            ("period", e["period"]), ("location", e["location"]),
+        ) if v})
+        ehave.add(_norm(e["org"]))
+
+    rj.setdefault("certifications", existing.get("certifications", []))
+    if parsed.get("name"):
+        rj["name"] = parsed["name"]
+    return rj
+
+
+def append_v2_experience(v2_src, parsed):
+    """Append resume experiences not already present (by company) to the v2.ts
+    `experience` array. Curated entries are preserved verbatim. Returns (src, added)."""
+    marker = "export const experience: Experience[] ="
+    i = v2_src.index(marker)
+    br = v2_src.index("[", i + len(marker))      # skip the [] in `Experience[]`
+    close = find_matching_bracket(v2_src, br)
+    present = {_norm(m) for m in re.findall(
+        r'["\']?company["\']?\s*:\s*["\']([^"\']+)["\']', v2_src[br:close])}
+
+    new_objs, added = [], []
     for e in parsed["experience"]:
         company, badge = _company_badge(e["org"])
+        if _norm(company) in present:
+            continue
         obj = {"company": company, "role": e["title"], "period": e["period"]}
         if e["location"]:
             obj["location"] = e["location"]
@@ -243,15 +301,20 @@ def to_v2_experience(parsed):
         if e["url"]:
             obj["url"] = e["url"]
         obj["bullets"] = e["bullets"]
-        out.append(obj)
-    return out
+        new_objs.append(obj)
+        added.append(company)
+        present.add(_norm(company))
 
-
-def splice_v2(v2_src, experience):
-    marker = "export const experience: Experience[] ="
-    idx = v2_src.index(marker)  # raises if site refactored away from this shape
-    literal = json.dumps(experience, indent=2, ensure_ascii=False)
-    return v2_src[:idx] + marker + " " + literal + ";\n"
+    if not new_objs:
+        return v2_src, added
+    import textwrap
+    pre = v2_src[:close].rstrip()
+    if not pre.endswith(","):
+        pre += ","                               # ensure separator after last entry
+    block = "".join(
+        textwrap.indent(json.dumps(o, indent=2, ensure_ascii=False), "  ") + ",\n"
+        for o in new_objs)
+    return pre + "\n" + block + v2_src[close:], added
 
 
 # ---------- io ----------
@@ -263,13 +326,21 @@ def run(root: Path, resume: Path):
 
     rj_path = root / "src/data/resume.json"
     v2_path = root / "src/data/v2.ts"
-    rj_path.write_text(json.dumps(to_resume_json(parsed), indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    v2_path.write_text(splice_v2(v2_path.read_text(encoding="utf-8"), to_v2_experience(parsed)), encoding="utf-8")
 
-    print(f"Updated from {resume.name}:")
-    print(f"  {rj_path}  -> Stack ({len(parsed['skills'])} skill groups), {len(parsed['experience'])} experience entries")
-    print(f"  {v2_path}  -> Experience section ({len(parsed['experience'])} entries)")
-    print("Left untouched (curated, not in resume): projects.ts, hackathons in v2.ts, places.ts")
+    existing_rj = json.loads(rj_path.read_text(encoding="utf-8"))
+    merged = merge_resume_json(existing_rj, parsed)
+    rj_path.write_text(json.dumps(merged, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    new_v2, added = append_v2_experience(v2_path.read_text(encoding="utf-8"), parsed)
+    v2_path.write_text(new_v2, encoding="utf-8")
+
+    print(f"Merged {resume.name} (additive — nothing existing was removed):")
+    print(f"  {rj_path}  -> Stack now has {len(merged['skills'])} skill groups")
+    if added:
+        print(f"  {v2_path}  -> added {len(added)} new experience entries: {', '.join(added)}")
+    else:
+        print(f"  {v2_path}  -> no new experience (all resume roles already on the site)")
+    print("Untouched: projects.ts, hackathons in v2.ts, places.ts")
     print("Next: npm run build  (or npm run dev to preview)")
 
 
@@ -310,12 +381,24 @@ def selfcheck():
     pr = p["projects"][0]
     assert pr["title"] == "Cool Proj" and pr["githubUrl"] == "https://github.com/x/proj"
     assert pr["technologies"] == "Python, Rust"
-    v2 = to_v2_experience(p)[0]
-    assert v2["company"] == "Acme" and v2["badge"] == "YC W24" and v2["kind"] == "Work"
     assert _kind("AI Lead") == "Leadership" and _kind("Co-Founder") == "Founder" and _kind("Student Researcher") == "Research"
-    # splice produces valid-looking TS
-    spliced = splice_v2("x\nexport const experience: Experience[] = [];\n", to_v2_experience(p))
-    assert spliced.startswith("x\nexport const experience: Experience[] = [")
+
+    # additive skills merge: keep existing, union new, no dupes
+    sk = {"programmingLanguages": ["Python", "Go"]}
+    merge_skills(sk, {"programmingLanguages": ["Python", "Rust"], "cybersecurity": ["Nmap"]})
+    assert sk["programmingLanguages"] == ["Python", "Go", "Rust"], sk
+    assert sk["cybersecurity"] == ["Nmap"]
+
+    # append only NEW companies; preserve curated; produce valid TS
+    base = ('x\nexport const experience: Experience[] = [\n'
+            '  {\n    company: "Acme",\n    role: "X",\n    period: "p",\n    kind: "Work",\n    bullets: [],\n  },\n];\n')
+    out, added = append_v2_experience(base, p)          # SAMPLE has Acme -> already present
+    assert added == [] and out == base, (added, out)
+    p2 = parse_resume(SAMPLE.replace("Acme (YC W24)", "Globex (YC W24)"))
+    out2, added2 = append_v2_experience(base, p2)
+    assert added2 == ["Globex"], added2
+    assert out2.count('"company": "Globex"') == 1 and 'company: "Acme"' in out2
+    assert out2.rstrip().endswith("];")
     print("selfcheck OK")
 
 
