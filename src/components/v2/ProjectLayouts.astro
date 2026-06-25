@@ -1,0 +1,61 @@
+---
+// Projects section — all layout variants, toggled by LayoutLab.
+import { projects } from '../../data/projects';
+import { hackathons } from '../../data/v2';
+import ProjectCard from './ProjectCard.astro';
+import ProjectLinks from './ProjectLinks.astro';
+
+const list = projects.filter((p) => !hackathons.some((h) => h.project === p.title));
+const hide = (v: string) => (v === 'current' ? undefined : 'display:none');
+---
+<!-- current: three-column cards -->
+<div class="lv lv--proj" data-variant="current" style={hide('current')}>
+  <div class="grid md:grid-cols-3" style="gap:1.5rem">
+    {list.map((p, i) => <ProjectCard p={p} i={i} />)}
+  </div>
+</div>
+
+<!-- bento: varied-size grid -->
+<div class="lv lv--proj" data-variant="bento" style={hide('bento')}>
+  <div class="proj-bento">
+    {list.map((p, i) => <ProjectCard p={p} i={i} />)}
+  </div>
+</div>
+
+<!-- polaroid: tilted photo cards -->
+<div class="lv lv--proj" data-variant="polaroid" style={hide('polaroid')}>
+  <div class="proj-polaroid">
+    {list.map((p) => (
+      <div class="pol">
+        <div class="pol-photo"><h3>{p.title}</h3></div>
+        <p class="pol-cap">{p.description}</p>
+        <div class="pol-links"><ProjectLinks p={p} /></div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- index table -->
+<div class="lv lv--proj" data-variant="table" style={hide('table')}>
+  <div class="proj-table">
+    <table>
+      <thead><tr><th>Project</th><th>Stack</th><th>Links</th></tr></thead>
+      <tbody>
+        {list.map((p) => (
+          <tr>
+            <td><div class="pt-title">{p.title}</div><div style="font-size:0.8rem;opacity:0.85;max-width:28rem">{p.description}</div></td>
+            <td class="pt-tags">{p.tags.slice(0, 6).join(', ')}</td>
+            <td><div class="pt-links"><ProjectLinks p={p} /></div></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- carousel: horizontal scroll-snap -->
+<div class="lv lv--proj" data-variant="carousel" style={hide('carousel')}>
+  <div class="proj-carousel">
+    {list.map((p, i) => <ProjectCard p={p} i={i} />)}
+  </div>
+</div>

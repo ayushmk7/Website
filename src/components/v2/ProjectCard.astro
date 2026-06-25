@@ -1,0 +1,13 @@
+---
+// One comic project card (shared by current / bento / carousel variants).
+import ProjectLinks from './ProjectLinks.astro';
+const { p, i = 0 } = Astro.props;
+---
+<div class="panel flex flex-col" style={`padding:1.25rem 1.5rem;--i:${Math.min(i, 4)}`} data-load>
+  <h3 class="text-2xl text-[var(--comic-blue)]" style="font-family:var(--font-display);margin-bottom:0.5rem">{p.title}</h3>
+  <p class="flex-1" style="font-size:0.875rem;margin-bottom:0.75rem">{p.description}</p>
+  <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem">
+    {p.tags.slice(0, 5).map((t: string) => <span class="skill-tag">{t}</span>)}
+  </div>
+  <div style="margin-top:auto"><ProjectLinks p={p} /></div>
+</div>

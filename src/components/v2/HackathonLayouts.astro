@@ -1,0 +1,84 @@
+---
+// Hackathons section — all layout variants, toggled by LayoutLab.
+import { hackathons } from '../../data/v2';
+import HackLinks from './HackLinks.astro';
+const hide = (v: string) => (v === 'current' ? undefined : 'display:none');
+---
+<!-- current: two-column burst panels -->
+<div class="lv lv--hack" data-variant="current" style={hide('current')}>
+  <div class="grid md:grid-cols-2" style="gap:1.5rem">
+    {hackathons.map((h, i) => (
+      <div class="panel panel--burst" style={`padding:1.25rem 1.5rem;--i:${Math.min(i, 4)}`} data-load>
+        <p class="text-sm" style="font-weight:600;margin-bottom:0.25rem">{h.placement}</p>
+        <h3 class="text-3xl text-[var(--accent)]" style="font-family:var(--font-display);line-height:1.1;margin-bottom:0.5rem">{h.event}</h3>
+        <p style="font-size:0.875rem">{h.blurb}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- trophy: medal-badged cards -->
+<div class="lv lv--hack" data-variant="trophy" style={hide('trophy')}>
+  <div class="hack-trophy">
+    {hackathons.map((h) => (
+      <div class="trophy">
+        <div class="trophy-medal">★</div>
+        <div class="vcard">
+          <p class="trophy-place">{h.placement}{h.prize ? ` · ${h.prize}` : ''}</p>
+          <h3 class="trophy-event">{h.event}</h3>
+          <p style="font-size:0.85rem">{h.blurb}</p>
+          <HackLinks h={h} />
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- timeline: chronological rail -->
+<div class="lv lv--hack" data-variant="timeline" style={hide('timeline')}>
+  <div class="exp-timeline">
+    {hackathons.map((h) => (
+      <div class="exp-tl">
+        <div class="vcard">
+          <p class="vperiod">{h.date}</p>
+          <h3 class="vco" style="font-size:1.5rem;margin:0.1rem 0">{h.event}</h3>
+          <p class="trophy-place">{h.placement}</p>
+          <p style="font-size:0.85rem;margin-top:0.4rem">{h.blurb}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- leaderboard: ranked rows -->
+<div class="lv lv--hack" data-variant="leaderboard" style={hide('leaderboard')}>
+  <div class="hack-lb">
+    {hackathons.map((h, i) => (
+      <div class="lb-row">
+        <div class="lb-rank">{i + 1}</div>
+        <div class="lb-main">
+          <div class="lb-event">{h.event}</div>
+          <p style="font-size:0.83rem;opacity:0.9">{h.blurb}</p>
+        </div>
+        <div class="lb-place">{h.placement}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- ticket stubs -->
+<div class="lv lv--hack" data-variant="ticket" style={hide('ticket')}>
+  <div class="hack-tickets">
+    {hackathons.map((h) => (
+      <div class="ticket">
+        <div class="ticket-main">
+          <p class="ticket-place">{h.placement}</p>
+          <h3 class="ticket-event">{h.event}</h3>
+          <p style="font-size:0.83rem">{h.blurb}</p>
+          <HackLinks h={h} />
+        </div>
+        <div class="ticket-stub"><span>{h.date}</span></div>
+      </div>
+    ))}
+  </div>
+</div>

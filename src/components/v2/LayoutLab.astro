@@ -1,0 +1,78 @@
+---
+// DEV-ONLY layout chooser. Lets you preview every section variant live and
+// pick one per section (persisted in localStorage). To remove after you decide:
+// delete this component + its import/usage in index.astro, then drop the unused
+// variants from the *Layouts.astro components.
+const sections = [
+  { key: 'exp', label: 'Experience', opts: [
+    ['current', 'Current — cards'], ['timeline', 'Timeline'], ['terminal', 'Terminal log'],
+    ['filmstrip', 'Filmstrip'], ['accordion', 'Accordion'],
+  ] },
+  { key: 'proj', label: 'Projects', opts: [
+    ['current', 'Current — grid'], ['bento', 'Bento grid'], ['polaroid', 'Polaroids'],
+    ['table', 'Index table'], ['carousel', 'Carousel'],
+  ] },
+  { key: 'hack', label: 'Hackathons', opts: [
+    ['current', 'Current — bursts'], ['trophy', 'Trophy cards'], ['timeline', 'Timeline'],
+    ['leaderboard', 'Leaderboard'], ['ticket', 'Ticket stubs'],
+  ] },
+];
+---
+<button class="llab-toggle" type="button" aria-expanded="false" aria-controls="llab-panel">▤ Layout Lab</button>
+<div class="llab" id="llab-panel" hidden>
+  <h4>Layout Lab</h4>
+  <p class="llab-sub">Preview tool. Pick a layout per section — saved on this device.</p>
+  {sections.map((s) => (
+    <fieldset>
+      <legend>{s.label}</legend>
+      {s.opts.map(([val, label]) => (
+        <label><input type="radio" name={s.key} value={val} checked={val === 'current'} />{label}</label>
+      ))}
+    </fieldset>
+  ))}
+  <button class="llab-reset" type="button">Reset all to Current</button>
+</div>
+
+<script is:inline>
+  (function () {
+    var KEYS = { exp: 'lv--exp', proj: 'lv--proj', hack: 'lv--hack' };
+    var DEF = { exp: 'current', proj: 'current', hack: 'current' };
+    function apply(sec, val) {
+      document.querySelectorAll('.' + KEYS[sec]).forEach(function (el) {
+        el.style.display = (el.getAttribute('data-variant') === val) ? '' : 'none';
+      });
+    }
+    function load(sec) { try { return localStorage.getItem('lv-' + sec) || DEF[sec]; } catch (e) { return DEF[sec]; } }
+    Object.keys(KEYS).forEach(function (sec) {
+      var val = load(sec);
+      apply(sec, val);
+      var r = document.querySelector('.llab input[name="' + sec + '"][value="' + val + '"]');
+      if (r) r.checked = true;
+    });
+    document.querySelectorAll('.llab input[type=radio]').forEach(function (inp) {
+      inp.addEventListener('change', function () {
+        apply(inp.name, inp.value);
+        try { localStorage.setItem('lv-' + inp.name, inp.value); } catch (e) {}
+      });
+    });
+    var t = document.querySelector('.llab-toggle');
+    var panel = document.getElementById('llab-panel');
+    if (t && panel) {
+      t.addEventListener('click', function () {
+        panel.hidden = !panel.hidden;
+        t.setAttribute('aria-expanded', String(!panel.hidden));
+      });
+    }
+    var reset = document.querySelector('.llab-reset');
+    if (reset) {
+      reset.addEventListener('click', function () {
+        Object.keys(KEYS).forEach(function (sec) {
+          try { localStorage.removeItem('lv-' + sec); } catch (e) {}
+          apply(sec, DEF[sec]);
+          var r = document.querySelector('.llab input[name="' + sec + '"][value="' + DEF[sec] + '"]');
+          if (r) r.checked = true;
+        });
+      });
+    }
+  })();
+</script>

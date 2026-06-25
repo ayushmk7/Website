@@ -13,8 +13,6 @@ export const places: Place[] = [
   { name: 'New York', country: 'USA', lat: 40.7128, lng: -74.0060 },
   { name: 'Cork', country: 'Ireland', lat: 51.8985, lng: -8.4756, blurb: 'Douglas Community School' },
   { name: 'Dublin', country: 'Ireland', lat: 53.3498, lng: -6.2603, blurb: 'Patch accelerator, CareTether' },
-  { name: 'Mumbai', country: 'India', lat: 19.0760, lng: 72.8777 },
-  { name: 'Delhi', country: 'India', lat: 28.6139, lng: 77.2090 },
   { name: 'Ambala', country: 'India', lat: 30.3782, lng: 76.7767 },
   { name: 'Bangalore', country: 'India', lat: 12.9716, lng: 77.5946 },
   { name: 'Chicago', country: 'USA', lat: 41.8781, lng: -87.6298 },
