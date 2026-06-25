@@ -193,8 +193,9 @@
 
 /* ---------- HACKATHONS: newspaper clippings ---------- */
 .hack-news { column-width: 18rem; column-gap: 1.25rem; }
-.news { break-inside: avoid; margin-bottom: 1.25rem; background: #fbf7ea; color: #141414; border: 3px solid var(--outline); box-shadow: 4px 4px 0 var(--panel-shadow); padding: 1rem 1.1rem; }
-.news-kicker { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-bottom: 2px solid #141414; padding-bottom: 0.3rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; gap: 0.5rem; }
+.news { --paper: #fbf7ea; --ink: #1a1a1a; break-inside: avoid; margin-bottom: 1.25rem; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--panel-shadow); padding: 1rem 1.1rem; }
+html.dark .news { --paper: #14181f; --ink: #ece7d8; }
+.news-kicker { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-bottom: 2px solid currentColor; padding-bottom: 0.3rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; gap: 0.5rem; }
 .news-head { font-family: var(--font-display); font-size: 1.55rem; line-height: 1; margin-bottom: 0.4rem; }
 .news-body { font-size: 0.82rem; }
 
