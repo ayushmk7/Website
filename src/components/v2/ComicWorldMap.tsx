@@ -41,8 +41,10 @@ export default function ComicWorldMap() {
         zoomSnap: 0,
         // wheel zoom only fires while the cursor is over the map (Leaflet default)
         scrollWheelZoom: true,
-        maxBounds: worldBounds,
-        maxBoundsViscosity: 0.9,
+        // pan limit is padded out beyond the world so the fitted view keeps its
+        // margin instead of being snapped flush to the frame (which clipped edge pins)
+        maxBounds: worldBounds.pad(0.18),
+        maxBoundsViscosity: 0.7,
         attributionControl: false,
       });
 
@@ -88,11 +90,10 @@ export default function ComicWorldMap() {
       const fill = () => {
         map.invalidateSize({ animate: false, pan: false });
         map.setMinZoom(0);
-        // slight zoom-out so the world sits inside the frame with a thin
-        // ocean-colored margin — keeps edge cities from being clipped.
-        const z = map.getBoundsZoom(worldBounds, false) - 0.12;
-        map.setView(worldBounds.getCenter(), z, { animate: false });
-        map.setMinZoom(z);
+        // fit the whole world INSIDE the frame with px padding on every side, so
+        // edge cities (e.g. San Francisco) always have margin and never clip.
+        map.fitBounds(worldBounds, { padding: [24, 20], animate: false });
+        map.setMinZoom(map.getZoom());
       };
       mapRef.current = map;
       fillRef.current = fill;
