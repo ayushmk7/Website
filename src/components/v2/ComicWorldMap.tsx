@@ -25,6 +25,7 @@ export default function ComicWorldMap() {
     if (!elRef.current || mapRef.current) return;
     let disposed = false;
     let ro: ResizeObserver | null = null;
+    let themeObs: MutationObserver | null = null;
     (async () => {
       const L = (await import('leaflet')).default;
       if (disposed || !elRef.current || mapRef.current) return;
@@ -41,12 +42,22 @@ export default function ComicWorldMap() {
         attributionControl: false,
       });
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
-        subdomains: 'abcd',
-        maxZoom: 19,
-        noWrap: true,
-        bounds: [[-85, -180], [85, 180]],
-      }).addTo(map);
+      // light basemap in light mode, dark basemap in dark mode; swap on theme toggle
+      const tileOpts = { subdomains: 'abcd', maxZoom: 19, noWrap: true, bounds: [[-85, -180], [85, 180]] as any };
+      const tileUrl = (dark: boolean) =>
+        `https://{s}.basemaps.cartocdn.com/${dark ? 'dark_nolabels' : 'light_nolabels'}/{z}/{x}/{y}{r}.png`;
+      let isDark = document.documentElement.classList.contains('dark');
+      let tiles = L.tileLayer(tileUrl(isDark), tileOpts).addTo(map);
+      themeObs = new MutationObserver(() => {
+        const d = document.documentElement.classList.contains('dark');
+        if (d === isDark) return;
+        isDark = d;
+        const next = L.tileLayer(tileUrl(d), tileOpts).addTo(map);
+        const swap = () => { if (tiles && tiles !== next) { map.removeLayer(tiles); tiles = next; } };
+        next.once('load', swap);
+        setTimeout(swap, 700); // fallback if 'load' is missed
+      });
+      themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
       const icon = L.divIcon({ className: 'cwm-pin-icon', html: '<span></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
       places.forEach((p) => {
@@ -87,6 +98,7 @@ export default function ComicWorldMap() {
     return () => {
       disposed = true;
       if (ro) ro.disconnect();
+      if (themeObs) themeObs.disconnect();
       if (fillRef.current) window.removeEventListener('resize', fillRef.current);
       if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; }
     };

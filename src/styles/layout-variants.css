@@ -19,6 +19,22 @@ html[data-theme="comic"] .panel--burst,
   border-color: var(--ink);
 }
 
+/* chips: newspaper palette, slight ink tint so they read on paper cards */
+html[data-theme="comic"] .skill-tag {
+  background: color-mix(in srgb, var(--ink) 8%, var(--paper));
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+/* map popup: newspaper too */
+html[data-theme="comic"] .cwm-pop-wrap .leaflet-popup-content-wrapper {
+  background: var(--paper); color: var(--ink); border-color: var(--ink); box-shadow: 5px 5px 0 var(--panel-shadow);
+}
+html[data-theme="comic"] .cwm-pop-wrap .leaflet-popup-tip { background: var(--paper); border-color: var(--ink); }
+html[data-theme="comic"] .cwm-pop-wrap a.leaflet-popup-close-button { color: var(--ink); }
+html[data-theme="comic"] .cwm-pop-country,
+html[data-theme="comic"] .cwm-pop-sub { color: color-mix(in srgb, var(--ink) 65%, var(--paper)); }
+
 /* shared card text bits */
 .vperiod { font-size: 0.8rem; font-weight: 700; opacity: 0.8; }
 .vrole { font-weight: 700; }
