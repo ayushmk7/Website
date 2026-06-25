@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const GH = 'https://github.com/ayushmk7';
 const LI = 'https://www.linkedin.com/in/ayushmk';
@@ -14,6 +14,14 @@ const linkedinSvg = (
 
 export default function ComicHero() {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
   return (
     <section className="comic-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="flex flex-col items-center text-center px-6 w-full" style={{ gap: 'clamp(0.5rem,1.8vh,1.1rem)' }}>

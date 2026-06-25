@@ -20,7 +20,8 @@ const def = themeByKey(themeKey);
     <title>{title}</title>
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/og.png" />
+    <meta property="og:image" content="/profile.jpg" />
+    <meta property="og:image:alt" content="Ayush Madhav Kumar" />
     <meta name="twitter:card" content="summary_large_image" />
     {def?.fontHrefs.map((href) => <link rel="stylesheet" href={href} />)}
     <Analytics />
@@ -35,6 +36,8 @@ const def = themeByKey(themeKey);
   </head>
   <body class="bg-[var(--bg)] text-[var(--text)] min-h-screen antialiased" style="font-family: var(--font-body); font-weight: var(--w-body);">
     <ThemeNav />
-    <slot />
+    <main>
+      <slot />
+    </main>
   </body>
 </html>

@@ -113,7 +113,7 @@ export default function ComicWorldMap() {
   return (
     <div className={`cwm-wrap${expanded ? ' cwm-wrap--expanded' : ''}`}>
       <div className="cwm-map">
-        <div ref={elRef} className="cwm-leaflet" />
+        <div ref={elRef} className="cwm-leaflet" role="region" aria-label="World map of places I've visited; select a pin for local weather" />
         <button
           type="button"
           className="cwm-expand-btn"

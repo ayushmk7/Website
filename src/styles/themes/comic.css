@@ -2,15 +2,14 @@
 
 /* -- LIGHT palette (default) -- */
 html[data-theme="comic"] {
-  --bg: #fff6df; --bg-2: #ffffff; --surface: #ffffff;
+  --bg: #fff6df; --surface: #ffffff;
   --text: #141414; --text-dim: #444444;
   --accent: #ff3b3b;   /* red */
   --accent-2: #ffd400; /* yellow */
   --comic-blue: #2b6cff;
   --font-display: 'Bangers', cursive;
   --font-body: 'Nunito Sans', sans-serif;
-  --font-mono: 'Nunito Sans', monospace;
-  --w-display: 400; --w-body: 400;
+  --w-body: 400;
   --radius: 0.75rem; --border: 3px solid #141414; --dur: 0.5s;
   --outline: #141414;
   --dot-color: rgba(0,0,0,0.07);
@@ -21,18 +20,11 @@ html[data-theme="comic"] {
   --link-btn-shadow: #141414;
   --link-btn-site-bg: #2b6cff;
   --link-btn-site-text: #ffffff;
-  --burst-bg: #ff3b3b;
-  --burst-text: #ffffff;
-  --burst-border: #141414;
-  --burst-shadow: #141414;
-  --spark-color: #ffd400;
-  --spark-border: #141414;
-  --halftone-accent: rgba(255,59,59,0.18);
 }
 
 /* -- DARK palette -- */
 html[data-theme="comic"].dark {
-  --bg: #0d1117; --bg-2: #161b22; --surface: #1c2230;
+  --bg: #0d1117; --surface: #1c2230;
   --text: #f0f0f0; --text-dim: #c0c0c0;
   --accent: #ff3b3b;
   --accent-2: #ffd400;
@@ -47,13 +39,6 @@ html[data-theme="comic"].dark {
   --link-btn-shadow: #e8e8e8;
   --link-btn-site-bg: #5b8fff;
   --link-btn-site-text: #ffffff;
-  --burst-bg: #ff3b3b;
-  --burst-text: #ffffff;
-  --burst-border: #e8e8e8;
-  --burst-shadow: #e8e8e8;
-  --spark-color: #ffd400;
-  --spark-border: #e8e8e8;
-  --halftone-accent: rgba(91,143,255,0.18);
 }
 
 html[data-theme="comic"] body {
@@ -152,55 +137,6 @@ html[data-theme="comic"] button:focus-visible {
 html[data-theme="comic"] .comic-link-btn:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 3px;
-}
-
-/* ============================================================
-   STARBURST / ACTION-BURST BUTTON
-   Polygon clip-path for the spiky burst shape.
-   Uses CSS custom-property border + hard shadow.
-   ============================================================ */
-html[data-theme="comic"] .burst-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  padding: 0.5rem 1.75rem;
-  font-family: var(--font-display);
-  font-size: clamp(1.1rem, 2.8vw, 1.5rem);
-  letter-spacing: 0.04em;
-  color: var(--burst-text);
-  background: var(--burst-bg);
-  border: 3px solid var(--burst-border);
-  border-radius: 4px;
-  /* 12-point starburst via clip-path */
-  clip-path: polygon(
-    50% 0%, 58% 8%, 68% 4%, 72% 14%,
-    84% 12%, 84% 24%, 95% 28%, 91% 40%,
-    100% 48%, 93% 58%, 100% 68%, 90% 74%,
-    92% 86%, 80% 88%, 78% 100%, 66% 96%,
-    58% 100%, 50% 93%, 42% 100%, 34% 96%,
-    22% 100%, 20% 88%, 8% 86%, 10% 74%,
-    0% 68%, 7% 58%, 0% 48%, 9% 40%,
-    5% 28%, 16% 24%, 16% 12%, 28% 14%,
-    32% 4%, 42% 8%
-  );
-  /* hard shadow done via drop-filter so it follows the clip shape */
-  filter: drop-shadow(4px 4px 0 var(--burst-shadow));
-  text-decoration: none;
-  cursor: pointer;
-  transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), filter 0.18s cubic-bezier(0.34,1.56,0.64,1);
-  user-select: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html[data-theme="comic"] .burst-btn:hover {
-    transform: scale(1.12) rotate(-2deg);
-    filter: drop-shadow(6px 6px 0 var(--burst-shadow));
-  }
-  html[data-theme="comic"] .burst-btn:active {
-    transform: scale(0.96) rotate(1deg);
-    filter: drop-shadow(2px 2px 0 var(--burst-shadow));
-  }
 }
 
 /* ============================================================
@@ -320,72 +256,6 @@ html[data-theme="comic"] .panel--burst p { color: var(--text); }
   html[data-theme="comic"] .comic-link-btn {
     padding: 0.35rem 0.875rem;
   }
-}
-
-/* ============================================================
-   ComicHero unique-variant helpers
-   ============================================================ */
-/* Ben-day halftone-dot LETTERS (name made of red dots, black outline) */
-html[data-theme="comic"] .ch-halftone-text {
-  -webkit-text-fill-color: transparent;
-  background-image: radial-gradient(var(--accent) 34%, transparent 36%);
-  background-size: 0.16em 0.16em;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-stroke: 1.6px var(--outline);
-  paint-order: stroke fill;
-  line-height: 0.95;
-}
-/* radiating action rays ring (sunburst) behind an element */
-html[data-theme="comic"] .ch-rays { position: relative; isolation: isolate; }
-html[data-theme="comic"] .ch-rays::before {
-  content: '';
-  position: absolute;
-  inset: -45%;
-  z-index: -1;
-  background: repeating-conic-gradient(from 0deg, var(--accent-2) 0deg 5deg, transparent 5deg 11deg);
-  border-radius: 50%;
-  -webkit-mask: radial-gradient(closest-side, transparent 38%, #000 40%);
-          mask: radial-gradient(closest-side, transparent 38%, #000 40%);
-  animation: chSpin 24s linear infinite;
-}
-@keyframes chSpin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { html[data-theme="comic"] .ch-rays::before { animation: none; } }
-/* jagged explosion (POW) shape */
-html[data-theme="comic"] .ch-burst {
-  display: inline-flex; align-items: center; justify-content: center; text-align: center;
-  background: var(--accent-2); color: #141414;
-  padding: clamp(1.4rem, 5vw, 3rem) clamp(1.8rem, 6vw, 3.5rem);
-  clip-path: polygon(50% 0,61% 14%,78% 6%,77% 25%,96% 26%,84% 41%,100% 50%,84% 59%,96% 74%,77% 75%,78% 94%,61% 86%,50% 100%,39% 86%,22% 94%,23% 75%,4% 74%,16% 59%,0 50%,16% 41%,4% 26%,23% 25%,22% 6%,39% 14%);
-  filter: drop-shadow(6px 6px 0 var(--outline));
-}
-/* angled sticker */
-html[data-theme="comic"] .ch-sticker {
-  background: var(--surface); border: 3px solid var(--outline);
-  border-radius: 0.5rem; box-shadow: 5px 5px 0 var(--panel-shadow);
-  padding: 0.5rem 1.1rem;
-}
-/* vertical upright lettering */
-html[data-theme="comic"] .ch-vertical {
-  writing-mode: vertical-rl; text-orientation: upright; line-height: 0.85; letter-spacing: -0.04em;
-}
-/* punchier pop-art photo */
-html[data-theme="comic"] .ch-photo-pop { filter: contrast(1.18) saturate(1.35); }
-/* comic page gutter grid */
-html[data-theme="comic"] .ch-page {
-  display: grid; gap: 0.9rem; width: 100%;
-  grid-template-columns: 1fr 1fr;
-}
-html[data-theme="comic"] .ch-cell {
-  border: 3px solid var(--outline); background: var(--surface);
-  box-shadow: 4px 4px 0 var(--panel-shadow); position: relative;
-  display: flex; align-items: center; justify-content: center;
-  padding: 1rem; overflow: hidden; min-height: 0;
-}
-html[data-theme="comic"] .ch-cap {
-  position: absolute; top: 0; left: 0; background: var(--accent-2); color: #141414;
-  border-right: 3px solid var(--outline); border-bottom: 3px solid var(--outline);
-  font-family: var(--font-display); font-size: 0.85rem; padding: 0.05rem 0.5rem;
 }
 
 /* ============================================================

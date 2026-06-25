@@ -16,8 +16,8 @@ export function BB8Toggle({ size = '6.5px' }: { size?: string }) {
   };
 
   return (
-    <label className="bb8-toggle" style={{ ['--toggle-size' as string]: size } as React.CSSProperties} aria-label="Toggle dark mode">
-      <input className="bb8-toggle__checkbox" type="checkbox" checked={dark} onChange={onChange} />
+    <label className="bb8-toggle" style={{ ['--toggle-size' as string]: size } as React.CSSProperties}>
+      <input className="bb8-toggle__checkbox" type="checkbox" checked={dark} onChange={onChange} aria-label="Toggle dark mode" />
       <div className="bb8-toggle__container">
         <div className="bb8-toggle__scenery">
           <div className="bb8-toggle__star" />
