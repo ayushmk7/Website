@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const GH = 'https://github.com/ayushmk7';
 const LI = 'https://www.linkedin.com/in/ayushmk';
@@ -14,12 +14,30 @@ const linkedinSvg = (
 
 export default function ComicHero() {
   const [open, setOpen] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.activeElement as HTMLElement | null;
+    const focusables = () => Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('a[href],button,[tabindex]:not([tabindex="-1"])') ?? []);
+    focusables()[0]?.focus();
+    const onTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      const els = focusables();
+      if (els.length === 0) return;
+      const first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    window.addEventListener('keydown', onTab);
+    return () => { window.removeEventListener('keydown', onTab); prev?.focus(); };
   }, [open]);
 
   return (
@@ -33,7 +51,7 @@ export default function ComicHero() {
         </button>
 
         {open && (
-          <div className="comic-lightbox" role="dialog" aria-modal="true" onClick={() => setOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 2000, display: 'grid', placeItems: 'center', padding: 'clamp(1rem,3vw,2rem)', background: 'rgba(0,0,0,0.72)', cursor: 'zoom-out' }}>
+          <div ref={dialogRef} className="comic-lightbox" role="dialog" aria-modal="true" onClick={() => setOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 2000, display: 'grid', placeItems: 'center', padding: 'clamp(1rem,3vw,2rem)', background: 'rgba(0,0,0,0.72)', cursor: 'zoom-out' }}>
             <div className="panel" onClick={(e) => e.stopPropagation()} style={{ position: 'relative', padding: '0.5rem', background: 'var(--surface)' }}>
               <img src="/profile.jpg" alt="Ayush Madhav Kumar" style={{ display: 'block', width: 'auto', height: 'auto', maxHeight: '82vh', maxWidth: '88vw', borderRadius: '2px' }} />
               <button type="button" className="comic-link-btn" onClick={() => setOpen(false)} aria-label="Close" style={{ position: 'absolute', top: '-0.9rem', right: '-0.9rem', width: '2.4rem', height: '2.4rem', padding: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontSize: '1.3rem' }}>X</button>
