@@ -1,11 +1,15 @@
 ---
-// Projects — newspaper cards in a varied-size bento grid.
+// Projects — auto-scrolling + manual carousel with a comic-pop scrollbar.
+// Cards rendered twice so the auto-scroll wraps seamlessly (see index.astro script).
 import { projects } from '../../data/projects';
 import { hackathons } from '../../data/v2';
 import ProjectCard from './ProjectCard.astro';
 
 const list = projects.filter((p) => !hackathons.some((h) => h.project === p.title));
 ---
-<div class="np-bento">
-  {list.map((p, i) => <ProjectCard p={p} i={i} />)}
+<div class="cscroll" data-autoscroll tabindex="0" aria-label="Projects carousel — scroll to browse">
+  <div class="cscroll-track">
+    {list.map((p, i) => <ProjectCard p={p} i={i} />)}
+    {list.map((p, i) => <ProjectCard p={p} i={i} />)}
+  </div>
 </div>

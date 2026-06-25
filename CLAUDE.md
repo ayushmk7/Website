@@ -48,8 +48,8 @@ Notes:
    A→Z** (case-insensitive).
 4. **Projects** (`projects.ts`) / **Hackathons** (`v2.ts`): append new ones;
    correct existing ones. Never drop curated entries that aren't in the résumé.
-5. Don't touch layout/theme (baked: Experience=accordion, Projects=bento,
-   Hackathons=newspaper, Stack=bento — varied-size newspaper cards) unless asked.
+5. Don't touch layout/theme (baked: Experience=accordion, Projects=carousel,
+   Hackathons=newspaper, Stack=carousel, newspaper card skin) unless asked.
 
 ## After any change — verify
 
