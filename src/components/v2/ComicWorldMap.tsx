@@ -5,6 +5,7 @@ import { places, type Place } from '../../data/places';
 import { weatherLabel } from '../../lib/geo';
 
 type WxParts = { temp?: string; cond?: string; wind?: string; status?: string };
+const wxCache = new Map<string, WxParts>();
 function popupHtml(p: Place, parts: WxParts): string {
   const wx = parts.temp != null
     ? `<span class="cwm-pop-temp">${parts.temp}</span>
@@ -73,6 +74,8 @@ export default function ComicWorldMap() {
         const m = L.marker([p.lat, p.lng], { icon, title: `${p.name}, ${p.country}` }).addTo(map);
         m.bindPopup(popupHtml(p, { status: 'Loading weather…' }), { maxWidth: 360, minWidth: 200, className: 'cwm-pop-wrap', autoPanPadding: [24, 24] });
         m.on('popupopen', () => {
+          const key = `${p.lat},${p.lng}`;
+          if (wxCache.has(key)) { m.setPopupContent(popupHtml(p, wxCache.get(key)!)); return; }
           fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=celsius`)
             .then((r) => { if (!r.ok) throw new Error('bad'); return r.json(); })
             .then((d) => {
@@ -82,6 +85,7 @@ export default function ComicWorldMap() {
                 cond: weatherLabel(c.weather_code),
                 wind: `Wind ${Math.round(c.wind_speed_10m)} km/h`,
               };
+              wxCache.set(key, parts);
               if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, parts));
             })
             .catch(() => { if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, { status: 'Weather unavailable' })); });
