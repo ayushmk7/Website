@@ -93,9 +93,10 @@ export default function ComicWorldMap() {
       const fill = () => {
         map.invalidateSize({ animate: false, pan: false });
         map.setMinZoom(0);
-        // fit the whole world INSIDE the frame with px padding on every side, so
-        // edge cities (e.g. San Francisco) always have margin and never clip.
-        map.fitBounds(worldBounds, { padding: [24, 20], animate: false });
+        // fit the world flush to the frame — box aspect (1.49:1) equals the
+        // world's mercator aspect, so no padding = no ocean-margin ring, and
+        // all pins are interior (±122 lng max) so none clip at the edge.
+        map.fitBounds(worldBounds, { padding: [0, 0], animate: false });
         map.setMinZoom(map.getZoom());
       };
       mapRef.current = map;

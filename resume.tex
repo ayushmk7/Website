@@ -29,8 +29,8 @@
 \addtolength{\oddsidemargin}{-0.6in}
 \addtolength{\evensidemargin}{-0.6in}
 \addtolength{\textwidth}{1.25in}
-\addtolength{\topmargin}{-0.75in}
-\addtolength{\textheight}{1.55in}
+\addtolength{\topmargin}{-0.9in}
+\addtolength{\textheight}{1.9in}
 
 \urlstyle{same}
 \raggedbottom
@@ -38,8 +38,8 @@
 \setlength{\tabcolsep}{0in}
 
 \titleformat{\section}{
-  \vspace{-6pt}\scshape\raggedright\large\bfseries
-}{}{0em}{}[\titlerule \vspace{-6pt}]
+  \vspace{-10pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\titlerule \vspace{-7pt}]
 
 \pdfgentounicode=1
 
@@ -62,7 +62,7 @@
 \renewcommand\labelitemi{$\bullet$}
 
 \newcommand{\resumeSubHeadingListStart}{
-  \begin{itemize}[leftmargin=0in,label={},itemsep=2pt,topsep=0pt]
+  \begin{itemize}[leftmargin=0in,label={},itemsep=1pt,topsep=0pt]
 }
 
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
@@ -94,14 +94,32 @@
 \section{Education}
 \resumeSubHeadingListStart
 \resumeSubheading
-  {\href{https://www.engin.umich.edu/}{University of Michigan, College of Engineering}}{Aug 2025 -- May 2028}
-  {Bachelor of Science in Computer Science; Minor in Business and Mathematics}{Ann Arbor, Michigan}
+  {\href{https://www.engin.umich.edu/}{University of Michigan, College of Engineering}}{Aug 2025 -- December 2028}
+  {Bachelor of Science in Computer Science; Minor in Mathematics}{Ann Arbor, Michigan}
 
 \resumeSubHeadingListEnd
 
 %-----------EXPERIENCE-----------
 \section{Experience}
 \resumeSubHeadingListStart
+
+\resumeSubheading
+  {\href{https://www.jaseci.org/}{Jaseci Labs}}{May 2026 -- Present}
+  {Software Engineering Intern}{Ann Arbor, Michigan}
+\resumeItemListStart
+  \resumeItem{Engineering a domain-specialized coding agent for the Jac programming language, fine tuning Gemma 4 26B with Unsloth and 4-bit QLoRA on an object-spatial superset of Python where general-purpose models lack usable priors}
+  \resumeItem{Architecting a multi-recipe synthetic data pipeline with Python-to-Jac parallel translation, adversarial DPO negatives, evol-instruct, and self-distillation, targeting 300k+ examples verified behind a compiler and unit-test hard-gate}
+  \resumeItem{Designing a four-stage training curriculum spanning core SFT, debugging and reasoning, DPO alignment, and multi-turn agentic data to prevent Python-pattern fallback and lock in idiomatic walker, node, and edge constructs}
+\resumeItemListEnd
+
+\resumeSubheading
+  {\href{https://jaseci.org/}{Pathways for Open Source Ecosystems ( POSE ) Research}}{May 2026 -- Present}
+  {Professor Misc. (Temp.) / Student Researcher}{Ann Arbor, Michigan}
+\resumeItemListStart
+  \resumeItem{Part of NSF Phase I POSE research (\$300K) to grow an open-source ecosystem around the data spatial Jac language}
+  \resumeItem{Enhancing the project's digital infrastructure, documentation site, CI, and contributor onboarding tooling to lower the barrier to entry for new developers and grow an active, distributed Jac contributor community}
+  \resumeItem{Authoring tutorials, code samples, and educational materials, and analyzing developer feedback and usage telemetry to refine onboarding workflows and inform governance models for long-term ecosystem sustainability}
+\resumeItemListEnd
 
 \resumeSubheading
   {\href{https://cactuscompute.com/}{Cactus (YC S25)}}{January 2026 -- Present}
@@ -111,25 +129,6 @@
   \resumeItem{Implementing ARM specific SIMD kernels for matrix multiplication and attention mechanisms with KV cache quantization}
   \resumeItem{Developing zero copy computation graphs for efficient on device transformer inference with sub 50ms time to first token}
   \resumeItem{Building OpenAI compatible FFI APIs for cross platform SDK integration across Flutter, React Native, and Kotlin}
-\resumeItemListEnd
-
-\resumeSubheading
-  {\href{https://claws.engin.umich.edu/}{NASA CLAWS}}{September 2025 -- Present}
-  {Artificial Intelligence Engineer}{Ann Arbor, Michigan}
-\resumeItemListStart
-  \resumeItem{Engineering, a dual inference AI assistant for NASA SUITS and RASC AL challenges, integrating lightweight transformers (TinyBERT) on Jetson Orin Nano via ONNX Runtime for sub 350 ms inference, including troubleshooting deployments}
-  \resumeItem{Designing an edge cloud architecture that routes inference based on query complexity, latency, and network state}
-  \resumeItem{Implementing DSPy based orchestration and Pydantic validated NLP pipelines within Unity Inference Engine}
-  \resumeItem{Integrating WebSockets and Whisper based preprocessing to synchronize telemetry in high noise environments}
-\resumeItemListEnd
-
-\resumeSubheading
-  {\href{https://www.joinpatch.org/}{Patch}}{June 2025 -- August 2025}
-  {2025 Cohort Founder}{Dublin, Ireland}
-\resumeItemListStart
-  \resumeItem{Built a startup in 7 weeks as part of the Patch Summer Accelerator, leading end to end technical full stack development}
-  \resumeItem{Offsited at Stripe Dublin and Developed the mobile frontend using React Native, optimizing UI responsiveness and UX}
-  \resumeItem{Implemented a scalable backend with Django and PostgreSQL to manage health data, authentication, and notifications}
 \resumeItemListEnd
 
 \resumeSubheading
@@ -144,8 +143,15 @@
 
 \resumeSubHeadingListEnd
 %-----------PROJECTS-----------
-\section{Projects/Contributions}
+\section{Projects/Research}
 \resumeSubHeadingListStart
+\resumeProjectHeading
+{\href{https://claws.engin.umich.edu/}{\textbf{NASA SUITS Challenge}} $|$ \emph{Artificial Intelligence Team Lead;  Python, PyTorch, A*/JPS, Unity}}{}
+\resumeItemListStart
+\resumeItem{Built autonomous lunar-EVA navigation with A*/Jump Point Search planners over a 3-layer occupancy grid, 17-ray LiDAR fusion, PD heading control with curvature lookahead, and RSSI trilateration via inverse log-distance modeling}
+\resumeItem{Designed PyTorch obstacle detection models, a temporal ResidualBeamCNN and a BEV cross-attention transformer with learnable query embeddings, served in real time behind a hot-swappable multi-backend inference framework}
+\resumeItem{Engineered the voice pipeline, streaming 16 kHz PCM over WebSocket to a faster-whisper and a neural intent classifier}
+\resumeItemListEnd
 
 \resumeProjectHeading
 {\href{https://github.com/ayushmk7/Inferno}{\textbf{Machine Learning Model Serving Microservice}} $|$ \emph{Python, Flask, RabbitMQ, MongoDB, Docker}}{}
@@ -155,27 +161,16 @@
 \resumeItem{Persisted model outputs and user queries in MongoDB for analytics and logging, and containerized the system using Docker}
 \resumeItemListEnd
 
-\resumeProjectHeading
-{\href{https://github.com/ayushmk7/3DModelling.git}{\textbf{NeRF Based 3D Modelling}} $|$ \emph{Neural Radiance Fields, Machine Learning, PyTorch, Computer Vision}}{}
-\resumeItemListStart
-  \resumeItem{ Built an end-to-end Neural Radiance Fields (NeRF) pipeline for photorealistic 3D reconstruction from multi-view images.}
-  \resumeItem{Implemented volumetric ray marching, positional encoding, and differentiable density/color prediction for view synthesis.}
-  \resumeItem{Designed a modular training pipeline with configurable hyperparameters to support multiple 3D reconstruction datasets.}
-\resumeItemListEnd
-
 \resumeSubHeadingListEnd
-
-
 
 %-----------TECHNICAL SKILLS-----------
 \section{Technical Skills}
 \resumeItemListStart
-  \resumeItem{\textbf{Programming Languages:} Python, JavaScript, TypeScript, Java, C, C++, C sharp, Ruby, PHP, SQL, HTML, CSS}
-  \resumeItem{\textbf{AI and ML:} PyTorch, TensorFlow, JAX, HuggingFace Transformers, ONNX Runtime, Scikit learn, OpenAI APIs, LLMs, NLP, Computer Vision, Reinforcement Learning, Edge AI deployment, Model optimization}
-  \resumeItem{\textbf{Software Development:} React, Next.js, React Native, Node.js, Django, Flask, FastAPI, REST, GraphQL, Flutter, Dart, WebSockets, Progressive Web Apps, Vue, Git, GitHub, GitHub Actions, GitLab, APIs}
-  \resumeItem{\textbf{Databases and Data Engineering:} MongoDB, PostgreSQL, Redis, MySQL, Data modeling, ETL pipelines}
-  \resumeItem{\textbf{DevOps and Cloud Infrastructure:} Docker, Kubernetes, CI CD pipelines, RabbitMQ, Linux, AWS EC2, AWS Lambda, AWS S3, Google Cloud, Edge deployment, Serverless architecture, Scalable ML inference orchestration}
-  \resumeItem{\textbf{Cybersecurity:} Nmap automation, PCAP forensics, TLS protocol analysis, API and web vulnerability analysis, reverse engineering, YARA based malware triage, cryptographic weakness detection, AWS IAM and S3 security}
-\resumeItem{\textbf{Core Computer Science:} Data Structures, Algorithms, Time and Space Complexity Analysis, Object Oriented Design, Memory Management, Concurrency and Multithreading, Operating Systems Basics}
+  \resumeItem{\textbf{Programming Languages:} Python, JavaScript, TypeScript, Java, C, C++, Go, Rust, Ruby, SQL, Jac, HTML, CSS}
+  \resumeItem{\textbf{AI and ML:} PyTorch, TensorFlow, JAX, HuggingFace Transformers, Unsloth, LoRA/QLoRA fine tuning, RLHF/DPO, ONNX Runtime, vLLM, Scikit learn, OpenAI APIs, LLMs, RAG, Mixture of Experts, NLP, Computer Vision, Reinforcement Learning, Edge AI, Quantization, Model optimization, Agentic systems, MCP}
+  \resumeItem{\textbf{Software Development:} React, Next.js, React Native, Node.js, Express, Django, Flask, FastAPI, REST, GraphQL, gRPC, Flutter, Dart, WebSockets, Tailwind CSS, Vue, Git, GitHub, GitHub Actions, GitLab, CI/CD, APIs}
+  \resumeItem{\textbf{Databases and Data Engineering:} MongoDB, PostgreSQL, Redis, MySQL, Vector databases, ETL pipelines, Pandas}
+  \resumeItem{\textbf{DevOps and Cloud Infrastructure:} Docker, Kubernetes, CI CD pipelines, RabbitMQ, Linux, AWS EC2, AWS Lambda, AWS S3, GCP, Terraform, Nginx, Edge deployment, Serverless architecture, Scalable ML inference orchestration}
+\resumeItem{\textbf{Core Computer Science:} Data Structures, Algorithms, Time and Space Complexity Analysis, Object Oriented Design}
 \resumeItemListEnd
 \end{document}
