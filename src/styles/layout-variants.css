@@ -39,9 +39,10 @@ html[data-theme="comic"] .panel--burst,
 .lv-acc .vbul { padding: 0 0 0.8rem 1.4rem; }
 
 /* ---- Projects / Stack: carousel (auto-move + manual, comic scrollbar) ---- */
-.cscroll { overflow-x: auto; overflow-y: hidden; padding-bottom: 0.9rem; scroll-snap-type: x proximity; scrollbar-color: var(--accent) var(--surface); }
+/* no scroll-snap: it fights the per-frame auto-scroll (snaps the nudges back) */
+.cscroll { overflow-x: auto; overflow-y: hidden; padding-bottom: 0.9rem; scrollbar-color: var(--accent) var(--surface); }
 .cscroll-track { display: flex; gap: 1rem; width: max-content; }
-.cscroll-track > * { flex: 0 0 min(85vw, 22rem); scroll-snap-align: start; }
+.cscroll-track > * { flex: 0 0 min(85vw, 22rem); }
 .cscroll-track .vcard { display: flex; flex-direction: column; }
 .cscroll::-webkit-scrollbar { height: 18px; }
 .cscroll::-webkit-scrollbar-track { background: var(--surface); border: 3px solid var(--outline); border-radius: 999px; }
