@@ -1,5 +1,6 @@
 ---
-// Stack (skills) section — all layout variants, toggled by LayoutLab.
+// Stack — auto-scrolling + manual carousel of category cards (comic scrollbar).
+// Groups rendered twice so the auto-scroll wraps seamlessly.
 import resumeData from '../../data/resume.json';
 
 const labels: Record<string, string> = {
@@ -12,153 +13,13 @@ const labels: Record<string, string> = {
   coreCs: 'Core Computer Science',
 };
 const groups = Object.entries(resumeData.skills) as [string, string[]][];
-const allTags = groups.flatMap(([, items]) => items);
-const DEFAULT = 'current';
-const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
 ---
-<!-- current: grouped tag clouds -->
-<div class="lv lv--stack" data-variant="current" style={hide('current')}>
-  <div style="display:flex;flex-direction:column;gap:1.75rem">
-    {groups.map(([key, items]) => (
-      <div>
-        <h3 class="text-2xl text-[var(--comic-blue)]" style="font-family:var(--font-display);margin-bottom:0.75rem">{labels[key] ?? key}</h3>
-        <div style="display:flex;flex-wrap:wrap;gap:0.5rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
-      </div>
-    ))}
-  </div>
-</div>
-
-<!-- columns: masonry cards -->
-<div class="lv lv--stack" data-variant="columns" style={hide('columns')}>
-  <div class="stack-columns">
-    {groups.map(([key, items]) => (
-      <div class="stk-group vcard">
-        <h3 class="vco" style="font-size:1.35rem;margin-bottom:0.6rem">{labels[key] ?? key}</h3>
+<div class="cscroll" data-autoscroll tabindex="0" aria-label="Stack carousel — scroll to browse">
+  <div class="cscroll-track">
+    {[...groups, ...groups].map(([key, items]) => (
+      <div class="vcard">
+        <h3 class="vco" style="font-size:1.3rem;margin-bottom:0.55rem">{labels[key] ?? key}</h3>
         <div style="display:flex;flex-wrap:wrap;gap:0.4rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
-      </div>
-    ))}
-  </div>
-</div>
-
-<!-- terminal: console listing -->
-<div class="lv lv--stack" data-variant="terminal" style={hide('terminal')}>
-  <div class="exp-terminal">
-    <div class="t-bar"><span class="t-dot" style="background:#ff5f56"></span><span class="t-dot" style="background:#ffbd2e"></span><span class="t-dot" style="background:#27c93f"></span></div>
-    {groups.map(([key, items]) => (
-      <div class="t-row">
-        <div><span class="t-cmd">$ skills</span> <span class="t-arg">--{key}</span></div>
-        <div class="t-out">{items.join(', ')}</div>
-      </div>
-    ))}
-  </div>
-</div>
-
-<!-- cloud: one weighted tag wall -->
-<div class="lv lv--stack" data-variant="cloud" style={hide('cloud')}>
-  <div class="stack-cloud">
-    {allTags.map((s) => <span class="skill-tag">{s}</span>)}
-  </div>
-</div>
-
-<!-- ticker: auto-scrolling rows (one per category, alternating direction) -->
-<div class="lv lv--stack" data-variant="ticker" style={hide('ticker')}>
-  <div class="stack-ticker">
-    {groups.map(([, items]) => (
-      <div class="stk-row">
-        <div class="stk-track">
-          {items.map((s) => <span class="skill-tag">{s}</span>)}
-          {items.map((s) => <span class="skill-tag" aria-hidden="true">{s}</span>)}
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
-
-<!-- accordion: collapsible per category -->
-<div class="lv lv--stack" data-variant="accordion" style={hide('accordion')}>
-  <div class="lv-acc">
-    {groups.map(([key, items], i) => (
-      <details open={i === 0}>
-        <summary><span class="acc-co" style="font-size:1.3rem">{labels[key] ?? key}</span><span class="acc-period">{items.length} skills</span></summary>
-        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;padding:0 0 0.8rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
-      </details>
-    ))}
-  </div>
-</div>
-
-<!-- panels: captioned comic panels -->
-<div class="lv lv--stack" data-variant="panels" style={hide('panels')}>
-  <div class="stack-panels">
-    {groups.map(([key, items]) => (
-      <div class="spanel">
-        <span class="spanel-cap">{labels[key] ?? key}</span>
-        <div class="spanel-tags">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
-      </div>
-    ))}
-  </div>
-</div>
-
-<!-- rail: one continuous marquee of every skill -->
-<div class="lv lv--stack" data-variant="rail" style={hide('rail')}>
-  <div class="stack-rail">
-    <div class="rail-track">
-      {allTags.map((s) => <span class="skill-tag">{s}</span>)}
-      {allTags.map((s) => <span class="skill-tag" aria-hidden="true">{s}</span>)}
-    </div>
-  </div>
-</div>
-
-<!-- table: category × skills -->
-<div class="lv lv--stack" data-variant="table" style={hide('table')}>
-  <div class="proj-table">
-    <table>
-      <thead><tr><th>Category</th><th>Skills</th></tr></thead>
-      <tbody>
-        {groups.map(([key, items]) => (
-          <tr>
-            <td class="pt-title" style="white-space:nowrap">{labels[key] ?? key}</td>
-            <td class="pt-tags">{items.join(', ')}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- badges: sticker wall -->
-<div class="lv lv--stack" data-variant="badges" style={hide('badges')}>
-  <div class="stack-badges">
-    {allTags.map((s) => <span class="badge-chip">{s}</span>)}
-  </div>
-</div>
-
-<!-- carousel: auto-scrolling category cards -->
-<div class="lv lv--stack" data-variant="carousel" style={hide('carousel')}>
-  <div class="proj-carousel-auto stack-carousel">
-    <div class="carousel-track">
-      {[...groups, ...groups].map(([key, items]) => (
-        <div class="vcard">
-          <h3 class="vco" style="font-size:1.3rem;margin-bottom:0.55rem">{labels[key] ?? key}</h3>
-          <div style="display:flex;flex-wrap:wrap;gap:0.4rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
-        </div>
-      ))}
-    </div>
-  </div>
-</div>
-
-<!-- spotlight: featured first group + compact rest -->
-<div class="lv lv--stack" data-variant="spotlight" style={hide('spotlight')}>
-  <div class="stack-spotlight">
-    {groups.length > 0 && (
-      <div class="spot-hero">
-        <h3>{labels[groups[0][0]] ?? groups[0][0]}</h3>
-        <div class="spanel-tags">{groups[0][1].map((s) => <span class="skill-tag">{s}</span>)}</div>
-      </div>
-    )}
-    {groups.slice(1).map(([key, items]) => (
-      <div class="spanel" style="padding-top:1.1rem">
-        <span class="spanel-cap">{labels[key] ?? key}</span>
-        <div class="spanel-tags">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
       </div>
     ))}
   </div>

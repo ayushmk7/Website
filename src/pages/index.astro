@@ -9,7 +9,6 @@ import ExperienceLayouts from '../components/v2/ExperienceLayouts.astro';
 import ProjectLayouts from '../components/v2/ProjectLayouts.astro';
 import HackathonLayouts from '../components/v2/HackathonLayouts.astro';
 import StackLayouts from '../components/v2/StackLayouts.astro';
-import LayoutLab from '../components/v2/LayoutLab.astro';
 ---
 <ThemeLayout themeKey="comic" title="Ayush Madhav Kumar. Comic Pop">
   <ComicHero client:load />
@@ -93,5 +92,27 @@ import LayoutLab from '../components/v2/LayoutLab.astro';
     })();
   </script>
 
-  <LayoutLab />
+  <script is:inline>
+    // Carousels: gentle auto-scroll that pauses while you interact; manual
+    // scroll/drag via the comic scrollbar always works. Track holds two copies
+    // so the wrap is seamless. Honors prefers-reduced-motion.
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.querySelectorAll('.cscroll[data-autoscroll]').forEach(function (el) {
+        var paused = false;
+        ['pointerenter', 'focusin', 'pointerdown', 'touchstart'].forEach(function (e) { el.addEventListener(e, function () { paused = true; }, { passive: true }); });
+        ['pointerleave', 'focusout', 'touchend'].forEach(function (e) { el.addEventListener(e, function () { paused = false; }, { passive: true }); });
+        if (reduce) return;
+        function step() {
+          var half = el.scrollWidth / 2;
+          if (!paused && half > 0) {
+            el.scrollLeft += 0.5;
+            if (el.scrollLeft >= half) el.scrollLeft -= half;
+          }
+          requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    })();
+  </script>
 </ThemeLayout>

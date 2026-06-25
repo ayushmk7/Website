@@ -1,102 +1,15 @@
 ---
-// Projects section — all layout variants, toggled by LayoutLab.
+// Projects — auto-scrolling + manual carousel with a comic-pop scrollbar.
+// Cards rendered twice so the auto-scroll wraps seamlessly (see index.astro script).
 import { projects } from '../../data/projects';
 import { hackathons } from '../../data/v2';
 import ProjectCard from './ProjectCard.astro';
-import ProjectLinks from './ProjectLinks.astro';
 
 const list = projects.filter((p) => !hackathons.some((h) => h.project === p.title));
-const DEFAULT = 'carousel';
-const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
 ---
-<!-- current: three-column cards -->
-<div class="lv lv--proj" data-variant="current" style={hide('current')}>
-  <div class="grid md:grid-cols-3" style="gap:1.5rem">
+<div class="cscroll" data-autoscroll tabindex="0" aria-label="Projects carousel — scroll to browse">
+  <div class="cscroll-track">
     {list.map((p, i) => <ProjectCard p={p} i={i} />)}
-  </div>
-</div>
-
-<!-- bento: varied-size grid -->
-<div class="lv lv--proj" data-variant="bento" style={hide('bento')}>
-  <div class="proj-bento">
     {list.map((p, i) => <ProjectCard p={p} i={i} />)}
-  </div>
-</div>
-
-<!-- polaroid: tilted photo cards -->
-<div class="lv lv--proj" data-variant="polaroid" style={hide('polaroid')}>
-  <div class="proj-polaroid">
-    {list.map((p) => (
-      <div class="pol">
-        <div class="pol-photo"><h3>{p.title}</h3></div>
-        <p class="pol-cap">{p.description}</p>
-        <div class="pol-links"><ProjectLinks p={p} /></div>
-      </div>
-    ))}
-  </div>
-</div>
-
-<!-- index table -->
-<div class="lv lv--proj" data-variant="table" style={hide('table')}>
-  <div class="proj-table">
-    <table>
-      <thead><tr><th>Project</th><th>Stack</th><th>Links</th></tr></thead>
-      <tbody>
-        {list.map((p) => (
-          <tr>
-            <td><div class="pt-title">{p.title}</div><div style="font-size:0.8rem;opacity:0.85;max-width:28rem">{p.description}</div></td>
-            <td class="pt-tags">{p.tags.slice(0, 6).join(', ')}</td>
-            <td><div class="pt-links"><ProjectLinks p={p} /></div></td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- carousel: auto-scrolling, seamless loop (list rendered twice) -->
-<div class="lv lv--proj" data-variant="carousel" style={hide('carousel')}>
-  <div class="proj-carousel-auto">
-    <div class="carousel-track">
-      {list.map((p, i) => <ProjectCard p={p} i={i} />)}
-      {list.map((p, i) => <ProjectCard p={p} i={i} />)}
-    </div>
-  </div>
-</div>
-
-<!-- masonry: column flow -->
-<div class="lv lv--proj" data-variant="masonry" style={hide('masonry')}>
-  <div class="proj-masonry">
-    {list.map((p, i) => <ProjectCard p={p} i={i} />)}
-  </div>
-</div>
-
-<!-- rows: wide horizontal rows -->
-<div class="lv lv--proj" data-variant="rows" style={hide('rows')}>
-  <div class="proj-rows">
-    {list.map((p) => (
-      <div class="prow">
-        <div class="prow-main">
-          <div class="prow-title">{p.title}</div>
-          <p style="font-size:0.86rem;margin-top:0.2rem">{p.description}</p>
-          <div class="prow-tags">{p.tags.slice(0, 6).map((t) => <span class="skill-tag">{t}</span>)}</div>
-        </div>
-        <ProjectLinks p={p} />
-      </div>
-    ))}
-  </div>
-</div>
-
-<!-- terminal: ls listing -->
-<div class="lv lv--proj" data-variant="terminal" style={hide('terminal')}>
-  <div class="exp-terminal">
-    <div class="t-bar"><span class="t-dot" style="background:#ff5f56"></span><span class="t-dot" style="background:#ffbd2e"></span><span class="t-dot" style="background:#27c93f"></span></div>
-    <div class="t-row"><span class="t-cmd">$ ls</span> <span class="t-arg">~/projects</span></div>
-    {list.map((p) => (
-      <div class="t-row">
-        <div><span class="t-arg">{p.title}/</span> <span class="t-dim"># {p.tags.slice(0, 4).join(', ')}</span></div>
-        <div class="t-out">{p.description}</div>
-      </div>
-    ))}
   </div>
 </div>
