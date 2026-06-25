@@ -1,6 +1,6 @@
 /* ============================================================
-   Baked layouts: Experience=accordion · Projects=carousel ·
-   Hackathons=newspaper · Stack=carousel. All cards wear a newspaper
+   Baked layouts: Experience=accordion · Projects=bento · Hackathons=newspaper ·
+   Stack=bento (varied-size newspaper cards). All cards wear a newspaper
    (paper + ink) skin that flips with light/dark.
    ============================================================ */
 
@@ -54,16 +54,23 @@ html[data-theme="comic"] .cwm-pop-sub { color: color-mix(in srgb, var(--ink) 65%
 .lv-acc .acc-period { margin-left: auto; font-size: 0.78rem; font-weight: 700; opacity: 0.8; }
 .lv-acc .vbul { padding: 0 0 0.8rem 1.4rem; }
 
-/* ---- Projects / Stack: carousel (auto-move + manual, comic scrollbar) ---- */
-/* no scroll-snap: it fights the per-frame auto-scroll (snaps the nudges back) */
-.cscroll { overflow-x: auto; overflow-y: hidden; padding-bottom: 0.9rem; scrollbar-color: var(--accent) var(--surface); }
-.cscroll-track { display: flex; gap: 1rem; width: max-content; }
-.cscroll-track > * { flex: 0 0 min(85vw, 22rem); }
-.cscroll-track .vcard { display: flex; flex-direction: column; }
-.cscroll::-webkit-scrollbar { height: 18px; }
-.cscroll::-webkit-scrollbar-track { background: var(--surface); border: 3px solid var(--outline); border-radius: 999px; }
-.cscroll::-webkit-scrollbar-thumb { background: var(--accent); border: 3px solid var(--outline); border-radius: 999px; }
-.cscroll::-webkit-scrollbar-thumb:hover { background: var(--comic-blue); }
+/* ---- Projects / Stack: newspaper cards in a varied-size bento grid ---- */
+.np-bento { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; grid-auto-flow: dense; }
+.np-bento > * { grid-column: span 1; }
+.np-bento > :nth-child(7n+1) { grid-column: span 2; grid-row: span 2; }  /* lead story */
+.np-bento > :nth-child(7n+4) { grid-column: span 2; }                    /* wide */
+.np-bento > :nth-child(5n+3) { grid-row: span 2; }                       /* tall */
+.np-bento .panel, .np-bento .vcard { height: 100%; }
+.np-bento .vcard { display: flex; flex-direction: column; }
+@media (max-width: 900px) {
+  .np-bento { grid-template-columns: repeat(2, 1fr); }
+  .np-bento > :nth-child(7n+1) { grid-column: span 2; grid-row: span 1; }
+  .np-bento > :nth-child(7n+4), .np-bento > :nth-child(5n+3) { grid-column: span 1; grid-row: span 1; }
+}
+@media (max-width: 560px) {
+  .np-bento { grid-template-columns: 1fr; }
+  .np-bento > * { grid-column: span 1 !important; grid-row: span 1 !important; }
+}
 
 /* ---- Hackathons: newspaper clippings ---- */
 .hack-news { column-width: 18rem; column-gap: 1.25rem; }

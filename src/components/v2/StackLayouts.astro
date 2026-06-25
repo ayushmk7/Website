@@ -1,6 +1,5 @@
 ---
-// Stack — auto-scrolling + manual carousel of category cards (comic scrollbar).
-// Groups rendered twice so the auto-scroll wraps seamlessly.
+// Stack — newspaper category cards in a varied-size bento grid.
 import resumeData from '../../data/resume.json';
 
 const labels: Record<string, string> = {
@@ -14,13 +13,11 @@ const labels: Record<string, string> = {
 };
 const groups = Object.entries(resumeData.skills) as [string, string[]][];
 ---
-<div class="cscroll" data-autoscroll tabindex="0" aria-label="Stack carousel — scroll to browse">
-  <div class="cscroll-track">
-    {[...groups, ...groups].map(([key, items]) => (
-      <div class="vcard">
-        <h3 class="vco" style="font-size:1.3rem;margin-bottom:0.55rem">{labels[key] ?? key}</h3>
-        <div style="display:flex;flex-wrap:wrap;gap:0.4rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
-      </div>
-    ))}
-  </div>
+<div class="np-bento">
+  {groups.map(([key, items]) => (
+    <div class="vcard">
+      <h3 class="vco" style="font-size:1.3rem;margin-bottom:0.55rem">{labels[key] ?? key}</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:0.4rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
+    </div>
+  ))}
 </div>
