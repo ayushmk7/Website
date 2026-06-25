@@ -1,7 +1,8 @@
 ---
 // Experience section — all layout variants, toggled by LayoutLab.
 import { experience } from '../../data/v2';
-const hide = (v: string) => (v === 'current' ? undefined : 'display:none');
+const DEFAULT = 'accordion';
+const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
 ---
 <!-- current: two-column cards -->
 <div class="lv lv--exp" data-variant="current" style={hide('current')}>

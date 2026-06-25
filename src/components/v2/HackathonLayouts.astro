@@ -2,7 +2,8 @@
 // Hackathons section — all layout variants, toggled by LayoutLab.
 import { hackathons } from '../../data/v2';
 import HackLinks from './HackLinks.astro';
-const hide = (v: string) => (v === 'current' ? undefined : 'display:none');
+const DEFAULT = 'ticket';
+const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
 ---
 <!-- current: two-column burst panels -->
 <div class="lv lv--hack" data-variant="current" style={hide('current')}>

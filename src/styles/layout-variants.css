@@ -91,9 +91,44 @@
 .proj-table .pt-tags { font-size: 0.78rem; opacity: 0.85; }
 .proj-table .pt-links { display: flex; gap: 0.5rem; }
 
-/* ---------- PROJECTS / EXPERIENCE: carousel ---------- */
-.proj-carousel { display: flex; gap: 1rem; overflow-x: auto; padding: 0.5rem 0 1.1rem; scroll-snap-type: x mandatory; }
-.proj-carousel > * { flex: 0 0 min(85vw, 22rem); scroll-snap-align: center; }
+/* ---------- PROJECTS: auto-scrolling looping carousel (marquee) ---------- */
+/* Track holds the list twice; translateX(-50%) lands exactly on the copy, so
+   the loop is seamless. Pauses on hover; reverts to manual scroll when the
+   user prefers reduced motion. */
+.proj-carousel-auto { overflow: hidden; padding: 0.5rem 0 1.1rem; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.proj-carousel-auto .carousel-track { display: flex; gap: 1rem; width: max-content; animation: lvMarquee 60s linear infinite; }
+.proj-carousel-auto:hover .carousel-track, .proj-carousel-auto:focus-within .carousel-track { animation-play-state: paused; }
+.proj-carousel-auto .carousel-track > * { flex: 0 0 min(85vw, 22rem); }
+@keyframes lvMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .proj-carousel-auto { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-mask-image: none; mask-image: none; }
+  .proj-carousel-auto .carousel-track { animation: none; width: auto; }
+  .proj-carousel-auto .carousel-track > * { scroll-snap-align: center; }
+}
+
+/* ---------- STACK: columns (masonry) ---------- */
+.stack-columns { column-width: 16rem; column-gap: 1.5rem; }
+.stack-columns .stk-group { break-inside: avoid; margin-bottom: 1.5rem; }
+.stack-columns .vco { display: block; }
+
+/* ---------- STACK: cloud (one weighted tag wall) ---------- */
+.stack-cloud { display: flex; flex-wrap: wrap; gap: 0.55rem; align-items: center; justify-content: center; }
+.stack-cloud .skill-tag { font-size: 0.9rem; }
+.stack-cloud .skill-tag:nth-child(3n+1) { font-size: 1.15rem; }
+.stack-cloud .skill-tag:nth-child(7n+3) { font-size: 1.45rem; background: var(--accent-2); }
+.stack-cloud .skill-tag:nth-child(5n+2) { font-size: 0.8rem; opacity: 0.92; }
+.stack-cloud .skill-tag:nth-child(11n+6) { font-size: 1.3rem; color: var(--comic-blue); }
+
+/* ---------- STACK: ticker (auto-scroll rows, alternating direction) ---------- */
+.stack-ticker { display: flex; flex-direction: column; gap: 0.7rem; }
+.stack-ticker .stk-row { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.stack-ticker .stk-track { display: inline-flex; gap: 0.5rem; width: max-content; animation: lvMarquee 35s linear infinite; }
+.stack-ticker .stk-row:nth-child(even) .stk-track { animation-direction: reverse; }
+.stack-ticker:hover .stk-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .stack-ticker .stk-row { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .stack-ticker .stk-track { animation: none; width: auto; }
+}
 
 /* ---------- HACKATHONS: trophy ---------- */
 .hack-trophy { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.25rem; }

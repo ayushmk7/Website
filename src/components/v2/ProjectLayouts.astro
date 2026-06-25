@@ -6,7 +6,8 @@ import ProjectCard from './ProjectCard.astro';
 import ProjectLinks from './ProjectLinks.astro';
 
 const list = projects.filter((p) => !hackathons.some((h) => h.project === p.title));
-const hide = (v: string) => (v === 'current' ? undefined : 'display:none');
+const DEFAULT = 'carousel';
+const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
 ---
 <!-- current: three-column cards -->
 <div class="lv lv--proj" data-variant="current" style={hide('current')}>
@@ -53,9 +54,12 @@ const hide = (v: string) => (v === 'current' ? undefined : 'display:none');
   </div>
 </div>
 
-<!-- carousel: horizontal scroll-snap -->
+<!-- carousel: auto-scrolling, seamless loop (list rendered twice) -->
 <div class="lv lv--proj" data-variant="carousel" style={hide('carousel')}>
-  <div class="proj-carousel">
-    {list.map((p, i) => <ProjectCard p={p} i={i} />)}
+  <div class="proj-carousel-auto">
+    <div class="carousel-track">
+      {list.map((p, i) => <ProjectCard p={p} i={i} />)}
+      {list.map((p, i) => <ProjectCard p={p} i={i} />)}
+    </div>
   </div>
 </div>

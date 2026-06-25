@@ -1,0 +1,75 @@
+---
+// Stack (skills) section — all layout variants, toggled by LayoutLab.
+import resumeData from '../../data/resume.json';
+
+const labels: Record<string, string> = {
+  programmingLanguages: 'Programming Languages',
+  aiMl: 'AI and ML',
+  softwareDevelopment: 'Software Development',
+  databases: 'Databases and Data Engineering',
+  devOps: 'DevOps and Cloud Infrastructure',
+  cybersecurity: 'Cybersecurity',
+  coreCs: 'Core Computer Science',
+};
+const groups = Object.entries(resumeData.skills) as [string, string[]][];
+const allTags = groups.flatMap(([, items]) => items);
+const DEFAULT = 'current';
+const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
+---
+<!-- current: grouped tag clouds -->
+<div class="lv lv--stack" data-variant="current" style={hide('current')}>
+  <div style="display:flex;flex-direction:column;gap:1.75rem">
+    {groups.map(([key, items]) => (
+      <div>
+        <h3 class="text-2xl text-[var(--comic-blue)]" style="font-family:var(--font-display);margin-bottom:0.75rem">{labels[key] ?? key}</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- columns: masonry cards -->
+<div class="lv lv--stack" data-variant="columns" style={hide('columns')}>
+  <div class="stack-columns">
+    {groups.map(([key, items]) => (
+      <div class="stk-group vcard">
+        <h3 class="vco" style="font-size:1.35rem;margin-bottom:0.6rem">{labels[key] ?? key}</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- terminal: console listing -->
+<div class="lv lv--stack" data-variant="terminal" style={hide('terminal')}>
+  <div class="exp-terminal">
+    <div class="t-bar"><span class="t-dot" style="background:#ff5f56"></span><span class="t-dot" style="background:#ffbd2e"></span><span class="t-dot" style="background:#27c93f"></span></div>
+    {groups.map(([key, items]) => (
+      <div class="t-row">
+        <div><span class="t-cmd">$ skills</span> <span class="t-arg">--{key}</span></div>
+        <div class="t-out">{items.join(', ')}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- cloud: one weighted tag wall -->
+<div class="lv lv--stack" data-variant="cloud" style={hide('cloud')}>
+  <div class="stack-cloud">
+    {allTags.map((s) => <span class="skill-tag">{s}</span>)}
+  </div>
+</div>
+
+<!-- ticker: auto-scrolling rows (one per category, alternating direction) -->
+<div class="lv lv--stack" data-variant="ticker" style={hide('ticker')}>
+  <div class="stack-ticker">
+    {groups.map(([, items]) => (
+      <div class="stk-row">
+        <div class="stk-track">
+          {items.map((s) => <span class="skill-tag">{s}</span>)}
+          {items.map((s) => <span class="skill-tag" aria-hidden="true">{s}</span>)}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

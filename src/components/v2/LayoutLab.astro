@@ -4,17 +4,21 @@
 // delete this component + its import/usage in index.astro, then drop the unused
 // variants from the *Layouts.astro components.
 const sections = [
-  { key: 'exp', label: 'Experience', opts: [
+  { key: 'exp', label: 'Experience', def: 'accordion', opts: [
     ['current', 'Current — cards'], ['timeline', 'Timeline'], ['terminal', 'Terminal log'],
     ['filmstrip', 'Filmstrip'], ['accordion', 'Accordion'],
   ] },
-  { key: 'proj', label: 'Projects', opts: [
+  { key: 'proj', label: 'Projects', def: 'carousel', opts: [
     ['current', 'Current — grid'], ['bento', 'Bento grid'], ['polaroid', 'Polaroids'],
-    ['table', 'Index table'], ['carousel', 'Carousel'],
+    ['table', 'Index table'], ['carousel', 'Carousel (auto-loop)'],
   ] },
-  { key: 'hack', label: 'Hackathons', opts: [
+  { key: 'hack', label: 'Hackathons', def: 'ticket', opts: [
     ['current', 'Current — bursts'], ['trophy', 'Trophy cards'], ['timeline', 'Timeline'],
     ['leaderboard', 'Leaderboard'], ['ticket', 'Ticket stubs'],
+  ] },
+  { key: 'stack', label: 'Stack', def: 'current', opts: [
+    ['current', 'Current — groups'], ['columns', 'Masonry columns'], ['terminal', 'Terminal log'],
+    ['cloud', 'Tag cloud'], ['ticker', 'Ticker rows'],
   ] },
 ];
 ---
@@ -26,17 +30,17 @@ const sections = [
     <fieldset>
       <legend>{s.label}</legend>
       {s.opts.map(([val, label]) => (
-        <label><input type="radio" name={s.key} value={val} checked={val === 'current'} />{label}</label>
+        <label><input type="radio" name={s.key} value={val} checked={val === s.def} />{label}</label>
       ))}
     </fieldset>
   ))}
-  <button class="llab-reset" type="button">Reset all to Current</button>
+  <button class="llab-reset" type="button">Reset all to defaults</button>
 </div>
 
 <script is:inline>
   (function () {
-    var KEYS = { exp: 'lv--exp', proj: 'lv--proj', hack: 'lv--hack' };
-    var DEF = { exp: 'current', proj: 'current', hack: 'current' };
+    var KEYS = { exp: 'lv--exp', proj: 'lv--proj', hack: 'lv--hack', stack: 'lv--stack' };
+    var DEF = { exp: 'accordion', proj: 'carousel', hack: 'ticket', stack: 'current' };
     function apply(sec, val) {
       document.querySelectorAll('.' + KEYS[sec]).forEach(function (el) {
         el.style.display = (el.getAttribute('data-variant') === val) ? '' : 'none';
