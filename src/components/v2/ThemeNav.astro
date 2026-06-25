@@ -33,27 +33,28 @@ const links = [
     right: 0;
     z-index: 1000;
   }
-  /* comic-pop: thick black outline, hard offset shadow, no blur */
+  /* newspaper: paper + ink, thick ink outline, hard offset shadow */
   .theme-nav {
-    background: var(--surface);
-    border: 3px solid #000;
+    background: var(--paper);
+    border: 3px solid var(--ink);
     border-radius: 9999px;
     font-family: var(--font-body);
     font-weight: 700;
-    color: var(--text);
-    box-shadow: 4px 4px 0 #000;
+    color: var(--ink);
+    box-shadow: 4px 4px 0 var(--panel-shadow);
   }
+  /* masthead-style brand: inverted ink block */
   .theme-nav-brand {
     font-family: var(--font-display);
-    background: var(--accent-2);
-    color: #141414;
-    border: 2px solid #000;
+    background: var(--ink);
+    color: var(--paper);
+    border: 2px solid var(--ink);
     border-radius: 9999px;
     letter-spacing: 0.06em;
     text-decoration: none;
   }
   .theme-nav-link {
-    color: var(--text);
+    color: var(--ink);
     font-weight: 700;
     border-radius: 9999px;
     text-decoration: none;
@@ -63,6 +64,6 @@ const links = [
     width: 2px;
     height: 1.25rem;
     margin: 0 0.25rem;
-    background: #000;
+    background: var(--ink);
   }
 </style>
