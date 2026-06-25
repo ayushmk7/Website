@@ -73,3 +73,37 @@ const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
     ))}
   </div>
 </div>
+
+<!-- accordion: collapsible per category -->
+<div class="lv lv--stack" data-variant="accordion" style={hide('accordion')}>
+  <div class="lv-acc">
+    {groups.map(([key, items], i) => (
+      <details open={i === 0}>
+        <summary><span class="acc-co" style="font-size:1.3rem">{labels[key] ?? key}</span><span class="acc-period">{items.length} skills</span></summary>
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;padding:0 0 0.8rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<!-- panels: captioned comic panels -->
+<div class="lv lv--stack" data-variant="panels" style={hide('panels')}>
+  <div class="stack-panels">
+    {groups.map(([key, items]) => (
+      <div class="spanel">
+        <span class="spanel-cap">{labels[key] ?? key}</span>
+        <div class="spanel-tags">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- rail: one continuous marquee of every skill -->
+<div class="lv lv--stack" data-variant="rail" style={hide('rail')}>
+  <div class="stack-rail">
+    <div class="rail-track">
+      {allTags.map((s) => <span class="skill-tag">{s}</span>)}
+      {allTags.map((s) => <span class="skill-tag" aria-hidden="true">{s}</span>)}
+    </div>
+  </div>
+</div>

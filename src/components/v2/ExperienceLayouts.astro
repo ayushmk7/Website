@@ -73,3 +73,60 @@ const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
     ))}
   </div>
 </div>
+
+<!-- ledger: compact table -->
+<div class="lv lv--exp" data-variant="ledger" style={hide('ledger')}>
+  <div class="proj-table">
+    <table>
+      <thead><tr><th>Period</th><th>Company</th><th>Role</th><th>Highlight</th></tr></thead>
+      <tbody>
+        {experience.map((j) => (
+          <tr>
+            <td style="white-space:nowrap;font-size:0.82rem">{j.period}</td>
+            <td class="pt-title">{j.company}{j.badge && <span class="vbadge">{j.badge}</span>}</td>
+            <td style="font-size:0.85rem">{j.role}</td>
+            <td style="font-size:0.82rem;max-width:26rem">{j.bullets[0]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- flip: 3D hover/focus cards -->
+<div class="lv lv--exp" data-variant="flip" style={hide('flip')}>
+  <div class="lv-flip">
+    {experience.map((j) => (
+      <div class="flip" tabindex="0">
+        <div class="flip-inner">
+          <div class="flip-face">
+            <p class="vperiod">{j.period}</p>
+            <h3 class="vco" style="font-size:1.5rem;margin:0.15rem 0">{j.company}{j.badge && <span class="vbadge">{j.badge}</span>}</h3>
+            <p class="vrole">{j.role}</p>
+            <p class="flip-hint">hover / focus to flip ↻</p>
+          </div>
+          <div class="flip-face flip-back">
+            <ul class="vbul" style="list-style:disc">{j.bullets.map((b) => <li>{b}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- comic strip: numbered panels -->
+<div class="lv lv--exp" data-variant="comicstrip" style={hide('comicstrip')}>
+  <div class="exp-comic">
+    {experience.map((j, i) => (
+      <div class="cstrip">
+        <div class="cstrip-num">{i + 1}</div>
+        <div class="vcard">
+          <p class="vperiod">{j.period}</p>
+          <h3 class="vco" style="font-size:1.5rem;margin:0.1rem 0">{j.company}{j.badge && <span class="vbadge">{j.badge}</span>}</h3>
+          <p class="vrole" style="margin-bottom:0.5rem">{j.role}</p>
+          <ul class="vbul">{j.bullets.map((b) => <li>{b}</li>)}</ul>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

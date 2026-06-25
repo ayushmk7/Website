@@ -4,6 +4,14 @@ import { hackathons } from '../../data/v2';
 import HackLinks from './HackLinks.astro';
 const DEFAULT = 'ticket';
 const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
+
+// podium: show top three as 2nd–1st–3rd, the rest as a list below
+const podium = [
+  { h: hackathons[1], rank: 2 },
+  { h: hackathons[0], rank: 1 },
+  { h: hackathons[2], rank: 3 },
+].filter((x) => x.h);
+const rest = hackathons.slice(3);
 ---
 <!-- current: two-column burst panels -->
 <div class="lv lv--hack" data-variant="current" style={hide('current')}>
@@ -79,6 +87,60 @@ const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
           <HackLinks h={h} />
         </div>
         <div class="ticket-stub"><span>{h.date}</span></div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- podium: top-3 stand + rest -->
+<div class="lv lv--hack" data-variant="podium" style={hide('podium')}>
+  <div class="hack-podium">
+    {podium.map(({ h, rank }) => (
+      <div class={`podium-col podium-${rank}`}>
+        <div class="vcard" style="padding:0.9rem 1rem">
+          <p class="trophy-place">{h.placement}</p>
+          <h3 class="vco" style="font-size:1.3rem;margin:0.1rem 0">{h.event}</h3>
+          <p style="font-size:0.8rem">{h.blurb}</p>
+        </div>
+        <div class="podium-base">{rank}</div>
+      </div>
+    ))}
+  </div>
+  {rest.length > 0 && (
+    <div class="hack-podium-rest">
+      {rest.map((h) => (
+        <div class="lb-row">
+          <div class="lb-main"><div class="lb-event">{h.event}</div><p style="font-size:0.82rem;opacity:0.9">{h.blurb}</p></div>
+          <div class="lb-place">{h.placement}</div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+<!-- newspaper: clippings -->
+<div class="lv lv--hack" data-variant="newspaper" style={hide('newspaper')}>
+  <div class="hack-news">
+    {hackathons.map((h) => (
+      <div class="news">
+        <div class="news-kicker"><span>Hackathon Win</span><span>{h.date}</span></div>
+        <h3 class="news-head">{h.event}</h3>
+        <p class="trophy-place" style="margin-bottom:0.3rem">{h.placement}{h.prize ? ` · ${h.prize}` : ''}</p>
+        <p class="news-body">{h.blurb}</p>
+        <HackLinks h={h} />
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- speech bubbles -->
+<div class="lv lv--hack" data-variant="speech" style={hide('speech')}>
+  <div class="hack-speech">
+    {hackathons.map((h) => (
+      <div class="sbubble">
+        <p class="sb-place">{h.placement}</p>
+        <h3 class="sb-event">{h.event}</h3>
+        <p style="font-size:0.85rem">{h.blurb}</p>
       </div>
     ))}
   </div>

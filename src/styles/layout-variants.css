@@ -155,6 +155,72 @@
 .ticket-place { font-weight: 800; font-size: 0.8rem; color: var(--accent); }
 .ticket-event { font-family: var(--font-display); font-size: 1.45rem; line-height: 1.05; margin: 0.2rem 0 0.4rem; }
 
+/* ---------- EXPERIENCE: flip cards (3D hover/focus) ---------- */
+.lv-flip { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.25rem; }
+.flip { perspective: 1200px; min-height: 14rem; }
+.flip-inner { position: relative; width: 100%; min-height: 14rem; transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+.flip:hover .flip-inner, .flip:focus-within .flip-inner { transform: rotateY(180deg); }
+.flip-face { position: absolute; inset: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; flex-direction: column; padding: 1.1rem 1.3rem; border: 3px solid var(--outline); border-radius: var(--radius); box-shadow: 5px 5px 0 var(--panel-shadow); background: var(--surface); overflow: auto; }
+.flip-back { transform: rotateY(180deg); background: var(--accent-2); color: #141414; }
+.flip-hint { font-size: 0.72rem; opacity: 0.6; margin-top: auto; }
+@media (prefers-reduced-motion: reduce) { .flip-inner { transition: none; } }
+
+/* ---------- EXPERIENCE: comic strip (numbered panels) ---------- */
+.exp-comic { display: flex; flex-direction: column; gap: 1.1rem; }
+.cstrip { display: flex; gap: 1rem; align-items: stretch; }
+.cstrip-num { flex: 0 0 auto; width: 3rem; height: 3rem; border-radius: 50%; background: var(--accent); color: #fff; border: 3px solid var(--outline); box-shadow: 3px 3px 0 var(--panel-shadow); display: grid; place-items: center; font-family: var(--font-display); font-size: 1.4rem; }
+.cstrip .vcard { flex: 1; min-width: 0; }
+
+/* ---------- PROJECTS: masonry columns ---------- */
+.proj-masonry { column-width: 18rem; column-gap: 1.25rem; }
+.proj-masonry > * { break-inside: avoid; margin-bottom: 1.25rem; display: inline-block; width: 100%; }
+
+/* ---------- PROJECTS: wide rows ---------- */
+.proj-rows { display: flex; flex-direction: column; gap: 1rem; }
+.prow { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; background: var(--surface); border: 3px solid var(--outline); border-radius: var(--radius); box-shadow: 5px 5px 0 var(--panel-shadow); padding: 1rem 1.25rem; }
+.prow-main { flex: 1; min-width: 14rem; }
+.prow-title { font-family: var(--font-display); font-size: 1.5rem; color: var(--comic-blue); }
+.prow-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.45rem; }
+
+/* ---------- HACKATHONS: podium ---------- */
+.hack-podium { display: flex; justify-content: center; align-items: flex-end; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.podium-col { display: flex; flex-direction: column; align-items: stretch; gap: 0.6rem; width: min(30%, 15rem); }
+.podium-base { border: 3px solid var(--outline); box-shadow: 4px 4px 0 var(--panel-shadow); background: var(--accent-2); color: #141414; font-family: var(--font-display); text-align: center; display: grid; place-items: center; }
+.podium-1 .podium-base { height: 7rem; font-size: 2.6rem; }
+.podium-2 .podium-base { height: 5rem; font-size: 2rem; }
+.podium-3 .podium-base { height: 3.6rem; font-size: 1.6rem; }
+.hack-podium-rest { display: flex; flex-direction: column; gap: 0.7rem; }
+
+/* ---------- HACKATHONS: newspaper clippings ---------- */
+.hack-news { column-width: 18rem; column-gap: 1.25rem; }
+.news { break-inside: avoid; margin-bottom: 1.25rem; background: #fbf7ea; color: #141414; border: 3px solid var(--outline); box-shadow: 4px 4px 0 var(--panel-shadow); padding: 1rem 1.1rem; }
+.news-kicker { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-bottom: 2px solid #141414; padding-bottom: 0.3rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; gap: 0.5rem; }
+.news-head { font-family: var(--font-display); font-size: 1.55rem; line-height: 1; margin-bottom: 0.4rem; }
+.news-body { font-size: 0.82rem; }
+
+/* ---------- HACKATHONS: speech bubbles ---------- */
+.hack-speech { display: flex; flex-direction: column; gap: 1.6rem; }
+.sbubble { position: relative; background: var(--surface); border: 3px solid var(--outline); border-radius: 1rem; box-shadow: 5px 5px 0 var(--panel-shadow); padding: 1rem 1.25rem; max-width: 46rem; }
+.sbubble:nth-child(even) { align-self: flex-end; }
+.sbubble::after { content: ''; position: absolute; bottom: -0.95rem; left: 2rem; border: 0.9rem solid transparent; border-top-color: var(--outline); border-bottom: 0; }
+.sbubble::before { content: ''; position: absolute; bottom: -0.5rem; left: 2.18rem; border: 0.72rem solid transparent; border-top-color: var(--surface); border-bottom: 0; z-index: 1; }
+.sbubble:nth-child(even)::after { left: auto; right: 2rem; }
+.sbubble:nth-child(even)::before { left: auto; right: 2.18rem; }
+.sb-place { font-weight: 800; font-size: 0.8rem; color: var(--accent); }
+.sb-event { font-family: var(--font-display); font-size: 1.45rem; line-height: 1.05; margin: 0.15rem 0 0.4rem; }
+
+/* ---------- STACK: panels (captioned comic panels) ---------- */
+.stack-panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.4rem 1.1rem; }
+.spanel { position: relative; background: var(--surface); border: 3px solid var(--outline); border-radius: var(--radius); box-shadow: 5px 5px 0 var(--panel-shadow); padding: 1.2rem 1.1rem 1rem; }
+.spanel-cap { position: absolute; top: -0.85rem; left: 0.8rem; background: var(--accent); color: #fff; border: 2px solid var(--outline); font-family: var(--font-display); font-size: 0.95rem; padding: 0.05rem 0.6rem; }
+.spanel-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+/* ---------- STACK: single continuous rail (one-line marquee) ---------- */
+.stack-rail { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.stack-rail .rail-track { display: inline-flex; gap: 0.5rem; width: max-content; animation: lvMarquee 55s linear infinite; }
+.stack-rail:hover .rail-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .stack-rail { overflow-x: auto; -webkit-mask-image: none; mask-image: none; } .stack-rail .rail-track { animation: none; width: auto; } }
+
 /* ============================================================
    The Layout Lab sidebar (dev-only chooser)
    ============================================================ */

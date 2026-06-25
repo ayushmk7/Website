@@ -63,3 +63,40 @@ const hide = (v: string) => (v === DEFAULT ? undefined : 'display:none');
     </div>
   </div>
 </div>
+
+<!-- masonry: column flow -->
+<div class="lv lv--proj" data-variant="masonry" style={hide('masonry')}>
+  <div class="proj-masonry">
+    {list.map((p, i) => <ProjectCard p={p} i={i} />)}
+  </div>
+</div>
+
+<!-- rows: wide horizontal rows -->
+<div class="lv lv--proj" data-variant="rows" style={hide('rows')}>
+  <div class="proj-rows">
+    {list.map((p) => (
+      <div class="prow">
+        <div class="prow-main">
+          <div class="prow-title">{p.title}</div>
+          <p style="font-size:0.86rem;margin-top:0.2rem">{p.description}</p>
+          <div class="prow-tags">{p.tags.slice(0, 6).map((t) => <span class="skill-tag">{t}</span>)}</div>
+        </div>
+        <ProjectLinks p={p} />
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- terminal: ls listing -->
+<div class="lv lv--proj" data-variant="terminal" style={hide('terminal')}>
+  <div class="exp-terminal">
+    <div class="t-bar"><span class="t-dot" style="background:#ff5f56"></span><span class="t-dot" style="background:#ffbd2e"></span><span class="t-dot" style="background:#27c93f"></span></div>
+    <div class="t-row"><span class="t-cmd">$ ls</span> <span class="t-arg">~/projects</span></div>
+    {list.map((p) => (
+      <div class="t-row">
+        <div><span class="t-arg">{p.title}/</span> <span class="t-dim"># {p.tags.slice(0, 4).join(', ')}</span></div>
+        <div class="t-out">{p.description}</div>
+      </div>
+    ))}
+  </div>
+</div>
