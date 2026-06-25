@@ -45,10 +45,10 @@ export default function ComicWorldMap() {
         wheelPxPerZoomLevel: 22,   // default 60 — lower = stronger scroll-zoom sensitivity
         wheelDebounceTime: 18,     // default 40 — snappier response
         zoomDelta: 0.6,
-        // pan limit is padded out beyond the world so the fitted view keeps its
-        // margin instead of being snapped flush to the frame (which clipped edge pins)
-        maxBounds: worldBounds.pad(0.18),
-        maxBoundsViscosity: 0.7,
+        // hard pan limit exactly at the world edge so you never overscroll into
+        // the out-of-bounds margin (no border peeking in on pan)
+        maxBounds: worldBounds,
+        maxBoundsViscosity: 1.0,
         attributionControl: false,
       });
 

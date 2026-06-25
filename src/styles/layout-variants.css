@@ -84,7 +84,7 @@ html[data-theme="comic"] .cwm-pop-wrap a.leaflet-popup-close-button { top: 3px; 
 :where(html) { --map-bg: #d3dadd; }
 /* match carto dark_nolabels ocean so the padded margin blends in — no visible
    ring/border in dark mode, while padding still keeps edge pins from clipping */
-html.dark { --map-bg: #26282b; }
+html.dark { --map-bg: #090909; }  /* = carto dark_nolabels ocean, so any revealed margin is invisible */
 html[data-theme="comic"] .cwm-leaflet { background: var(--map-bg); }
 html[data-theme="comic"] .cwm-leaflet .leaflet-container { background: var(--map-bg); }
 
