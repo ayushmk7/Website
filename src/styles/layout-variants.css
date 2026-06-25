@@ -46,7 +46,7 @@ html[data-theme="comic"] .cwm-pop-sub { color: color-mix(in srgb, var(--ink) 65%
 
 /* ---- Experience: accordion ---- */
 .lv-acc { display: flex; flex-direction: column; gap: 0.75rem; }
-.lv-acc details { border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 4px 4px 0 var(--panel-shadow); padding: 0.4rem 1.1rem; }
+.lv-acc details { border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 5px 5px 0 var(--panel-shadow); padding: 0.4rem 1.1rem; }
 .lv-acc summary { cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; padding: 0.6rem 0; }
 .lv-acc summary::-webkit-details-marker { display: none; }
 .lv-acc summary::before { content: '▸'; color: var(--accent); font-weight: 900; transition: transform 0.15s; }
@@ -88,9 +88,9 @@ html[data-theme="comic"] .cwm-leaflet .leaflet-container { background: var(--map
 
 /* ---- Hackathons: newspaper clippings ---- */
 .hack-news { column-width: 18rem; column-gap: 1.25rem; }
-.news { --paper: #fbf7ea; --ink: #141414; break-inside: avoid; margin-bottom: 1.25rem; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--panel-shadow); padding: 1rem 1.1rem; }
+.news { --paper: #fbf7ea; --ink: #141414; break-inside: avoid; margin-bottom: 1.25rem; border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--panel-shadow); padding: 1rem 1.1rem; }
 html.dark .news { --paper: #14181f; --ink: #e8e8e8; }
-.news-kicker { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-bottom: 2px solid currentColor; padding-bottom: 0.3rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; gap: 0.5rem; }
+.news-kicker { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-bottom: 2px solid currentColor; padding-bottom: 0.3rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; gap: 0.5rem; }
 .news-head { font-family: var(--font-display); font-size: 1.55rem; line-height: 1; margin-bottom: 0.4rem; color: var(--accent); }
 .news-body { font-size: 0.82rem; }
 .trophy-place { font-weight: 800; font-size: 0.82rem; color: var(--accent); }
