@@ -10,7 +10,7 @@ import ProjectLayouts from '../components/v2/ProjectLayouts.astro';
 import HackathonLayouts from '../components/v2/HackathonLayouts.astro';
 import StackLayouts from '../components/v2/StackLayouts.astro';
 ---
-<ThemeLayout themeKey="comic" title="Ayush Madhav Kumar. Comic Pop">
+<ThemeLayout themeKey="comic" title="Ayush Madhav">
   <ComicHero client:load />
 
   <section id="experience" class="max-w-6xl mx-auto py-16" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
@@ -81,6 +81,10 @@ import StackLayouts from '../components/v2/StackLayouts.astro';
       var label = btn.querySelector('.copy-email-label');
       btn.addEventListener('click', function () {
         var email = btn.getAttribute('data-email');
+        // navigator.clipboard is undefined on non-localhost HTTP / old browsers —
+        // calling .writeText would throw synchronously, before any .catch.
+        var canCopy = navigator.clipboard && navigator.clipboard.writeText;
+        if (!canCopy) { window.location.href = 'mailto:' + email; return; }
         navigator.clipboard.writeText(email).then(function () {
           var prev = label.textContent;
           label.textContent = 'Copied to clipboard';
@@ -100,27 +104,46 @@ import StackLayouts from '../components/v2/StackLayouts.astro';
       var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var SPEED = 1.1; // px per frame (~66px/s) — visible continuous loop
       document.querySelectorAll('.cscroll[data-autoscroll]').forEach(function (el) {
+        var track = el.querySelector('.cscroll-track');
+        if (!track) return;
         var paused = false;
-        ['pointerenter', 'focusin', 'pointerdown', 'touchstart'].forEach(function (e) { el.addEventListener(e, function () { paused = true; }, { passive: true }); });
-        ['pointerleave', 'focusout', 'touchend'].forEach(function (e) { el.addEventListener(e, function () { paused = false; }, { passive: true }); });
+        // Track is server-rendered as 2 identical sets. scrollLeft clamps at
+        // (scrollWidth - clientWidth), so the wrap point (one set) is only
+        // reachable when a single set is wider than the viewport. On wide
+        // screens with few cards that fails and the scroll stalls at the end.
+        // Fix: clone whole sets until one set fits inside the scrollable range.
+        var seed = track.innerHTML;
+        var sets = 2;
+        function ensure() {
+          var guard = 0;
+          while (track.scrollWidth / sets > 0 &&
+                 track.scrollWidth < el.clientWidth + track.scrollWidth / sets + 4 &&
+                 guard++ < 24) {
+            track.insertAdjacentHTML('beforeend', seed);
+            sets += 2;
+          }
+        }
+        function oneSet() { return track.scrollWidth / sets; } // live: survives font reflow
+        ensure();
+        window.addEventListener('resize', ensure);
         // wheel over the carousel scrolls it horizontally (seamless wrap both ways)
         el.addEventListener('wheel', function (e) {
           var d = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
           if (!d) return;
           e.preventDefault();
-          var half = el.scrollWidth / 2;
+          var set = oneSet();
           el.scrollLeft += d;
-          if (half > 0) {
-            if (el.scrollLeft >= half) el.scrollLeft -= half;
-            else if (el.scrollLeft <= 0) el.scrollLeft += half;
+          if (set > 0) {
+            if (el.scrollLeft >= set) el.scrollLeft -= set;
+            else if (el.scrollLeft <= 0) el.scrollLeft += set;
           }
         }, { passive: false });
         if (reduce) return;
         function step() {
-          var half = el.scrollWidth / 2;
-          if (!paused && half > 0) {
+          var set = oneSet();
+          if (!paused && set > 0) {
             el.scrollLeft += SPEED;
-            if (el.scrollLeft >= half) el.scrollLeft -= half; // seamless wrap -> infinite loop
+            if (el.scrollLeft >= set) el.scrollLeft -= set; // seamless wrap -> infinite loop
           }
           requestAnimationFrame(step);
         }

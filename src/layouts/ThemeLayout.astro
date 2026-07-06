@@ -9,6 +9,8 @@ import { themeByKey } from '../lib/themes';
 interface Props { themeKey: string; title: string; description?: string }
 const { themeKey, title, description = 'Ayush Madhav Kumar. CS and Math @UMichigan. Systems programming, AI infrastructure, on-device inference, and hackathon wins.' } = Astro.props;
 const def = themeByKey(themeKey);
+// absolute URL so social crawlers that reject relative image paths still resolve it
+const ogImage = new URL('/og.png', Astro.site).href;
 ---
 <!DOCTYPE html>
 <html lang="en" data-theme={themeKey} data-pop="banner">
@@ -21,12 +23,12 @@ const def = themeByKey(themeKey);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/og.png" />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Ayush Madhav Kumar — CS & Math @ Michigan" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="/og.png" />
+    <meta name="twitter:image" content={ogImage} />
     {def?.fontHrefs.map((href) => <link rel="stylesheet" href={href} />)}
     <Analytics />
     <script is:inline>

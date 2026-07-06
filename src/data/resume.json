@@ -192,10 +192,10 @@
     "cybersecurity": [
       "API and web vulnerability analysis",
       "AWS IAM and S3 security",
-      "cryptographic weakness detection",
+      "Cryptographic weakness detection",
       "Nmap automation",
       "PCAP forensics",
-      "reverse engineering",
+      "Reverse engineering",
       "TLS protocol analysis",
       "YARA based malware triage"
     ]

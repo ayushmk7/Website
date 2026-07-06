@@ -1,0 +1,56 @@
+---
+// Uiverse.io BB8 toggle (by Galahhad), wired to theme. Checked = night = dark mode.
+// Static markup + inline script instead of a React island: the checked state
+// depends on client-only localStorage, and an SSR'd *controlled* React input
+// can't set that without a post-hydration flash. Plain HTML sets it pre-paint.
+interface Props { size?: string }
+const { size = '6.5px' } = Astro.props;
+---
+<label class="bb8-toggle" style={`--toggle-size:${size}`}>
+  <input class="bb8-toggle__checkbox" type="checkbox" aria-label="Toggle dark mode" />
+  <div class="bb8-toggle__container">
+    <div class="bb8-toggle__scenery">
+      <div class="bb8-toggle__star"></div>
+      <div class="bb8-toggle__star"></div>
+      <div class="bb8-toggle__star"></div>
+      <div class="bb8-toggle__star"></div>
+      <div class="bb8-toggle__star"></div>
+      <div class="bb8-toggle__star"></div>
+      <div class="bb8-toggle__star"></div>
+      <div class="tatto-1"></div>
+      <div class="tatto-2"></div>
+      <div class="gomrassen"></div>
+      <div class="hermes"></div>
+      <div class="chenini"></div>
+      <div class="bb8-toggle__cloud"></div>
+      <div class="bb8-toggle__cloud"></div>
+      <div class="bb8-toggle__cloud"></div>
+    </div>
+    <div class="bb8">
+      <div class="bb8__head-container">
+        <div class="bb8__antenna"></div>
+        <div class="bb8__antenna"></div>
+        <div class="bb8__head"></div>
+      </div>
+      <div class="bb8__body"></div>
+    </div>
+    <div class="artificial__hidden">
+      <div class="bb8__shadow"></div>
+    </div>
+  </div>
+</label>
+
+<script is:inline>
+  // Runs during parse, right after the checkbox exists → sets the knob to the
+  // pre-paint theme before first paint (no flash), then wires the toggle.
+  (function () {
+    var cb = document.currentScript.previousElementSibling.querySelector('.bb8-toggle__checkbox');
+    if (!cb) return;
+    cb.checked = document.documentElement.classList.contains('dark');
+    cb.addEventListener('change', function () {
+      var isDark = cb.checked;
+      document.documentElement.classList.toggle('dark', isDark);
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  })();
+</script>

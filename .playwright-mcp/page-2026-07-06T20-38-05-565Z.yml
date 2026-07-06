@@ -1,0 +1,789 @@
+- generic [active] [ref=f9e1]:
+  - banner:
+    - navigation [ref=f9e2]:
+      - link "Back to top" [ref=f9e3] [cursor=pointer]:
+        - /url: "#"
+        - text: AMK
+      - link "Experience" [ref=f9e5] [cursor=pointer]:
+        - /url: "#experience"
+      - link "Projects" [ref=f9e6] [cursor=pointer]:
+        - /url: "#projects"
+      - link "Hackathons" [ref=f9e7] [cursor=pointer]:
+        - /url: "#hackathons"
+      - link "Stack" [ref=f9e8] [cursor=pointer]:
+        - /url: "#skills"
+      - link "Places" [ref=f9e9] [cursor=pointer]:
+        - /url: "#places"
+      - link "Contact" [ref=f9e10] [cursor=pointer]:
+        - /url: "#contact"
+  - main [ref=f9e21]:
+    - generic [ref=f9e24]:
+      - button "Expand photo" [ref=f9e25]:
+        - generic [ref=f9e26]:
+          - text: AK
+          - img "Ayush Madhav Kumar" [ref=f9e27]
+      - heading "Ayush Madhav" [level=1] [ref=f9e28]
+      - paragraph [ref=f9e30]: CS and Math @UMichigan
+      - paragraph [ref=f9e31]: "> NSF-backed research"
+      - generic [ref=f9e32]:
+        - link "Résumé" [ref=f9e33] [cursor=pointer]:
+          - /url: /AyushMadhavResume.pdf
+        - link "GitHub profile" [ref=f9e34] [cursor=pointer]:
+          - /url: https://github.com/ayushmk7
+          - img [ref=f9e35]
+        - link "LinkedIn profile" [ref=f9e38] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/ayushmk
+          - img [ref=f9e39]
+    - generic [ref=f9e43]:
+      - heading "Experience" [level=2] [ref=f9e45]
+      - generic [ref=f9e46]:
+        - group [ref=f9e47]:
+          - generic "▸ Jaseci Labs Software Engineering Intern May 2026 to Present" [ref=f9e48] [cursor=pointer]:
+            - text: ▸
+            - generic [ref=f9e49]: Jaseci Labs
+            - generic [ref=f9e50]: Software Engineering Intern
+            - generic [ref=f9e51]: May 2026 to Present
+        - group [ref=f9e52]:
+          - generic "▸ University of Michigan, College of Engineering Student Researcher (POSE) NSF, $300K May 2026 to Present" [ref=f9e53] [cursor=pointer]:
+            - text: ▸
+            - generic [ref=f9e54]: University of Michigan, College of Engineering
+            - generic [ref=f9e55]: Student Researcher (POSE)
+            - generic [ref=f9e56]: NSF, $300K
+            - generic [ref=f9e57]: May 2026 to Present
+        - group [ref=f9e58]:
+          - generic "▸ CLAWS UM AI Lead, formerly AI Software Developer NASA SUITS / RASC-AL Aug 2025 to Present" [ref=f9e59] [cursor=pointer]:
+            - text: ▸
+            - generic [ref=f9e60]: CLAWS UM
+            - generic [ref=f9e61]: AI Lead, formerly AI Software Developer
+            - generic [ref=f9e62]: NASA SUITS / RASC-AL
+            - generic [ref=f9e63]: Aug 2025 to Present
+        - group [ref=f9e64]:
+          - generic "▸ WolvSec Vice President and Cybersecurity Engineer Aug 2025 to Present" [ref=f9e65] [cursor=pointer]:
+            - text: ▸
+            - generic [ref=f9e66]: WolvSec
+            - generic [ref=f9e67]: Vice President and Cybersecurity Engineer
+            - generic [ref=f9e68]: Aug 2025 to Present
+        - group [ref=f9e69]:
+          - generic "▸ Cactus Core Contributor YC S25 Jan 2026 to Present" [ref=f9e70] [cursor=pointer]:
+            - text: ▸
+            - generic [ref=f9e71]: Cactus
+            - generic [ref=f9e72]: Core Contributor
+            - generic [ref=f9e73]: YC S25
+            - generic [ref=f9e74]: Jan 2026 to Present
+        - group [ref=f9e75]:
+          - generic "▸ MSAIL AI Developer Sep 2025 to Present" [ref=f9e76] [cursor=pointer]:
+            - text: ▸
+            - generic [ref=f9e77]: MSAIL
+            - generic [ref=f9e78]: AI Developer
+            - generic [ref=f9e79]: Sep 2025 to Present
+        - group [ref=f9e80]:
+          - generic "▸ CareTether Co-Founder, Frontend and Outreach Patch accelerator Jul to Aug 2025" [ref=f9e81] [cursor=pointer]:
+            - text: ▸
+            - generic [ref=f9e82]: CareTether
+            - generic [ref=f9e83]: Co-Founder, Frontend and Outreach
+            - generic [ref=f9e84]: Patch accelerator
+            - generic [ref=f9e85]: Jul to Aug 2025
+        - group [ref=f9e86]:
+          - generic "▸ GIIT Solutions Associate Software Intern 2024 to 2025" [ref=f9e87] [cursor=pointer]:
+            - text: ▸
+            - generic [ref=f9e88]: GIIT Solutions
+            - generic [ref=f9e89]: Associate Software Intern
+            - generic [ref=f9e90]: 2024 to 2025
+    - generic [ref=f9e91]:
+      - heading "Projects" [level=2] [ref=f9e93]
+      - generic "Projects carousel — scroll to browse" [ref=f9e94]:
+        - generic [ref=f9e95]:
+          - generic [ref=f9e96]:
+            - heading "Inferno" [level=3] [ref=f9e97]
+            - paragraph [ref=f9e98]: Scalable backend service for hosting and serving ML models via REST APIs using Flask, RabbitMQ, MongoDB, and Docker.
+            - generic [ref=f9e99]:
+              - generic [ref=f9e100]: Python
+              - generic [ref=f9e101]: Flask
+              - generic [ref=f9e102]: TensorFlow
+              - generic [ref=f9e103]: PyTorch
+              - generic [ref=f9e104]: Celery
+            - link "Inferno on GitHub" [ref=f9e107] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/Inferno
+              - img [ref=f9e108]
+          - generic [ref=f9e111]:
+            - heading "Domain Portfolio Manager" [level=3] [ref=f9e112]
+            - paragraph [ref=f9e113]: An AI chat agent that manages your domain portfolio and DNS through natural language. Add domains, run bulk DNS updates, and query history—powered by Cloudflare Workers, Durable Objects, and Workflows.
+            - generic [ref=f9e114]:
+              - generic [ref=f9e115]: React
+              - generic [ref=f9e116]: TypeScript
+              - generic [ref=f9e117]: Vite
+              - generic [ref=f9e118]: TailwindCSS
+              - generic [ref=f9e119]: Cloudflare Workers
+            - generic [ref=f9e121]:
+              - link "Domain Portfolio Manager on GitHub" [ref=f9e122] [cursor=pointer]:
+                - /url: https://github.com/ayushmk7/cf_ai_DomainPortfolioManager
+                - img [ref=f9e123]
+              - link "Domain Portfolio Manager website" [ref=f9e126] [cursor=pointer]:
+                - /url: https://domain-portfolio-manager-eta.vercel.app
+                - img [ref=f9e127]
+          - generic [ref=f9e130]:
+            - heading "2D to 3D Image Modelling" [level=3] [ref=f9e131]
+            - paragraph [ref=f9e132]: A NeRF-based 3D reconstruction tool that trains a model on multi-view images and renders novel views of the scene.
+            - generic [ref=f9e133]:
+              - generic [ref=f9e134]: Python
+              - generic [ref=f9e135]: AI/ML
+              - generic [ref=f9e136]: Neural Radiance Fields (NeRF)
+            - link "2D to 3D Image Modelling on GitHub" [ref=f9e139] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/3DModelling.git
+              - img [ref=f9e140]
+          - generic [ref=f9e143]:
+            - heading "ML Reads" [level=3] [ref=f9e144]
+            - paragraph [ref=f9e145]: A minimal Next.js website that recommends five machine learning papers from arXiv each day. Browse deterministic daily reads with paper titles, authors, summaries, categories, published dates, abstract links, and PDF links.
+            - generic [ref=f9e146]:
+              - generic [ref=f9e147]: Next.js
+              - generic [ref=f9e148]: React
+              - generic [ref=f9e149]: TypeScript
+              - generic [ref=f9e150]: arXiv
+              - generic [ref=f9e151]: fast-xml-parser
+            - generic [ref=f9e153]:
+              - link "ML Reads on GitHub" [ref=f9e154] [cursor=pointer]:
+                - /url: https://github.com/ayushmk7/MLReads
+                - img [ref=f9e155]
+              - link "ML Reads website" [ref=f9e158] [cursor=pointer]:
+                - /url: https://mlreads.vercel.app
+                - img [ref=f9e159]
+          - generic [ref=f9e162]:
+            - heading "COGnitiveStudy" [level=3] [ref=f9e163]
+            - paragraph [ref=f9e164]: A study platform that records your lectures and gives you a summary of the lecture with notes with backend API, frontend interface, and AI features.
+            - generic [ref=f9e165]:
+              - generic [ref=f9e166]: Hono
+              - generic [ref=f9e167]: Next.js
+              - generic [ref=f9e168]: React
+              - generic [ref=f9e169]: TypeScript
+              - generic [ref=f9e170]: Drizzle ORM
+            - link "COGnitiveStudy website" [ref=f9e173] [cursor=pointer]:
+              - /url: https://cog-nitive.vercel.app
+              - img [ref=f9e174]
+          - generic [ref=f9e177]:
+            - heading "CompVis" [level=3] [ref=f9e178]
+            - paragraph [ref=f9e179]: Face Mesh Detection app tracking 468 facial landmarks in real-time.
+            - generic [ref=f9e180]:
+              - generic [ref=f9e181]: Python
+              - generic [ref=f9e182]: OpenCV
+              - generic [ref=f9e183]: MediaPipe
+              - generic [ref=f9e184]: NumPy
+              - generic [ref=f9e185]: Next.js
+            - link "CompVis on GitHub" [ref=f9e188] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/FaceDetection
+              - img [ref=f9e189]
+          - generic [ref=f9e192]:
+            - heading "Taskpilot" [level=3] [ref=f9e193]
+            - paragraph [ref=f9e194]: Comprehensive task management platform built with Django REST Framework and React.
+            - generic [ref=f9e195]:
+              - generic [ref=f9e196]: Django
+              - generic [ref=f9e197]: Python
+              - generic [ref=f9e198]: React
+              - generic [ref=f9e199]: TypeScript
+              - generic [ref=f9e200]: Material-UI
+            - link "Taskpilot on GitHub" [ref=f9e203] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/TaskPilot
+              - img [ref=f9e204]
+          - generic [ref=f9e207]:
+            - heading "SMS_Classifier_Ayush" [level=3] [ref=f9e208]
+            - paragraph [ref=f9e209]: SMS spam detection model using PyTorch and Unity Sentis integration.
+            - generic [ref=f9e210]:
+              - generic [ref=f9e211]: Python
+              - generic [ref=f9e212]: PyTorch
+              - generic [ref=f9e213]: Pandas
+              - generic [ref=f9e214]: scikit-learn
+            - link "SMS_Classifier_Ayush on GitHub" [ref=f9e217] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/SMSClassifier
+              - img [ref=f9e218]
+          - generic [ref=f9e221]:
+            - heading "Instagram-CLI" [level=3] [ref=f9e222]
+            - paragraph [ref=f9e223]: CLI version for instagram where it shows ur chats without the distraction of stories and reels.
+            - generic [ref=f9e224]:
+              - generic [ref=f9e225]: TypeScript
+              - generic [ref=f9e226]: React
+              - generic [ref=f9e227]: Ink
+              - generic [ref=f9e228]: Node.js
+            - link "Instagram-CLI on GitHub" [ref=f9e231] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/CLI_Instagram.git
+              - img [ref=f9e232]
+          - generic [ref=f9e235]:
+            - heading "ClassicFocus" [level=3] [ref=f9e236]
+            - paragraph [ref=f9e237]: A retro Macintosh System 6/7-themed Pomodoro timer.
+            - generic [ref=f9e238]:
+              - generic [ref=f9e239]: React
+              - generic [ref=f9e240]: TypeScript
+              - generic [ref=f9e241]: Vite
+              - generic [ref=f9e242]: TailwindCSS
+              - generic [ref=f9e243]: Zustand
+            - generic [ref=f9e245]:
+              - link "ClassicFocus on GitHub" [ref=f9e246] [cursor=pointer]:
+                - /url: https://github.com/ayushmk7/ClassicFocus
+                - img [ref=f9e247]
+              - link "ClassicFocus website" [ref=f9e250] [cursor=pointer]:
+                - /url: https://classicfocus.vercel.app
+                - img [ref=f9e251]
+          - generic [ref=f9e254]:
+            - heading "mkrl" [level=3] [ref=f9e255]
+            - paragraph [ref=f9e256]: TinyURL clone with React frontend and FastAPI backend, horizontally scaled and open sourced.
+            - generic [ref=f9e257]:
+              - generic [ref=f9e258]: FastAPI
+              - generic [ref=f9e259]: Python
+              - generic [ref=f9e260]: React
+              - generic [ref=f9e261]: TypeScript
+              - generic [ref=f9e262]: Vite
+            - generic [ref=f9e264]:
+              - link "mkrl on GitHub" [ref=f9e265] [cursor=pointer]:
+                - /url: https://github.com/ayushmk7/mkrl
+                - img [ref=f9e266]
+              - link "mkrl website" [ref=f9e269] [cursor=pointer]:
+                - /url: https://mkrl.vercel.app
+                - img [ref=f9e270]
+          - generic [ref=f9e273]:
+            - heading "Photos_Tin" [level=3] [ref=f9e274]
+            - paragraph [ref=f9e275]: React Native / Expo application for photo management and display following the actions of tinder.
+            - generic [ref=f9e276]:
+              - generic [ref=f9e277]: React Native
+              - generic [ref=f9e278]: Expo
+            - link "Photos_Tin on GitHub" [ref=f9e281] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/Photos_Tin
+              - img [ref=f9e282]
+          - generic [ref=f9e285]:
+            - heading "Scrape_for_Sponsor" [level=3] [ref=f9e286]
+            - paragraph [ref=f9e287]: Scrapes restaurant data from annarbor.org for CLAWS club sponsorship committee.
+            - generic [ref=f9e288]:
+              - generic [ref=f9e289]: Python
+              - generic [ref=f9e290]: AgentQL
+              - generic [ref=f9e291]: Playwright
+            - link "Scrape_for_Sponsor on GitHub" [ref=f9e294] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/SponsorScrape
+              - img [ref=f9e295]
+          - generic [ref=f9e298]:
+            - heading "Portfolio Website" [level=3] [ref=f9e299]
+            - paragraph [ref=f9e300]: My current portfolio website.
+            - generic [ref=f9e301]:
+              - generic [ref=f9e302]: Astro
+              - generic [ref=f9e303]: React
+              - generic [ref=f9e304]: TypeScript
+              - generic [ref=f9e305]: TailwindCSS
+            - generic [ref=f9e307]:
+              - link "Portfolio Website on GitHub" [ref=f9e308] [cursor=pointer]:
+                - /url: https://github.com/ayushmk7/Website
+                - img [ref=f9e309]
+              - link "Portfolio Website website" [ref=f9e312] [cursor=pointer]:
+                - /url: https://ayushmadhav.com
+                - img [ref=f9e313]
+          - generic [ref=f9e316]:
+            - heading "Inferno" [level=3] [ref=f9e317]
+            - paragraph [ref=f9e318]: Scalable backend service for hosting and serving ML models via REST APIs using Flask, RabbitMQ, MongoDB, and Docker.
+            - generic [ref=f9e319]:
+              - generic [ref=f9e320]: Python
+              - generic [ref=f9e321]: Flask
+              - generic [ref=f9e322]: TensorFlow
+              - generic [ref=f9e323]: PyTorch
+              - generic [ref=f9e324]: Celery
+            - link "Inferno on GitHub" [ref=f9e327] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/Inferno
+              - img [ref=f9e328]
+          - generic [ref=f9e331]:
+            - heading "Domain Portfolio Manager" [level=3] [ref=f9e332]
+            - paragraph [ref=f9e333]: An AI chat agent that manages your domain portfolio and DNS through natural language. Add domains, run bulk DNS updates, and query history—powered by Cloudflare Workers, Durable Objects, and Workflows.
+            - generic [ref=f9e334]:
+              - generic [ref=f9e335]: React
+              - generic [ref=f9e336]: TypeScript
+              - generic [ref=f9e337]: Vite
+              - generic [ref=f9e338]: TailwindCSS
+              - generic [ref=f9e339]: Cloudflare Workers
+            - generic [ref=f9e341]:
+              - link "Domain Portfolio Manager on GitHub" [ref=f9e342] [cursor=pointer]:
+                - /url: https://github.com/ayushmk7/cf_ai_DomainPortfolioManager
+                - img [ref=f9e343]
+              - link "Domain Portfolio Manager website" [ref=f9e346] [cursor=pointer]:
+                - /url: https://domain-portfolio-manager-eta.vercel.app
+                - img [ref=f9e347]
+          - generic [ref=f9e350]:
+            - heading "2D to 3D Image Modelling" [level=3] [ref=f9e351]
+            - paragraph [ref=f9e352]: A NeRF-based 3D reconstruction tool that trains a model on multi-view images and renders novel views of the scene.
+            - generic [ref=f9e353]:
+              - generic [ref=f9e354]: Python
+              - generic [ref=f9e355]: AI/ML
+              - generic [ref=f9e356]: Neural Radiance Fields (NeRF)
+            - link "2D to 3D Image Modelling on GitHub" [ref=f9e359] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/3DModelling.git
+              - img [ref=f9e360]
+          - generic [ref=f9e363]:
+            - heading "ML Reads" [level=3] [ref=f9e364]
+            - paragraph [ref=f9e365]: A minimal Next.js website that recommends five machine learning papers from arXiv each day. Browse deterministic daily reads with paper titles, authors, summaries, categories, published dates, abstract links, and PDF links.
+            - generic [ref=f9e366]:
+              - generic [ref=f9e367]: Next.js
+              - generic [ref=f9e368]: React
+              - generic [ref=f9e369]: TypeScript
+              - generic [ref=f9e370]: arXiv
+              - generic [ref=f9e371]: fast-xml-parser
+            - generic [ref=f9e373]:
+              - link "ML Reads on GitHub" [ref=f9e374] [cursor=pointer]:
+                - /url: https://github.com/ayushmk7/MLReads
+                - img [ref=f9e375]
+              - link "ML Reads website" [ref=f9e378] [cursor=pointer]:
+                - /url: https://mlreads.vercel.app
+                - img [ref=f9e379]
+          - generic [ref=f9e382]:
+            - heading "COGnitiveStudy" [level=3] [ref=f9e383]
+            - paragraph [ref=f9e384]: A study platform that records your lectures and gives you a summary of the lecture with notes with backend API, frontend interface, and AI features.
+            - generic [ref=f9e385]:
+              - generic [ref=f9e386]: Hono
+              - generic [ref=f9e387]: Next.js
+              - generic [ref=f9e388]: React
+              - generic [ref=f9e389]: TypeScript
+              - generic [ref=f9e390]: Drizzle ORM
+            - link "COGnitiveStudy website" [ref=f9e393] [cursor=pointer]:
+              - /url: https://cog-nitive.vercel.app
+              - img [ref=f9e394]
+          - generic [ref=f9e397]:
+            - heading "CompVis" [level=3] [ref=f9e398]
+            - paragraph [ref=f9e399]: Face Mesh Detection app tracking 468 facial landmarks in real-time.
+            - generic [ref=f9e400]:
+              - generic [ref=f9e401]: Python
+              - generic [ref=f9e402]: OpenCV
+              - generic [ref=f9e403]: MediaPipe
+              - generic [ref=f9e404]: NumPy
+              - generic [ref=f9e405]: Next.js
+            - link "CompVis on GitHub" [ref=f9e408] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/FaceDetection
+              - img [ref=f9e409]
+          - generic [ref=f9e412]:
+            - heading "Taskpilot" [level=3] [ref=f9e413]
+            - paragraph [ref=f9e414]: Comprehensive task management platform built with Django REST Framework and React.
+            - generic [ref=f9e415]:
+              - generic [ref=f9e416]: Django
+              - generic [ref=f9e417]: Python
+              - generic [ref=f9e418]: React
+              - generic [ref=f9e419]: TypeScript
+              - generic [ref=f9e420]: Material-UI
+            - link "Taskpilot on GitHub" [ref=f9e423] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/TaskPilot
+              - img [ref=f9e424]
+          - generic [ref=f9e427]:
+            - heading "SMS_Classifier_Ayush" [level=3] [ref=f9e428]
+            - paragraph [ref=f9e429]: SMS spam detection model using PyTorch and Unity Sentis integration.
+            - generic [ref=f9e430]:
+              - generic [ref=f9e431]: Python
+              - generic [ref=f9e432]: PyTorch
+              - generic [ref=f9e433]: Pandas
+              - generic [ref=f9e434]: scikit-learn
+            - link "SMS_Classifier_Ayush on GitHub" [ref=f9e437] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/SMSClassifier
+              - img [ref=f9e438]
+          - generic [ref=f9e441]:
+            - heading "Instagram-CLI" [level=3] [ref=f9e442]
+            - paragraph [ref=f9e443]: CLI version for instagram where it shows ur chats without the distraction of stories and reels.
+            - generic [ref=f9e444]:
+              - generic [ref=f9e445]: TypeScript
+              - generic [ref=f9e446]: React
+              - generic [ref=f9e447]: Ink
+              - generic [ref=f9e448]: Node.js
+            - link "Instagram-CLI on GitHub" [ref=f9e451] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/CLI_Instagram.git
+              - img [ref=f9e452]
+          - generic [ref=f9e455]:
+            - heading "ClassicFocus" [level=3] [ref=f9e456]
+            - paragraph [ref=f9e457]: A retro Macintosh System 6/7-themed Pomodoro timer.
+            - generic [ref=f9e458]:
+              - generic [ref=f9e459]: React
+              - generic [ref=f9e460]: TypeScript
+              - generic [ref=f9e461]: Vite
+              - generic [ref=f9e462]: TailwindCSS
+              - generic [ref=f9e463]: Zustand
+            - generic [ref=f9e465]:
+              - link "ClassicFocus on GitHub" [ref=f9e466] [cursor=pointer]:
+                - /url: https://github.com/ayushmk7/ClassicFocus
+                - img [ref=f9e467]
+              - link "ClassicFocus website" [ref=f9e470] [cursor=pointer]:
+                - /url: https://classicfocus.vercel.app
+                - img [ref=f9e471]
+          - generic [ref=f9e474]:
+            - heading "mkrl" [level=3] [ref=f9e475]
+            - paragraph [ref=f9e476]: TinyURL clone with React frontend and FastAPI backend, horizontally scaled and open sourced.
+            - generic [ref=f9e477]:
+              - generic [ref=f9e478]: FastAPI
+              - generic [ref=f9e479]: Python
+              - generic [ref=f9e480]: React
+              - generic [ref=f9e481]: TypeScript
+              - generic [ref=f9e482]: Vite
+            - generic [ref=f9e484]:
+              - link "mkrl on GitHub" [ref=f9e485] [cursor=pointer]:
+                - /url: https://github.com/ayushmk7/mkrl
+                - img [ref=f9e486]
+              - link "mkrl website" [ref=f9e489] [cursor=pointer]:
+                - /url: https://mkrl.vercel.app
+                - img [ref=f9e490]
+          - generic [ref=f9e493]:
+            - heading "Photos_Tin" [level=3] [ref=f9e494]
+            - paragraph [ref=f9e495]: React Native / Expo application for photo management and display following the actions of tinder.
+            - generic [ref=f9e496]:
+              - generic [ref=f9e497]: React Native
+              - generic [ref=f9e498]: Expo
+            - link "Photos_Tin on GitHub" [ref=f9e501] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/Photos_Tin
+              - img [ref=f9e502]
+          - generic [ref=f9e505]:
+            - heading "Scrape_for_Sponsor" [level=3] [ref=f9e506]
+            - paragraph [ref=f9e507]: Scrapes restaurant data from annarbor.org for CLAWS club sponsorship committee.
+            - generic [ref=f9e508]:
+              - generic [ref=f9e509]: Python
+              - generic [ref=f9e510]: AgentQL
+              - generic [ref=f9e511]: Playwright
+            - link "Scrape_for_Sponsor on GitHub" [ref=f9e514] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/SponsorScrape
+              - img [ref=f9e515]
+          - generic [ref=f9e518]:
+            - heading "Portfolio Website" [level=3] [ref=f9e519]
+            - paragraph [ref=f9e520]: My current portfolio website.
+            - generic [ref=f9e521]:
+              - generic [ref=f9e522]: Astro
+              - generic [ref=f9e523]: React
+              - generic [ref=f9e524]: TypeScript
+              - generic [ref=f9e525]: TailwindCSS
+            - generic [ref=f9e527]:
+              - link "Portfolio Website on GitHub" [ref=f9e528] [cursor=pointer]:
+                - /url: https://github.com/ayushmk7/Website
+                - img [ref=f9e529]
+              - link "Portfolio Website website" [ref=f9e532] [cursor=pointer]:
+                - /url: https://ayushmadhav.com
+                - img [ref=f9e533]
+    - generic [ref=f9e536]:
+      - heading "Hackathons" [level=2] [ref=f9e538]
+      - generic [ref=f9e539]:
+        - generic [ref=f9e540]:
+          - generic [ref=f9e541]:
+            - generic [ref=f9e542]: Hackathon Win
+            - generic [ref=f9e543]: Mar 2026
+          - heading "Red Bull Kappa Theta Pi Hackathon" [level=3] [ref=f9e544]
+          - paragraph [ref=f9e545]: 1st Overall, Education Track
+          - paragraph [ref=f9e546]: Turns exam results and concept maps into readiness insights. It clusters struggling students, traces root-cause concepts, and gives instructors an interactive prerequisite graph that shows dependencies and gaps at a glance.
+          - link "ConceptPilot repository" [ref=f9e548] [cursor=pointer]:
+            - /url: https://github.com/ayushmk7/ConceptPilot
+            - img [ref=f9e549]
+        - generic [ref=f9e552]:
+          - generic [ref=f9e553]:
+            - generic [ref=f9e554]: Hackathon Win
+            - generic [ref=f9e555]: Mar 2026
+          - heading "MLH RevolutionUC" [level=3] [ref=f9e556]
+          - paragraph [ref=f9e557]: Winner, ElevenLabs Track
+          - paragraph [ref=f9e558]: A multimodal medical-bill parser with a dual-path backend. It returns structured line items, savings signals, and financial-aid screening, generates editable PDF appeal packets, and runs a live call assistant over WebSocket.
+          - generic [ref=f9e559]:
+            - link "SaveSurance repository" [ref=f9e560] [cursor=pointer]:
+              - /url: https://github.com/UAgarwal7/SaveSurance
+              - img [ref=f9e561]
+            - link "SaveSurance site" [ref=f9e564] [cursor=pointer]:
+              - /url: https://savesurance.tech
+              - img [ref=f9e565]
+        - generic [ref=f9e568]:
+          - generic [ref=f9e569]:
+            - generic [ref=f9e570]: Hackathon Win
+            - generic [ref=f9e571]: Nov 2025
+          - heading "Anthropic Claude Hackathon" [level=3] [ref=f9e572]
+          - paragraph [ref=f9e573]: Winner, Audited AI Track
+          - paragraph [ref=f9e574]: A browser extension that reads privacy policies, cookie notices, and extension permissions, assigns a privacy-risk score with Claude, and surfaces the warnings that matter so users can see how their data is handled.
+          - generic [ref=f9e575]:
+            - link "SiteSense repository" [ref=f9e576] [cursor=pointer]:
+              - /url: https://github.com/ayushmk7/SiteSense
+              - img [ref=f9e577]
+            - link "SiteSense site" [ref=f9e580] [cursor=pointer]:
+              - /url: https://your-site-sense.vercel.app
+              - img [ref=f9e581]
+        - generic [ref=f9e584]:
+          - generic [ref=f9e585]:
+            - generic [ref=f9e586]: Hackathon Win
+            - generic [ref=f9e587]: Apr 2026
+          - heading "Jaseci Hackathon" [level=3] [ref=f9e588]
+          - paragraph [ref=f9e589]: 2nd Overall, Cash Prize · Cash prize
+          - paragraph [ref=f9e590]: Jac-powered security and PR review. Verified GitHub webhooks fire graph walkers that map the codebase, score dependency and blast-radius impact, and surface risk in a web control room. Built to advance open-source dev tooling.
+          - link "GhostWatch repository" [ref=f9e592] [cursor=pointer]:
+            - /url: https://github.com/ayushmk7/GhostWatch
+            - img [ref=f9e593]
+        - generic [ref=f9e596]:
+          - generic [ref=f9e597]:
+            - generic [ref=f9e598]: Hackathon Win
+            - generic [ref=f9e599]: Feb 2026
+          - heading "24-Hour AI + Business Hackathon" [level=3] [ref=f9e600]
+          - paragraph [ref=f9e601]: Top 5 Finish
+          - paragraph [ref=f9e602]: An AI concept-readiness platform for instructors and students. Instructors upload exam scores and a concept graph and get a class heatmap with root-cause traces. Students get a personal report with a prerequisite-ordered study plan.
+          - link "PreReq repository" [ref=f9e604] [cursor=pointer]:
+            - /url: https://github.com/ayushmk7/PreReq
+            - img [ref=f9e605]
+    - generic [ref=f9e608]:
+      - heading "Stack" [level=2] [ref=f9e610]
+      - generic "Stack carousel — scroll to browse" [ref=f9e611]:
+        - generic [ref=f9e612]:
+          - generic [ref=f9e613]:
+            - heading "Programming Languages" [level=3] [ref=f9e614]
+            - generic [ref=f9e615]:
+              - generic [ref=f9e616]: C
+              - generic [ref=f9e617]: C sharp
+              - generic [ref=f9e618]: CSS
+              - generic [ref=f9e619]: Go
+              - generic [ref=f9e620]: HTML
+              - generic [ref=f9e621]: Jac
+              - generic [ref=f9e622]: Java
+              - generic [ref=f9e623]: JavaScript
+              - generic [ref=f9e624]: PHP
+              - generic [ref=f9e625]: Python
+              - generic [ref=f9e626]: Ruby
+              - generic [ref=f9e627]: Rust
+              - generic [ref=f9e628]: SQL
+              - generic [ref=f9e629]: TypeScript
+          - generic [ref=f9e630]:
+            - heading "AI and ML" [level=3] [ref=f9e631]
+            - generic [ref=f9e632]:
+              - generic [ref=f9e633]: Agentic systems
+              - generic [ref=f9e634]: Computer Vision
+              - generic [ref=f9e635]: Edge AI
+              - generic [ref=f9e636]: HuggingFace Transformers
+              - generic [ref=f9e637]: JAX
+              - generic [ref=f9e638]: LLMs
+              - generic [ref=f9e639]: LoRA/QLoRA fine tuning
+              - generic [ref=f9e640]: MCP
+              - generic [ref=f9e641]: Mixture of Experts
+              - generic [ref=f9e642]: Model optimization
+              - generic [ref=f9e643]: NLP
+              - generic [ref=f9e644]: ONNX Runtime
+              - generic [ref=f9e645]: OpenAI APIs
+              - generic [ref=f9e646]: PyTorch
+              - generic [ref=f9e647]: Quantization
+              - generic [ref=f9e648]: RAG
+              - generic [ref=f9e649]: Reinforcement Learning
+              - generic [ref=f9e650]: RLHF/DPO
+              - generic [ref=f9e651]: Scikit-learn
+              - generic [ref=f9e652]: TensorFlow
+              - generic [ref=f9e653]: Unsloth
+              - generic [ref=f9e654]: vLLM
+          - generic [ref=f9e655]:
+            - heading "Software Development" [level=3] [ref=f9e656]
+            - generic [ref=f9e657]:
+              - generic [ref=f9e658]: APIs
+              - generic [ref=f9e659]: Dart
+              - generic [ref=f9e660]: Django
+              - generic [ref=f9e661]: Express
+              - generic [ref=f9e662]: FastAPI
+              - generic [ref=f9e663]: Flask
+              - generic [ref=f9e664]: Flutter
+              - generic [ref=f9e665]: Git
+              - generic [ref=f9e666]: GitHub
+              - generic [ref=f9e667]: GitHub Actions
+              - generic [ref=f9e668]: GitLab
+              - generic [ref=f9e669]: GraphQL
+              - generic [ref=f9e670]: gRPC
+              - generic [ref=f9e671]: Next.js
+              - generic [ref=f9e672]: Node.js
+              - generic [ref=f9e673]: Progressive Web Apps
+              - generic [ref=f9e674]: React
+              - generic [ref=f9e675]: React Native
+              - generic [ref=f9e676]: REST
+              - generic [ref=f9e677]: Tailwind CSS
+              - generic [ref=f9e678]: Vue
+              - generic [ref=f9e679]: WebSockets
+          - generic [ref=f9e680]:
+            - heading "Databases and Data Engineering" [level=3] [ref=f9e681]
+            - generic [ref=f9e682]:
+              - generic [ref=f9e683]: Data modeling
+              - generic [ref=f9e684]: ETL pipelines
+              - generic [ref=f9e685]: MongoDB
+              - generic [ref=f9e686]: MySQL
+              - generic [ref=f9e687]: Pandas
+              - generic [ref=f9e688]: PostgreSQL
+              - generic [ref=f9e689]: Redis
+              - generic [ref=f9e690]: Vector databases
+          - generic [ref=f9e691]:
+            - heading "DevOps and Cloud Infrastructure" [level=3] [ref=f9e692]
+            - generic [ref=f9e693]:
+              - generic [ref=f9e694]: AWS EC2
+              - generic [ref=f9e695]: AWS Lambda
+              - generic [ref=f9e696]: AWS S3
+              - generic [ref=f9e697]: CI/CD pipelines
+              - generic [ref=f9e698]: Docker
+              - generic [ref=f9e699]: Edge deployment
+              - generic [ref=f9e700]: GCP
+              - generic [ref=f9e701]: Kubernetes
+              - generic [ref=f9e702]: Linux
+              - generic [ref=f9e703]: Nginx
+              - generic [ref=f9e704]: RabbitMQ
+              - generic [ref=f9e705]: Scalable ML inference orchestration
+              - generic [ref=f9e706]: Serverless architecture
+              - generic [ref=f9e707]: Terraform
+          - generic [ref=f9e708]:
+            - heading "Core Computer Science" [level=3] [ref=f9e709]
+            - generic [ref=f9e710]:
+              - generic [ref=f9e711]: Algorithms
+              - generic [ref=f9e712]: Concurrency and Multithreading
+              - generic [ref=f9e713]: Data Structures
+              - generic [ref=f9e714]: Memory Management
+              - generic [ref=f9e715]: Object Oriented Design
+              - generic [ref=f9e716]: Operating Systems Basics
+              - generic [ref=f9e717]: Time and Space Complexity Analysis
+          - generic [ref=f9e718]:
+            - heading "Cybersecurity" [level=3] [ref=f9e719]
+            - generic [ref=f9e720]:
+              - generic [ref=f9e721]: API and web vulnerability analysis
+              - generic [ref=f9e722]: AWS IAM and S3 security
+              - generic [ref=f9e723]: cryptographic weakness detection
+              - generic [ref=f9e724]: Nmap automation
+              - generic [ref=f9e725]: PCAP forensics
+              - generic [ref=f9e726]: reverse engineering
+              - generic [ref=f9e727]: TLS protocol analysis
+              - generic [ref=f9e728]: YARA based malware triage
+          - generic [ref=f9e729]:
+            - heading "Programming Languages" [level=3] [ref=f9e730]
+            - generic [ref=f9e731]:
+              - generic [ref=f9e732]: C
+              - generic [ref=f9e733]: C sharp
+              - generic [ref=f9e734]: CSS
+              - generic [ref=f9e735]: Go
+              - generic [ref=f9e736]: HTML
+              - generic [ref=f9e737]: Jac
+              - generic [ref=f9e738]: Java
+              - generic [ref=f9e739]: JavaScript
+              - generic [ref=f9e740]: PHP
+              - generic [ref=f9e741]: Python
+              - generic [ref=f9e742]: Ruby
+              - generic [ref=f9e743]: Rust
+              - generic [ref=f9e744]: SQL
+              - generic [ref=f9e745]: TypeScript
+          - generic [ref=f9e746]:
+            - heading "AI and ML" [level=3] [ref=f9e747]
+            - generic [ref=f9e748]:
+              - generic [ref=f9e749]: Agentic systems
+              - generic [ref=f9e750]: Computer Vision
+              - generic [ref=f9e751]: Edge AI
+              - generic [ref=f9e752]: HuggingFace Transformers
+              - generic [ref=f9e753]: JAX
+              - generic [ref=f9e754]: LLMs
+              - generic [ref=f9e755]: LoRA/QLoRA fine tuning
+              - generic [ref=f9e756]: MCP
+              - generic [ref=f9e757]: Mixture of Experts
+              - generic [ref=f9e758]: Model optimization
+              - generic [ref=f9e759]: NLP
+              - generic [ref=f9e760]: ONNX Runtime
+              - generic [ref=f9e761]: OpenAI APIs
+              - generic [ref=f9e762]: PyTorch
+              - generic [ref=f9e763]: Quantization
+              - generic [ref=f9e764]: RAG
+              - generic [ref=f9e765]: Reinforcement Learning
+              - generic [ref=f9e766]: RLHF/DPO
+              - generic [ref=f9e767]: Scikit-learn
+              - generic [ref=f9e768]: TensorFlow
+              - generic [ref=f9e769]: Unsloth
+              - generic [ref=f9e770]: vLLM
+          - generic [ref=f9e771]:
+            - heading "Software Development" [level=3] [ref=f9e772]
+            - generic [ref=f9e773]:
+              - generic [ref=f9e774]: APIs
+              - generic [ref=f9e775]: Dart
+              - generic [ref=f9e776]: Django
+              - generic [ref=f9e777]: Express
+              - generic [ref=f9e778]: FastAPI
+              - generic [ref=f9e779]: Flask
+              - generic [ref=f9e780]: Flutter
+              - generic [ref=f9e781]: Git
+              - generic [ref=f9e782]: GitHub
+              - generic [ref=f9e783]: GitHub Actions
+              - generic [ref=f9e784]: GitLab
+              - generic [ref=f9e785]: GraphQL
+              - generic [ref=f9e786]: gRPC
+              - generic [ref=f9e787]: Next.js
+              - generic [ref=f9e788]: Node.js
+              - generic [ref=f9e789]: Progressive Web Apps
+              - generic [ref=f9e790]: React
+              - generic [ref=f9e791]: React Native
+              - generic [ref=f9e792]: REST
+              - generic [ref=f9e793]: Tailwind CSS
+              - generic [ref=f9e794]: Vue
+              - generic [ref=f9e795]: WebSockets
+          - generic [ref=f9e796]:
+            - heading "Databases and Data Engineering" [level=3] [ref=f9e797]
+            - generic [ref=f9e798]:
+              - generic [ref=f9e799]: Data modeling
+              - generic [ref=f9e800]: ETL pipelines
+              - generic [ref=f9e801]: MongoDB
+              - generic [ref=f9e802]: MySQL
+              - generic [ref=f9e803]: Pandas
+              - generic [ref=f9e804]: PostgreSQL
+              - generic [ref=f9e805]: Redis
+              - generic [ref=f9e806]: Vector databases
+          - generic [ref=f9e807]:
+            - heading "DevOps and Cloud Infrastructure" [level=3] [ref=f9e808]
+            - generic [ref=f9e809]:
+              - generic [ref=f9e810]: AWS EC2
+              - generic [ref=f9e811]: AWS Lambda
+              - generic [ref=f9e812]: AWS S3
+              - generic [ref=f9e813]: CI/CD pipelines
+              - generic [ref=f9e814]: Docker
+              - generic [ref=f9e815]: Edge deployment
+              - generic [ref=f9e816]: GCP
+              - generic [ref=f9e817]: Kubernetes
+              - generic [ref=f9e818]: Linux
+              - generic [ref=f9e819]: Nginx
+              - generic [ref=f9e820]: RabbitMQ
+              - generic [ref=f9e821]: Scalable ML inference orchestration
+              - generic [ref=f9e822]: Serverless architecture
+              - generic [ref=f9e823]: Terraform
+          - generic [ref=f9e824]:
+            - heading "Core Computer Science" [level=3] [ref=f9e825]
+            - generic [ref=f9e826]:
+              - generic [ref=f9e827]: Algorithms
+              - generic [ref=f9e828]: Concurrency and Multithreading
+              - generic [ref=f9e829]: Data Structures
+              - generic [ref=f9e830]: Memory Management
+              - generic [ref=f9e831]: Object Oriented Design
+              - generic [ref=f9e832]: Operating Systems Basics
+              - generic [ref=f9e833]: Time and Space Complexity Analysis
+          - generic [ref=f9e834]:
+            - heading "Cybersecurity" [level=3] [ref=f9e835]
+            - generic [ref=f9e836]:
+              - generic [ref=f9e837]: API and web vulnerability analysis
+              - generic [ref=f9e838]: AWS IAM and S3 security
+              - generic [ref=f9e839]: cryptographic weakness detection
+              - generic [ref=f9e840]: Nmap automation
+              - generic [ref=f9e841]: PCAP forensics
+              - generic [ref=f9e842]: reverse engineering
+              - generic [ref=f9e843]: TLS protocol analysis
+              - generic [ref=f9e844]: YARA based malware triage
+    - generic [ref=f9e845]:
+      - heading "Places I have been" [level=2] [ref=f9e847]
+      - paragraph [ref=f9e848]: Tap a pin for live weather.
+      - generic [ref=f9e851]:
+        - region "World map of places I've visited; select a pin for local weather" [ref=f9e852]
+        - button "Expand map" [ref=f9e853] [cursor=pointer]:
+          - img [ref=f9e854]
+    - generic [ref=f9e859]:
+      - heading "Contact" [level=2] [ref=f9e861]
+      - generic [ref=f9e862]:
+        - heading "Let's build something" [level=3] [ref=f9e863]
+        - paragraph [ref=f9e864]: Open to roles and collabs. Email's fastest.
+        - generic [ref=f9e865]:
+          - button "Copy email address" [ref=f9e866] [cursor=pointer]:
+            - img [ref=f9e867]
+            - generic [ref=f9e870]: Copy email
+          - link "GitHub" [ref=f9e871] [cursor=pointer]:
+            - /url: https://github.com/ayushmk7
+            - img [ref=f9e872]
+            - text: GitHub
+          - link "LinkedIn" [ref=f9e875] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/ayushmk
+            - img [ref=f9e876]
+            - text: LinkedIn
+          - link "Résumé" [ref=f9e880] [cursor=pointer]:
+            - /url: /AyushMadhavResume.pdf
+  - generic [ref=f9e883]:
+    - button "Menu" [ref=f9e884]:
+      - img [ref=f9e886]
+      - generic: Menu
+    - button "Inspect" [ref=f9e890]:
+      - img [ref=f9e892]
+      - generic: Inspect
+    - button "Audit" [ref=f9e894]:
+      - generic [ref=f9e895]:
+        - img [ref=f9e896]
+        - img [ref=f9e899]
+      - generic: Audit
+    - button "Settings" [ref=f9e902]:
+      - img [ref=f9e904]
+      - generic: Settings

@@ -31,6 +31,8 @@ export default function ComicWorldMap() {
     let disposed = false;
     let ro: ResizeObserver | null = null;
     let themeObs: MutationObserver | null = null;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const ac = new AbortController(); // cancel in-flight weather fetches on unmount
     (async () => {
       const L = (await import('leaflet')).default;
       if (disposed || !elRef.current || mapRef.current) return;
@@ -63,9 +65,9 @@ export default function ComicWorldMap() {
         if (d === isDark) return;
         isDark = d;
         const next = L.tileLayer(tileUrl(d), tileOpts).addTo(map);
-        const swap = () => { if (tiles && tiles !== next) { map.removeLayer(tiles); tiles = next; } };
+        const swap = () => { if (disposed) return; if (tiles && tiles !== next) { map.removeLayer(tiles); tiles = next; } };
         next.once('load', swap);
-        setTimeout(swap, 700); // fallback if 'load' is missed
+        timers.push(setTimeout(swap, 700)); // fallback if 'load' is missed
       });
       themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
@@ -76,7 +78,7 @@ export default function ComicWorldMap() {
         m.on('popupopen', () => {
           const key = `${p.lat},${p.lng}`;
           if (wxCache.has(key)) { m.setPopupContent(popupHtml(p, wxCache.get(key)!)); return; }
-          fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=celsius`)
+          fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lng}&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=celsius`, { signal: ac.signal })
             .then((r) => { if (!r.ok) throw new Error('bad'); return r.json(); })
             .then((d) => {
               const c = d.current;
@@ -88,13 +90,14 @@ export default function ComicWorldMap() {
               wxCache.set(key, parts);
               if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, parts));
             })
-            .catch(() => { if (m.isPopupOpen()) m.setPopupContent(popupHtml(p, { status: 'Weather unavailable' })); });
+            .catch(() => { if (!ac.signal.aborted && m.isPopupOpen()) m.setPopupContent(popupHtml(p, { status: 'Weather unavailable' })); });
         });
       });
 
       // contain-fit: whole world visible (Greenland included), no crop. Frame
       // aspect (1.695:1) matches the world's mercator aspect, so no letterbox.
       const fill = () => {
+        if (disposed) return; // pending setTimeout/resize must not touch a removed map
         map.invalidateSize({ animate: false, pan: false });
         map.setMinZoom(0);
         // fit the world flush to the frame — box aspect (1.49:1) equals the
@@ -105,8 +108,8 @@ export default function ComicWorldMap() {
       };
       mapRef.current = map;
       fillRef.current = fill;
-      setTimeout(fill, 60);
-      setTimeout(fill, 300);
+      timers.push(setTimeout(fill, 60));
+      timers.push(setTimeout(fill, 300));
       window.addEventListener('resize', fill);
       // one-shot: settle initial layout (kills uncovered edges), then stop so it
       // never fights the user's own zoom/pan afterward.
@@ -115,6 +118,8 @@ export default function ComicWorldMap() {
     })();
     return () => {
       disposed = true;
+      ac.abort();
+      timers.forEach(clearTimeout);
       if (ro) ro.disconnect();
       if (themeObs) themeObs.disconnect();
       if (fillRef.current) window.removeEventListener('resize', fillRef.current);

@@ -14,7 +14,9 @@ const linkedinSvg = (
 
 export default function ComicHero() {
   const [open, setOpen] = useState(false);
+  const [imgOk, setImgOk] = useState(true); // photo loaded? gate the lightbox on it
   const dialogRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -25,7 +27,6 @@ export default function ComicHero() {
 
   useEffect(() => {
     if (!open) return;
-    const prev = document.activeElement as HTMLElement | null;
     const focusables = () => Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('a[href],button,[tabindex]:not([tabindex="-1"])') ?? []);
     focusables()[0]?.focus();
     const onTab = (e: KeyboardEvent) => {
@@ -37,16 +38,18 @@ export default function ComicHero() {
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     };
     window.addEventListener('keydown', onTab);
-    return () => { window.removeEventListener('keydown', onTab); prev?.focus(); };
+    // restore focus to the trigger, not document.activeElement (which a click
+    // often leaves on <body> in WebKit/Firefox)
+    return () => { window.removeEventListener('keydown', onTab); triggerRef.current?.focus(); };
   }, [open]);
 
   return (
     <section className="comic-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="flex flex-col items-center text-center px-6 w-full" style={{ gap: 'clamp(0.5rem,1.8vh,1.1rem)' }}>
-        <button type="button" className="panel" onClick={() => setOpen(true)} aria-label="Expand photo" style={{ padding: '0.4rem', cursor: 'zoom-in', background: 'var(--surface)' }}>
+        <button ref={triggerRef} type="button" className="panel" onClick={() => imgOk && setOpen(true)} aria-label="Expand photo" style={{ padding: '0.4rem', cursor: imgOk ? 'zoom-in' : 'default', background: 'var(--surface)' }}>
           <div className="comic-hero-photo" style={{ position: 'relative', display: 'grid', placeItems: 'center', fontWeight: 800, overflow: 'hidden', background: 'var(--surface)', width: 'clamp(9rem,24vmin,14rem)' }}>
             AK
-            <img src="/profile.jpg" alt="Ayush Madhav Kumar" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
+            <img src="/profile.jpg" alt="Ayush Madhav Kumar" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; setImgOk(false); }} />
           </div>
         </button>
 
@@ -59,7 +62,7 @@ export default function ComicHero() {
           </div>
         )}
 
-        <h1 style={{ fontFamily: 'var(--font-display)', WebkitTextStroke: '2px var(--outline)', paintOrder: 'stroke fill', color: 'var(--accent)', fontSize: 'clamp(2.6rem,10vw,7.5rem)', lineHeight: 1, width: '100%', maxWidth: '20ch', padding: '0 0.5rem', overflowWrap: 'break-word' }}>Ayush Madhav Kumar</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', WebkitTextStroke: '2px var(--outline)', paintOrder: 'stroke fill', color: 'var(--accent)', fontSize: 'clamp(2.6rem,10vw,7.5rem)', lineHeight: 1, width: '100%', maxWidth: '20ch', padding: '0 0.5rem', overflowWrap: 'break-word' }}>Ayush Madhav</h1>
 
         <div className="bubble" style={{ padding: '0.45rem 1.2rem' }}><p style={{ fontWeight: 800, fontSize: 'clamp(0.85rem,2.2vw,1.1rem)' }}>{role}</p></div>
         <p style={{ fontFamily: 'var(--font-body)', fontWeight: 800, letterSpacing: '0.02em' }}>&gt; NSF-backed research</p>
