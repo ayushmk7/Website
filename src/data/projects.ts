@@ -131,5 +131,12 @@ export const projects: Project[] = [
     tags: ["Astro", "React", "TypeScript", "TailwindCSS"],
     websiteUrl: "https://ayushmadhav.com",
     githubUrl: "https://github.com/ayushmk7/Website"
+  },
+  {
+    title: "ScreenCleanLock",
+    description: "A tiny static web app that locks your screen and keyboard so you can wipe your monitor without triggering clicks, scrolls, or keystrokes. Hold Space to unlock, with fullscreen sync so Escape can't desync the lock state.",
+    tags: ["HTML", "CSS", "JavaScript", "Node.js"],
+    websiteUrl: "https://screencleanlock.vercel.app",
+    githubUrl: "https://github.com/ayushmk7/ScreenCleanLock"
   }
 ];
