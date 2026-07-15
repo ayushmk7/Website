@@ -138,5 +138,23 @@ export const projects: Project[] = [
     tags: ["HTML", "CSS", "JavaScript", "Node.js"],
     websiteUrl: "https://screencleanlock.vercel.app",
     githubUrl: "https://github.com/ayushmk7/ScreenCleanLock"
+  },
+  {
+    title: "NightShift",
+    description: "An unattended nightly automation harness that syncs a Jaseci fork, runs deterministic lint/format passes, then dispatches Claude agent sessions to audit and apply small verified fixes/refactors before opening PRs, orchestrated via bash, launchd, and native Jac scripts.",
+    tags: ["Bash", "Jac", "Zig", "Claude Agent SDK", "launchd", "GitHub CLI", "pre-commit", "JSONL"],
+    githubUrl: "https://github.com/ayushmk7/NightShift"
+  },
+  {
+    title: "SessionSwitch",
+    description: "A macOS app for managing Claude Code CLI sessions across terminals and IDEs — switch models/effort without touching the terminal, built with pure Swift 6, SwiftUI, and AppKit overlay badges.",
+    tags: ["Swift 6", "SwiftUI", "AppKit", "Carbon", "SwiftPM", "AXBackend", "AppleScript"],
+    githubUrl: "https://github.com/ayushmk7/SessionSwitch"
+  },
+  {
+    title: "Jac ML Studio",
+    description: "A full-stack local ML workbench and research pipeline for finetuning LLMs on Jac (Jaseci Labs' object-spatial programming language), pairing a synthetic-data SFT/DPO/GRPO training pipeline (MLX, LoRA, Qwen3-Coder-30B) with a pure-Jac web app — server endpoints and a React-in-Jac client from one codebase — for chatting with trained models, running training jobs, and tracking evals.",
+    tags: ["Jac", "Python", "MLX", "LoRA", "React", "TypeScript", "Vite", "TailwindCSS", "React Router", "React Hook Form", "Zod", "Recharts"],
+    githubUrl: "https://github.com/jaseci-labs/jac_ml_studio"
   }
 ];
