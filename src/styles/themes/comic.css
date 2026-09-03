@@ -279,14 +279,30 @@ html[data-theme="comic"].dark .cwm-map { border-color: transparent; box-shadow: 
 /* the real Leaflet map fills the framed box */
 html[data-theme="comic"] .cwm-leaflet { position: absolute; inset: 0; width: 100%; height: 100%; background: #1b1b1b; }
 html[data-theme="comic"] .cwm-leaflet .leaflet-container { background: #1b1b1b; }
-html[data-theme="comic"] .cwm-leaflet .leaflet-control-attribution { display: none; }
+
+/* CARTO's free tier requires visible CARTO + OpenStreetMap credit
+   (carto.com/attributions), so it stays on-screen — just shrunk to a quiet
+   newspaper-ink strip in the corner instead of Leaflet's default white bar. */
+html[data-theme="comic"] .cwm-leaflet .leaflet-control-attribution {
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  color: color-mix(in srgb, var(--ink) 70%, var(--paper));
+  font-family: var(--font-body, inherit); font-size: 9px; font-weight: 700;
+  line-height: 1.5; padding: 1px 5px; margin: 0;
+  border-top-left-radius: 5px; border-top: 1.5px solid var(--ink); border-left: 1.5px solid var(--ink);
+  backdrop-filter: blur(2px);
+}
+html[data-theme="comic"] .cwm-leaflet .leaflet-control-attribution a { color: inherit; text-decoration: underline; }
+html[data-theme="comic"] .cwm-leaflet .leaflet-control-attribution a:hover { color: var(--accent); }
+
 /* red comic +/- zoom control over the map */
 html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom { border: none; box-shadow: 4px 4px 0 var(--panel-shadow); }
 html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom a {
   background: var(--accent); color: #fff; border: 2px solid var(--outline);
   font-family: var(--font-display); font-weight: 800;
-  width: 30px; height: 30px; line-height: 28px;
+  /* match the expand/reset buttons on the other corner */
+  width: 2.4rem; height: 2.4rem; line-height: 2.2rem; font-size: 1.35rem;
 }
+html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom a:focus-visible { outline: 3px solid var(--comic-blue); outline-offset: 2px; }
 html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom a:first-child { border-radius: 5px 5px 0 0; }
 html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom a:last-child { border-radius: 0 0 5px 5px; border-top: none; }
 html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom a:hover { background: var(--comic-blue); }
@@ -295,18 +311,67 @@ html[data-theme="comic"] .cwm-leaflet .leaflet-control-zoom a:hover { background
 html[data-theme="comic"] .cwm-leaflet .leaflet-top,
 html[data-theme="comic"] .cwm-leaflet .leaflet-control { z-index: 400; }
 
-/* comic expand/collapse button, top-right over the map */
-html[data-theme="comic"] .cwm-expand-btn {
+/* comic map buttons (reset view / expand), stacked top-right over the map */
+html[data-theme="comic"] .cwm-tools {
   position: absolute; top: 0.6rem; right: 0.6rem; z-index: 400;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 0.45rem;
+}
+html[data-theme="comic"] .cwm-tool-btn {
   width: 2.4rem; height: 2.4rem; padding: 0;
   display: inline-flex; align-items: center; justify-content: center;
   background: var(--accent); color: #fff;
   border: 2px solid #000; border-radius: 6px;
   box-shadow: 3px 3px 0 #000; cursor: pointer;
   font-family: var(--font-display);
+  transition: background 0.15s ease, transform 0.1s ease;
 }
-html[data-theme="comic"] .cwm-expand-btn:hover { background: var(--comic-blue); }
+html[data-theme="comic"] .cwm-tool-btn:hover { background: var(--comic-blue); }
+html[data-theme="comic"] .cwm-tool-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000; }
+html[data-theme="comic"] .cwm-tool-btn:focus-visible { outline: 3px solid var(--comic-blue); outline-offset: 2px; }
 html[data-theme="comic"] .cwm-expand-x { font-size: 1.25rem; line-height: 1; }
+
+/* the inline map is only ~240px tall on a phone — shrink the chrome so it does
+   not eat a third of the world */
+@media (max-width: 40rem) {
+  html[data-theme="comic"] .cwm-wrap:not(.cwm-wrap--expanded) .cwm-tools { top: 0.4rem; right: 0.4rem; gap: 0.3rem; }
+  html[data-theme="comic"] .cwm-wrap:not(.cwm-wrap--expanded) .cwm-tool-btn { width: 1.95rem; height: 1.95rem; }
+  html[data-theme="comic"] .cwm-wrap:not(.cwm-wrap--expanded) .cwm-leaflet .leaflet-control-zoom a { width: 1.95rem; height: 1.95rem; line-height: 1.75rem; font-size: 1.15rem; }
+  html[data-theme="comic"] .cwm-wrap:not(.cwm-wrap--expanded) .cwm-leaflet .leaflet-top.leaflet-left { margin: -4px 0 0 -4px; }
+}
+
+/* skeleton while the first basemap tiles are still in flight */
+html[data-theme="comic"] .cwm-skeleton {
+  position: absolute; inset: 0; z-index: 500; pointer-events: none;
+  display: grid; place-items: center;
+  background: var(--map-bg);
+  background-image: linear-gradient(100deg, transparent 20%, color-mix(in srgb, var(--ink) 7%, transparent) 45%, transparent 70%);
+  background-size: 220% 100%;
+  animation: cwmSheen 1.15s linear infinite;
+}
+@keyframes cwmSheen { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+html[data-theme="comic"] .cwm-skeleton-label {
+  font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--ink) 55%, var(--map-bg));
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="comic"] .cwm-skeleton { animation: none; }
+}
+
+/* transient gesture hint ("⌘ + scroll to zoom" / "two fingers to move").
+   A pill, not a full scrim: this fires whenever someone simply scrolls the page
+   past the map, so it must never black the map out. */
+html[data-theme="comic"] .cwm-hint {
+  position: absolute; left: 50%; bottom: 1.6rem; z-index: 450; /* clears the attribution strip */
+  transform: translateX(-50%); pointer-events: none; max-width: 90%;
+  background: var(--paper); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--panel-shadow);
+  font-family: var(--font-display); font-size: 0.95rem; letter-spacing: 0.01em;
+  padding: 0.2rem 0.85rem; white-space: nowrap; text-align: center;
+  animation: cwmFade 0.14s ease both;
+}
+
+/* expanded fullscreen view */
 
 /* expanded fullscreen view */
 html[data-theme="comic"] .cwm-wrap--expanded {
@@ -324,7 +389,10 @@ html[data-theme="comic"] .cwm-wrap--expanded .cwm-map {
   height: auto;
   aspect-ratio: 1.49 / 1;
 }
-/* comic pin marker (divIcon): static dot, grows on hover (no constant motion) */
+/* comic pin marker (divIcon): static dot, grows on hover (no constant motion).
+   The icon box is bigger than the dot (26px / 36px on touch) so the tap target
+   clears finger size — grid-centring keeps the dot itself visually identical. */
+html[data-theme="comic"] .cwm-pin-icon { display: grid; place-items: center; background: none; border: 0; }
 html[data-theme="comic"] .cwm-pin-icon span {
   display: block; width: 16px; height: 16px; border-radius: 50%;
   background: var(--accent); border: 3px solid #fff;
@@ -332,6 +400,48 @@ html[data-theme="comic"] .cwm-pin-icon span {
   transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
 }
 html[data-theme="comic"] .cwm-pin-icon:hover span { transform: scale(1.3); }
+/* Leaflet strips the outline on pointer-down; keyboard users still need a ring */
+html[data-theme="comic"] .cwm-pin-icon:focus-visible { outline: none; }
+html[data-theme="comic"] .cwm-pin-icon:focus-visible span {
+  transform: scale(1.3);
+  box-shadow: 0 0 0 3px var(--comic-blue), 0 0 0 5px #141414;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="comic"] .cwm-pin-icon span { transition: none; }
+}
+
+/* hover label on a pin (name only — the popup carries the detail) */
+html[data-theme="comic"] .cwm-tip.leaflet-tooltip {
+  background: var(--paper); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 5px;
+  box-shadow: 3px 3px 0 var(--panel-shadow);
+  font-weight: 800; font-size: 0.72rem; letter-spacing: 0.02em;
+  padding: 1px 7px; white-space: nowrap;
+}
+html[data-theme="comic"] .cwm-tip.leaflet-tooltip-top::before { border-top-color: var(--ink); }
+
+/* newspaper dateline index under the map: jump straight to a place (also the
+   keyboard/screen-reader route to pins that overlap at world zoom) */
+html[data-theme="comic"] .cwm-index {
+  list-style: none; margin: 0.9rem 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center;
+}
+html[data-theme="comic"] .cwm-chip {
+  display: inline-flex; align-items: baseline; gap: 0.32rem; cursor: pointer;
+  background: color-mix(in srgb, var(--ink) 8%, var(--paper));
+  color: var(--ink); border: 2px solid var(--ink); border-radius: 999px;
+  padding: 0.12rem 0.6rem; font-weight: 800; font-size: 0.78rem; line-height: 1.5;
+  transition: background 0.13s ease, color 0.13s ease;
+}
+html[data-theme="comic"] .cwm-chip:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+html[data-theme="comic"] .cwm-chip:hover .cwm-chip-cc { color: #fff; }
+html[data-theme="comic"] .cwm-chip:focus-visible { outline: 3px solid var(--comic-blue); outline-offset: 2px; }
+html[data-theme="comic"] .cwm-chip-cc {
+  font-size: 0.58rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink) 55%, var(--paper));
+}
+/* the index belongs to the inline map; the expanded overlay is map-only */
+html[data-theme="comic"] .cwm-wrap--expanded .cwm-index { display: none; }
 
 /* on-map comic popups (place name + live weather) */
 html[data-theme="comic"] .cwm-pop-wrap .leaflet-popup-content-wrapper {

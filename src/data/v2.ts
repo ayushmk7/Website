@@ -149,16 +149,6 @@ export const experience: Experience[] = [
     ],
   },
   {
-    company: "MSAIL",
-    role: "AI Developer",
-    period: "Sep 2025 to Present",
-    location: "Ann Arbor, MI",
-    kind: "Leadership",
-    bullets: [
-      "AI developer at MSAIL, building low-level inference tooling and running AI on mobile devices alongside a YC company.",
-    ],
-  },
-  {
     company: "CareTether",
     role: "Co-Founder, Frontend and Outreach",
     period: "Jul to Aug 2025",
@@ -173,8 +163,8 @@ export const experience: Experience[] = [
   {
     company: "GIIT Solutions",
     role: "Associate Software Intern",
-    period: "2024 to 2025",
-    location: "Cork, Ireland",
+    period: "Jun 2024 to Jul 2024, Apr 2025",
+    location: "Remote",
     kind: "Work",
     url: "https://giitsolutions.com/",
     bullets: [

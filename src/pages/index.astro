@@ -69,6 +69,9 @@ import StackLayouts from '../components/v2/StackLayouts.astro';
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
           LinkedIn
         </a>
+        <a class="comic-link-btn" href="https://x.com/ayushmk_007" target="_blank" rel="noopener noreferrer" aria-label="X profile" style="width:2.7rem;height:2.7rem;padding:0;justify-content:center">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
         <a class="comic-link-btn" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" style="height:2.7rem">Résumé</a>
       </div>
     </div>
@@ -79,6 +82,10 @@ import StackLayouts from '../components/v2/StackLayouts.astro';
       var btn = document.getElementById('copy-email');
       if (!btn) return;
       var label = btn.querySelector('.copy-email-label');
+      // capture the idle text once: re-reading it per click meant a second click
+      // during the 1.8s window latched "Copied to clipboard" in as the idle label
+      var idle = label.textContent;
+      var timer;
       btn.addEventListener('click', function () {
         var email = btn.getAttribute('data-email');
         // navigator.clipboard is undefined on non-localhost HTTP / old browsers —
@@ -86,9 +93,9 @@ import StackLayouts from '../components/v2/StackLayouts.astro';
         var canCopy = navigator.clipboard && navigator.clipboard.writeText;
         if (!canCopy) { window.location.href = 'mailto:' + email; return; }
         navigator.clipboard.writeText(email).then(function () {
-          var prev = label.textContent;
           label.textContent = 'Copied to clipboard';
-          setTimeout(function () { label.textContent = prev; }, 1800);
+          clearTimeout(timer);
+          timer = setTimeout(function () { label.textContent = idle; }, 1800);
         }).catch(function () {
           window.location.href = 'mailto:' + email;
         });

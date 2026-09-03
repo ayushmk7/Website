@@ -68,10 +68,17 @@ html[data-theme="comic"] .cwm-pop-sub { color: color-mix(in srgb, var(--ink) 65%
 
 /* ---- Map popup: banner (name left | weather right). Prefixed to beat the
    old comic.css .cwm-pop rules. Right padding leaves room for the close X. ---- */
-html[data-theme="comic"] .cwm-pop { display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 0.9rem; padding: 0.6rem 1.7rem 0.6rem 0.9rem; }
+html[data-theme="comic"] .cwm-pop { display: grid; grid-template-columns: auto auto; justify-content: space-between; align-items: center; column-gap: 0.9rem; row-gap: 0.3rem; padding: 0.6rem 1.7rem 0.6rem 0.9rem; }
 html[data-theme="comic"] .cwm-pop-head { display: block; }
 html[data-theme="comic"] .cwm-pop-title { font-family: var(--font-display); color: var(--accent); font-size: 1.15rem; line-height: 1; margin: 0; white-space: nowrap; }
 html[data-theme="comic"] .cwm-pop-country { font-weight: 800; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--ink) 60%, var(--paper)); margin: 0.12rem 0 0; }
+/* blurb gets its own full-width row under the name | weather banner */
+html[data-theme="comic"] .cwm-pop-sub {
+  grid-column: 1 / -1; margin: 0.1rem 0 0; max-width: 15rem;
+  border-top: 1.5px solid color-mix(in srgb, var(--ink) 25%, var(--paper)); padding-top: 0.3rem;
+  font-weight: 700; font-size: 0.7rem; line-height: 1.3;
+  color: color-mix(in srgb, var(--ink) 60%, var(--paper));
+}
 html[data-theme="comic"] .cwm-pop-wx { display: flex; align-items: baseline; gap: 0.5rem; }
 html[data-theme="comic"] .cwm-pop-temp { font-family: var(--font-display); line-height: 1; font-size: 1.6rem; }
 html[data-theme="comic"] .cwm-pop-meta { display: flex; flex-direction: column; text-align: left; }
@@ -81,10 +88,10 @@ html[data-theme="comic"] .cwm-pop-status { font-weight: 800; font-size: 0.85rem;
 html[data-theme="comic"] .cwm-pop-wrap a.leaflet-popup-close-button { top: 3px; right: 5px; padding: 0; font-size: 1.1rem; line-height: 1; }
 
 /* ocean-colored margin around the world so edge pins aren't clipped at the frame */
-:where(html) { --map-bg: #d3dadd; }
+:where(html) { --map-bg: #d4dadc; }  /* = carto light_nolabels ocean, sampled */
 /* match carto dark_nolabels ocean so the padded margin blends in — no visible
    ring/border in dark mode, while padding still keeps edge pins from clipping */
-html.dark { --map-bg: #090909; }  /* = carto dark_nolabels ocean, so any revealed margin is invisible */
+html.dark { --map-bg: #262626; }  /* = carto dark_nolabels *ocean* (#090909 is its land), so any revealed margin is invisible */
 html[data-theme="comic"] .cwm-leaflet { background: var(--map-bg); }
 html[data-theme="comic"] .cwm-leaflet .leaflet-container { background: var(--map-bg); }
 
