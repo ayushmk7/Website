@@ -42,7 +42,7 @@ export const profile = {
   summary:
     'Computer Science and Mathematics undergraduate at the University of Michigan. I work on systems and AI infrastructure: fine-tuning a domain-specialized coding model at Jaseci Labs, ARM SIMD inference kernels at Cactus (YC S25), and NSF-funded open-source ecosystem research. Five hackathon placements in the last year.',
   location: 'Ann Arbor, MI',
-  availability: 'Open to internships, new-grad roles and collaborations. Email is fastest.',
+  availability: 'Open to internships and collaborations. Email is fastest.',
   photo: '/profile.jpg',
   photoAlt: 'Ayush Madhav Kumar',
   site: 'https://ayushmadhav.com',
