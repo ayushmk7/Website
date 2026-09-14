@@ -5,7 +5,7 @@ import { projects } from '../../data/projects';
 import { hackathons } from '../../data/v2';
 import ProjectCard from './ProjectCard.astro';
 
-const featuredTitles = ['Jac ML Studio', 'NightShift', 'Domain Portfolio Manager', 'Inferno'];
+const featuredTitles = ['Jac ML Studio', 'NightShift', 'Domain Portfolio Manager', 'NASA SUITS Challenge'];
 const list = projects.filter((p) => !hackathons.some((h) => h.project === p.title));
 // fail the build on a typo'd title instead of silently dropping it
 const featured = featuredTitles.map((t) => {

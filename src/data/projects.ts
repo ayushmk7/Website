@@ -156,5 +156,12 @@ export const projects: Project[] = [
     description: "A full-stack local ML workbench and research pipeline for finetuning LLMs on Jac (Jaseci Labs' object-spatial programming language), pairing a synthetic-data SFT/DPO/GRPO training pipeline (MLX, LoRA, Qwen3-Coder-30B) with a pure-Jac web app — server endpoints and a React-in-Jac client from one codebase — for chatting with trained models, running training jobs, and tracking evals.",
     tags: ["Jac", "Python", "MLX", "LoRA", "React", "TypeScript", "Vite", "TailwindCSS", "React Router", "React Hook Form", "Zod", "Recharts"],
     githubUrl: "https://github.com/jaseci-labs/jac_ml_studio"
+  },
+  {
+    title: "NASA SUITS Challenge",
+    description: "AI Lead for CLAWS UM's NASA SUITS entry. Autonomous lunar-EVA navigation with A*/Jump Point Search over a 3-layer occupancy grid, 17-ray LiDAR fusion, and RSSI trilateration; PyTorch obstacle detection (temporal ResidualBeamCNN, BEV cross-attention transformer) behind a hot-swappable inference framework; and a voice pipeline streaming 16 kHz audio over WebSocket to faster-whisper and a neural intent classifier.",
+    tags: ["Python", "PyTorch", "A*/JPS", "LiDAR Fusion", "faster-whisper", "WebSockets", "Unity"],
+    websiteUrl: "https://www.nasa.gov/learning-resources/spacesuit-user-interface-technologies-for-students/",
+    githubUrl: "https://github.com/ayushmk7/NASA_ML_ModelArchitecture"
   }
 ];

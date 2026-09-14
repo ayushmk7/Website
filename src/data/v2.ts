@@ -123,18 +123,6 @@ export const experience: Experience[] = [
     ],
   },
   {
-    company: "WolvSec",
-    role: "Vice President and Cybersecurity Engineer",
-    period: "Aug 2025 to Present",
-    location: "Ann Arbor, MI",
-    kind: "Leadership",
-    bullets: [
-      "Vice President of WolvSec, the University of Michigan's cybersecurity club.",
-      "Developer role authoring internal CTFs for the university and representing Michigan at national and international CTF competitions.",
-      "Weekly CTFs, hands-on offensive and defensive security, and exposure to industry security experts.",
-    ],
-  },
-  {
     company: "Cactus",
     role: "Core Contributor",
     period: "Jan 2026 to Present",
