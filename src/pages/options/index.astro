@@ -13,6 +13,7 @@ const options = [
   { name: 'Monograph', pitch: 'Classic serif academic CV on warm paper; numbered entries and small-caps labels.' },
   { name: 'Scan', pitch: 'Dense recruiter dashboard: one-screen summary, timeline, skills matrix, expandable detail.' },
   { name: 'Original', pitch: 'The first site, before fun mode: brutalist black, white and blue minimal, with today\'s content.' },
+  { name: 'Index', pitch: 'Typographic index: oversized name, one rule grid, every item a numbered row that opens inline. Pure black and white.' },
 ].map((o, i) => ({ ...o, n: i + 1, href: OPTION_HREFS[i] }));
 ---
 <ProLayout title={`Design options — ${profile.name}`}>
