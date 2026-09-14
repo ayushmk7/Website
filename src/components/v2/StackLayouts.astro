@@ -32,8 +32,7 @@ const groups = Object.keys(skills).filter((k) => featured[k]).map((k) => [k, fea
 <div class="hack-news">
   {groups.map(([key, items], i) => (
     <div class="news">
-      <div class="news-kicker"><span>Stack Report</span><span>No. {String(i + 1).padStart(2, '0')}</span></div>
-      <h3 class="news-head">{labels[key] ?? key}</h3>
+      <div class="news-kicker"><h3 style="font:inherit">{labels[key] ?? key}</h3><span style="white-space:nowrap">No. {String(i + 1).padStart(2, '0')}</span></div>
       <div style="display:flex;flex-wrap:wrap;gap:0.4rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
     </div>
   ))}
