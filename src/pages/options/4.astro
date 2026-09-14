@@ -3,6 +3,8 @@
 // Content comes only from src/lib/profile. Styles are scoped to this page.
 import ProLayout from '../../layouts/ProLayout.astro';
 import OptionSwitcher from '../../components/OptionSwitcher.astro';
+import BB8Toggle from '../../components/v2/BB8Toggle.astro';
+import '../../components/pro/opt4/bb8.css';
 import {
   profile, contactLinks, sections, education, experience, hackathonsWithProject,
   featuredProjects, moreProjects, skillGroups, stats, FUN_HREF,
@@ -22,8 +24,7 @@ const ico = {
   copy: stroke('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>'),
   check: stroke('<path d="m20 6-11 11-5-5"/>'),
   file: stroke('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>'),
-  sun: stroke('<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/>'),
-  moon: stroke('<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'),
+  contrast: stroke('<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>'),
   sparkle: fill('<path d="M12 2.5l2.1 6.2 6.4 2.1-6.4 2.1L12 19.1l-2.1-6.2-6.4-2.1 6.4-2.1z"/><path d="M19.5 15.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z"/>'),
   ext: stroke('<path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M20 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5"/>'),
   up: stroke('<path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>'),
@@ -71,9 +72,7 @@ const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, l
           <a class="btn btn--ghost btn--fun" href={FUN_HREF} aria-label="Fun mode: switch to the comic version of this site">
             <span set:html={ico.sparkle} /><span class="only-desk">Fun mode</span>
           </a>
-          <button type="button" class="btn btn--ghost btn--icon" data-theme-toggle aria-label="Toggle dark / light theme">
-            <span class="ico-sun" set:html={ico.sun} /><span class="ico-moon" set:html={ico.moon} />
-          </button>
+          <span class="nav__theme"><BB8Toggle size="5px" /></span>
           <a class="btn btn--primary" href={profile.resumeHref} target="_blank" rel="noopener noreferrer">
             <span class="only-desk" set:html={ico.file} />Résumé
           </a>
@@ -337,7 +336,7 @@ const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, l
           <p class="mono lbl">Actions</p>
           <ul>
             <li><a href={FUN_HREF}><span set:html={ico.sparkle} />Fun mode<span class="muted mono">comic version</span></a></li>
-            <li><button type="button" data-theme-toggle><span class="ico-sun" set:html={ico.sun} /><span class="ico-moon" set:html={ico.moon} />Toggle theme</button></li>
+            <li><button type="button" data-theme-toggle><span set:html={ico.contrast} />Toggle theme<span class="muted mono">light / dark</span></button></li>
           </ul>
         </div>
       </div>
@@ -350,8 +349,11 @@ const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, l
 <script is:inline>
   (function () {
     var root = document.documentElement, $ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
-    // theme
+    // theme: the BB-8 switch (src/components/v2/BB8Toggle.astro) owns html.dark + localStorage.theme;
+    // the palette action just flips that same checkbox so both stay in sync.
     $('[data-theme-toggle]').forEach(function (b) { b.addEventListener('click', function () {
+      var cb = document.querySelector('.bb8-toggle__checkbox');
+      if (cb) return cb.click();
       var d = root.classList.toggle('dark'); try { localStorage.setItem('theme', d ? 'dark' : 'light'); } catch (e) {}
     }); });
     // copy email (falls back to mailto)
@@ -393,24 +395,19 @@ const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, l
   })();
 </script>
 
+
 <style>
-  /* ---------- tokens ---------- */
+  /* ---------- tokens: strictly black / white / one blue / one grey per theme ---------- */
   :global(:root) {
-    --bg: #ffffff; --surface: #fafafa; --surface-2: #f4f4f5; --fg: #0a0a0a; --muted: #666666;
-    --border: #e5e5e5; --border-hi: #d4d4d4; --accent: #5b4bd6; --accent-txt: #5b4bd6; --accent-fg: #ffffff;
-    --accent-soft: rgba(91, 75, 214, .12); --success: #0a7d56; --success-soft: rgba(10, 125, 86, .12);
-    --glow: radial-gradient(60% 50% at 50% 0%, rgba(91, 75, 214, .14), transparent 70%);
-    --nav-bg: rgba(255, 255, 255, .8); --kbd-bg: #f4f4f5; --backdrop: rgba(0, 0, 0, .35);
+    --bg: #ffffff; --fg: #000000; --muted: #5c5c5c; --border: #d4d4d4;
+    --blue: #0a58ff; --blue-fg: #ffffff; --p4-blue: #0a58ff;
     --sans: 'Geist', Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
     --mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
   :global(:root.dark) {
     color-scheme: dark;
-    --bg: #0a0a0a; --surface: #111111; --surface-2: #171717; --fg: #ededed; --muted: #a1a1a1;
-    --border: #262626; --border-hi: #3a3a3a; --accent: #7c6cf2; --accent-txt: #ab9fff; --accent-fg: #ffffff;
-    --accent-soft: rgba(124, 108, 242, .16); --success: #2dd4a0; --success-soft: rgba(45, 212, 160, .14);
-    --glow: radial-gradient(60% 50% at 50% 0%, rgba(124, 108, 242, .22), transparent 70%);
-    --nav-bg: rgba(10, 10, 10, .8); --kbd-bg: #1a1a1a; --backdrop: rgba(0, 0, 0, .6);
+    --bg: #000000; --fg: #ffffff; --muted: #a3a3a3; --border: #333333;
+    --blue: #4d8dff; --blue-fg: #000000; --p4-blue: #4d8dff;
   }
   :global(body.p4-body) {
     margin: 0; background: var(--bg); color: var(--fg);
@@ -421,7 +418,7 @@ const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, l
   /* ---------- base ---------- */
   .p4 { --pad: clamp(1rem, 4vw, 2rem); overflow-x: clip; }
   .p4 :global(svg) { flex: none; display: inline-block; vertical-align: -3px; }
-  .p4 :global(:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .p4 :global(:focus-visible) { outline: 2px solid var(--blue); outline-offset: 2px; }
   .wrap { max-width: 1080px; margin-inline: auto; padding-inline: var(--pad); }
   .mono { font-family: var(--mono); font-feature-settings: 'tnum'; }
   .muted { color: var(--muted); }
@@ -429,53 +426,52 @@ const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, l
   h1, h2, h3, h4, p, ul, ol { margin: 0; }
   ul, ol { list-style: none; padding: 0; }
   a { color: inherit; text-decoration: none; }
-  .link { color: var(--fg); text-decoration: underline; text-decoration-color: var(--border-hi); text-underline-offset: 3px; display: inline-flex; align-items: center; gap: .3rem; }
-  .link:hover { text-decoration-color: var(--accent); }
-  .link--fun { color: var(--accent-txt); text-decoration-color: transparent; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; transition: border-color 120ms ease; }
-  .card:hover { border-color: var(--border-hi); }
+  .link { color: var(--fg); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; display: inline-flex; align-items: center; gap: .3rem; }
+  .link:hover { color: var(--blue); text-decoration-color: var(--blue); }
+  .link--fun { color: var(--blue); text-decoration-color: transparent; }
+  .link--fun:hover { text-decoration-color: var(--blue); }
+  .card { background: var(--bg); border: 1px solid var(--border); border-radius: 0; }
   .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); margin-right: .45rem; vertical-align: 1px; }
-  .dot--live { background: var(--success); box-shadow: 0 0 0 3px var(--success-soft); }
-  .pill { display: inline-flex; align-items: center; min-height: 26px; padding: 0 .6rem; border-radius: 999px; border: 1px solid var(--border); background: var(--bg); font-size: 13px; line-height: 1; white-space: nowrap; }
-  .pill--accent { background: var(--accent-soft); border-color: transparent; color: var(--accent-txt); font-weight: 500; }
-  .pill--ghost { background: transparent; color: var(--muted); }
+  .dot--live { background: var(--blue); }
+  .pill { display: inline-flex; align-items: center; min-height: 26px; padding: 0 .6rem; border: 1px solid var(--border); background: var(--bg); font-size: 13px; line-height: 1; white-space: nowrap; }
+  .pill--accent { border-color: var(--blue); color: var(--blue); font-weight: 500; }
+  .pill--ghost { color: var(--muted); }
   .pills { display: flex; flex-wrap: wrap; gap: .4rem; }
-  .chip { display: inline-block; padding: .1rem .45rem; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+  .chip { display: inline-block; padding: .1rem .45rem; background: var(--bg); border: 1px solid var(--border); font-size: 12px; color: var(--muted); }
   .chips { display: inline-flex; flex-wrap: wrap; gap: .3rem; }
   .only-mob { display: none; }
 
   /* buttons */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 36px; padding: 0 .85rem; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--fg); font: inherit; font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; white-space: nowrap; transition: border-color 120ms ease, background-color 120ms ease; }
-  .btn:hover { border-color: var(--border-hi); background: var(--surface-2); }
-  .btn--primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
-  .btn--primary:hover { background: var(--accent); border-color: var(--accent); filter: brightness(1.08); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 36px; padding: 0 .85rem; border: 1px solid var(--border); background: var(--bg); color: var(--fg); font: inherit; font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; white-space: nowrap; }
+  .btn:hover { border-color: var(--blue); color: var(--blue); }
+  .btn--primary { background: var(--blue); border-color: var(--blue); color: var(--blue-fg); }
+  .btn--primary:hover { color: var(--blue-fg); text-decoration: underline; text-underline-offset: 3px; }
   .btn--icon { width: 36px; padding: 0; position: relative; }
   .btn--sm { min-height: 32px; font-size: 13px; padding: 0 .7rem; }
-  .btn--kbd kbd { font-family: var(--mono); font-size: 12px; background: var(--kbd-bg); border: 1px solid var(--border); border-radius: 5px; padding: .1rem .35rem; margin-left: .35rem; }
+  .btn--kbd kbd { font-family: var(--mono); font-size: 12px; background: var(--bg); border: 1px solid var(--border); padding: .1rem .35rem; margin-left: .35rem; color: var(--fg); }
   .btn--kbd .only-desk { display: inline-flex; align-items: center; }
   .btn--kbd__txt { color: var(--muted); font-weight: 500; }
-  .btn--fun :global(svg) { color: var(--accent-txt); }
+  .btn:hover .btn--kbd__txt { color: var(--blue); }
+  .btn--fun :global(svg) { color: var(--blue); }
   .split { display: inline-flex; }
-  .split .btn:first-child { border-top-right-radius: 0; border-bottom-right-radius: 0; }
-  .split .btn:last-child { border-top-left-radius: 0; border-bottom-left-radius: 0; margin-left: -1px; }
+  .split .btn:last-child { margin-left: -1px; }
   .cp-check, .is-done .cp-copy { display: none; }
-  .is-done .cp-check { display: inline-block; color: var(--success); }
-  .cp-toast { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); font-size: 12px; font-family: var(--mono); color: var(--success); pointer-events: none; }
-  .ico-moon, :global(html.dark) .ico-sun { display: none; }
-  :global(html.dark) .ico-moon { display: inline-block; }
+  .is-done .cp-check { display: inline-block; color: var(--blue); }
+  .cp-toast { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); font-size: 12px; font-family: var(--mono); color: var(--blue); pointer-events: none; }
 
   /* ---------- nav ---------- */
-  .nav { position: sticky; top: 0; z-index: 50; height: 56px; background: var(--nav-bg); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .nav { position: sticky; top: 0; z-index: 50; height: 56px; background: var(--bg); border-bottom: 1px solid var(--border); }
   .nav__in { height: 100%; display: flex; align-items: center; gap: 1rem; }
   .wordmark { font-weight: 600; font-size: 15px; letter-spacing: .06em; }
   .nav__links { display: flex; gap: .15rem; margin-inline: auto; }
-  .nav__links a { padding: .4rem .6rem; border-radius: 6px; font-size: 14px; color: var(--muted); }
-  .nav__links a:hover { color: var(--fg); background: var(--surface-2); }
+  .nav__links a { padding: .4rem .6rem; font-size: 14px; color: var(--muted); }
+  .nav__links a:hover { color: var(--blue); }
   .nav__actions { display: flex; align-items: center; gap: .5rem; margin-left: auto; }
+  .nav__theme { display: inline-flex; align-items: center; height: 36px; }
+  .nav__theme :global(.bb8-toggle) { margin: 0 .15rem; }
 
   /* ---------- hero ---------- */
-  .hero { position: relative; isolation: isolate; padding-block: clamp(3rem, 8vw, 5.5rem) 1rem; }
-  .hero::before { content: ''; position: absolute; inset: -56px 0 0; background: var(--glow); pointer-events: none; z-index: -1; }
+  .hero { padding-block: clamp(3rem, 8vw, 5.5rem) 1rem; }
   .hero__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
   .hero__text { grid-column: span 7; min-width: 0; }
   .bento { grid-column: span 5; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; min-width: 0; }
@@ -513,10 +509,9 @@ const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, l
   .bullets { margin-top: .75rem; display: grid; gap: .45rem; padding-left: 1.1rem; list-style: disc; color: var(--fg); }
   .bullets li::marker { color: var(--muted); }
   .disc { margin-top: .6rem; }
-  .disc summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: .3rem; min-height: 28px; padding: 0 .45rem; margin-left: -.45rem; border-radius: 6px; font-size: 13px; font-weight: 500; color: var(--muted); }
+  .disc summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: .3rem; min-height: 28px; padding: 0 .45rem; margin-left: -.45rem; font-size: 13px; font-weight: 500; color: var(--muted); }
   .disc summary::-webkit-details-marker { display: none; }
-  .disc summary:hover { color: var(--fg); background: var(--surface-2); }
-  .disc summary :global(svg) { transition: transform 150ms ease; }
+  .disc summary:hover { color: var(--blue); }
   .disc[open] > summary :global(svg) { transform: rotate(180deg); }
   .disc__hide, .disc[open] > summary .disc__show { display: none; }
   .disc[open] > summary .disc__hide { display: inline; }
@@ -525,7 +520,6 @@ const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, l
   .cases { display: grid; grid-template-columns: 1fr; gap: 12px; }
   .case { padding: clamp(1.1rem, 3vw, 1.5rem); display: flex; flex-direction: column; gap: .7rem; }
   .case h3 { font-size: 20px; letter-spacing: -.02em; }
-  .case__desc { color: var(--fg); }
   .case__stack { display: flex; flex-direction: column; gap: .4rem; margin-top: .2rem; }
   .links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: auto; padding-top: .35rem; }
   .tiles { display: grid; grid-template-columns: 1fr; gap: 12px; }
@@ -535,19 +529,19 @@ const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, l
   .tile__foot { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: auto; padding-top: .4rem; }
   .tile__tags { font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
   .tile__links { display: inline-flex; gap: .15rem; flex: none; }
-  .tile__links a { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; color: var(--muted); }
-  .tile__links a:hover { color: var(--fg); background: var(--surface-2); }
+  .tile__links a { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: var(--muted); }
+  .tile__links a:hover { color: var(--blue); }
 
   /* hackathons */
   .hk-row { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--pad)); padding: 2px var(--pad) 1rem; scroll-padding-inline: var(--pad); -webkit-overflow-scrolling: touch; }
   .hk { flex: 0 0 min(84vw, 320px); scroll-snap-align: start; padding: 1.1rem; display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
   .hk__head, .hk__body { display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
   .hk__body { flex: 1; }
-  .hk__top { margin-left: .5rem; padding: .15rem .45rem; border-radius: 999px; background: var(--success-soft); color: var(--success); letter-spacing: .06em; }
+  .hk__top { margin-left: .5rem; padding: .15rem .45rem; border: 1px solid var(--blue); color: var(--blue); letter-spacing: .06em; }
   .hk h3 { margin-top: .2rem; }
   .hk__org { font-size: 12.5px; line-height: 1.4; }
   .hk__place { font-size: 13.5px; font-weight: 500; color: var(--fg); display: flex; align-items: flex-start; gap: .35rem; }
-  .hk__place--win { color: var(--success); }
+  .hk__place--win { color: var(--blue); }
   .hk__place :global(svg) { margin-top: 3px; }
   .hk__proj { font-size: 15px; }
   .hk__blurb { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
@@ -572,31 +566,32 @@ const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, l
   .contact h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); letter-spacing: -.03em; }
   .contact__avail { color: var(--muted); max-width: 46ch; }
   .contact__mail { display: inline-flex; align-items: center; gap: .5rem; font-size: clamp(1.05rem, 3vw, 1.5rem); font-weight: 500; letter-spacing: -.01em; margin-top: .4rem; overflow-wrap: anywhere; max-width: 100%; }
-  .contact__mail .link { text-decoration-color: var(--accent); }
+  .contact__mail .link { color: var(--blue); text-decoration-color: var(--blue); }
   .contact__links { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-top: .6rem; }
   .contact__links .muted { margin-left: .1rem; font-size: 12px; }
+  .btn:hover .muted { color: var(--blue); }
 
   /* footer */
-  .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem 1.5rem; padding-block: 3rem 5rem; font-size: 13.5px; }
+  .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem 1.5rem; padding-block: 3rem 5rem; font-size: 13.5px; border-top: 1px solid var(--border); margin-top: 4rem; }
   .foot p { display: inline-flex; align-items: center; gap: .75rem; }
   .foot nav { display: flex; gap: 1.25rem; }
   .foot .link { min-height: 40px; }
 
   /* ---------- palette ---------- */
-  .pal { width: min(560px, calc(100vw - 2rem)); margin: 12vh auto auto; padding: 0; border: 1px solid var(--border-hi); border-radius: 12px; background: var(--surface); color: var(--fg); box-shadow: 0 24px 64px rgba(0, 0, 0, .35); }
-  .pal::backdrop { background: var(--backdrop); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+  .pal { width: min(560px, calc(100vw - 2rem)); margin: 12vh auto auto; padding: 0; border: 1px solid var(--fg); border-radius: 0; background: var(--bg); color: var(--fg); }
+  .pal::backdrop { background: rgba(0, 0, 0, .5); }
   .pal__head { display: flex; align-items: center; gap: .6rem; padding: .6rem .9rem; border-bottom: 1px solid var(--border); color: var(--muted); }
   .pal__head input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--fg); font: inherit; font-size: 15px; padding: .45rem 0; }
   .pal__head input:focus { outline: none; }
   .pal__head input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
-  .pal__head kbd { font-family: var(--mono); font-size: 11px; background: var(--kbd-bg); border: 1px solid var(--border); border-radius: 5px; padding: .15rem .4rem; }
+  .pal__head kbd { font-family: var(--mono); font-size: 11px; background: var(--bg); border: 1px solid var(--border); padding: .15rem .4rem; }
   .pal__body { padding: .5rem; max-height: min(60vh, 480px); overflow-y: auto; }
   .pal__group { padding: .35rem .4rem .5rem; }
   .pal__group .lbl { padding: .2rem .5rem .4rem; }
-  .pal__group li > a, .pal__group li > button { display: flex; width: 100%; align-items: center; gap: .6rem; min-height: 40px; padding: .4rem .6rem; border: 0; border-radius: 8px; background: transparent; color: var(--fg); font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
+  .pal__group li > a, .pal__group li > button { display: flex; width: 100%; align-items: center; gap: .6rem; min-height: 40px; padding: .4rem .6rem; border: 1px solid transparent; background: transparent; color: var(--fg); font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
   .pal__group li > a :global(svg), .pal__group li > button :global(svg) { color: var(--muted); }
-  .pal__group li > a:hover, .pal__group li > button:hover { background: var(--surface-2); }
-  .pal__group li > a:focus-visible, .pal__group li > button:focus-visible { background: var(--surface-2); outline: 2px solid var(--accent); outline-offset: -2px; }
+  .pal__group li > a:hover, .pal__group li > button:hover { color: var(--blue); border-color: var(--blue); }
+  .pal__group li > a:focus-visible, .pal__group li > button:focus-visible { color: var(--blue); border-color: var(--blue); outline: 2px solid var(--blue); outline-offset: -2px; }
   .pal__group .muted { margin-left: auto; font-size: 12px; }
 
   /* ---------- responsive ---------- */
@@ -612,12 +607,12 @@ const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, l
     .hk--lead .hk__blurb { font-size: 14.5px; max-width: 62ch; }
     .hk--lead h3 { font-size: 20px; letter-spacing: -.02em; }
   }
-  @media (min-width: 1000px) {
-    .hk-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  }
   @media (min-width: 900px) {
     .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .sk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1000px) {
+    .hk-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
   @media (min-width: 1024px) {
     .cases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
