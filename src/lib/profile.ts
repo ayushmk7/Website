@@ -16,8 +16,8 @@ export type { Experience, Hackathon, Project, Place };
 /** The comic ("fun") page. After a winner is chosen, pro moves to `/` and comic to `/fun`: flip this one line. */
 export const FUN_HREF = '/';
 
-/** Routes of the candidate designs, in switcher order (7 = the original pre-comic site). */
-export const OPTION_HREFS = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `/options/${n}`);
+/** Routes of the candidate designs, in switcher order (4 = the original pre-comic site, 5 = its refined version). */
+export const OPTION_HREFS = [1, 2, 3, 4, 5].map((n) => `/options/${n}`);
 
 // ---------------------------------------------------------------------------
 // Identity / copy

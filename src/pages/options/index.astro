@@ -1,5 +1,5 @@
 ---
-// src/pages/options/index.astro — gallery of the 6 professional design candidates.
+// src/pages/options/index.astro — gallery of the professional design candidates.
 // ponytail: temporary, delete after winner chosen
 import ProLayout from '../../layouts/ProLayout.astro';
 import OptionSwitcher from '../../components/OptionSwitcher.astro';
@@ -7,20 +7,16 @@ import { profile, FUN_HREF, OPTION_HREFS } from '../../lib/profile';
 
 const options = [
   { name: 'Ledger', pitch: 'Swiss editorial single column: one typeface, hairline rules, dates in the margin.' },
-  { name: 'Terminal', pitch: 'Dark monospace engineer page: prompt-style sections, tree-view projects, keyboard jumps.' },
   { name: 'Dossier', pitch: 'Two-column résumé with a sticky identity sidebar; prints to a clean one-pager.' },
-  { name: 'Product', pitch: 'Linear/Vercel product aesthetic: bento hero, case-study projects, ⌘K command palette.' },
-  { name: 'Monograph', pitch: 'Classic serif academic CV on warm paper; numbered entries and small-caps labels.' },
-  { name: 'Scan', pitch: 'Dense recruiter dashboard: one-screen summary, timeline, skills matrix, expandable detail.' },
+  { name: 'Product', pitch: 'Flat black and white with one blue accent: bento hero, case-study projects, ⌘K palette, BB-8 theme switch.' },
   { name: 'Original', pitch: 'The first site, before fun mode: brutalist black, white and blue minimal, with today\'s content.' },
-  { name: 'Index', pitch: 'Typographic index: oversized name, one rule grid, every item a numbered row that opens inline. Pure black and white.' },
-  { name: 'Spec', pitch: 'Full-bleed bands alternating pure black and white on one shared grid, like a spec sheet; dark mode flips the bands.' },
+  { name: 'Original, refined', pitch: 'The original design after an engineer, a recruiter and a UI/UX review.' },
 ].map((o, i) => ({ ...o, n: i + 1, href: OPTION_HREFS[i] }));
 ---
 <ProLayout title={`Design options — ${profile.name}`}>
   <main class="wrap">
     <h1>Professional design options</h1>
-    <p class="lede">Nine candidates for the main site. Same content, different direction. Press <kbd>[</kbd> / <kbd>]</kbd> on any page to cycle.</p>
+    <p class="lede">{options.length} candidates for the main site. Same content, different direction. Press <kbd>[</kbd> / <kbd>]</kbd> on any page to cycle.</p>
     <ol class="list">
       {options.map((o) => (
         <li>

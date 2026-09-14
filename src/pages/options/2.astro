@@ -1,620 +1,595 @@
 ---
-// src/pages/options/2.astro — Option 2 "Terminal"
-// A $-prompt page. Sections are commands, projects are a tree, everything is greppable.
-// Dark-first (paper-terminal light variant). JetBrains Mono only. No gimmicks: plain text, no typing delays.
-// Content comes exclusively from src/lib/profile.ts.
+// src/pages/options/2.astro — Option 2 "Dossier"
+// Two-column résumé: identity / contact / skills / education pinned in a navy sidebar,
+// the story (summary, experience, projects, hackathons) scrolls on the right.
+// Cmd+P prints a clean paper CV. Content comes only from src/lib/profile.
 import ProLayout from '../../layouts/ProLayout.astro';
 import OptionSwitcher from '../../components/OptionSwitcher.astro';
 import {
   profile, contactLinks, sections, education,
-  experience, hackathons,
-  featuredProjects, moreProjects,
-  skillGroups, FUN_HREF,
+  experience, hackathons, featuredProjects, moreProjects,
+  skillGroups, stats, FUN_HREF,
 } from '../../lib/profile';
-import type { Project, SkillCategoryKey } from '../../lib/profile';
 
-// --- local derivations (not in the shared contract) ---------------------------------
-const isCurrent = (period: string) => /present/i.test(period);
-const host = (url: string) => url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '');
-const showHref = (href: string) => href.replace(/^mailto:/, '').replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '');
-const status = profile.availability.split('. ')[0].replace(/^\w/, (c) => c.toLowerCase());
-const year = new Date().getFullYear();
+const ext = { target: '_blank', rel: 'noopener noreferrer' } as const;
+const sideContacts = contactLinks.filter((l) => l.key !== 'resume');
+const updated = new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+const navItems = [{ id: 'summary', label: 'Summary' }, ...sections.filter((s) => s.id !== 'contact')];
+const isWin = (p: string) => /1st|winner/i.test(p);
 
-// TOML-ish table names for the skills section (visual only; the accessible name is group.label)
-const tomlName: Record<SkillCategoryKey, string> = {
-  programmingLanguages: 'languages',
-  aiMl: 'ai_ml',
-  softwareDevelopment: 'software',
-  databases: 'data',
-  devOps: 'devops_cloud',
-  cybersecurity: 'security',
-  coreCs: 'core_cs',
+// 16px inline icons, stroke 2, currentColor.
+const svg = (body: string, vb = '0 0 24 24') =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${body}</svg>`;
+const icons: Record<string, string> = {
+  email: svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>'),
+  github: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.17c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.13v3.16c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>`,
+  linkedin: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>`,
+  x: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.4l-5.8-7.58-6.64 7.58H.48l8.6-9.83L0 1.15h7.59l5.24 6.93 6.07-6.93zm-1.29 19.5h2.04L6.49 3.24H4.3l13.31 17.41z"/></svg>`,
+  file: svg('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>'),
+  pin: svg('<path d="M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>'),
+  link: svg('<path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>'),
+  arrow: svg('<path d="M7 17 17 7"/><path d="M8 7h9v9"/>'),
+  copy: svg('<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>'),
+  spark: svg('<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.5 6.5l2.5 2.5M15 15l2.5 2.5M6.5 17.5 9 15M15 9l2.5-2.5"/>'),
+  cal: svg('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'),
+  trophy: svg('<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/>'),
 };
-const restOf = (g: { all: string[]; featured: string[] }) => g.all.filter((s) => !g.featured.includes(s));
-
-// Keyboard jump map, shown in the help line. `g` then a letter.
-const keys: { k: string; id: string; label: string }[] = [
-  { k: 'e', id: 'experience', label: 'experience' },
-  { k: 'p', id: 'projects', label: 'projects' },
-  { k: 'h', id: 'hackathons', label: 'hackathons' },
-  { k: 's', id: 'skills', label: 'skills' },
-  { k: 'd', id: 'education', label: 'education' },
-  { k: 'c', id: 'contact', label: 'contact' },
-  { k: 't', id: 'top', label: 'top' },
-];
-
-const projectLinks = (p: Project) => [
-  p.githubUrl ? { label: 'github', href: p.githubUrl } : null,
-  p.websiteUrl ? { label: 'site', href: p.websiteUrl } : null,
-].filter(Boolean) as { label: string; href: string }[];
-
-const title = `${profile.name} — ${profile.headline}`;
 ---
-<ProLayout title={title} bodyClass="opt2">
+<ProLayout title={`${profile.name} — ${profile.headline}`} bodyClass="d3-body">
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600&display=swap" />
   </Fragment>
 
-  <a class="skip" href="#main">skip to content</a>
+  <div class="d3">
+    <div class="d3-sheet">
+      <!-- ============================ SIDEBAR ============================ -->
+      <aside class="d3-side" aria-label="Profile, contact, skills and education">
+        <div class="d3-id">
+          <img class="d3-photo" src={profile.photo} alt={profile.photoAlt} width="112" height="112" decoding="async" />
+          <h1 class="d3-name">{profile.name}</h1>
+          <p class="d3-headline">{profile.headline}</p>
+          <p class="d3-tagline">{profile.tagline}</p>
+          <p class="d3-loc"><Fragment set:html={icons.pin} /> {profile.location}</p>
+          <nav class="d3-nav" aria-label="Page sections">
+            <ul>
+              {navItems.map((s) => <li><a href={`#${s.id}`}>{s.label}</a></li>)}
+            </ul>
+          </nav>
+        </div>
 
-  <header class="bar">
-    <div class="bar__in">
-      <span class="ps"><span class="host">ayush@umich</span>:~$<span class="sr-only"> {profile.name}</span></span>
-      <nav class="bar__nav" aria-label="Quick links">
-        <a class="bl" href={FUN_HREF}>[fun mode]</a>
-        <button class="bl" type="button" data-theme-toggle aria-label="Toggle light or dark theme">[theme]</button>
-        <a class="bl" href={profile.resumeHref} target="_blank" rel="noopener noreferrer">[resume.pdf]</a>
-      </nav>
-    </div>
-  </header>
-
-  <main id="main" class="term">
-    <nav class="help" aria-label="Sections">
-      <p class="c"><span aria-hidden="true"># </span>sections:
-        {sections.map((s) => <><a href={`#${s.id}`}>{s.label.toLowerCase()}</a>{' '}</>)}
-      </p>
-      <p class="c keys" aria-hidden="true"># keys: {keys.filter((k) => k.k !== 't').map((k) => <span>g&nbsp;{k.k}</span>)}</p>
-    </nav>
-
-    <!-- ===== whoami ===== -->
-    <section id="top" class="hero" aria-labelledby="h-whoami" tabindex="-1">
-      <p class="cmd" aria-hidden="true"><span class="ps1">$</span><span class="cmd__t">whoami</span></p>
-      <div class="out hero__grid">
-        <div>
-          <h1 id="h-whoami">{profile.name}<span class="cursor" aria-hidden="true"></span></h1>
-          <dl class="kv">
-            <dt>role</dt><dd>{profile.headline}</dd>
-            <dt>focus</dt><dd>{profile.tagline}</dd>
-            <dt>location</dt><dd>{profile.location}</dd>
-            <dt>status</dt><dd>{status}</dd>
-          </dl>
-          <p class="c summary"><span aria-hidden="true"># </span>{profile.summary}</p>
-          <ul class="links" aria-label="Contact links">
-            {contactLinks.map((l) => (
+        <section class="d3-contact" id="contact" aria-labelledby="d3-contact-h">
+          <h2 id="d3-contact-h" class="d3-side-h">Contact</h2>
+          <ul class="d3-clist">
+            {sideContacts.map((l) => (
               <li>
-                {l.external ? (
-                  <a href={l.href} target="_blank" rel="noopener noreferrer">{showHref(l.href)}</a>
-                ) : (
-                  <a href={l.href}>{showHref(l.href)}</a>
-                )}
+                <a class="d3-clink" href={l.href} {...(l.external ? ext : {})}>
+                  <span class="d3-ico"><Fragment set:html={icons[l.key]} /></span>
+                  <span class="d3-clabel">{l.label}</span>
+                  <span class="d3-chandle">{l.handle}</span>
+                </a>
                 {l.key === 'email' && (
-                  <button class="bl copy" type="button" data-copy={profile.email} aria-label="Copy email address">[copy]</button>
+                  <button type="button" class="d3-copy" data-copy={profile.email} aria-label="Copy email address" title="Copy email">
+                    <Fragment set:html={icons.copy} /><span class="d3-copy-t">Copy</span>
+                  </button>
                 )}
               </li>
             ))}
           </ul>
+          <p class="d3-avail">{profile.availability}</p>
+        </section>
+
+        <div class="d3-actions">
+          <a class="d3-btn d3-btn-solid" href={profile.resumeHref} {...ext}>
+            <Fragment set:html={icons.file} /> Download résumé (PDF)
+          </a>
+          <a class="d3-btn d3-btn-outline d3-fun" href={FUN_HREF}>
+            <Fragment set:html={icons.spark} /> Fun mode
+          </a>
         </div>
-        <img class="photo" src={profile.photo} alt={profile.photoAlt} width="64" height="64" />
-      </div>
-    </section>
 
-    <!-- ===== experience ===== -->
-    <section id="experience" aria-labelledby="h-experience" tabindex="-1">
-      <h2 id="h-experience" class="cmd"><span class="ps1" aria-hidden="true">$</span><span class="cmd__t"><span aria-hidden="true">cat </span>experience<span aria-hidden="true">.md</span></span></h2>
-      <div class="out">
-        <ol class="plain xp">
-          {experience.map((e) => (
-            <li class="xp__item">
-              <div class="xp__head">
-                <h3>
-                  {isCurrent(e.period) && <span class="dot" aria-hidden="true">●</span>}
-                  <b>{e.company}</b> <span class="muted" aria-hidden="true">—</span> {e.role}
-                  {isCurrent(e.period) && <span class="sr-only"> (current)</span>}
-                </h3>
-                <span class="period">{e.period}</span>
+        <section class="d3-skills" id="skills" aria-labelledby="d3-skills-h">
+          <h2 id="d3-skills-h" class="d3-side-h">Skills</h2>
+          <div class="d3-sgs">
+            {skillGroups.map((g) => (
+              <div class="d3-sg">
+                <h3 class="d3-sg-h">{g.shortLabel}</h3>
+                <ul class="d3-pills" aria-label={g.label}>
+                  {g.featured.map((s) => <li>{s}</li>)}
+                </ul>
               </div>
-              <p class="meta">
-                {e.kind}
-                {e.location && <><span aria-hidden="true"> · </span>{e.location}</>}
-                {e.url && <><span aria-hidden="true"> · </span><a class="bl" href={e.url} target="_blank" rel="noopener noreferrer">[{host(e.url)}]</a></>}
-                {e.badge && <span class="badge">[{e.badge}]</span>}
-              </p>
-              <ul class="dash">
-                {e.bullets.map((b) => <li>{b}</li>)}
-              </ul>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-
-    <!-- ===== projects ===== -->
-    <section id="projects" aria-labelledby="h-projects" tabindex="-1">
-      <h2 id="h-projects" class="cmd"><span class="ps1" aria-hidden="true">$</span><span class="cmd__t"><span aria-hidden="true">tree </span>projects<span aria-hidden="true">/</span></span></h2>
-      <div class="out">
-        <ul class="plain tree">
-          {featuredProjects.map((p) => (
-            <li class="node">
-              <div class="line">
-                <span class="g" aria-hidden="true">├── </span>
-                <div class="line__body">
-                  <h3>{p.title}<span aria-hidden="true">/</span></h3>
-                  {projectLinks(p).map((l) => (
-                    <a class="bl" href={l.href} target="_blank" rel="noopener noreferrer">[{l.label}]</a>
-                  ))}
-                </div>
-              </div>
-              <div class="line">
-                <span class="g" aria-hidden="true">│   ├── </span>
-                <p class="tags"><span class="sr-only">Stack: </span>{p.tags.join(' · ')}</p>
-              </div>
-              <div class="line">
-                <span class="g" aria-hidden="true">│   └── </span>
-                <p>{p.description}</p>
-              </div>
-            </li>
-          ))}
-          <li class="node">
-            <details class="more">
-              <summary>
-                <span class="g" aria-hidden="true">└── </span>
-                <span class="more__t">more/ <span class="muted">({moreProjects.length} projects)</span></span>
-                <span class="bl more__hint" aria-hidden="true"></span>
-              </summary>
-              <ul class="plain">
-                {moreProjects.map((p, i) => (
-                  <li class="line">
-                    <span class="g" aria-hidden="true">{i === moreProjects.length - 1 ? '    └── ' : '    ├── '}</span>
-                    <div class="line__prose">
-                      <h3>{p.title}</h3>
-                      <span class="muted" aria-hidden="true"> — </span>
-                      <span>{p.description}</span>
-                      {p.tags.length > 0 && (
-                        <span class="tags"> <span class="sr-only">Stack: </span>{p.tags.slice(0, 3).join(' · ')}</span>
-                      )}
-                      {projectLinks(p).map((l) => (
-                        <> <a class="bl" href={l.href} target="_blank" rel="noopener noreferrer">[{l.label}]</a></>
-                      ))}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ===== hackathons ===== -->
-    <section id="hackathons" aria-labelledby="h-hackathons" tabindex="-1">
-      <h2 id="h-hackathons" class="cmd"><span class="ps1" aria-hidden="true">$</span><span class="cmd__t"><span aria-hidden="true">ls -la </span>hackathons<span aria-hidden="true">/</span></span></h2>
-      <div class="out">
-        <table class="hk">
-          <caption class="sr-only">Hackathons: date, placement, event, project and links</caption>
-          <thead>
-            <tr><th scope="col">date</th><th scope="col">placement</th><th scope="col">event</th><th scope="col">project</th><th scope="col">links</th></tr>
-          </thead>
-          <tbody>
-            {hackathons.map((h) => (
-              <>
-                <tr class="hk__row">
-                  <td class="hk__date" data-label="date">{h.date}</td>
-                  <td class="hk__place" data-label="placement">
-                    <span class="amber">{h.placement}</span>
-                    {h.prize && <span class="muted"> · {h.prize}</span>}
-                  </td>
-                  <td class="hk__event">
-                    <h3>{h.event}</h3>
-                    <span class="muted hk__org">{h.organizer}</span>
-                  </td>
-                  <td class="hk__proj" data-label="project">{h.project}</td>
-                  <td class="hk__links" data-label="links">
-                    {h.repoUrl && <a class="bl" href={h.repoUrl} target="_blank" rel="noopener noreferrer">[repo]</a>}
-                    {h.siteUrl && <a class="bl" href={h.siteUrl} target="_blank" rel="noopener noreferrer">[site]</a>}
-                    {!h.repoUrl && !h.siteUrl && <span class="muted">—</span>}
-                  </td>
-                </tr>
-                <tr class="hk__blurb">
-                  <td colspan="5"><span class="c"><span aria-hidden="true"># </span>{h.blurb}</span></td>
-                </tr>
-              </>
             ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ===== skills ===== -->
-    <section id="skills" aria-labelledby="h-skills" tabindex="-1">
-      <h2 id="h-skills" class="cmd"><span class="ps1" aria-hidden="true">$</span><span class="cmd__t"><span aria-hidden="true">cat </span>skills<span aria-hidden="true">.toml</span></span></h2>
-      <div class="out">
-        <ul class="plain toml">
-          {skillGroups.map((g) => (
-            <li class="toml__group">
-              <h3><span class="amber" aria-hidden="true">[{tomlName[g.key]}]</span><span class="sr-only">{g.label}</span>{' '}<span class="c toml__label" aria-hidden="true"># {g.label}</span></h3>
-              <p class="toml__vals">{g.featured.join(', ')}</p>
-              {restOf(g).length > 0 && (
-                <details class="rest">
-                  <summary><span aria-hidden="true"># </span>+{restOf(g).length} more<span class="sr-only"> in {g.label}</span></summary>
-                  <p class="toml__vals muted">{restOf(g).join(', ')}</p>
-                </details>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-
-    <!-- ===== education ===== -->
-    <section id="education" aria-labelledby="h-education" tabindex="-1">
-      <h2 id="h-education" class="cmd"><span class="ps1" aria-hidden="true">$</span><span class="cmd__t"><span aria-hidden="true">cat </span>education<span aria-hidden="true">.txt</span></span></h2>
-      <div class="out">
-        {education.map((ed) => (
-          <div class="edu">
-            <h3>{ed.degree}</h3>
-            <p>
-              {ed.url ? (
-                <a href={ed.url} target="_blank" rel="noopener noreferrer">{ed.institution}</a>
-              ) : ed.institution}
-            </p>
-            <p class="muted">{ed.period}<span aria-hidden="true"> · </span>{ed.location}</p>
           </div>
-        ))}
-      </div>
-    </section>
+          <details class="d3-allskills">
+            <summary>All skills ({skillGroups.reduce((n, g) => n + g.all.length, 0)})</summary>
+            <dl>
+              {skillGroups.map((g) => (
+                <>
+                  <dt>{g.label}</dt>
+                  <dd>{g.all.join(', ')}</dd>
+                </>
+              ))}
+            </dl>
+          </details>
+        </section>
 
-    <!-- ===== contact ===== -->
-    <section id="contact" aria-labelledby="h-contact" tabindex="-1">
-      <h2 id="h-contact" class="cmd"><span class="ps1" aria-hidden="true">$</span><span class="cmd__t"><span aria-hidden="true">whoami --</span>contact</span></h2>
-      <div class="out">
-        <dl class="kv contact">
-          {contactLinks.map((l) => (
-            <>
-              <dt>{l.label === 'Résumé' ? 'resume' : l.label.toLowerCase()}</dt>
-              <dd>
-                {l.external ? (
-                  <a href={l.href} target="_blank" rel="noopener noreferrer">{showHref(l.href)}</a>
-                ) : (
-                  <a href={l.href}>{showHref(l.href)}</a>
-                )}
-                {l.key === 'email' && (
-                  <button class="bl copy" type="button" data-copy={profile.email} aria-label="Copy email address">[copy]</button>
-                )}
-              </dd>
-            </>
+        <section class="d3-edu" id="education" aria-labelledby="d3-edu-h">
+          <h2 id="d3-edu-h" class="d3-side-h">Education</h2>
+          {education.map((e) => (
+            <div class="d3-edu-e">
+              <h3 class="d3-edu-deg">{e.degree}</h3>
+              <p class="d3-edu-inst">
+                {e.url ? <a href={e.url} {...ext}>{e.institution}</a> : e.institution}
+              </p>
+              <p class="d3-edu-meta">{e.period} · {e.location}</p>
+            </div>
           ))}
-        </dl>
-        <p class="c"><span aria-hidden="true"># </span>{profile.availability}</p>
-      </div>
-    </section>
+        </section>
 
-    <footer class="foot">
-      <p class="c">
-        <span aria-hidden="true"># </span>© {year} {profile.name}<span aria-hidden="true"> · </span>built with astro<span aria-hidden="true"> · </span>
-        <a class="bl" href={FUN_HREF}>[fun mode]</a>
-        <a class="bl" href="#top">[top]</a>
-      </p>
-    </footer>
-  </main>
+        <div class="d3-theme">
+          <button type="button" class="d3-theme-btn" id="d3-theme" aria-pressed="false">Dark mode</button>
+        </div>
+      </aside>
+
+      <!-- ============================== MAIN ============================== -->
+      <main class="d3-main">
+        <section id="summary" class="d3-sec" aria-labelledby="d3-summary-h">
+          <h2 id="d3-summary-h" class="d3-h2">Summary</h2>
+          <p class="d3-summary">{profile.summary}</p>
+          <p class="d3-stats" aria-label="Quick facts">
+            <span><b>{stats.roles}</b> roles</span>
+            <span class="d3-dot" aria-hidden="true">·</span>
+            <span><b>{stats.hackathonPlacements}</b> hackathon placements <span class="d3-muted">({stats.hackathonWins} wins)</span></span>
+            <span class="d3-dot" aria-hidden="true">·</span>
+            <span><b>{stats.projects}</b> projects</span>
+            <span class="d3-dot" aria-hidden="true">·</span>
+            <span>graduating <b>{stats.graduation}</b></span>
+          </p>
+        </section>
+
+        <section id="experience" class="d3-sec" aria-labelledby="d3-exp-h">
+          <h2 id="d3-exp-h" class="d3-h2">Experience</h2>
+          <div class="d3-xp">
+            {experience.map((e) => (
+              <article class="d3-xp-e">
+                <div class="d3-xp-row">
+                  <h3 class="d3-h3">{e.role}</h3>
+                  <span class="d3-period">{e.period}</span>
+                </div>
+                <p class="d3-xp-meta">
+                  <span class="d3-company">
+                    {e.url ? <a href={e.url} {...ext}>{e.company} <Fragment set:html={icons.arrow} /></a> : e.company}
+                  </span>
+                  {e.location && <span class="d3-muted d3-xp-loc">· {e.location}</span>}
+                  {e.badge && <span class="d3-badge">{e.badge}</span>}
+                  <span class="d3-kind">{e.kind}</span>
+                </p>
+                <ul class="d3-bullets">
+                  {e.bullets.map((b) => <li>{b}</li>)}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="projects" class="d3-sec" aria-labelledby="d3-proj-h">
+          <h2 id="d3-proj-h" class="d3-h2">Projects</h2>
+          <ul class="d3-cards">
+            {featuredProjects.map((p) => (
+              <li class="d3-card">
+                <h3 class="d3-h3">{p.title}</h3>
+                <ul class="d3-tags" aria-label="Technologies">
+                  {p.tags.slice(0, 5).map((t) => <li>{t}</li>)}
+                  {p.tags.length > 5 && <li class="d3-tag-more">+{p.tags.length - 5}</li>}
+                </ul>
+                <p class="d3-card-desc">{p.description}</p>
+                <p class="d3-links">
+                  {p.githubUrl && <a href={p.githubUrl} {...ext}><Fragment set:html={icons.github} /> GitHub</a>}
+                  {p.websiteUrl && <a href={p.websiteUrl} {...ext}><Fragment set:html={icons.link} /> Site</a>}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <details class="d3-more">
+            <summary>More projects ({moreProjects.length})</summary>
+            <ul class="d3-more-list">
+              {moreProjects.map((p) => {
+                const href = p.githubUrl ?? p.websiteUrl;
+                return (
+                  <li>
+                    <h3 class="d3-more-t">
+                      {href ? <a href={href} {...ext}>{p.title}</a> : p.title}
+                      {p.githubUrl && p.websiteUrl && (
+                        <a class="d3-more-alt" href={p.websiteUrl} {...ext} aria-label={`${p.title} website`}><Fragment set:html={icons.link} /></a>
+                      )}
+                    </h3>
+                    <p class="d3-more-d">{p.description}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          </details>
+        </section>
+
+        <section id="hackathons" class="d3-sec" aria-labelledby="d3-hack-h">
+          <h2 id="d3-hack-h" class="d3-h2">Hackathons</h2>
+          <ol class="d3-hk">
+            {hackathons.map((h) => (
+              <li class="d3-hk-row">
+                <span class="d3-hk-date">{h.date}</span>
+                <div class="d3-hk-body">
+                  <h3 class="d3-h3">{h.event}</h3>
+                  <p class="d3-hk-place">
+                    {isWin(h.placement) && <Fragment set:html={icons.trophy} />}
+                    <b>{h.placement}</b>
+                    <span class="d3-muted"> · {h.organizer}</span>
+                  </p>
+                  <p class="d3-hk-proj"><span class="d3-pill">{h.project}</span>{h.prize && <span class="d3-muted"> {h.prize}</span>}</p>
+                  <p class="d3-hk-blurb">{h.blurb}</p>
+                  {(h.repoUrl || h.siteUrl) && (
+                    <p class="d3-links">
+                      {h.repoUrl && <a href={h.repoUrl} {...ext}><Fragment set:html={icons.github} /> Repository</a>}
+                      {h.siteUrl && <a href={h.siteUrl} {...ext}><Fragment set:html={icons.link} /> Site</a>}
+                    </p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <footer class="d3-foot">
+          <span>Last updated {updated}</span>
+          <span class="d3-dot" aria-hidden="true">·</span>
+          <a href={`mailto:${profile.email}`}>{profile.email}</a>
+          <span class="d3-dot" aria-hidden="true">·</span>
+          <a class="d3-fun-link" href={FUN_HREF}>Fun mode</a>
+          <span class="d3-dot" aria-hidden="true">·</span>
+          <a href="#summary">Top</a>
+        </footer>
+      </main>
+    </div>
+  </div>
 
   <OptionSwitcher />
 </ProLayout>
 
-<style>
-  /* ---------- tokens (dark default; paper-terminal light) ---------- */
-  :global(body.opt2) {
-    --bg: #0b0f14;
-    --panel: #10161d;
-    --fg: #d7dee7;
-    --muted: #7f8b99;
-    --green: #3ddc84;
-    --amber: #f0b429;
-    --blue: #6cb6ff;
-    --rule: #1f2933;
-    --selection: rgba(61, 220, 132, 0.25);
-    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    --fs: 14.5px;
-
-    margin: 0;
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--mono);
-    font-size: var(--fs);
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-  }
-  :global(html:not(.dark) body.opt2) {
-    --bg: #fafaf7;
-    --panel: #f1f1ec;
-    --fg: #1a1f24;
-    --muted: #5c6670;
-    --green: #0f7a3d;
-    --amber: #9a6200;
-    --blue: #0b5cad;
-    --rule: #d9d9d2;
-    --selection: rgba(15, 122, 61, 0.2);
-  }
-  @media (min-width: 1024px) {
-    :global(body.opt2) { --fs: 15.5px; }
-  }
-  :global(body.opt2 ::selection) { background: var(--selection); }
-  :global(body.opt2 img) { max-width: 100%; height: auto; }
-
-  @media (prefers-reduced-motion: no-preference) {
-    :global(html) { scroll-behavior: smooth; }
-  }
-
-  /* ---------- utilities ---------- */
-  .sr-only {
-    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
-  }
-  .plain { list-style: none; margin: 0; padding: 0; }
-  .muted { color: var(--muted); }
-  .amber { color: var(--amber); }
-  .c { color: var(--muted); margin: 0; }  /* comment line */
-  b { font-weight: 700; }
-
-  a { color: var(--green); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--green) 45%, transparent); text-underline-offset: 3px; overflow-wrap: anywhere; }
-  a:hover { text-decoration-color: currentColor; }
-  a:focus-visible, button:focus-visible, summary:focus-visible, .skip:focus {
-    outline: 2px solid var(--green);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-
-  /* bracket link / button: [label] */
-  .bl {
-    display: inline-block;
-    color: var(--green);
-    text-decoration: none;
-    font: inherit;
-    background: none;
-    border: 0;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .bl:hover { text-decoration: underline; text-underline-offset: 3px; }
-
-  .skip {
-    position: absolute; left: 1rem; top: -100px; z-index: 100;
-    padding: 0.5rem 0.75rem; background: var(--panel); color: var(--green); border: 1px solid var(--rule);
-  }
-  .skip:focus { top: 0.5rem; }
-
-  /* ---------- top bar ---------- */
-  .bar {
-    position: sticky; top: 0; z-index: 20;
-    background: var(--panel);
-    border-bottom: 1px solid var(--rule);
-  }
-  .bar__in {
-    max-width: 88ch;
-    margin: 0 auto;
-    padding: 0 clamp(1rem, 4vw, 2rem);
-    min-height: 44px;
-    display: flex; align-items: center; justify-content: space-between; gap: 1ch;
-  }
-  .ps { color: var(--green); font-weight: 700; white-space: nowrap; }
-  .bar__nav { display: flex; align-items: center; gap: 1ch; }
-  .bar__nav .bl { min-height: 40px; display: inline-flex; align-items: center; padding: 0 2px; }
-  @media (max-width: 479px) { .host { display: none; } }
-
-  /* ---------- page column ---------- */
-  .term {
-    max-width: 88ch;
-    margin: 0 auto;
-    padding: 1.5rem clamp(1rem, 4vw, 2rem) 4rem;
-  }
-  .help { margin: 0 0 2.5rem; }
-  .help p { margin: 0; }
-  .help a { margin-right: 2ch; overflow-wrap: normal; white-space: nowrap; }
-  .keys { display: none; }
-  .keys span { margin-right: 2ch; }
-  @media (min-width: 768px) { .keys { display: block; } }
-
-  section { margin: 0 0 3rem; scroll-margin-top: 60px; }
-  section:focus { outline: none; }
-
-  /* command line = heading */
-  .cmd {
-    display: flex; align-items: baseline;
-    margin: 0 0 0.75rem;
-    font-size: inherit; font-weight: 700; color: var(--fg);
-  }
-  .ps1 { color: var(--green); flex: none; width: 2ch; }
-  h2.cmd { margin-bottom: 1rem; }
-  .out { padding-left: 2ch; }
-  @media (max-width: 479px) { .out { padding-left: 0; } }
-
-  h1, h2, h3 { font-size: inherit; font-weight: 700; margin: 0; line-height: inherit; }
-  h1 { font-size: clamp(22px, 3vw, 28px); line-height: 1.3; margin: 0 0 1rem; }
-  p { margin: 0; }
-
-  /* blinking block cursor after the name */
-  .cursor {
-    display: inline-block; width: 0.55em; height: 1em; margin-left: 0.25em;
-    background: var(--green); vertical-align: -0.12em;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .cursor { animation: blink 1.1s steps(1, end) infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
-  }
-
-  /* ---------- hero ---------- */
-  .hero__grid { display: flex; gap: 2rem; align-items: flex-start; }
-  .hero__grid > div { min-width: 0; flex: 1; }
-  .photo {
-    display: none; flex: none;
-    width: 64px; height: 64px; object-fit: cover;
-    border: 1px solid var(--rule); border-radius: 2px;
-  }
-  @media (min-width: 768px) { .photo { display: block; } }
-
-  .kv { display: grid; grid-template-columns: 10ch 1fr; gap: 0 1ch; margin: 0 0 1rem; }
-  .kv dt { color: var(--muted); }
-  .kv dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
-  @media (max-width: 479px) {
-    .kv { grid-template-columns: 1fr; }
-    .kv dd { margin: 0 0 0.5rem; }
-  }
-  .summary { margin: 0 0 1rem; max-width: 80ch; }
-  .links { display: flex; flex-wrap: wrap; gap: 0.25rem 2ch; }
-  .links li { display: inline-flex; gap: 1ch; align-items: baseline; }
-
-  /* copy button feedback */
-  .copy[data-done] { color: var(--amber); }
-
-  /* ---------- experience ---------- */
-  .xp__item { margin: 0 0 1.5rem; }
-  .xp__head { display: flex; flex-wrap: wrap; gap: 0 2ch; align-items: baseline; }
-  .xp__head h3 { min-width: 0; }
-  .period { margin-left: auto; color: var(--muted); white-space: nowrap; }
-  @media (max-width: 767px) { .period { margin-left: 0; flex-basis: 100%; } }
-  .dot { color: var(--green); margin-right: 1ch; }
-  .meta { color: var(--muted); display: flex; flex-wrap: wrap; gap: 0 1ch; }
-  .badge { color: var(--amber); margin-left: auto; white-space: nowrap; }
-  @media (max-width: 767px) { .badge { margin-left: 0; } }
-
-  .dash { list-style: none; margin: 0.35rem 0 0; padding: 0; max-width: 80ch; }
-  .dash li { padding-left: 2ch; text-indent: -2ch; margin: 0 0 0.25rem; }
-  .dash li::before { content: '- '; color: var(--muted); }
-
-  /* ---------- projects (tree) ---------- */
-  .tree { max-width: 84ch; }
-  .node { margin: 0; }
-  .line { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; }
-  .g { color: var(--muted); white-space: pre; user-select: none; }
-  .line__body { display: flex; flex-wrap: wrap; gap: 0 1ch; align-items: baseline; min-width: 0; overflow-wrap: anywhere; }
-  .line__prose { min-width: 0; overflow-wrap: anywhere; }
-  .line__prose h3 { display: inline; }
-  .tags { color: var(--blue); }
-  .node + .node { margin-top: 0.75rem; }
-
-  details.more > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: auto auto 1fr; align-items: baseline; gap: 0 1ch; }
-  details.more > summary::-webkit-details-marker { display: none; }
-  details.more > summary .g { grid-column: 1; }
-  details.more .more__t { font-weight: 700; }
-  details.more .more__hint::before { content: '[expand]'; }
-  details.more[open] .more__hint::before { content: '[collapse]'; }
-  details.more > ul { margin-top: 0.5rem; }
-  details.more > ul > .line { margin: 0 0 0.35rem; }
-
-  /* ---------- hackathons (ls -la) ---------- */
-  .hk { width: 100%; border-collapse: collapse; }
-  .hk th { text-align: left; color: var(--muted); font-weight: 400; padding: 0 2ch 0.35rem 0; vertical-align: top; border-bottom: 1px solid var(--rule); }
-  .hk td { padding: 0.6rem 2ch 0 0; vertical-align: top; }
-  .hk td:last-child, .hk th:last-child { padding-right: 0; }
-  .hk__date { white-space: nowrap; color: var(--muted); }
-  .hk__org { display: block; }
-  .hk__links .bl { margin-right: 1ch; }
-  .hk__blurb td { padding: 0.15rem 0 0.75rem; border-bottom: 1px solid var(--rule); }
-  .hk__blurb .c { display: block; max-width: 80ch; }
-  .hk tbody tr:last-child td { border-bottom: 0; }
-
-  @media (max-width: 767px) {
-    .hk, .hk tbody { display: block; }
-    .hk thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
-    .hk tr { display: flex; flex-wrap: wrap; gap: 0 2ch; }
-    .hk__row { padding-top: 0.75rem; }
-    .hk td { display: block; padding: 0; }
-    .hk__event { order: -1; flex-basis: 100%; margin-bottom: 0.15rem; }
-    .hk__date, .hk__place, .hk__proj, .hk__links { flex-basis: 100%; }
-    .hk td[data-label]::before { content: attr(data-label) ': '; color: var(--muted); }
-    .hk__date { color: var(--fg); }
-    .hk__blurb td { padding: 0.25rem 0 0.75rem; flex-basis: 100%; }
-  }
-
-  /* ---------- skills (toml) ---------- */
-  .toml__group { margin: 0 0 1.1rem; }
-  .toml__group h3 { font-weight: 700; }
-  .toml__label { font-weight: 400; }
-  .toml__vals { max-width: 80ch; overflow-wrap: anywhere; }
-  details.rest > summary { list-style: none; cursor: pointer; color: var(--green); display: inline-block; }
-  details.rest > summary::-webkit-details-marker { display: none; }
-  details.rest > summary::after { content: ' ▸'; }
-  details.rest[open] > summary::after { content: ' ▾'; }
-  details.rest > p { margin-top: 0.15rem; }
-
-  /* ---------- education / contact / footer ---------- */
-  .edu h3 { margin: 0 0 0.15rem; overflow-wrap: anywhere; }
-  .contact { grid-template-columns: 10ch 1fr; margin-bottom: 1rem; }
-  .contact dd { display: flex; flex-wrap: wrap; gap: 0 1ch; align-items: baseline; }
-  .foot { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
-  .foot .bl { margin-right: 1ch; }
-
-  @media print {
-    :global(.opt-switch) { display: none; }
-    .bar, .keys, .cursor { display: none; }
-    details { display: block; }
-    details > summary { display: none; }
-  }
-</style>
-
-<script>
+<script is:inline>
   (function () {
     var root = document.documentElement;
+    var btn = document.getElementById('d3-theme');
+    function paint() {
+      var dark = root.classList.contains('dark');
+      if (btn) { btn.textContent = dark ? 'Light mode' : 'Dark mode'; btn.setAttribute('aria-pressed', String(dark)); }
+    }
+    if (btn) btn.addEventListener('click', function () {
+      var dark = root.classList.toggle('dark');
+      try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {}
+      paint();
+    });
+    paint();
 
-    // [theme] — toggles html.dark and persists; ProLayout applies it before paint on the next load.
-    document.querySelectorAll<HTMLElement>('[data-theme-toggle]').forEach(function (b) {
-      b.addEventListener('click', function () {
-        var dark = root.classList.toggle('dark');
-        try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {}
-      });
+    var copy = document.querySelector('.d3-copy');
+    if (copy) copy.addEventListener('click', function () {
+      var t = copy.querySelector('.d3-copy-t');
+      var text = copy.getAttribute('data-copy') || '';
+      var done = function () { if (t) { t.textContent = 'Copied'; setTimeout(function () { t.textContent = 'Copy'; }, 1600); } };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () { location.href = 'mailto:' + text; });
+      else location.href = 'mailto:' + text;
     });
 
-    // [copy] — clipboard, falls back to mailto.
-    document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach(function (b) {
-      b.addEventListener('click', function () {
-        var v = b.getAttribute('data-copy') || '';
-        var fallback = function () { location.href = 'mailto:' + v; };
-        var done = function () {
-          var t = b.textContent;
-          b.textContent = '[copied]';
-          b.setAttribute('data-done', '');
-          setTimeout(function () { b.textContent = t; b.removeAttribute('data-done'); }, 1500);
-        };
-        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(done, fallback);
-        else fallback();
-      });
+    var opened = [];
+    window.addEventListener('beforeprint', function () {
+      opened = [];
+      document.querySelectorAll('.d3 details:not([open])').forEach(function (d) { d.open = true; opened.push(d); });
     });
-
-    // g-key jumps: `g` then e/p/h/s/d/c/t. Ignored while typing; never touches `[` / `]`.
-    var map: Record<string, string> = { e: 'experience', p: 'projects', h: 'hackathons', s: 'skills', d: 'education', c: 'contact', t: 'top' };
-    var armed = false;
-    var timer: ReturnType<typeof setTimeout> | undefined;
-    document.addEventListener('keydown', function (e) {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      var t = e.target as HTMLElement | null;
-      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
-      if (!armed) {
-        if (e.key === 'g') { armed = true; clearTimeout(timer); timer = setTimeout(function () { armed = false; }, 1500); }
-        return;
-      }
-      armed = false; clearTimeout(timer);
-      var id = map[e.key];
-      if (!id) return;
-      var el = document.getElementById(id);
-      if (!el) return;
-      e.preventDefault();
-      el.scrollIntoView({ block: 'start' });
-      el.focus({ preventScroll: true });
-    });
+    window.addEventListener('afterprint', function () { opened.forEach(function (d) { d.open = false; }); opened = []; });
   })();
 </script>
+
+<style is:global>
+  /* ---------- tokens ---------- */
+  .d3 {
+    --bg: #f6f7f9;
+    --paper: #ffffff;
+    --sidebar: #1f3a5f;
+    --sidebar-fg: #e8eef7;
+    --sidebar-muted: #a9bbd3;
+    --sidebar-rule: rgba(232, 238, 247, 0.16);
+    --fg: #1c2128;
+    --muted: #5a6472;
+    --accent: #1f3a5f;
+    --accent-soft: #e6ecf5;
+    --rule: #e2e6ec;
+    --sans: 'Source Sans 3', system-ui, 'Segoe UI', Roboto, sans-serif;
+    --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--fg);
+    background: var(--bg);
+    min-height: 100vh;
+    padding: clamp(0.75rem, 2.5vw, 2rem) clamp(0.5rem, 2.5vw, 1.5rem) 4rem;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    box-sizing: border-box;
+  }
+  html.dark .d3 {
+    --bg: #0f1318;
+    --paper: #161b22;
+    --sidebar: #0b1e33;
+    --sidebar-fg: #dbe6f5;
+    --sidebar-muted: #8fa5c2;
+    --sidebar-rule: rgba(219, 230, 245, 0.14);
+    --fg: #e6e9ee;
+    --muted: #98a2b3;
+    --accent: #7fa8e0;
+    --accent-soft: #1b2a40;
+    --rule: #262d36;
+  }
+  body.d3-body { margin: 0; background: #f6f7f9; color: #1c2128; }
+  html.dark body.d3-body { background: #0f1318; color: #e6e9ee; }
+
+  .d3 *, .d3 *::before, .d3 *::after { box-sizing: border-box; }
+  /* base resets use :where() so they never outrank single-class component rules below */
+  .d3 :where(img) { max-width: 100%; height: auto; }
+  .d3 :where(svg) { flex: none; vertical-align: -0.15em; }
+  .d3 :where(p, h1, h2, h3, ul, ol, dl, dd) { margin: 0; }
+  .d3 :where(ul, ol) { padding: 0; list-style: none; }
+  .d3 :where(a) { color: inherit; text-decoration: none; }
+  .d3 :where(button) { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  .d3 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+  .d3-side :focus-visible { outline-color: var(--sidebar-fg); }
+  .d3-muted { color: var(--muted); }
+  .d3-dot { color: var(--muted); margin: 0 0.35rem; }
+
+  /* ---------- sheet ---------- */
+  .d3-sheet {
+    max-width: 1180px;
+    margin: 0 auto;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: 1fr;
+    overflow: clip;
+  }
+  @media (min-width: 960px) {
+    .d3-sheet { grid-template-columns: 300px minmax(0, 1fr); }
+    .d3-side { position: sticky; top: 0; align-self: start; max-height: 100vh; overflow-y: auto; overscroll-behavior: contain; }
+  }
+
+  /* ---------- sidebar ---------- */
+  .d3-side {
+    background: var(--sidebar);
+    color: var(--sidebar-fg);
+    padding: 1.75rem 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    font-size: 15px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--sidebar-muted) transparent;
+  }
+  .d3-side img.d3-photo {
+    width: 112px; height: 112px; aspect-ratio: 1 / 1; flex: none;
+    border-radius: 50%; object-fit: cover; object-position: center;
+    border: 2px solid var(--sidebar-fg); display: block; margin-bottom: 1rem;
+    background: var(--sidebar-muted);
+  }
+  .d3-name { font-family: var(--serif); font-weight: 600; font-size: 34px; line-height: 1.12; letter-spacing: -0.01em; color: var(--sidebar-fg); }
+  .d3-headline { margin-top: 0.4rem; font-weight: 600; font-size: 16px; }
+  .d3-tagline { margin-top: 0.2rem; color: var(--sidebar-muted); font-size: 14.5px; line-height: 1.45; }
+  .d3-loc { margin-top: 0.55rem; color: var(--sidebar-muted); font-size: 14px; display: flex; align-items: center; gap: 0.35rem; }
+  .d3-nav { margin-top: 0.9rem; }
+  .d3-nav ul { display: flex; flex-wrap: wrap; gap: 0.25rem 0.85rem; font-size: 13.5px; }
+  .d3-nav a { color: var(--sidebar-muted); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: transparent; padding: 0.15rem 0; display: inline-block; min-height: 24px; }
+  .d3-nav a:hover { color: var(--sidebar-fg); text-decoration-color: currentColor; }
+
+  .d3-side-h {
+    font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700;
+    color: var(--sidebar-muted); padding-bottom: 0.4rem; margin-bottom: 0.65rem;
+    border-bottom: 1px solid var(--sidebar-rule);
+  }
+  .d3-clist { display: flex; flex-direction: column; gap: 0.3rem; }
+  .d3-clist li { display: flex; align-items: center; gap: 0.25rem; min-width: 0; }
+  .d3-clink {
+    display: flex; align-items: center; gap: 0.6rem; min-width: 0; flex: 1 1 auto;
+    padding: 0.3rem 0.35rem; margin-left: -0.35rem; border-radius: 4px; min-height: 40px;
+  }
+  .d3-clink:hover { background: rgba(255, 255, 255, 0.06); }
+  .d3-ico { width: 16px; display: inline-flex; color: var(--sidebar-muted); }
+  .d3-clabel { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .d3-chandle { overflow-wrap: anywhere; font-size: 14.5px; line-height: 1.3; }
+  .d3-copy {
+    display: inline-flex; align-items: center; gap: 0.3rem; flex: none;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: var(--sidebar-fg);
+    border: 1px solid var(--sidebar-rule); border-radius: 4px; padding: 0.35rem 0.5rem; min-height: 32px;
+  }
+  .d3-copy:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--sidebar-muted); }
+  .d3-avail { margin-top: 0.75rem; color: var(--sidebar-muted); font-size: 13.5px; line-height: 1.45; }
+
+  .d3-actions { display: flex; flex-direction: column; gap: 0.5rem; }
+  .d3-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    min-height: 42px; padding: 0.55rem 0.9rem; border-radius: 5px; font-weight: 600; font-size: 14.5px;
+    border: 1px solid transparent; width: 100%; text-align: center;
+  }
+  .d3-side a.d3-btn-solid { background: var(--sidebar-fg); color: #1f3a5f; }
+  html.dark .d3-side a.d3-btn-solid { color: #0b1e33; }
+  .d3-side a.d3-btn-solid:hover { background: #ffffff; }
+  .d3-side a.d3-btn-solid svg { color: inherit; }
+  .d3-side a.d3-btn-outline { border-color: var(--sidebar-muted); color: var(--sidebar-fg); }
+  .d3-side a.d3-btn-outline:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--sidebar-fg); }
+
+  .d3-sgs { display: flex; flex-direction: column; gap: 0.7rem; }
+  .d3-sg-h { font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--sidebar-muted); margin-bottom: 0.3rem; }
+  .d3-pills { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .d3-pills li {
+    font-size: 12.5px; line-height: 1.2; padding: 0.22rem 0.5rem; border-radius: 999px;
+    border: 1px solid var(--sidebar-rule); color: var(--sidebar-fg); background: rgba(255, 255, 255, 0.04);
+  }
+  .d3-allskills { margin-top: 0.8rem; font-size: 13.5px; }
+  .d3-allskills summary { cursor: pointer; color: var(--sidebar-muted); font-weight: 600; padding: 0.3rem 0; min-height: 28px; list-style: disclosure-closed; }
+  .d3-allskills[open] summary { list-style: disclosure-open; }
+  .d3-allskills summary:hover { color: var(--sidebar-fg); }
+  .d3-allskills dl { margin-top: 0.4rem; display: grid; gap: 0.5rem; }
+  .d3-allskills dt { font-weight: 600; color: var(--sidebar-muted); font-size: 12.5px; }
+  .d3-allskills dd { color: var(--sidebar-fg); line-height: 1.45; }
+
+  .d3-edu-deg { font-weight: 600; font-size: 15px; line-height: 1.35; }
+  .d3-edu-inst { margin-top: 0.2rem; }
+  .d3-edu-inst a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--sidebar-muted); }
+  .d3-edu-inst a:hover { text-decoration-color: currentColor; }
+  .d3-edu-meta { margin-top: 0.2rem; color: var(--sidebar-muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+
+  .d3-theme { margin-top: auto; padding-top: 0.5rem; border-top: 1px solid var(--sidebar-rule); }
+  .d3-theme-btn { font-size: 13px; font-weight: 600; color: var(--sidebar-muted); padding: 0.4rem 0; min-height: 36px; }
+  .d3-theme-btn:hover { color: var(--sidebar-fg); }
+
+  /* ---------- main ---------- */
+  .d3-main { padding: clamp(1.25rem, 3vw, 2.5rem); min-width: 0; }
+  .d3-sec + .d3-sec { margin-top: 2.75rem; }
+  .d3-h2 {
+    font-family: var(--serif); font-weight: 600; font-size: 22px; line-height: 1.2; color: var(--fg);
+    margin-bottom: 1rem; scroll-margin-top: 1rem;
+  }
+  .d3-h2::after { content: ''; display: block; width: 3rem; height: 2px; background: var(--accent); margin-top: 0.4rem; }
+  .d3-sec { scroll-margin-top: 1rem; }
+  .d3-h3 { font-size: 17px; font-weight: 600; line-height: 1.3; }
+  .d3-summary { font-size: 17px; line-height: 1.6; max-width: 70ch; }
+  .d3-stats { margin-top: 0.85rem; font-size: 15px; color: var(--fg); display: flex; flex-wrap: wrap; align-items: baseline; row-gap: 0.2rem; }
+  .d3-stats b { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .d3-xp-e { padding: 1.1rem 0; border-top: 1px solid var(--rule); }
+  .d3-xp-e:first-child { border-top: 0; padding-top: 0; }
+  .d3-xp-row { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .d3-period { color: var(--muted); font-size: 14.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .d3-xp-meta { margin-top: 0.2rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0; font-size: 15px; }
+  .d3-company { font-weight: 600; }
+  .d3-company a { display: inline-flex; align-items: center; gap: 0.2rem; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--rule); }
+  .d3-company a:hover { color: var(--accent); text-decoration-color: currentColor; }
+  .d3-company svg { width: 13px; height: 13px; color: var(--muted); }
+  .d3-xp-loc { margin-left: 0.4rem; }
+  .d3-badge {
+    margin-left: 0.6rem; font-size: 12.5px; font-weight: 600; padding: 0.12rem 0.5rem; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent); line-height: 1.4;
+  }
+  .d3-kind { margin-left: 0.6rem; font-size: 12.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .d3-bullets { margin-top: 0.6rem; padding-left: 1.15rem; list-style: disc; display: grid; gap: 0.3rem; }
+  .d3-bullets li { padding-left: 0.15rem; }
+  .d3-bullets li::marker { color: var(--muted); }
+
+  .d3-cards { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  @media (min-width: 700px) { .d3-cards { grid-template-columns: 1fr 1fr; } }
+  .d3-card { border: 1px solid var(--rule); border-radius: 6px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.55rem; }
+  .d3-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .d3-tags li { font-size: 12.5px; line-height: 1.2; padding: 0.2rem 0.5rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .d3-tags .d3-tag-more { background: transparent; border: 1px solid var(--rule); color: var(--muted); font-weight: 400; }
+  .d3-card-desc { font-size: 15px; line-height: 1.5; flex: 1 1 auto; }
+  .d3-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 14px; font-weight: 600; }
+  .d3-links a { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: transparent; min-height: 28px; }
+  .d3-links a:hover { text-decoration-color: currentColor; }
+
+  .d3-more { margin-top: 1rem; border: 1px solid var(--rule); border-radius: 6px; }
+  .d3-more summary {
+    cursor: pointer; padding: 0.7rem 1.1rem; font-weight: 600; font-size: 15px; color: var(--accent);
+    list-style: disclosure-closed; min-height: 44px; display: list-item;
+  }
+  .d3-more[open] summary { list-style: disclosure-open; border-bottom: 1px solid var(--rule); }
+  .d3-more summary:hover { background: var(--accent-soft); }
+  .d3-more-list { padding: 0.35rem 1.1rem 0.6rem; }
+  .d3-more-list li { padding: 0.55rem 0; border-top: 1px solid var(--rule); }
+  .d3-more-list li:first-child { border-top: 0; }
+  .d3-more-t { font-size: 15.5px; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+  .d3-more-t a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--rule); }
+  .d3-more-t a:hover { color: var(--accent); text-decoration-color: currentColor; }
+  .d3-more-alt { color: var(--muted); display: inline-flex; padding: 0.25rem; }
+  .d3-more-alt:hover { color: var(--accent); }
+  .d3-more-d { color: var(--muted); font-size: 14.5px; line-height: 1.5; margin-top: 0.1rem; }
+
+  .d3-hk { display: flex; flex-direction: column; }
+  .d3-hk-row {
+    display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 0.25rem 1rem;
+    padding: 1rem 1.1rem; border-radius: 6px;
+  }
+  .d3-hk-row:nth-child(odd) { background: var(--accent-soft); }
+  html.dark .d3-hk-row:nth-child(odd) { background: rgba(127, 168, 224, 0.08); }
+  .d3-hk-date { color: var(--muted); font-size: 14.5px; font-variant-numeric: tabular-nums; padding-top: 0.15rem; }
+  .d3-hk-body { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+  .d3-hk-place { display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem; font-size: 15px; }
+  .d3-hk-place b { color: var(--accent); font-weight: 700; }
+  .d3-hk-place svg { color: var(--accent); }
+  .d3-hk-proj { font-size: 14.5px; display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; }
+  .d3-pill { font-size: 13px; font-weight: 600; padding: 0.15rem 0.55rem; border: 1px solid var(--rule); border-radius: 999px; background: var(--paper); }
+  .d3-hk-blurb { color: var(--muted); font-size: 15px; line-height: 1.5; }
+  @media (max-width: 599px) {
+    .d3-hk-row { grid-template-columns: 1fr; padding: 0.9rem 0.85rem; }
+    .d3-hk-date { padding-top: 0; }
+  }
+
+  .d3-foot { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); font-size: 14px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; }
+  .d3-foot a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: transparent; padding: 0.25rem 0; }
+  .d3-foot a:hover { color: var(--accent); text-decoration-color: currentColor; }
+  .d3-fun-link { color: var(--accent); font-weight: 600; }
+
+  /* ---------- responsive: sidebar as header (600–959) ---------- */
+  @media (min-width: 600px) and (max-width: 959px) {
+    .d3-side { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 2rem; padding: 1.75rem; align-items: start; }
+    .d3-id { grid-column: 1; }
+    .d3-contact { grid-column: 2; }
+    .d3-actions { grid-column: 1 / -1; flex-direction: row; }
+    .d3-actions .d3-btn { width: auto; flex: 1 1 0; }
+    .d3-skills { grid-column: 1 / -1; }
+    .d3-sgs { flex-direction: row; flex-wrap: wrap; gap: 0.55rem 1.25rem; }
+    .d3-sg { display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem 0.5rem; }
+    .d3-sg-h { margin-bottom: 0; }
+    .d3-edu { grid-column: 1; }
+    .d3-theme { grid-column: 2; margin-top: 0; border-top: 0; padding-top: 0; justify-self: end; align-self: end; }
+  }
+  @media (max-width: 599px) {
+    .d3 { padding: 0.5rem 0.5rem 4rem; }
+    .d3-side { padding: 1.5rem 1.15rem 1.15rem; }
+    .d3-name { font-size: 30px; }
+    .d3-photo { width: 96px; height: 96px; }
+    .d3-main { padding: 1.25rem 1rem 1.5rem; }
+    .d3-xp-row { flex-direction: column; gap: 0.1rem; }
+    .d3-period { white-space: normal; }
+  }
+
+  /* ---------- print: a clean paper CV ---------- */
+  @media print {
+    @page { margin: 14mm; }
+    body.d3-body, html.dark body.d3-body { background: #fff !important; color: #000 !important; }
+    .d3, html.dark .d3 {
+      --bg: #fff; --paper: #fff; --sidebar: #fff; --sidebar-fg: #000; --sidebar-muted: #444; --sidebar-rule: #ccc;
+      --fg: #000; --muted: #444; --accent: #000; --accent-soft: #f0f0f0; --rule: #ccc;
+      padding: 0; background: #fff; font-size: 11pt; line-height: 1.4;
+    }
+    .d3-sheet { max-width: none; border: 0; border-radius: 0; grid-template-columns: 220px 1fr; overflow: visible; }
+    .d3-side { position: static; max-height: none; overflow: visible; padding: 0 12pt 0 0; border-right: 1px solid #ccc; gap: 1rem; font-size: 10pt; display: flex; flex-direction: column; }
+    .d3-main { padding: 0 0 0 14pt; }
+    .d3-side img.d3-photo { width: 80px; height: 80px; border-color: #000; }
+    .d3-name { font-size: 22pt; }
+    .d3-h2 { font-size: 15pt; margin-bottom: 0.5rem; }
+    .d3-h3 { font-size: 11.5pt; }
+    .d3-sec + .d3-sec { margin-top: 1.25rem; }
+    .d3-xp-e, .d3-card, .d3-hk-row, .d3-more-list li { break-inside: avoid; }
+    .d3-cards { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .d3-card { border-color: #ccc; }
+    .d3-hk-row:nth-child(odd), html.dark .d3-hk-row:nth-child(odd) { background: #f0f0f0; }
+    .d3-badge, .d3-tags li, .d3-pills li, .d3-pill { border: 1px solid #999; background: none; color: #000; }
+    .d3 a, .d3 a:hover { color: #000; text-decoration: none; }
+    .d3-clink { padding: 0; margin: 0; min-height: 0; }
+    .d3-more, .d3-allskills { border: 0; }
+    .d3-more summary, .d3-allskills summary { list-style: none; padding: 0; border: 0; min-height: 0; }
+    .d3-more summary::-webkit-details-marker { display: none; }
+    .d3-more-list { padding: 0; }
+    .d3-nav, .d3-theme, .d3-fun, .d3-fun-link, .d3-copy, .d3-foot .d3-dot:nth-of-type(n+2), .d3-foot a[href="#summary"], .d3-btn-solid, .opt-switch { display: none !important; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html:has(body.d3-body) { scroll-behavior: smooth; }
+  }
+</style>

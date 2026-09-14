@@ -1,5 +1,5 @@
-/* src/components/pro/opt4/bb8.css — verbatim copy of the BB-8 toggle block from src/styles/global.css (lines 131–595),
-   so Option 4 can reuse src/components/v2/BB8Toggle.astro without loading the comic global stylesheet.
+/* src/components/pro/opt3/bb8.css — verbatim copy of the BB-8 toggle block from src/styles/global.css (lines 131–595),
+   so Option 3 can reuse src/components/v2/BB8Toggle.astro without loading the comic global stylesheet.
    Only addition: the keyboard-focus override at the bottom (the original hides the checkbox with display:none). */
 /* ===== BB8 dark-mode toggle (Uiverse.io by Galahhad) ===== */
 .bb8-toggle {
@@ -467,7 +467,7 @@
 .bb8:hover .bb8__antenna:nth-child(1) { right: 0.938em !important; }
 .bb8:hover .bb8__head::after { background-position: 0 0 !important; }
 
-/* ---- Option 4 additions: keep the checkbox focusable for keyboard users ---- */
+/* ---- Option 3 additions: keep the checkbox focusable for keyboard users ---- */
 .bb8-toggle { position: relative; }
 .bb8-toggle__checkbox {
   display: block;

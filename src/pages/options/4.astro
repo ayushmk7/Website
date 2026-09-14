@@ -1,646 +1,506 @@
 ---
-// src/pages/options/4.astro — Option 4 "Product" (Linear/Vercel-style product page).
-// Content comes only from src/lib/profile. Styles are scoped to this page.
+// src/pages/options/4.astro — Option 4 "Original": faithful revival of the site's pre-comic design
+// (git 40a5f35): white/black/blue minimal, thick 4px rounded cards, blue icon squares, mono tag pills,
+// full-screen centered hero, collapsible skills, "Show More Projects". Filled with today's content.
+// Content comes only from ../../lib/profile (the shared contract), nothing from the raw data files.
+//
+// Adaptations from the original (which had no slot for these): Hackathons is a new card in the same
+// visual language, Skills shows every skill per category (as the original did), the résumé preview is
+// the original's "PDF ↗" link (no react-pdf), lucide icons are inline SVGs (components/pro/opt4/Icon).
 import ProLayout from '../../layouts/ProLayout.astro';
 import OptionSwitcher from '../../components/OptionSwitcher.astro';
-import BB8Toggle from '../../components/v2/BB8Toggle.astro';
-import '../../components/pro/opt4/bb8.css';
+import Icon from '../../components/pro/opt4/Icon.astro';
 import {
-  profile, contactLinks, sections, education, experience, hackathonsWithProject,
-  featuredProjects, moreProjects, skillGroups, stats, FUN_HREF,
+  profile, contactLinks, education, experience, hackathonsWithProject,
+  featuredProjects, moreProjects, skillGroups, FUN_HREF,
 } from '../../lib/profile';
 
-// --- inline icons (16px, stroke 2) ---------------------------------------
-const stroke = (d: string, size = 16) =>
-  `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${d}</svg>`;
-const fill = (d: string, size = 16) =>
-  `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="currentColor" aria-hidden="true" focusable="false">${d}</svg>`;
+// The original hero row had exactly four buttons: mail, GitHub, LinkedIn, theme. (No X, no résumé.)
+const social = contactLinks.filter((l) => l.key === 'github' || l.key === 'linkedin');
+const iconFor: Record<string, 'github' | 'linkedin'> = { github: 'github', linkedin: 'linkedin' };
+// Hero copy: verbatim from the original HeroSection.astro (40a5f35), punctuation included.
+const aboutMe = [
+  'Full-stack software developer with a focus on systems programming and AI infrastructure.',
+  'Currently helping accelerate the development of on-device AI at Cactus (YC S25). Passionate software developer with experience in modern web technologies and machine learning. I love building innovative solutions that solve real-world problems .',
+];
 
-const ico = {
-  github: fill('<path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/>'),
-  linkedin: fill('<path d="M20.4 20.4h-3.5v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9v5.7H9.4V9h3.4v1.6h.1c.5-.9 1.6-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4a2 2 0 1 1 0-4.1 2 2 0 0 1 0 4.1zM7.1 20.4H3.6V9h3.5v11.4zM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6c0 .9.8 1.7 1.8 1.7h20.4c1 0 1.8-.8 1.8-1.7V1.7C24 .8 23.2 0 22.2 0z"/>'),
-  x: fill('<path d="M18.2 2h3.4l-7.4 8.5L23 22h-6.8l-5.3-7-6.1 7H1.4l7.9-9.1L1 2h7l4.8 6.4L18.2 2zm-1.2 18h1.9L7.1 3.9H5.1L17 20z"/>'),
-  mail: stroke('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>'),
-  copy: stroke('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>'),
-  check: stroke('<path d="m20 6-11 11-5-5"/>'),
-  file: stroke('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>'),
-  contrast: stroke('<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>'),
-  sparkle: fill('<path d="M12 2.5l2.1 6.2 6.4 2.1-6.4 2.1L12 19.1l-2.1-6.2-6.4-2.1 6.4-2.1z"/><path d="M19.5 15.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z"/>'),
-  ext: stroke('<path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M20 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5"/>'),
-  up: stroke('<path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>'),
-  trophy: stroke('<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/>', 14),
-  cmd: stroke('<path d="M9 6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3z"/>'),
-  chevron: stroke('<path d="m6 9 6 6 6-6"/>', 14),
-  hash: stroke('<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>'),
-  pin: stroke('<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>', 14),
-  cap: stroke('<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>', 14),
-};
-
-// --- derived, local to this page -------------------------------------------
-const byKey = Object.fromEntries(contactLinks.map((c) => [c.key, c]));
-const social = contactLinks.filter((c) => c.key === 'github' || c.key === 'linkedin' || c.key === 'x');
-const edu = education[0];
-const shortDegree = edu.degree
-  .replace('Bachelor of Science in ', 'BS ')
-  .replace('; Minor in ', ' · Minor ');
-const isCurrent = (period: string) => /present/i.test(period);
-const isWin = (placement: string) => /1st|winner/i.test(placement);
-const eyebrow = `CS + Math · University of Michigan · ${profile.location}`;
-const currentCount = stats.currentRoles.length;
-const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, linkedin: ico.linkedin, x: ico.x, resume: ico.file };
+// Shared class strings (the original used clsx/twMerge; plain strings do the same job here).
+const iconBtn = 'inline-flex p-3 rounded-lg border-2 border-foreground bg-background hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors duration-200';
+const pillBtn = 'inline-flex items-center gap-2 px-6 py-3 rounded-2xl border-2 border-foreground bg-background hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors duration-200 text-lg font-medium';
+const card = 'w-full bg-background border-4 border-black dark:border-white rounded-3xl p-6 md:p-8 shadow-lg';
+const entry = 'border-2 border-black dark:border-white rounded-2xl p-6 transition-colors duration-300 hover:border-blue-600 dark:hover:border-blue-500';
+const smallIconLink = 'shrink-0 inline-flex p-2 rounded-lg border border-foreground hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors duration-200';
+const projectCard = 'border-2 border-foreground rounded-2xl p-6 hover:border-blue-600 transition-colors duration-200 relative group flex flex-col bg-background';
+const monoTag = 'px-3 py-1 text-sm rounded-full border border-foreground bg-background font-mono';
+const blue = 'text-blue-600 dark:text-blue-400';
 ---
-<ProLayout title={`${profile.name} — ${profile.headline}`} bodyClass="p4-body">
-  <Fragment slot="head">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" />
-  </Fragment>
+<ProLayout title={`${profile.name} — ${profile.headline}`} bodyClass="opt7">
+  <a class="skip" href="#resume">Skip to content</a>
 
-  <div class="p4" id="top">
-    <!-- ===================== NAV ===================== -->
-    <header class="nav">
-      <div class="wrap nav__in">
-        <a class="wordmark mono" href="#top" aria-label={`${profile.name} — back to top`}>{profile.initials}</a>
-        <nav class="nav__links" aria-label="Sections">
-          {sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
-        </nav>
-        <div class="nav__actions">
-          <button type="button" class="btn btn--ghost btn--kbd" id="pal-btn" aria-haspopup="dialog" aria-controls="palette">
-            <span class="only-desk"><span class="btn--kbd__txt">Jump to</span><kbd data-kbd>⌘K</kbd></span>
-            <span class="only-mob">Menu</span>
-          </button>
-          <a class="btn btn--ghost btn--fun" href={FUN_HREF} aria-label="Fun mode: switch to the comic version of this site">
-            <span set:html={ico.sparkle} /><span class="only-desk">Fun mode</span>
-          </a>
-          <span class="nav__theme"><BB8Toggle size="5px" /></span>
-          <a class="btn btn--primary" href={profile.resumeHref} target="_blank" rel="noopener noreferrer">
-            <span class="only-desk" set:html={ico.file} />Résumé
-          </a>
-        </div>
-      </div>
-    </header>
-
-    <main>
-      <!-- ===================== HERO ===================== -->
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="wrap hero__grid">
-          <div class="hero__text">
-            <p class="mono lbl">{eyebrow}</p>
-            <h1 id="hero-title">{profile.shortName}<span class="h1-sub">{profile.tagline}</span></h1>
-            <p class="hero__summary">{profile.summary}</p>
-            <div class="hero__actions">
-              <span class="split">
-                <a class="btn btn--ghost" href={byKey.email.href}><span set:html={ico.mail} />Email</a>
-                <button type="button" class="btn btn--ghost btn--icon" data-copy={profile.email} aria-label="Copy email address">
-                  <span class="cp-copy" set:html={ico.copy} /><span class="cp-check" set:html={ico.check} />
-                  <span class="cp-toast" aria-live="polite"></span>
-                </button>
-              </span>
-              {social.map((c) => (
-                <a class="btn btn--ghost" href={c.href} target="_blank" rel="noopener noreferrer">
-                  <span set:html={iconFor[c.key]} />{c.label}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div class="bento" aria-label="At a glance">
-            <div class="card bento__photo">
-              <img src={profile.photo} alt={profile.photoAlt} width="480" height="480" decoding="async" fetchpriority="high" />
-            </div>
-            <div class="card bento__now">
-              <p class="mono lbl"><span class="dot dot--live" aria-hidden="true"></span>Now</p>
-              <ul class="now">
-                {stats.currentRoles.map((r) => (
-                  <li><strong>{r.company}</strong><span class="muted">{r.role}</span></li>
-                ))}
-              </ul>
-            </div>
-            <div class="card bento__stat">
-              <p class="mono lbl"><span set:html={ico.trophy} />Hackathons</p>
-              <p class="stat"><span class="stat__n">{stats.hackathonPlacements}</span> placements</p>
-              <p class="muted">{stats.hackathonWins} wins in the last year</p>
-            </div>
-            <div class="card bento__stat">
-              <p class="mono lbl"><span set:html={ico.cap} />Graduating</p>
-              <p class="stat"><span class="stat__n">{stats.graduation}</span></p>
-              <p class="muted">{shortDegree}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== EXPERIENCE ===================== -->
-      <section id="experience" class="sec wrap" tabindex="-1" aria-labelledby="h-experience">
-        <header class="sec__head">
-          <h2 id="h-experience">Experience</h2>
-          <p class="sec__sub">{stats.roles} roles, {currentCount} current. Details expand per role.</p>
-        </header>
-        <ol class="card xp">
-          {experience.map((e) => {
-            const cur = isCurrent(e.period);
-            return (
-              <li class="xp__row">
-                <div class="xp__meta">
-                  <p class="mono">{cur && <span class="dot dot--live" aria-label="Current"></span>}{e.period}</p>
-                  {e.location && <p class="muted">{e.location}</p>}
-                </div>
-                <div class="xp__body">
-                  <div class="xp__title">
-                    <h3>{e.url ? <a href={e.url} target="_blank" rel="noopener noreferrer" class="link">{e.company}<span set:html={ico.ext} /></a> : e.company}</h3>
-                    {e.badge && <span class="pill pill--accent">{e.badge}</span>}
-                    <span class="mono lbl">{e.kind}</span>
-                  </div>
-                  <p class="xp__role">{e.role}</p>
-                  <details class="disc" open={cur}>
-                    <summary><span class="disc__show">Show details</span><span class="disc__hide">Hide details</span><span set:html={ico.chevron} /></summary>
-                    <ul class="bullets">{e.bullets.map((b) => <li>{b}</li>)}</ul>
-                  </details>
-                </div>
-              </li>
-            );
-          })}
-        </ol>
-      </section>
-
-      <!-- ===================== PROJECTS ===================== -->
-      <section id="projects" class="sec wrap" tabindex="-1" aria-labelledby="h-projects">
-        <header class="sec__head">
-          <h2 id="h-projects">Projects</h2>
-          <p class="sec__sub">{featuredProjects.length} case studies, then everything else.</p>
-        </header>
-        <div class="cases">
-          {featuredProjects.map((p, i) => (
-            <article class="card case">
-              <p class="mono lbl">{String(i + 1).padStart(2, '0')} / {String(featuredProjects.length).padStart(2, '0')} · Featured</p>
-              <h3>{p.title}</h3>
-              <p class="case__desc">{p.description}</p>
-              <p class="case__stack"><span class="mono lbl">Stack</span><span class="chips">{p.tags.map((t) => <span class="chip mono">{t}</span>)}</span></p>
-              <div class="links">
-                {p.githubUrl && <a class="btn btn--ghost btn--sm" href={p.githubUrl} target="_blank" rel="noopener noreferrer"><span set:html={ico.github} />GitHub</a>}
-                {p.websiteUrl && <a class="btn btn--ghost btn--sm" href={p.websiteUrl} target="_blank" rel="noopener noreferrer"><span set:html={ico.ext} />Live site</a>}
-              </div>
-            </article>
-          ))}
+  <div class="min-h-screen">
+    <!-- Hero -->
+    <section class="min-h-screen flex flex-col justify-center items-center px-4 md:px-8" aria-labelledby="hero-name">
+      <div class="max-w-2xl mx-auto text-center">
+        <div class="w-32 h-3 bg-blue-600 rounded-full mx-auto mb-6" aria-hidden="true"></div>
+        <h1 id="hero-name" class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 text-foreground">{profile.name}</h1>
+        <div class="space-y-4 text-lg md:text-xl mb-8">
+          {aboutMe.map((paragraph) => <p class="text-foreground font-normal leading-relaxed">{paragraph}</p>)}
         </div>
 
-        <h3 class="sub-h">All projects <span class="muted mono">({moreProjects.length})</span></h3>
-        <ul class="tiles">
-          {moreProjects.map((p) => {
-            const primary = p.githubUrl ?? p.websiteUrl;
-            return (
-              <li class="card tile">
-                <h4><a class="link" href={primary} target="_blank" rel="noopener noreferrer">{p.title}</a></h4>
-                <p class="tile__desc">{p.description}</p>
-                <div class="tile__foot">
-                  <span class="mono muted tile__tags">{p.tags.slice(0, 3).join(' · ')}</span>
-                  <span class="tile__links">
-                    {p.githubUrl && <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} on GitHub`} set:html={ico.github} />}
-                    {p.websiteUrl && <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} live site`} set:html={ico.ext} />}
-                  </span>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-
-      <!-- ===================== HACKATHONS ===================== -->
-      <section id="hackathons" class="sec wrap" tabindex="-1" aria-labelledby="h-hackathons">
-        <header class="sec__head">
-          <h2 id="h-hackathons">Hackathons</h2>
-          <p class="sec__sub">{stats.hackathonPlacements} placements, {stats.hackathonWins} wins, all in the last year.</p>
-        </header>
-        <ol class="hk-row">
-          {hackathonsWithProject.map((h, i) => (
-            <li class={`card hk${i === 0 ? ' hk--lead' : ''}`}>
-              <div class="hk__head">
-                <p class="mono lbl">{h.date}{i === 0 && <span class="hk__top">Top placement</span>}</p>
-                <h3>{h.event}</h3>
-                <p class="muted hk__org">{h.organizer}</p>
-                <p class={`hk__place${isWin(h.placement) ? ' hk__place--win' : ''}`}>
-                  <span set:html={ico.trophy} />{h.placement}{h.prize && <span class="muted"> · {h.prize}</span>}
-                </p>
-                <p class="hk__proj"><strong>{h.project}</strong></p>
-              </div>
-              <div class="hk__body">
-                <p class="hk__blurb">{h.blurb}</p>
-                {h.projectEntry && <p class="mono muted hk__tags">{h.projectEntry.tags.slice(0, 4).join(' · ')}</p>}
-                <div class="links hk__links">
-                  {h.repoUrl && <a class="btn btn--ghost btn--sm" href={h.repoUrl} target="_blank" rel="noopener noreferrer"><span set:html={ico.github} />Repo</a>}
-                  {h.siteUrl && <a class="btn btn--ghost btn--sm" href={h.siteUrl} target="_blank" rel="noopener noreferrer"><span set:html={ico.ext} />Site</a>}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <!-- ===================== SKILLS ===================== -->
-      <section id="skills" class="sec wrap" tabindex="-1" aria-labelledby="h-skills">
-        <header class="sec__head">
-          <h2 id="h-skills">Skills</h2>
-          <p class="sec__sub">Primary tools first. Expand a group for the full list.</p>
-        </header>
-        <ul class="sk-grid">
-          {skillGroups.map((g) => {
-            const rest = g.all.filter((s) => !g.featured.includes(s));
-            return (
-              <li class="card sk">
-                <h3 class="mono lbl">{g.label}</h3>
-                <ul class="pills">{g.featured.map((s) => <li class="pill">{s}</li>)}</ul>
-                {rest.length > 0 && (
-                  <details class="disc disc--sm">
-                    <summary><span class="disc__show">+{rest.length} more</span><span class="disc__hide">Show fewer</span><span set:html={ico.chevron} /></summary>
-                    <ul class="pills pills--rest">{rest.map((s) => <li class="pill pill--ghost">{s}</li>)}</ul>
-                  </details>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-
-      <!-- ===================== EDUCATION ===================== -->
-      <section id="education" class="sec wrap" tabindex="-1" aria-labelledby="h-education">
-        <header class="sec__head">
-          <h2 id="h-education">Education</h2>
-        </header>
-        <div class="card edu">
-          <div>
-            <h3>{edu.degree}</h3>
-            <p>{edu.url ? <a class="link" href={edu.url} target="_blank" rel="noopener noreferrer">{edu.institution}<span set:html={ico.ext} /></a> : edu.institution}</p>
-          </div>
-          <div class="edu__meta">
-            <p class="mono">{edu.period}</p>
-            <p class="muted"><span set:html={ico.pin} />{edu.location}</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== CONTACT ===================== -->
-      <section id="contact" class="sec wrap" tabindex="-1" aria-labelledby="h-contact">
-        <div class="card contact">
-          <p class="mono lbl">Contact</p>
-          <h2 id="h-contact">Let's talk</h2>
-          <p class="contact__avail">{profile.availability}</p>
-          <p class="contact__mail">
-            <a class="link" href={byKey.email.href}>{profile.email}</a>
-            <button type="button" class="btn btn--ghost btn--icon" data-copy={profile.email} aria-label="Copy email address">
-              <span class="cp-copy" set:html={ico.copy} /><span class="cp-check" set:html={ico.check} />
-              <span class="cp-toast" aria-live="polite"></span>
+        <div class="flex justify-center gap-4 mb-12 flex-wrap" role="group" aria-label="Contact links and theme">
+          <div class="relative email-wrap">
+            <button type="button" class={iconBtn} aria-label="Email" aria-expanded="false" aria-controls="email-pop" data-email-toggle>
+              <Icon name="mail" class="w-6 h-6" />
             </button>
-          </p>
-          <ul class="contact__links">
-            {contactLinks.map((c) => (
-              <li>
-                <a class="btn btn--ghost" href={c.href} target={c.external ? '_blank' : undefined} rel={c.external ? 'noopener noreferrer' : undefined}>
-                  <span set:html={iconFor[c.key]} />{c.label}<span class="muted mono">{c.handle}</span>
-                </a>
+            <div id="email-pop" class="email-pop absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50" hidden>
+              <div class="bg-background border-4 border-foreground rounded-2xl p-2 flex items-center gap-2 shadow-lg whitespace-nowrap">
+                <a class="text-sm font-medium px-2 hover:text-blue-600 dark:hover:text-blue-400 underline decoration-2 underline-offset-4" href={`mailto:${profile.email}`}>{profile.email}</a>
+                <button type="button" class="copy-btn p-1.5 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200" data-copy={profile.email} aria-label={`Copy email address ${profile.email}`}>
+                  <span class="copy-idle"><Icon name="copy" class="w-4 h-4" /></span>
+                  <span class="copy-done"><Icon name="check" class="w-4 h-4" /></span>
+                </button>
+              </div>
+              <div class="email-arrow absolute top-full left-1/2 -translate-x-1/2 -mt-[2px]" aria-hidden="true">
+                <div class="w-0 h-0 border-l-[10px] border-r-[10px] border-t-[10px] border-l-transparent border-r-transparent border-t-foreground"></div>
+              </div>
+            </div>
+          </div>
+          {social.map((l) => (
+            <a href={l.href} target="_blank" rel="noopener noreferrer" class={iconBtn} aria-label={l.label}>
+              <Icon name={iconFor[l.key]} class="w-6 h-6" />
+            </a>
+          ))}
+          <button type="button" class={iconBtn} data-theme-toggle aria-label="Switch to dark theme">
+            <span class="when-light"><Icon name="moon" class="w-6 h-6" /></span>
+            <span class="when-dark"><Icon name="sun" class="w-6 h-6" /></span>
+          </button>
+        </div>
+
+        <nav class="flex justify-center flex-wrap gap-4 mb-8" aria-label="Jump to section">
+          <a href="#resume" class={pillBtn}>Resume</a>
+          <a href="#projects" class={pillBtn}>Projects</a>
+        </nav>
+        <a href="#resume" class="flex flex-col items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity" aria-label="Scroll to resume">
+          <span class="text-foreground text-sm animate-bounce motion-reduce:animate-none">Scroll</span>
+          <Icon name="chevron-down" class="w-5 h-5 text-foreground animate-bounce motion-reduce:animate-none" />
+        </a>
+      </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto p-4 md:p-8 space-y-12">
+      <!-- Resume -->
+      <section id="resume" class="px-4 py-8 md:px-6 md:py-12 lg:px-8" aria-labelledby="resume-heading">
+        <div class="max-w-6xl mx-auto flex flex-col items-center space-y-6">
+          <header class="text-center w-full">
+            <div class="w-16 h-1 bg-blue-600 rounded-full mx-auto mb-4" aria-hidden="true"></div>
+            <h2 id="resume-heading" class="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight">Resume</h2>
+            <p class="text-muted-foreground mt-2">Professional Experience &amp; Qualifications</p>
+            <a href={profile.resumeHref} target="_blank" rel="noopener noreferrer" class={`inline-block mt-3 ${blue} underline hover:no-underline transition-[text-decoration] duration-200`}>PDF ↗</a>
+          </header>
+
+          <!-- Experience -->
+          <article id="experience" class={card} aria-labelledby="experience-heading">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 bg-blue-600 rounded-lg shrink-0" aria-hidden="true"><Icon name="briefcase" class="h-5 w-5 text-white" /></div>
+              <h3 id="experience-heading" class="text-2xl md:text-3xl font-medium">Experience</h3>
+            </div>
+            <ul class="space-y-6">
+              {experience.map((job) => (
+                <li>
+                  <div class={entry}>
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-1 mb-2">
+                      <div>
+                        <h4 class="text-lg font-bold flex flex-wrap items-center gap-x-2 gap-y-1">
+                          {job.url
+                            ? <a href={job.url} target="_blank" rel="noopener noreferrer" class="text-inherit no-underline hover:underline decoration-2 underline-offset-4">{job.company}</a>
+                            : job.company}
+                          {job.badge && <span class="badge">{job.badge}</span>}
+                        </h4>
+                        <p class={blue}>{job.role}</p>
+                      </div>
+                      <span class="text-muted-foreground text-sm shrink-0">{job.period}</span>
+                    </div>
+                    <p class="text-muted-foreground text-sm mb-3">{job.location ? `${job.location} · ` : ''}{job.kind}</p>
+                    <ul class="space-y-2 list-none">
+                      {job.bullets.map((item) => (
+                        <li class="flex gap-2 leading-relaxed">
+                          <span class={`${blue} mt-1.5 shrink-0`} aria-hidden="true">•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </article>
+
+          <!-- Education -->
+          <article id="education" class={card} aria-labelledby="education-heading">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 bg-blue-600 rounded-lg shrink-0" aria-hidden="true"><Icon name="graduation" class="h-5 w-5 text-white" /></div>
+              <h3 id="education-heading" class="text-2xl md:text-3xl font-medium">Education</h3>
+            </div>
+            <ul class="space-y-6">
+              {education.map((ed) => (
+                <li>
+                  <div class={entry}>
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-1">
+                      <div>
+                        <h4 class="text-lg font-bold">
+                          {ed.url
+                            ? <a href={ed.url} target="_blank" rel="noopener noreferrer" class="text-inherit no-underline hover:underline decoration-2 underline-offset-4">{ed.institution}</a>
+                            : ed.institution}
+                        </h4>
+                        <p class={blue}>{ed.degree}</p>
+                      </div>
+                      <span class="text-muted-foreground text-sm shrink-0">{ed.period}</span>
+                    </div>
+                    {ed.location && <p class="text-muted-foreground text-sm mt-2">{ed.location}</p>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </article>
+
+          <!-- Hackathons (new card; same language as the original's "Projects / Contributions") -->
+          <article id="hackathons" class={card} aria-labelledby="hackathons-heading">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 bg-blue-600 rounded-lg shrink-0" aria-hidden="true"><Icon name="trophy" class="h-5 w-5 text-white" /></div>
+              <h3 id="hackathons-heading" class="text-2xl md:text-3xl font-medium">Hackathons</h3>
+            </div>
+            <ol class="space-y-6">
+              {hackathonsWithProject.map((h) => (
+                <li>
+                  <div class={entry}>
+                    <div class="flex flex-row items-start justify-between gap-3">
+                      <div class="min-w-0 flex-1">
+                        <h4 class="text-lg font-bold">{h.event}</h4>
+                        <p class={blue}>{h.placement}{h.prize && ` · ${h.prize}`}</p>
+                        <p class="text-muted-foreground text-sm mt-1">{h.organizer} · {h.date}</p>
+                      </div>
+                      {(h.siteUrl || h.repoUrl) && (
+                        <div class="flex gap-2 shrink-0">
+                          {h.siteUrl && (
+                            <a href={h.siteUrl} target="_blank" rel="noopener noreferrer" class={smallIconLink} aria-label={`Visit ${h.project} website`}>
+                              <Icon name="external" class="h-4 w-4" />
+                            </a>
+                          )}
+                          {h.repoUrl && (
+                            <a href={h.repoUrl} target="_blank" rel="noopener noreferrer" class={smallIconLink} aria-label={`View ${h.project} on GitHub`}>
+                              <Icon name="github" class="h-4 w-4" />
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <ul class="space-y-2 list-none mt-3">
+                      <li class="flex gap-2 leading-relaxed">
+                        <span class={`${blue} mt-1.5 shrink-0`} aria-hidden="true">•</span>
+                        <span><strong class="font-bold">{h.project}</strong> — {h.blurb}</span>
+                      </li>
+                    </ul>
+                    {h.projectEntry?.tags?.length ? (
+                      <div class="flex flex-wrap gap-2 mt-4">
+                        {h.projectEntry.tags.map((tag) => <span class={monoTag}>{tag}</span>)}
+                      </div>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </article>
+
+          <!-- Technical Skills (collapsible, as the original) -->
+          <article id="skills" class={`skills-article ${card}`} aria-labelledby="skills-heading">
+            <button type="button" class="skills-trigger w-full flex flex-row items-center mb-0 text-left cursor-pointer rounded-lg transition-colors" aria-expanded="false" aria-controls="skills-content">
+              <span class="skills-trigger-heading flex-1 min-w-0">
+                <span class="skills-trigger-heading-inner flex items-center gap-3">
+                  <span class="p-2 bg-blue-600 rounded-lg shrink-0" aria-hidden="true"><Icon name="code" class="h-5 w-5 text-white" /></span>
+                  <h3 id="skills-heading" class="text-2xl md:text-3xl font-medium">Technical Skills</h3>
+                </span>
+              </span>
+              <span class="skills-expand-hint flex items-center gap-1 shrink-0">
+                <span class="text-foreground text-sm animate-bounce motion-reduce:animate-none">Expand</span>
+                <Icon name="chevron-down" class="w-5 h-5 text-foreground animate-bounce motion-reduce:animate-none" />
+              </span>
+              <span class="skills-collapse-hint flex items-center gap-1 shrink-0">
+                <span class="text-foreground text-sm">Collapse</span>
+                <Icon name="chevron-up" class="w-5 h-5 text-foreground" />
+              </span>
+            </button>
+            <div id="skills-content" class="skills-content" role="region" aria-labelledby="skills-heading">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {skillGroups.map((g) => (
+                  <div class="border-2 border-black dark:border-white rounded-2xl p-5">
+                    <h4 class="text-lg font-medium mb-3">{g.label}</h4>
+                    <div class="flex flex-wrap gap-2">
+                      {g.all.map((skill) => (
+                        <span class="rounded-full px-3 py-1 text-sm border-2 border-black dark:border-white">{skill}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects" class="bg-background border-4 border-foreground rounded-3xl p-4 md:p-8" aria-labelledby="projects-heading">
+        <div class="w-12 h-1 bg-blue-600 rounded-full mb-6" aria-hidden="true"></div>
+        <h2 id="projects-heading" class="text-2xl md:text-3xl mb-8 font-medium">Projects</h2>
+
+        <div class="space-y-12">
+          <!-- One 1/2/3-column grid, as the original ProjectsList: only the first row (1/2/3 cards per
+               breakpoint) is visible until "Show More Projects". Featured projects come first. -->
+          <ul id="more-projects" class="proj-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-label="Projects">
+            {[...featuredProjects, ...moreProjects].map((p) => (
+              <li class={projectCard}>
+                <div class="absolute top-4 right-4 flex gap-2">
+                  {p.websiteUrl && (
+                    <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class={smallIconLink} aria-label={`Visit ${p.title} website`}><Icon name="external" class="w-4 h-4" /></a>
+                  )}
+                  {p.githubUrl && (
+                    <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class={smallIconLink} aria-label={`View ${p.title} on GitHub`}><Icon name="github" class="w-4 h-4" /></a>
+                  )}
+                </div>
+                <h3 class={`text-xl font-bold mb-3 ${p.websiteUrl && p.githubUrl ? 'pr-24' : 'pr-12'}`}>{p.title}</h3>
+                <p class="text-muted-foreground mb-6 flex-grow">{p.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {p.tags.map((tag) => <span class={monoTag}>{tag}</span>)}
+                </div>
               </li>
             ))}
           </ul>
+
+          <div class="flex justify-center">
+            <button type="button" class={`group ${pillBtn} transition-all`} data-more-toggle aria-expanded="false" aria-controls="more-projects">
+              <span class="more-idle inline-flex items-center gap-2">Show More Projects <Icon name="chevron-down" class="w-5 h-5 group-hover:translate-y-1 transition-transform" /></span>
+              <span class="more-open inline-flex items-center gap-2">Show Less <Icon name="chevron-up" class="w-5 h-5 group-hover:-translate-y-1 transition-transform" /></span>
+            </button>
+          </div>
         </div>
       </section>
-    </main>
 
-    <footer class="foot wrap">
-      <p><span class="wordmark mono">{profile.initials}</span><span class="muted">© 2026 {profile.name}</span></p>
-      <nav aria-label="Footer">
-        <a class="link link--fun" href={FUN_HREF}><span set:html={ico.sparkle} />Fun mode</a>
-        <a class="link" href="#top"><span set:html={ico.up} />Top</a>
-      </nav>
-    </footer>
-
-    <!-- ===================== ⌘K PALETTE ===================== -->
-    <dialog id="palette" class="pal" aria-label="Command palette">
-      <div class="pal__head">
-        <span set:html={ico.cmd} />
-        <input type="search" placeholder="Jump to a section, link, or action…" aria-label="Search sections, links and actions" autocomplete="off" spellcheck="false" />
-        <kbd>esc</kbd>
-      </div>
-      <div class="pal__body">
-        <div class="pal__group">
-          <p class="mono lbl">Sections</p>
-          <ul>{sections.map((s) => <li><a href={`#${s.id}`}><span set:html={ico.hash} />{s.label}</a></li>)}</ul>
-        </div>
-        <div class="pal__group">
-          <p class="mono lbl">Contact</p>
-          <ul>
-            {contactLinks.map((c) => (
-              <li><a href={c.href} target={c.external ? '_blank' : undefined} rel={c.external ? 'noopener noreferrer' : undefined}><span set:html={iconFor[c.key]} />{c.label}<span class="muted mono">{c.handle}</span></a></li>
-            ))}
-          </ul>
-        </div>
-        <div class="pal__group">
-          <p class="mono lbl">Actions</p>
-          <ul>
-            <li><a href={FUN_HREF}><span set:html={ico.sparkle} />Fun mode<span class="muted mono">comic version</span></a></li>
-            <li><button type="button" data-theme-toggle><span set:html={ico.contrast} />Toggle theme<span class="muted mono">light / dark</span></button></li>
-          </ul>
-        </div>
-      </div>
-    </dialog>
+      <!-- Contact -->
+      <!-- Contact: the original ContactFooter ("Let's connect at … [copy]"), plus the availability line
+           above it and a small "Fun mode ↗" text link below in the original's own link style (the blue
+           underlined "PDF ↗" link). Least intrusive way to keep the link visible without inventing UI. -->
+      <footer id="contact" class="flex flex-col items-center gap-4 py-12 text-center" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" class="sr-only">Contact</h2>
+        <p class="text-muted-foreground text-sm">{profile.availability}</p>
+        <p class="text-lg font-medium text-foreground flex flex-wrap items-center justify-center gap-3">
+          <span>Let's connect at</span>
+          <a href={`mailto:${profile.email}`} class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors underline decoration-2 underline-offset-4 break-all">{profile.email}</a>
+          <button type="button" class="copy-btn group relative p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-200 shadow-md hover:shadow-lg active:scale-95" data-copy={profile.email} aria-label={`Copy email address ${profile.email}`}>
+            <span class="copy-idle"><Icon name="copy" class="w-5 h-5" /></span>
+            <span class="copy-done"><Icon name="check" class="w-5 h-5" /></span>
+            <span class="tip absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 transition-opacity whitespace-nowrap pointer-events-none group-hover:opacity-100" aria-hidden="true">
+              <span class="copy-idle">Copy Email</span><span class="copy-done">Copied!</span>
+            </span>
+          </button>
+        </p>
+        <p class="text-sm">
+          <a class={`${blue} underline hover:no-underline transition-[text-decoration] duration-200`} href={FUN_HREF} title="Switch to the comic version of this site">Fun mode ↗</a>
+        </p>
+      </footer>
+    </div>
   </div>
 
   <OptionSwitcher />
 </ProLayout>
 
-<script is:inline>
-  (function () {
-    var root = document.documentElement, $ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
-    // theme: the BB-8 switch (src/components/v2/BB8Toggle.astro) owns html.dark + localStorage.theme;
-    // the palette action just flips that same checkbox so both stay in sync.
-    $('[data-theme-toggle]').forEach(function (b) { b.addEventListener('click', function () {
-      var cb = document.querySelector('.bb8-toggle__checkbox');
-      if (cb) return cb.click();
-      var d = root.classList.toggle('dark'); try { localStorage.setItem('theme', d ? 'dark' : 'light'); } catch (e) {}
-    }); });
-    // copy email (falls back to mailto)
-    $('[data-copy]').forEach(function (b) { b.addEventListener('click', function () {
-      var v = b.getAttribute('data-copy'), t = b.querySelector('.cp-toast');
-      var ok = function () { b.classList.add('is-done'); t.textContent = 'Copied'; setTimeout(function () { b.classList.remove('is-done'); t.textContent = ''; }, 1600); };
-      var no = function () { location.href = 'mailto:' + v; };
-      navigator.clipboard ? navigator.clipboard.writeText(v).then(ok, no) : no();
-    }); });
-    // ⌘K palette: native <dialog>; JS only filters and moves focus
-    var dlg = document.getElementById('palette'), btn = document.getElementById('pal-btn'), q = dlg.querySelector('input');
-    var items = function () { return $('li:not([hidden]) > a, li:not([hidden]) > button', dlg); };
-    var filter = function () {
-      var s = q.value.trim().toLowerCase();
-      $('li', dlg).forEach(function (li) { li.hidden = !!s && li.textContent.toLowerCase().indexOf(s) < 0; });
-      $('.pal__group', dlg).forEach(function (g) { g.hidden = !g.querySelector('li:not([hidden])'); });
-    };
-    var open = function () { q.value = ''; filter(); dlg.showModal(); q.focus(); };
-    btn.addEventListener('click', open);
-    q.addEventListener('input', filter);
-    dlg.addEventListener('click', function (e) {
-      var a = e.target.closest('a,button'); if (e.target !== dlg && !a) return;
-      dlg.close();
-      var t = a && a.hash && a.origin === location.origin && document.getElementById(a.hash.slice(1));
-      if (t) setTimeout(function () { t.focus({ preventScroll: true }); }, 0);
-    });
-    dlg.addEventListener('keydown', function (e) {
-      var l = items(), i = l.indexOf(document.activeElement);
-      if (e.key === 'Escape') { e.preventDefault(); dlg.close(); }
-      else if (e.key === 'ArrowDown') { e.preventDefault(); (l[i + 1] || l[0] || q).focus(); }
-      else if (e.key === 'ArrowUp') { e.preventDefault(); (i > 0 ? l[i - 1] : q).focus(); }
-      else if (e.key === 'Enter' && e.target === q) { e.preventDefault(); if (l[0]) l[0].click(); }
-      else if (e.key.length === 1 && e.target !== q && !e.metaKey && !e.ctrlKey && !e.altKey) { e.stopPropagation(); q.focus(); }
-    });
-    document.addEventListener('keydown', function (e) {
-      if ((e.metaKey || e.ctrlKey) && !e.altKey && !e.shiftKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); dlg.open ? dlg.close() : open(); }
-    });
-    if (!/Mac|iPhone|iPad/.test(navigator.platform)) $('[data-kbd]').forEach(function (k) { k.textContent = 'Ctrl K'; });
-  })();
-</script>
-
-
 <style>
-  /* ---------- tokens: strictly black / white / one blue / one grey per theme ---------- */
-  :global(:root) {
-    --bg: #ffffff; --fg: #000000; --muted: #5c5c5c; --border: #d4d4d4;
-    --blue: #0a58ff; --blue-fg: #ffffff; --p4-blue: #0a58ff;
-    --sans: 'Geist', Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* ---------- tokens: the original global.css :root / .dark palette, scoped to this page ---------- */
+  :global(body.opt7) {
+    --background: #ffffff;
+    --foreground: oklch(0.145 0 0);
+    --muted-foreground: #717182;
+    --border: rgba(0, 0, 0, 0.1);
+    --radius: 0.625rem;
+    color-scheme: light;
+    margin: 0;
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--foreground);
   }
-  :global(:root.dark) {
+  /* The original global.css @layer base typography (h1/h2/h3/p/button sizes). Wrapped in :where() so it
+     keeps zero specificity like a Tailwind base layer and never beats a utility class, exactly as before.
+     This is what made the original hero paragraphs 16px despite the text-lg/xl wrapper. */
+  :global(:where(body.opt7) h1) { font-size: 1.5rem; line-height: 1.5; font-weight: 500; }
+  :global(:where(body.opt7) h2) { font-size: 1.25rem; line-height: 1.5; font-weight: 500; }
+  :global(:where(body.opt7) h3) { font-size: 1.125rem; line-height: 1.5; font-weight: 500; }
+  :global(:where(body.opt7) :is(h4, p, label, button, input)) { font-size: 1rem; line-height: 1.5; }
+  :global(:where(body.opt7) :is(h4, label, button)) { font-weight: 500; }
+  :global(:where(body.opt7) :is(p, input)) { font-weight: 400; }
+  :global(html.dark body.opt7) {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --border: oklch(0.269 0 0);
     color-scheme: dark;
-    --bg: #000000; --fg: #ffffff; --muted: #a3a3a3; --border: #333333;
-    --blue: #4d8dff; --blue-fg: #000000; --p4-blue: #4d8dff;
   }
-  :global(body.p4-body) {
-    margin: 0; background: var(--bg); color: var(--fg);
-    font-family: var(--sans); font-size: 15px; line-height: 1.6;
-    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  :global(html) { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { :global(html) { scroll-behavior: auto; } }
+  :global(body.opt7 #resume) { scroll-margin-top: 0; }
+  :global(body.opt7 #projects) { scroll-margin-top: 1rem; }
+
+  /* focus: blue ring, visible against black borders in both themes */
+  :global(body.opt7 :is(a, button):focus-visible) {
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
+  }
+  :global(html.dark body.opt7 :is(a, button):focus-visible) { outline-color: #60a5fa; }
+
+  .skip {
+    position: absolute; left: 1rem; top: -3rem; z-index: 10;
+    padding: 0.4rem 0.7rem; background: var(--foreground); color: var(--background); text-decoration: none; font-size: 14px;
+    border-radius: 0.5rem;
+  }
+  .skip:focus { top: 0.5rem; }
+
+  /* experience badge (e.g. "YC S25", "NSF, $300K") */
+  .badge {
+    display: inline-block; font-size: 0.75rem; font-weight: 500; line-height: 1.25rem;
+    padding: 0 0.6rem; border-radius: 999px; border: 2px solid var(--foreground);
   }
 
-  /* ---------- base ---------- */
-  .p4 { --pad: clamp(1rem, 4vw, 2rem); overflow-x: clip; }
-  .p4 :global(svg) { flex: none; display: inline-block; vertical-align: -3px; }
-  .p4 :global(:focus-visible) { outline: 2px solid var(--blue); outline-offset: 2px; }
-  .wrap { max-width: 1080px; margin-inline: auto; padding-inline: var(--pad); }
-  .mono { font-family: var(--mono); font-feature-settings: 'tnum'; }
-  .muted { color: var(--muted); }
-  .lbl { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); display: inline-flex; align-items: center; gap: .4rem; margin: 0; }
-  h1, h2, h3, h4, p, ul, ol { margin: 0; }
-  ul, ol { list-style: none; padding: 0; }
-  a { color: inherit; text-decoration: none; }
-  .link { color: var(--fg); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; display: inline-flex; align-items: center; gap: .3rem; }
-  .link:hover { color: var(--blue); text-decoration-color: var(--blue); }
-  .link--fun { color: var(--blue); text-decoration-color: transparent; }
-  .link--fun:hover { text-decoration-color: var(--blue); }
-  .card { background: var(--bg); border: 1px solid var(--border); border-radius: 0; }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); margin-right: .45rem; vertical-align: 1px; }
-  .dot--live { background: var(--blue); }
-  .pill { display: inline-flex; align-items: center; min-height: 26px; padding: 0 .6rem; border: 1px solid var(--border); background: var(--bg); font-size: 13px; line-height: 1; white-space: nowrap; }
-  .pill--accent { border-color: var(--blue); color: var(--blue); font-weight: 500; }
-  .pill--ghost { color: var(--muted); }
-  .pills { display: flex; flex-wrap: wrap; gap: .4rem; }
-  .chip { display: inline-block; padding: .1rem .45rem; background: var(--bg); border: 1px solid var(--border); font-size: 12px; color: var(--muted); }
-  .chips { display: inline-flex; flex-wrap: wrap; gap: .3rem; }
-  .only-mob { display: none; }
+  /* theme toggle: moon in light, sun in dark */
+  .when-dark { display: none; }
+  :global(html.dark) .when-light { display: none; }
+  :global(html.dark) .when-dark { display: inline; }
 
-  /* buttons */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 36px; padding: 0 .85rem; border: 1px solid var(--border); background: var(--bg); color: var(--fg); font: inherit; font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; white-space: nowrap; }
-  .btn:hover { border-color: var(--blue); color: var(--blue); }
-  .btn--primary { background: var(--blue); border-color: var(--blue); color: var(--blue-fg); }
-  .btn--primary:hover { color: var(--blue-fg); text-decoration: underline; text-underline-offset: 3px; }
-  .btn--icon { width: 36px; padding: 0; position: relative; }
-  .btn--sm { min-height: 32px; font-size: 13px; padding: 0 .7rem; }
-  .btn--kbd kbd { font-family: var(--mono); font-size: 12px; background: var(--bg); border: 1px solid var(--border); padding: .1rem .35rem; margin-left: .35rem; color: var(--fg); }
-  .btn--kbd .only-desk { display: inline-flex; align-items: center; }
-  .btn--kbd__txt { color: var(--muted); font-weight: 500; }
-  .btn:hover .btn--kbd__txt { color: var(--blue); }
-  .btn--fun :global(svg) { color: var(--blue); }
-  .split { display: inline-flex; }
-  .split .btn:last-child { margin-left: -1px; }
-  .cp-check, .is-done .cp-copy { display: none; }
-  .is-done .cp-check { display: inline-block; color: var(--blue); }
-  .cp-toast { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); font-size: 12px; font-family: var(--mono); color: var(--blue); pointer-events: none; }
-
-  /* ---------- nav ---------- */
-  .nav { position: sticky; top: 0; z-index: 50; height: 56px; background: var(--bg); border-bottom: 1px solid var(--border); }
-  .nav__in { height: 100%; display: flex; align-items: center; gap: 1rem; }
-  .wordmark { font-weight: 600; font-size: 15px; letter-spacing: .06em; }
-  .nav__links { display: flex; gap: .15rem; margin-inline: auto; }
-  .nav__links a { padding: .4rem .6rem; font-size: 14px; color: var(--muted); }
-  .nav__links a:hover { color: var(--blue); }
-  .nav__actions { display: flex; align-items: center; gap: .5rem; margin-left: auto; }
-  .nav__theme { display: inline-flex; align-items: center; height: 36px; }
-  .nav__theme :global(.bb8-toggle) { margin: 0 .15rem; }
-
-  /* ---------- hero ---------- */
-  .hero { padding-block: clamp(3rem, 8vw, 5.5rem) 1rem; }
-  .hero__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
-  .hero__text { grid-column: span 7; min-width: 0; }
-  .bento { grid-column: span 5; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; min-width: 0; }
-  h1 { font-size: clamp(2.2rem, 4.5vw, 3.25rem); font-weight: 600; letter-spacing: -.03em; line-height: 1.08; margin-top: .9rem; }
-  .h1-sub { display: block; color: var(--muted); font-weight: 500; font-size: clamp(1.15rem, 2vw, 1.5rem); letter-spacing: -.02em; line-height: 1.3; margin-top: .55rem; }
-  .hero__summary { margin-top: 1.25rem; font-size: 16px; max-width: 58ch; }
-  .hero__actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
-  .bento .card { padding: 1rem; min-width: 0; }
-  .bento__photo { padding: 0; overflow: hidden; position: relative; min-height: 200px; }
-  .bento__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .now { margin-top: .7rem; display: grid; gap: .55rem; font-size: 13.5px; line-height: 1.35; }
-  .now li { display: grid; overflow-wrap: anywhere; }
-  .now strong { font-weight: 600; }
-  .bento__stat .stat { margin-top: .55rem; font-size: 14px; }
-  .stat__n { font-family: var(--mono); font-size: 28px; font-weight: 500; letter-spacing: -.02em; line-height: 1; margin-right: .2rem; }
-  .bento__stat .muted { font-size: 13px; line-height: 1.4; margin-top: .3rem; }
-
-  /* ---------- sections ---------- */
-  .sec { padding-top: 6rem; scroll-margin-top: 4.5rem; }
-  .sec:focus { outline: none; }
-  .sec__head { margin-bottom: 1.5rem; }
-  h2 { font-size: 26px; font-weight: 600; letter-spacing: -.02em; line-height: 1.2; }
-  .sec__sub { color: var(--muted); margin-top: .35rem; }
-  h3 { font-size: 16px; font-weight: 600; letter-spacing: -.01em; line-height: 1.35; }
-  .sub-h { margin-top: 2.5rem; margin-bottom: 1rem; display: flex; align-items: baseline; gap: .5rem; }
-
-  /* experience */
-  .xp__row { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 1rem 2rem; padding: 1.35rem clamp(1rem, 3vw, 1.5rem); border-top: 1px solid var(--border); }
-  .xp__row:first-child { border-top: 0; }
-  .xp__meta { font-size: 13px; display: grid; gap: .2rem; align-content: start; }
-  .xp__meta .mono { color: var(--fg); }
-  .xp__title { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .6rem; }
-  .xp__title h3 { overflow-wrap: anywhere; }
-  .xp__role { color: var(--muted); margin-top: .2rem; }
-  .bullets { margin-top: .75rem; display: grid; gap: .45rem; padding-left: 1.1rem; list-style: disc; color: var(--fg); }
-  .bullets li::marker { color: var(--muted); }
-  .disc { margin-top: .6rem; }
-  .disc summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: .3rem; min-height: 28px; padding: 0 .45rem; margin-left: -.45rem; font-size: 13px; font-weight: 500; color: var(--muted); }
-  .disc summary::-webkit-details-marker { display: none; }
-  .disc summary:hover { color: var(--blue); }
-  .disc[open] > summary :global(svg) { transform: rotate(180deg); }
-  .disc__hide, .disc[open] > summary .disc__show { display: none; }
-  .disc[open] > summary .disc__hide { display: inline; }
-
-  /* projects */
-  .cases { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  .case { padding: clamp(1.1rem, 3vw, 1.5rem); display: flex; flex-direction: column; gap: .7rem; }
-  .case h3 { font-size: 20px; letter-spacing: -.02em; }
-  .case__stack { display: flex; flex-direction: column; gap: .4rem; margin-top: .2rem; }
-  .links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: auto; padding-top: .35rem; }
-  .tiles { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  .tile { padding: 1rem; display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
-  .tile h4 { font-size: 15px; font-weight: 600; }
-  .tile__desc { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
-  .tile__foot { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: auto; padding-top: .4rem; }
-  .tile__tags { font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
-  .tile__links { display: inline-flex; gap: .15rem; flex: none; }
-  .tile__links a { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: var(--muted); }
-  .tile__links a:hover { color: var(--blue); }
-
-  /* hackathons */
-  .hk-row { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--pad)); padding: 2px var(--pad) 1rem; scroll-padding-inline: var(--pad); -webkit-overflow-scrolling: touch; }
-  .hk { flex: 0 0 min(84vw, 320px); scroll-snap-align: start; padding: 1.1rem; display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
-  .hk__head, .hk__body { display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
-  .hk__body { flex: 1; }
-  .hk__top { margin-left: .5rem; padding: .15rem .45rem; border: 1px solid var(--blue); color: var(--blue); letter-spacing: .06em; }
-  .hk h3 { margin-top: .2rem; }
-  .hk__org { font-size: 12.5px; line-height: 1.4; }
-  .hk__place { font-size: 13.5px; font-weight: 500; color: var(--fg); display: flex; align-items: flex-start; gap: .35rem; }
-  .hk__place--win { color: var(--blue); }
-  .hk__place :global(svg) { margin-top: 3px; }
-  .hk__proj { font-size: 15px; }
-  .hk__blurb { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
-  .hk__tags { font-size: 11.5px; overflow-wrap: anywhere; }
-  .hk__links { margin-top: auto; padding-top: .5rem; }
-
-  /* skills */
-  .sk-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  .sk { padding: 1rem; display: flex; flex-direction: column; gap: .7rem; min-width: 0; }
-  .sk h3 { color: var(--muted); font-weight: 400; }
-  .disc--sm { margin-top: 0; }
-  .pills--rest { margin-top: .6rem; }
-
-  /* education */
-  .edu { padding: 1.25rem clamp(1rem, 3vw, 1.5rem); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem; align-items: center; }
-  .edu p { margin-top: .25rem; }
-  .edu__meta { text-align: right; font-size: 14px; }
-  .edu__meta .muted { display: inline-flex; align-items: center; gap: .3rem; }
-
-  /* contact */
-  .contact { padding: clamp(1.75rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem); text-align: center; display: flex; flex-direction: column; align-items: center; gap: .8rem; }
-  .contact h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); letter-spacing: -.03em; }
-  .contact__avail { color: var(--muted); max-width: 46ch; }
-  .contact__mail { display: inline-flex; align-items: center; gap: .5rem; font-size: clamp(1.05rem, 3vw, 1.5rem); font-weight: 500; letter-spacing: -.01em; margin-top: .4rem; overflow-wrap: anywhere; max-width: 100%; }
-  .contact__mail .link { color: var(--blue); text-decoration-color: var(--blue); }
-  .contact__links { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-top: .6rem; }
-  .contact__links .muted { margin-left: .1rem; font-size: 12px; }
-  .btn:hover .muted { color: var(--blue); }
-
-  /* footer */
-  .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem 1.5rem; padding-block: 3rem 5rem; font-size: 13.5px; border-top: 1px solid var(--border); margin-top: 4rem; }
-  .foot p { display: inline-flex; align-items: center; gap: .75rem; }
-  .foot nav { display: flex; gap: 1.25rem; }
-  .foot .link { min-height: 40px; }
-
-  /* ---------- palette ---------- */
-  .pal { width: min(560px, calc(100vw - 2rem)); margin: 12vh auto auto; padding: 0; border: 1px solid var(--fg); border-radius: 0; background: var(--bg); color: var(--fg); }
-  .pal::backdrop { background: rgba(0, 0, 0, .5); }
-  .pal__head { display: flex; align-items: center; gap: .6rem; padding: .6rem .9rem; border-bottom: 1px solid var(--border); color: var(--muted); }
-  .pal__head input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--fg); font: inherit; font-size: 15px; padding: .45rem 0; }
-  .pal__head input:focus { outline: none; }
-  .pal__head input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
-  .pal__head kbd { font-family: var(--mono); font-size: 11px; background: var(--bg); border: 1px solid var(--border); padding: .15rem .4rem; }
-  .pal__body { padding: .5rem; max-height: min(60vh, 480px); overflow-y: auto; }
-  .pal__group { padding: .35rem .4rem .5rem; }
-  .pal__group .lbl { padding: .2rem .5rem .4rem; }
-  .pal__group li > a, .pal__group li > button { display: flex; width: 100%; align-items: center; gap: .6rem; min-height: 40px; padding: .4rem .6rem; border: 1px solid transparent; background: transparent; color: var(--fg); font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
-  .pal__group li > a :global(svg), .pal__group li > button :global(svg) { color: var(--muted); }
-  .pal__group li > a:hover, .pal__group li > button:hover { color: var(--blue); border-color: var(--blue); }
-  .pal__group li > a:focus-visible, .pal__group li > button:focus-visible { color: var(--blue); border-color: var(--blue); outline: 2px solid var(--blue); outline-offset: -2px; }
-  .pal__group .muted { margin-left: auto; font-size: 12px; }
-
-  /* ---------- responsive ---------- */
-  @media (min-width: 560px) {
-    .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .sk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* email popover: open on hover or after click */
+  .email-wrap:hover .email-pop[hidden] { display: block; }
+  @media (max-width: 640px) {
+    /* the mail button is the leftmost in the row; anchor the popover to its left edge so it stays on screen */
+    .email-pop { left: 0; transform: none; }
+    .email-arrow { left: 1.6rem; transform: none; }
   }
-  @media (min-width: 720px) {
-    .hk-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; margin-inline: 0; padding: 0; }
-    .hk { flex: initial; }
-    .hk--lead { grid-column: 1 / -1; flex-direction: row; gap: clamp(1.5rem, 4vw, 3rem); padding: clamp(1.25rem, 3vw, 1.75rem); }
-    .hk--lead .hk__head { flex: 0 0 38%; }
-    .hk--lead .hk__blurb { font-size: 14.5px; max-width: 62ch; }
-    .hk--lead h3 { font-size: 20px; letter-spacing: -.02em; }
+
+  /* copy buttons: swap icon / tooltip text while "copied" */
+  .copy-done { display: none; }
+  .copy-btn[data-done] .copy-idle { display: none; }
+  .copy-btn[data-done] .copy-done { display: inline; }
+  /* the tooltip is display-toggled (not just faded) so its box never widens the page while hidden */
+  .tip { display: none; }
+  .copy-btn:hover .tip, .copy-btn:focus-visible .tip, .copy-btn[data-done] .tip { display: block; opacity: 1; }
+  .copy-btn[data-done] { background: #16a34a; }
+
+  /* show more projects: until expanded only the first row is visible (1 / 2 / 3 per row, like the
+     original's perRow), the rest are display:none. */
+  .proj-grid:not(.is-open) > li:nth-child(n + 2) { display: none; }
+  @media (min-width: 768px) { .proj-grid:not(.is-open) > li:nth-child(n + 2) { display: flex; } .proj-grid:not(.is-open) > li:nth-child(n + 3) { display: none; } }
+  @media (min-width: 1024px) { .proj-grid:not(.is-open) > li:nth-child(n + 3) { display: flex; } .proj-grid:not(.is-open) > li:nth-child(n + 4) { display: none; } }
+  .more-open { display: none; }
+  [data-more-toggle][aria-expanded='true'] .more-idle { display: none; }
+  [data-more-toggle][aria-expanded='true'] .more-open { display: inline-flex; }
+
+  /* ---------- skills collapsible (verbatim behaviour from the original ResumeSection) ---------- */
+  .skills-article .skills-trigger { position: relative; margin-bottom: 0; align-items: center; }
+  .skills-article .skills-trigger-heading { flex: 1; min-width: 0; position: relative; min-height: 2.75rem; }
+  .skills-article .skills-trigger-heading-inner {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    transition: left 0.9s ease, transform 0.9s ease;
   }
-  @media (min-width: 900px) {
-    .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .sk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .skills-article.is-expanded .skills-trigger-heading-inner { left: 0; transform: translateX(0); }
+  .skills-article .skills-expand-hint { position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
+  .skills-article.is-expanded .skills-trigger { margin-bottom: 1.5rem; }
+  .skills-article.is-expanded .skills-expand-hint { position: static; transform: none; display: none; }
+  .skills-article .skills-collapse-hint { display: none; }
+  .skills-article.is-expanded .skills-collapse-hint { display: flex; margin-left: auto; }
+  .skills-article .skills-content {
+    display: grid; grid-template-rows: 0fr; opacity: 0;
+    transition: grid-template-rows 0.35s ease-out, opacity 0.3s ease-out;
   }
-  @media (min-width: 1000px) {
-    .hk-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  }
-  @media (min-width: 1024px) {
-    .cases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .sk-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  }
-  @media (max-width: 899px) {
-    .hero__text, .bento { grid-column: span 12; }
-    .hero__grid { align-items: start; }
-  }
-  @media (max-width: 959px) {
-    .nav__links { display: none; }
-    .only-desk { display: none !important; }
-    .only-mob { display: inline; }
-    .btn--fun { width: 36px; padding: 0; }
-  }
-  @media (max-width: 767px) {
-    .xp__row { grid-template-columns: 1fr; gap: .5rem; }
-    .xp__meta { grid-auto-flow: column; justify-content: start; gap: .75rem; }
-    .sec { padding-top: 4.5rem; }
-    .edu__meta { text-align: left; }
-  }
-  @media (max-width: 559px) {
-    .bento { grid-template-columns: 1fr; }
-    .bento__photo { aspect-ratio: 16 / 10; }
-    .hero__actions .btn, .contact__links .btn { min-height: 40px; }
-    .hk { flex-basis: min(84vw, 320px); }
+  .skills-article .skills-content > * { min-height: 0; overflow: hidden; }
+  .skills-article.is-expanded .skills-content { grid-template-rows: 1fr; opacity: 1; }
+  @media (max-width: 480px) {
+    /* the centred title and the "Expand" hint collide on narrow phones; stack them */
+    .skills-article .skills-trigger-heading-inner { position: static; transform: none; }
+    .skills-article .skills-expand-hint { position: static; transform: none; margin-left: 0.5rem; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .p4 *, .p4 *::before, .p4 *::after { transition: none !important; }
+    .skills-article .skills-trigger-heading-inner, .skills-article .skills-content { transition: none; }
+  }
+
+  @media print {
+    :global(.opt-switch), .skip, [data-more-toggle], .skills-expand-hint, .skills-collapse-hint { display: none !important; }
+    .proj-grid > li { display: flex !important; }
+    .skills-article .skills-content { grid-template-rows: 1fr; opacity: 1; }
   }
 </style>
+
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+
+    // Theme toggle — shared contract: html.dark + localStorage.theme (pre-paint init lives in ProLayout).
+    var themeBtn = document.querySelector('[data-theme-toggle]');
+    function syncTheme() {
+      if (themeBtn) themeBtn.setAttribute('aria-label', root.classList.contains('dark') ? 'Switch to light theme' : 'Switch to dark theme');
+    }
+    syncTheme();
+    if (themeBtn) themeBtn.addEventListener('click', function () {
+      var dark = root.classList.toggle('dark');
+      try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {}
+      syncTheme();
+    });
+
+    // Email popover (hover is CSS; click toggles it open for keyboard/touch).
+    var emailBtn = document.querySelector('[data-email-toggle]');
+    var pop = document.getElementById('email-pop');
+    var wrap = document.querySelector('.email-wrap');
+    function setPop(open) {
+      if (!pop || !emailBtn) return;
+      pop.hidden = !open;
+      emailBtn.setAttribute('aria-expanded', String(open));
+    }
+    if (emailBtn) emailBtn.addEventListener('click', function () { setPop(pop.hidden); });
+    document.addEventListener('click', function (e) { if (wrap && !wrap.contains(e.target)) setPop(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setPop(false); });
+
+    // Copy-to-clipboard buttons.
+    Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function (b) {
+      b.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var email = b.getAttribute('data-copy');
+        var done = function () {
+          b.setAttribute('data-done', '');
+          setTimeout(function () { b.removeAttribute('data-done'); }, 2000);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(email).then(done, function () { location.href = 'mailto:' + email; });
+        } else {
+          location.href = 'mailto:' + email;
+        }
+      });
+    });
+
+    // Technical Skills collapse (remembers state for the session, like the original).
+    var KEY = 'resume-skills-expanded';
+    var article = document.querySelector('.skills-article');
+    var trigger = document.querySelector('.skills-trigger');
+    if (article && trigger) {
+      var saved = false;
+      try { saved = sessionStorage.getItem(KEY) === 'true'; } catch (e) {}
+      if (saved) { article.classList.add('is-expanded'); trigger.setAttribute('aria-expanded', 'true'); }
+      trigger.addEventListener('click', function () {
+        var open = article.classList.toggle('is-expanded');
+        trigger.setAttribute('aria-expanded', String(open));
+        try { sessionStorage.setItem(KEY, String(open)); } catch (e) {}
+      });
+    }
+
+    // Show More Projects.
+    var moreBtn = document.querySelector('[data-more-toggle]');
+    var more = document.getElementById('more-projects');
+    if (moreBtn && more) moreBtn.addEventListener('click', function () {
+      var open = more.classList.toggle('is-open');
+      moreBtn.setAttribute('aria-expanded', String(open));
+      if (!open) document.getElementById('projects').scrollIntoView({ block: 'start' });
+    });
+  })();
+</script>
