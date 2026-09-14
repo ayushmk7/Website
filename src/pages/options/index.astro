@@ -12,12 +12,13 @@ const options = [
   { name: 'Product', pitch: 'Linear/Vercel product aesthetic: bento hero, case-study projects, ⌘K command palette.' },
   { name: 'Monograph', pitch: 'Classic serif academic CV on warm paper; numbered entries and small-caps labels.' },
   { name: 'Scan', pitch: 'Dense recruiter dashboard: one-screen summary, timeline, skills matrix, expandable detail.' },
+  { name: 'Original', pitch: 'The first site, before fun mode: brutalist black, white and blue minimal, with today\'s content.' },
 ].map((o, i) => ({ ...o, n: i + 1, href: OPTION_HREFS[i] }));
 ---
 <ProLayout title={`Design options — ${profile.name}`}>
   <main class="wrap">
     <h1>Professional design options</h1>
-    <p class="lede">Six candidates for the main site. Same content, different direction. Press <kbd>[</kbd> / <kbd>]</kbd> on any page to cycle.</p>
+    <p class="lede">Seven candidates for the main site. Same content, different direction. Press <kbd>[</kbd> / <kbd>]</kbd> on any page to cycle.</p>
     <ol class="list">
       {options.map((o) => (
         <li>
