@@ -1,0 +1,636 @@
+---
+// src/pages/options/6.astro — Option 6 "Scan": dense recruiter dashboard.
+// Fact sheet + timeline on the first screen, then compact tables with inline <details>.
+// All content comes from src/lib/profile.ts; everything below is presentation.
+import ProLayout from '../../layouts/ProLayout.astro';
+import OptionSwitcher from '../../components/OptionSwitcher.astro';
+import Icon from '../../components/pro/opt6/Icon.astro';
+import {
+  profile, contactLinks, sections, education,
+  experience, hackathonsWithProject,
+  featuredProjects, moreProjects,
+  skillGroups, stats, FUN_HREF,
+} from '../../lib/profile';
+import type { Experience, Project } from '../../lib/profile';
+
+// --- local derivations (presentation only) ---------------------------------
+const timeline: Experience[] = [...experience].reverse(); // chronological, oldest → newest
+const isCurrent = (e: Experience) => /present/i.test(e.period);
+const isWin = (placement: string) => /1st|winner/i.test(placement);
+const edu = education[0];
+const shortDegree = edu.degree.replace('Bachelor of Science in', 'BS').replace('; Minor in', ', Minor');
+const status = profile.availability.split('.')[0];
+const email = contactLinks.find((l) => l.key === 'email')!;
+const resume = contactLinks.find((l) => l.key === 'resume')!;
+const socials = contactLinks.filter((l) => l.key === 'github' || l.key === 'linkedin' || l.key === 'x');
+const updated = new Date().toLocaleString('en-US', { month: 'short', year: 'numeric' });
+const LONG = 150; // descriptions longer than this get a clamp + "more" toggle
+const MAX_TAGS = 4;
+const skillCount = skillGroups.reduce((n, g) => n + g.all.length, 0);
+const projectRows: { p: Project; featured: boolean }[] = [
+  ...featuredProjects.map((p) => ({ p, featured: true })),
+  ...moreProjects.map((p) => ({ p, featured: false })),
+];
+const primaryUrl = (p: Project) => p.websiteUrl ?? p.githubUrl;
+---
+<ProLayout title={`${profile.name} — ${profile.headline}`} bodyClass="opt6">
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" />
+  </Fragment>
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="bar" id="top">
+    <div class="bar__id">
+      <a class="bar__name" href="#top"><span class="l">{profile.name}</span><span class="s">{profile.shortName}</span></a>
+      <span class="bar__headline">{profile.headline}</span>
+    </div>
+    <nav class="bar__nav" aria-label="Sections">
+      {sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
+    </nav>
+    <div class="bar__actions">
+      <a class="chip chip--amber chip--btn" href={FUN_HREF} title="Switch to the comic version of this site">
+        <Icon name="spark" />
+        <span class="l">Fun mode</span><span class="s">Fun</span>
+      </a>
+      <button class="chip chip--btn chip--icon" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <Icon name="sun" size={15} /><Icon name="moon" size={15} />
+      </button>
+      <a class="chip chip--blue chip--btn" href={resume.href} target="_blank" rel="noopener noreferrer">
+        <Icon name="file" />
+        Résumé<span class="l">&nbsp;PDF</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+
+    <!-- ── Fact sheet ─────────────────────────────────────────────── -->
+    <section class="box fact" aria-labelledby="fact-h">
+      <div class="fact__head">
+        <img class="fact__photo" src={profile.photo} alt={profile.photoAlt} width="72" height="72" decoding="async" />
+        <div class="fact__title">
+          <h1 id="fact-h">{profile.name}</h1>
+          <p class="fact__headline">{profile.headline} <span class="dot">·</span> {profile.tagline}</p>
+        </div>
+        <ul class="stats" aria-label="Quick stats">
+          <li><strong>{stats.roles}</strong> roles</li>
+          <li><strong>{stats.hackathonPlacements}</strong> hackathon placements <span class="muted">({stats.hackathonWins} wins)</span></li>
+          <li><strong>{stats.projects}</strong> projects</li>
+        </ul>
+      </div>
+
+      <dl class="kv">
+        <div><dt>Degree</dt><dd>{shortDegree}</dd></div>
+        <div><dt>School</dt><dd>{edu.url ? <a href={edu.url} target="_blank" rel="noopener noreferrer">{edu.institution}</a> : edu.institution}</dd></div>
+        <div><dt>Graduation</dt><dd class="mono">{stats.graduation}</dd></div>
+        <div><dt>Location</dt><dd>{profile.location}</dd></div>
+        <div><dt>Status</dt><dd><span class="live" aria-hidden="true"></span>{status}</dd></div>
+        <div><dt>Currently</dt><dd>{stats.currentRoles.map((e, i) => <>{i > 0 && <span class="dot">·</span>}{e.company.replace(', College of Engineering', '')}</>)}</dd></div>
+        <div>
+          <dt>Email</dt>
+          <dd class="kv__email">
+            <a class="mono" href={email.href}>{email.handle}</a>
+            <button class="copy" type="button" data-copy={profile.email} aria-label={`Copy ${profile.email} to clipboard`}>Copy</button>
+          </dd>
+        </div>
+        <div>
+          <dt>Links</dt>
+          <dd class="kv__links">
+            {socials.map((l) => <a href={l.href} target="_blank" rel="noopener noreferrer" title={l.handle}>{l.label}</a>)}
+            <a href={resume.href} target="_blank" rel="noopener noreferrer">Résumé</a>
+          </dd>
+        </div>
+      </dl>
+
+      <p class="fact__summary">{profile.summary}</p>
+    </section>
+
+    <!-- ── Experience ─────────────────────────────────────────────── -->
+    <section class="box" id="experience" aria-labelledby="experience-h">
+      <div class="box__head">
+        <h2 id="experience-h">Experience <span class="count">{experience.length}</span></h2>
+        <p class="box__hint">Timeline is chronological. Expand <em>Details</em> for bullets.</p>
+      </div>
+
+      <ol class="tl" role="list" aria-label="Career timeline">
+        {timeline.map((e) => (
+          <li class:list={['tl__item', { 'is-current': isCurrent(e) }]}>
+            <span class="tl__period mono">{e.period}</span>
+            <span class="tl__co">{e.company}</span>
+            <span class="tl__role">{e.role}</span>
+            {e.badge && <span class="pill pill--amber">{e.badge}</span>}
+          </li>
+        ))}
+      </ol>
+
+      <div class="scroller">
+        <table class="tbl tbl--md">
+          <caption class="sr-only">Roles, most recent first, with type, location and details</caption>
+          <thead>
+            <tr><th scope="col">Period</th><th scope="col">Company / Role</th><th scope="col">Type</th><th scope="col">Location</th><th scope="col">Details</th></tr>
+          </thead>
+          <tbody>
+            {experience.map((e) => (
+              <tr class:list={{ 'is-current': isCurrent(e) }}>
+                <td class="mono nowrap" data-label="Period">{isCurrent(e) && <span class="live" aria-hidden="true"></span>}{e.period}</td>
+                <th scope="row" class="cell-title">
+                  <h3>{e.url ? <a href={e.url} target="_blank" rel="noopener noreferrer">{e.company}</a> : e.company}{e.badge && <span class="pill pill--amber">{e.badge}</span>}</h3>
+                  <span class="sub">{e.role}</span>
+                </th>
+                <td data-label="Type"><span class="pill">{e.kind}</span></td>
+                <td data-label="Location">{e.location ?? '—'}</td>
+                <td class="cell-details" data-label="Details">
+                  <details>
+                    <summary>{e.bullets.length} bullets</summary>
+                    <ul class="bullets">{e.bullets.map((b) => <li>{b}</li>)}</ul>
+                  </details>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Projects ───────────────────────────────────────────────── -->
+    <section class="box" id="projects" aria-labelledby="projects-h">
+      <div class="box__head">
+        <h2 id="projects-h">Projects <span class="count">{projectRows.length}</span></h2>
+        <p class="box__hint">{featuredProjects.length} featured, then everything else. Hackathon builds are listed under Hackathons.</p>
+      </div>
+      <div class="scroller">
+        <table class="tbl tbl--sm tbl--projects">
+          <caption class="sr-only">Projects with stack, summary and links</caption>
+          <thead>
+            <tr><th scope="col">Title</th><th scope="col">Stack</th><th scope="col">Summary</th><th scope="col">Links</th></tr>
+          </thead>
+          <tbody>
+            {projectRows.slice(0, featuredProjects.length).map(({ p }) => (
+              <tr>
+                <th scope="row" class="cell-title"><h3>{primaryUrl(p) ? <a href={primaryUrl(p)} target="_blank" rel="noopener noreferrer">{p.title}</a> : p.title}<span class="pill pill--blue">Featured</span></h3></th>
+                <td data-label="Stack"><span class="tags">{p.tags.slice(0, MAX_TAGS).map((t) => <span class="tag">{t}</span>)}{p.tags.length > MAX_TAGS && <span class="tag tag--more" title={p.tags.slice(MAX_TAGS).join(', ')}>+{p.tags.length - MAX_TAGS}</span>}</span></td>
+                <td class="cell-summary" data-label="Summary">{p.description.length > LONG ? <details class="clampd"><summary><span class="clampd__text">{p.description}</span><span class="clampd__hint" aria-hidden="true">more</span></summary></details> : <p>{p.description}</p>}</td>
+                <td class="cell-links" data-label="Links">
+                  {p.githubUrl && <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} on GitHub`}><Icon name="github" />GitHub</a>}
+                  {p.websiteUrl && <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} website`}><Icon name="external" />Site</a>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tbody>
+            <tr class="tbl__group"><th scope="colgroup" colspan="4">Other projects <span class="count">{moreProjects.length}</span></th></tr>
+            {projectRows.slice(featuredProjects.length).map(({ p }) => (
+              <tr>
+                <th scope="row" class="cell-title"><h3>{primaryUrl(p) ? <a href={primaryUrl(p)} target="_blank" rel="noopener noreferrer">{p.title}</a> : p.title}</h3></th>
+                <td data-label="Stack"><span class="tags">{p.tags.slice(0, MAX_TAGS).map((t) => <span class="tag">{t}</span>)}{p.tags.length > MAX_TAGS && <span class="tag tag--more" title={p.tags.slice(MAX_TAGS).join(', ')}>+{p.tags.length - MAX_TAGS}</span>}</span></td>
+                <td class="cell-summary" data-label="Summary">{p.description.length > LONG ? <details class="clampd"><summary><span class="clampd__text">{p.description}</span><span class="clampd__hint" aria-hidden="true">more</span></summary></details> : <p>{p.description}</p>}</td>
+                <td class="cell-links" data-label="Links">
+                  {p.githubUrl && <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} on GitHub`}><Icon name="github" />GitHub</a>}
+                  {p.websiteUrl && <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} website`}><Icon name="external" />Site</a>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Hackathons ─────────────────────────────────────────────── -->
+    <section class="box" id="hackathons" aria-labelledby="hackathons-h">
+      <div class="box__head">
+        <h2 id="hackathons-h">Hackathons <span class="count">{hackathonsWithProject.length}</span></h2>
+        <p class="box__hint">{stats.hackathonWins} first-place or track wins in the last year.</p>
+      </div>
+      <div class="scroller">
+        <table class="tbl tbl--sm tbl--hack">
+          <caption class="sr-only">Hackathon results with placement, project and links</caption>
+          <thead>
+            <tr><th scope="col">Date</th><th scope="col">Event</th><th scope="col">Placement</th><th scope="col">Project</th><th scope="col">Links</th></tr>
+          </thead>
+          <tbody>
+            {hackathonsWithProject.map((h) => (
+              <tr>
+                <td class="mono nowrap" data-label="Date">{h.date}</td>
+                <th scope="row" class="cell-title"><h3>{h.event}</h3><span class="sub">{h.organizer}</span></th>
+                <td data-label="Placement">
+                  <span class:list={['pill', isWin(h.placement) ? 'pill--green' : 'pill--amber']}>{h.placement}</span>
+                  {h.prize && <span class="sub">{h.prize}</span>}
+                </td>
+                <td class="cell-summary" data-label="Project">
+                  <details class="rowd">
+                    <summary><strong>{h.project}</strong>{h.projectEntry && <span class="sub sub--inline">{h.projectEntry.tags.slice(0, 3).join(', ')}</span>}<span class="rowd__hint" aria-hidden="true">what it does</span></summary>
+                    <p>{h.blurb}</p>
+                  </details>
+                </td>
+                <td class="cell-links" data-label="Links">
+                  {h.repoUrl && <a href={h.repoUrl} target="_blank" rel="noopener noreferrer" aria-label={`${h.project} repository`}><Icon name="github" />Repo</a>}
+                  {h.siteUrl && <a href={h.siteUrl} target="_blank" rel="noopener noreferrer" aria-label={`${h.project} website`}><Icon name="external" />Site</a>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Skills + Education / Contact ───────────────────────────── -->
+    <div class="grid2">
+      <section class="box" id="skills" aria-labelledby="skills-h">
+        <div class="box__head">
+          <h2 id="skills-h">Skills <span class="count">{skillCount}</span></h2>
+          <p class="box__hint"><span class="tag tag--hi">highlighted</span> = primary</p>
+        </div>
+        <table class="tbl tbl--skills">
+          <caption class="sr-only">Skills by category; highlighted entries are primary</caption>
+          <thead class="sr-only"><tr><th scope="col">Category</th><th scope="col">Skills</th></tr></thead>
+          <tbody>
+            {skillGroups.map((g) => (
+              <tr>
+                <th scope="row"><span class="skills__label">{g.label}</span><span class="skills__n mono">{g.all.length}</span></th>
+                <td><span class="tags">{g.all.map((s) => <span class:list={['tag', { 'tag--hi': g.featured.includes(s) }]}>{s}</span>)}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <div class="stack">
+        <section class="box" id="education" aria-labelledby="education-h">
+          <div class="box__head"><h2 id="education-h">Education</h2></div>
+          <h3 class="edu__degree">{edu.degree}</h3>
+          <p class="edu__school">{edu.url ? <a href={edu.url} target="_blank" rel="noopener noreferrer">{edu.institution}</a> : edu.institution}</p>
+          <p class="mono muted">{edu.period} <span class="dot">·</span> {edu.location}</p>
+        </section>
+
+        <section class="box" id="contact" aria-labelledby="contact-h">
+          <div class="box__head"><h2 id="contact-h">Contact</h2></div>
+          <ul class="contacts" role="list">
+            {contactLinks.map((l) => (
+              <li>
+                <span class="contacts__label">{l.label}</span>
+                <a class="mono" href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener noreferrer' : undefined}>{l.handle}</a>
+                {l.key === 'email' && <button class="copy" type="button" data-copy={profile.email} aria-label={`Copy ${profile.email} to clipboard`}>Copy</button>}
+              </li>
+            ))}
+          </ul>
+          <p class="contact__note">{profile.availability}</p>
+          <p class="contact__fun">Prefer something less spreadsheet-shaped? <a href={FUN_HREF}>Fun mode</a>.</p>
+        </section>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>Updated {updated}</span><span class="dot">·</span>
+      <a href={FUN_HREF}>Fun mode</a><span class="dot">·</span>
+      <a href="#top">Top</a>
+    </footer>
+  </main>
+
+  <OptionSwitcher />
+</ProLayout>
+
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+    var t = document.getElementById('theme-toggle');
+    if (t) {
+      t.setAttribute('aria-pressed', String(root.classList.contains('dark')));
+      t.addEventListener('click', function () {
+        var dark = root.classList.toggle('dark');
+        t.setAttribute('aria-pressed', String(dark));
+        try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {}
+      });
+    }
+    var copies = document.querySelectorAll('[data-copy]');
+    for (var i = 0; i < copies.length; i++) (function (b) {
+      b.addEventListener('click', function () {
+        var v = b.getAttribute('data-copy'), label = b.textContent;
+        var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = label; }, 1500); };
+        var fallback = function () { location.href = 'mailto:' + v; };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(done, fallback);
+        else fallback();
+      });
+    })(copies[i]);
+  })();
+</script>
+
+<style>
+  /* ── tokens ─────────────────────────────────────────────────────── */
+  :global(body.opt6) {
+    --bg: #f5f7fa; --panel: #ffffff; --fg: #111827; --muted: #5b6472;
+    --border: #e5e7eb; --border-strong: #cbd5e1;
+    --blue: #1d4ed8; --blue-soft: #dbeafe;
+    --green: #047857; --green-soft: #d1fae5;
+    --amber: #92400e; --amber-soft: #fef3c7;
+    --row-alt: #f9fafb; --focus: #1d4ed8;
+    --sans: 'IBM Plex Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 400 14.5px/1.5 var(--sans);
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  :global(html.dark body.opt6) {
+    --bg: #0b0f17; --panel: #111827; --fg: #e5e7eb; --muted: #9ca3af;
+    --border: #1f2937; --border-strong: #374151;
+    --blue: #93b4ff; --blue-soft: #172554;
+    --green: #6ee7b7; --green-soft: #064e3b;
+    --amber: #fcd34d; --amber-soft: #452c05;
+    --row-alt: #0f172a; --focus: #93b4ff;
+  }
+  :global(html) { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { :global(html) { scroll-behavior: auto; } }
+
+  /* ── base ───────────────────────────────────────────────────────── */
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px;
+  }
+  img { max-width: 100%; }
+  h1, h2, h3, p, dl, dd, ul, ol { margin: 0; }
+  .mono { font-family: var(--mono); font-size: 13px; }
+  .muted { color: var(--muted); }
+  .nowrap { white-space: nowrap; }
+  .dot { color: var(--muted); margin: 0 .35em; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .skip { position: absolute; left: .75rem; top: -3rem; z-index: 2147483001; padding: .4rem .7rem; background: var(--panel); border: 1px solid var(--border-strong); border-radius: 4px; }
+  .skip:focus { top: .5rem; }
+
+  /* ── top bar ────────────────────────────────────────────────────── */
+  .bar {
+    position: sticky; top: 0; z-index: 50; height: 44px;
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0 clamp(0.75rem, 2.5vw, 1.5rem);
+    background: var(--panel); border-bottom: 1px solid var(--border);
+  }
+  .bar__id { display: flex; align-items: baseline; gap: .6rem; min-width: 0; }
+  .bar__name { color: var(--fg); font-weight: 600; white-space: nowrap; }
+  .bar__headline { color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar__nav { display: flex; gap: .15rem; margin-left: auto; }
+  .bar__nav a { font: 500 12px/1 var(--mono); color: var(--muted); padding: .55rem .5rem; border-radius: 4px; }
+  .bar__nav a:hover { color: var(--fg); background: var(--bg); text-decoration: none; }
+  .bar__actions { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
+  .bar__nav + .bar__actions { margin-left: 0; }
+  .bar__id + .bar__actions { margin-left: auto; }
+  .s { display: none; }
+  @media (max-width: 899.98px) { .bar__nav { display: none; } .bar__actions { margin-left: auto; } }
+  @media (max-width: 639.98px), (min-width: 900px) and (max-width: 1149.98px) { .bar__headline { display: none; } }
+  @media (max-width: 479.98px) { .l { display: none; } .s { display: inline; } }
+
+  /* ── chips / pills / tags ───────────────────────────────────────── */
+  .chip {
+    display: inline-flex; align-items: center; gap: .35rem; height: 30px; padding: 0 .65rem;
+    border: 1px solid var(--border-strong); border-radius: 5px; background: var(--panel); color: var(--fg);
+    font: 500 12.5px/1 var(--sans); cursor: pointer; white-space: nowrap;
+  }
+  .chip:hover { text-decoration: none; background: var(--bg); }
+  .chip--icon { width: 30px; padding: 0; justify-content: center; }
+  .chip--blue { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .chip--blue:hover { background: var(--blue); filter: brightness(1.08); }
+  :global(html.dark) .chip--blue { color: #0b0f17; }
+  .chip--amber { background: var(--amber-soft); border-color: transparent; color: var(--amber); }
+  .chip--amber:hover { background: var(--amber-soft); filter: brightness(.97); }
+  @media (pointer: coarse) { .bar { height: 48px; } .chip { height: 36px; } .chip--icon { width: 36px; } }
+
+  .pill {
+    display: inline-flex; align-items: center; height: 20px; padding: 0 .45rem; margin-left: .35rem; vertical-align: 1px;
+    border: 1px solid var(--border); border-radius: 4px; background: var(--bg);
+    font: 500 11.5px/1 var(--mono); letter-spacing: .01em; white-space: nowrap; color: var(--fg);
+  }
+  .pill--blue { background: var(--blue-soft); border-color: transparent; color: var(--blue); }
+  .pill--green { background: var(--green-soft); border-color: transparent; color: var(--green); }
+  .pill--amber { background: var(--amber-soft); border-color: transparent; color: var(--amber); }
+  .kv .pill, .tbl td > .pill:first-child { margin-left: 0; }
+  .tbl td .pill { height: auto; min-height: 20px; padding: 2px .45rem; white-space: normal; line-height: 1.25; }
+
+  .tags { display: inline-flex; flex-wrap: wrap; gap: 3px; }
+  .tag {
+    display: inline-block; padding: 1px 6px; border: 1px solid var(--border); border-radius: 3px;
+    font: 400 12px/1.5 var(--mono); color: var(--fg); background: var(--panel); white-space: nowrap;
+  }
+  .tag--hi { background: var(--blue-soft); border-color: transparent; color: var(--blue); font-weight: 500; }
+  .tag--more { color: var(--muted); border-style: dashed; cursor: help; }
+  .count {
+    display: inline-flex; align-items: center; height: 18px; padding: 0 .4rem; margin-left: .4rem; vertical-align: 2px;
+    border: 1px solid var(--border-strong); border-radius: 999px; background: var(--bg);
+    font: 500 11px/1 var(--mono); color: var(--muted); letter-spacing: 0;
+  }
+  .live { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--green); margin-right: .4rem; vertical-align: 1px; }
+
+  /* ── layout ─────────────────────────────────────────────────────── */
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 1rem clamp(0.75rem, 2.5vw, 1.5rem) 2rem; display: grid; gap: 1rem; }
+  .box { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; min-width: 0; }
+  section[id] { scroll-margin-top: 56px; }
+  .box__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-bottom: .6rem; margin-bottom: .85rem; border-bottom: 1px solid var(--border); }
+  h2 { font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+  h3 { font-size: 15px; font-weight: 600; line-height: 1.35; }
+  h3 a { color: inherit; }
+  h3 a:hover { color: var(--blue); }
+  .box__hint { font-size: 12.5px; color: var(--muted); }
+  .box__hint em { font-style: normal; color: var(--fg); }
+  .grid2 { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); }
+  .stack { display: grid; gap: 1rem; align-content: start; }
+  @media (min-width: 1100px) { .grid2 { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); } }
+
+  /* ── fact sheet ─────────────────────────────────────────────────── */
+  .fact__head { display: flex; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+  .fact__photo { width: 72px; height: 72px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; }
+  .fact__title { min-width: 0; flex: 1 1 12rem; }
+  h1 { font-size: 28px; font-weight: 600; line-height: 1.2; letter-spacing: -.01em; }
+  .fact__headline { color: var(--muted); margin-top: .25rem; }
+  .stats { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0; align-self: center; }
+  .stats li { border: 1px solid var(--border); border-radius: 5px; padding: .35rem .6rem; font-size: 13px; background: var(--bg); white-space: nowrap; }
+  .stats strong { font-family: var(--mono); font-weight: 500; font-size: 14px; }
+  .kv {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 1rem;
+    margin-top: 1rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .kv > div { padding: .55rem 0; border-bottom: 1px solid var(--border); min-width: 0; }
+  .kv > div:nth-last-child(-n + 4) { border-bottom: 0; }
+  .kv dt { font: 500 11px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .kv dd { margin-top: .1rem; overflow-wrap: anywhere; }
+  .kv__email { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+  .kv__email a { font-size: 12.5px; }
+  .kv__links { display: flex; flex-wrap: wrap; gap: .2rem .7rem; }
+  .fact__summary { margin-top: .85rem; color: var(--muted); max-width: 90ch; }
+  @media (max-width: 899.98px) {
+    .kv { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .kv > div:nth-last-child(-n + 4) { border-bottom: 1px solid var(--border); }
+    .kv > div:nth-last-child(-n + 2) { border-bottom: 0; }
+  }
+  @media (max-width: 479.98px) {
+    .kv { grid-template-columns: minmax(0, 1fr); }
+    .kv > div:nth-last-child(-n + 2) { border-bottom: 1px solid var(--border); }
+    .kv > div:last-child { border-bottom: 0; }
+    h1 { font-size: 24px; }
+  }
+  .copy {
+    height: 22px; padding: 0 .5rem; border: 1px solid var(--border-strong); border-radius: 4px; background: var(--panel);
+    color: var(--fg); font: 500 11.5px/1 var(--mono); cursor: pointer;
+  }
+  .copy:hover { background: var(--bg); }
+  @media (pointer: coarse) { .copy { height: 32px; } }
+
+  /* ── timeline ───────────────────────────────────────────────────── */
+  .tl { list-style: none; padding: 0; margin: .25rem 0 1.1rem; }
+  .tl__item { position: relative; display: flex; flex-direction: column; gap: .1rem; min-width: 0; }
+  .tl__item::before { content: ''; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 2px var(--panel); }
+  .tl__item.is-current::before { background: var(--green); }
+  .tl__period { color: var(--muted); font-size: 12px; }
+  .tl__co { font-weight: 600; }
+  .tl__role { font-size: 13px; color: var(--muted); }
+  .tl .pill { margin: .2rem 0 0; align-self: flex-start; }
+  @media (min-width: 900px) {
+    .tl { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 1rem; border-top: 2px solid var(--border-strong); padding-top: 1rem; }
+    .tl__item { padding-right: .5rem; }
+    .tl__item::before { top: calc(-1rem - 7px); left: 0; }
+  }
+  @media (max-width: 899.98px) {
+    .tl { display: flex; flex-direction: column; gap: .8rem; border-left: 2px solid var(--border-strong); margin-left: 6px; padding-left: 1rem; }
+    .tl__item::before { top: 4px; left: calc(-1rem - 7px); }
+  }
+
+  /* ── tables ─────────────────────────────────────────────────────── */
+  .scroller { overflow-x: auto; max-width: 100%; -webkit-overflow-scrolling: touch; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .tbl thead th {
+    text-align: left; font: 500 11px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+    padding: .3rem .6rem .45rem; border-bottom: 1px solid var(--border-strong); white-space: nowrap;
+  }
+  .tbl td, .tbl tbody th { padding: .55rem .6rem; border-bottom: 1px solid var(--border); vertical-align: top; text-align: left; font-weight: 400; }
+  .tbl td:first-child, .tbl tbody th:first-child { padding-left: .25rem; }
+  .tbl td:last-child, .tbl tbody th:last-child { padding-right: .25rem; }
+  .tbl tbody tr:nth-child(even) { background: var(--row-alt); }
+  .tbl tbody tr:last-child td, .tbl tbody tr:last-child th { border-bottom: 0; }
+  .tbl tbody + tbody tr:first-child th { border-top: 1px solid var(--border-strong); }
+  .tbl .sub { display: block; font-size: 12.5px; color: var(--muted); font-weight: 400; margin-top: .1rem; }
+  .tbl .sub--inline { display: inline; margin-left: .45rem; }
+  .cell-title { min-width: 12rem; }
+  .cell-details { width: 40%; }
+  .cell-summary { width: 44%; }
+  .cell-summary p { margin: 0; }
+  .cell-links { white-space: nowrap; }
+  .cell-links a { display: inline-flex; align-items: center; gap: .3rem; margin-right: .7rem; font-size: 13px; }
+  .cell-links a:last-child { margin-right: 0; }
+  .tbl--md .nowrap, .tbl--hack .nowrap { white-space: nowrap; }
+  @media (min-width: 900px) { .tbl--md td[data-label="Location"] { white-space: nowrap; } }
+  @media (min-width: 700px) { .tbl--hack td[data-label="Placement"] { min-width: 15.5rem; } }
+  .tbl__group th { padding: .8rem .25rem .35rem !important; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); background: var(--panel); }
+  .tbl__group th .count { vertical-align: 1px; }
+  .tbl tbody tr.tbl__group { background: var(--panel); }
+
+  /* details in tables */
+  details summary { cursor: pointer; list-style: none; color: var(--blue); font-weight: 500; user-select: none; }
+  details summary::-webkit-details-marker { display: none; }
+  .cell-details summary::before, .rowd summary .rowd__hint::before, .clampd__hint::before { content: '▸ '; font-size: 11px; }
+  details[open] > summary::before { content: '▾ '; }
+  .cell-details details[open] > summary { margin-bottom: .35rem; }
+  .bullets { padding-left: 1.1rem; list-style: disc; display: grid; gap: .3rem; color: var(--fg); }
+  .bullets li::marker { color: var(--muted); }
+  .rowd summary { color: var(--fg); font-weight: 400; }
+  .rowd summary strong { font-weight: 600; }
+  .rowd summary::before { content: none; }
+  .rowd__hint { display: block; font-size: 12px; color: var(--blue); margin-top: .1rem; }
+  .rowd[open] .rowd__hint::before { content: '▾ '; }
+  .rowd[open] .rowd__hint { margin-bottom: .3rem; }
+  .rowd p { color: var(--muted); }
+  .clampd summary { color: var(--fg); font-weight: 400; }
+  .clampd summary::before { content: none; }
+  .clampd__text { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .clampd[open] .clampd__text { display: block; -webkit-line-clamp: unset; }
+  .clampd__hint { display: block; font-size: 12px; color: var(--blue); margin-top: .1rem; }
+  .clampd[open] .clampd__hint::before { content: '▾ '; }
+  @media (pointer: coarse) { details summary { min-height: 40px; display: flex; flex-direction: column; justify-content: center; } }
+
+  /* stacked-card modes */
+  @media (max-width: 899.98px) {
+    .tbl--md thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .tbl--md, .tbl--md tbody, .tbl--md tr, .tbl--md td, .tbl--md tbody th { display: block; width: 100%; }
+    .tbl--md tbody tr { border: 1px solid var(--border); border-radius: 6px; padding: .55rem .7rem; margin-bottom: .6rem; background: var(--panel); }
+    .tbl--md tbody tr:nth-child(even) { background: var(--panel); }
+    .tbl--md tbody tr:last-child { margin-bottom: 0; }
+    .tbl--md td, .tbl--md tbody th { padding: .3rem 0 !important; border-bottom: 0; }
+    .tbl--md td[data-label]::before { content: attr(data-label); display: block; font: 500 10.5px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: .1rem; }
+    .tbl--md td[data-label="Period"]::before { display: none; }
+    .tbl--md .cell-title { min-width: 0; }
+    .tbl--md .cell-details { width: auto; }
+    .tbl--md tr { display: grid; grid-template-columns: 1fr auto; }
+    .tbl--md td[data-label="Period"] { grid-column: 2; grid-row: 1; text-align: right; color: var(--muted); }
+    .tbl--md .cell-title { grid-column: 1; grid-row: 1; }
+    .tbl--md td[data-label="Type"], .tbl--md td[data-label="Location"] { grid-column: span 2; display: inline-block; width: auto; margin-right: 1.2rem; }
+    .tbl--md .cell-details { grid-column: 1 / -1; }
+  }
+  @media (max-width: 599.98px) {
+    /* long periods ("Jun 2024 to Jul 2024, Apr 2025") starve the title in a 2-col card: stack instead */
+    .tbl--md tr { grid-template-columns: minmax(0, 1fr); }
+    .tbl--md td[data-label="Period"] { grid-column: 1; grid-row: 1; text-align: left; white-space: normal; }
+    .tbl--md .cell-title { grid-row: 2; }
+    .tbl--md td[data-label="Type"], .tbl--md td[data-label="Location"] { grid-column: 1; }
+  }
+  @media (min-width: 700px) and (max-width: 999.98px) {
+    /* mid widths: keep the Summary column readable by tightening the side columns */
+    .tbl--projects .cell-title { min-width: 8rem; }
+    .tbl--projects td[data-label="Stack"] { width: 11rem; }
+    .tbl--projects .cell-links { white-space: normal; }
+    .tbl--projects .cell-links a { display: flex; margin: 0 0 .25rem; }
+  }
+  @media (max-width: 699.98px) {
+    .tbl--sm thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .tbl--sm, .tbl--sm tbody, .tbl--sm tr, .tbl--sm td, .tbl--sm tbody th { display: block; width: 100%; }
+    .tbl--sm tbody tr { border: 1px solid var(--border); border-radius: 6px; padding: .55rem .7rem; margin-bottom: .6rem; background: var(--panel); }
+    .tbl--sm tbody tr:nth-child(even) { background: var(--panel); }
+    .tbl--sm tbody tr:last-child { margin-bottom: 0; }
+    .tbl--sm td, .tbl--sm tbody th { padding: .3rem 0 !important; border-bottom: 0; }
+    .tbl--sm td[data-label]::before { content: attr(data-label); display: block; font: 500 10.5px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: .1rem; }
+    .tbl--sm .cell-title { min-width: 0; }
+    .tbl--sm .cell-summary { width: auto; }
+    .tbl--sm .cell-links { white-space: normal; }
+    .tbl--sm tbody + tbody tr:first-child th { border-top: 0; }
+    .tbl--sm tr.tbl__group { border: 0; padding: .6rem 0 0; margin-bottom: .4rem; background: transparent; }
+    .tbl--sm tr.tbl__group th { padding: 0 !important; background: transparent; }
+    .tbl--hack tr { display: grid; grid-template-columns: 1fr auto; }
+    .tbl--hack td[data-label="Date"] { grid-column: 2; grid-row: 1; text-align: right; color: var(--muted); }
+    .tbl--hack td[data-label="Date"]::before { display: none; }
+    .tbl--hack .cell-title { grid-column: 1; grid-row: 1; }
+    .tbl--hack td[data-label="Placement"], .tbl--hack td[data-label="Project"], .tbl--hack td[data-label="Links"] { grid-column: 1 / -1; }
+  }
+
+  /* skills matrix */
+  .tbl--skills tbody th { width: 11rem; padding-left: .25rem; vertical-align: top; }
+  .tbl--skills tbody th .skills__label { display: block; font-weight: 600; font-size: 13px; line-height: 1.35; }
+  .tbl--skills tbody th .skills__n { color: var(--muted); font-size: 11.5px; }
+  .tbl--skills td { padding: .55rem .25rem .55rem .6rem; }
+  @media (max-width: 599.98px) {
+    .tbl--skills, .tbl--skills tbody, .tbl--skills tr, .tbl--skills td, .tbl--skills tbody th { display: block; width: 100%; }
+    .tbl--skills tbody th { padding: .55rem 0 .15rem !important; border-bottom: 0; }
+    .tbl--skills tbody th .skills__n { margin-left: .4rem; }
+    .tbl--skills td { padding: 0 0 .6rem !important; }
+    .tbl--skills tbody tr:nth-child(even) { background: transparent; }
+  }
+
+  /* education / contact */
+  .edu__degree { font-size: 15px; }
+  .edu__school { margin-top: .15rem; }
+  .contacts { list-style: none; padding: 0; margin: 0; display: grid; gap: .35rem; }
+  .contacts li { display: flex; align-items: center; gap: .5rem; min-width: 0; flex-wrap: wrap; }
+  .contacts__label { flex: 0 0 4.5rem; font: 500 11px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .contacts a { overflow-wrap: anywhere; }
+  .contact__note { margin-top: .85rem; color: var(--muted); font-size: 13.5px; }
+  .contact__fun { margin-top: .4rem; font-size: 13.5px; color: var(--muted); }
+  .contact__fun a { color: var(--amber); font-weight: 500; }
+
+  /* footer */
+  .foot { display: flex; justify-content: center; align-items: center; font-size: 12.5px; color: var(--muted); padding: .25rem 0 1.5rem; }
+  .foot .dot { margin: 0 .5rem; }
+
+  @media print {
+    :global(.opt-switch), .bar__actions, .bar__nav, .skip, .copy, .contact__fun, .foot { display: none !important; }
+    :global(body.opt6) { background: #fff; color: #000; }
+    .box { break-inside: avoid; border-color: #bbb; }
+    .bar { position: static; }
+  }
+</style>

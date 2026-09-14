@@ -1,0 +1,57 @@
+---
+// src/layouts/ProLayout.astro
+// Minimal, theme-free HTML shell for the professional pages.
+// Deliberately imports NO comic CSS (no global.css / _base.css / comic.css).
+// Tailwind preflight + utilities are auto-injected by @astrojs/tailwind on every page.
+//
+// Props:
+//   title        — <title> and og:title
+//   description  — meta description (defaults to profile.metaDescription)
+//   bodyClass    — optional class on <body> (options may hang their scope class here)
+// Slots:
+//   head         — extra <head> content (Google Fonts <link>s, per-option meta)
+//   default      — page body
+//
+// Dark mode: before paint, <html> gets class "dark" if localStorage.theme === 'dark',
+// or if there's no saved value and the OS prefers dark. Options may style with
+// `html.dark` (and optionally add their own toggle that writes localStorage.theme).
+import Analytics from '@vercel/analytics/astro';
+import { profile } from '../lib/profile';
+
+interface Props { title: string; description?: string; bodyClass?: string }
+const { title, description = profile.metaDescription, bodyClass } = Astro.props;
+const ogImage = new URL('/og.png', Astro.site).href;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+    <title>{title}</title>
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${profile.name} — ${profile.headline}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+    <slot name="head" />
+    <Analytics />
+    <script is:inline>
+      // dark/light init: apply saved or system preference before paint
+      try {
+        var t = localStorage.getItem('theme');
+        var dark = t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList[dark ? 'add' : 'remove']('dark');
+      } catch (e) {}
+    </script>
+  </head>
+  <body class={bodyClass}>
+    <slot />
+  </body>
+</html>

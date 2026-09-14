@@ -1,0 +1,651 @@
+---
+// src/pages/options/4.astro — Option 4 "Product" (Linear/Vercel-style product page).
+// Content comes only from src/lib/profile. Styles are scoped to this page.
+import ProLayout from '../../layouts/ProLayout.astro';
+import OptionSwitcher from '../../components/OptionSwitcher.astro';
+import {
+  profile, contactLinks, sections, education, experience, hackathonsWithProject,
+  featuredProjects, moreProjects, skillGroups, stats, FUN_HREF,
+} from '../../lib/profile';
+
+// --- inline icons (16px, stroke 2) ---------------------------------------
+const stroke = (d: string, size = 16) =>
+  `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${d}</svg>`;
+const fill = (d: string, size = 16) =>
+  `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="currentColor" aria-hidden="true" focusable="false">${d}</svg>`;
+
+const ico = {
+  github: fill('<path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/>'),
+  linkedin: fill('<path d="M20.4 20.4h-3.5v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9v5.7H9.4V9h3.4v1.6h.1c.5-.9 1.6-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4a2 2 0 1 1 0-4.1 2 2 0 0 1 0 4.1zM7.1 20.4H3.6V9h3.5v11.4zM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6c0 .9.8 1.7 1.8 1.7h20.4c1 0 1.8-.8 1.8-1.7V1.7C24 .8 23.2 0 22.2 0z"/>'),
+  x: fill('<path d="M18.2 2h3.4l-7.4 8.5L23 22h-6.8l-5.3-7-6.1 7H1.4l7.9-9.1L1 2h7l4.8 6.4L18.2 2zm-1.2 18h1.9L7.1 3.9H5.1L17 20z"/>'),
+  mail: stroke('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>'),
+  copy: stroke('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>'),
+  check: stroke('<path d="m20 6-11 11-5-5"/>'),
+  file: stroke('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>'),
+  sun: stroke('<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/>'),
+  moon: stroke('<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'),
+  sparkle: fill('<path d="M12 2.5l2.1 6.2 6.4 2.1-6.4 2.1L12 19.1l-2.1-6.2-6.4-2.1 6.4-2.1z"/><path d="M19.5 15.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z"/>'),
+  ext: stroke('<path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M20 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5"/>'),
+  up: stroke('<path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>'),
+  trophy: stroke('<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/>', 14),
+  cmd: stroke('<path d="M9 6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3z"/>'),
+  chevron: stroke('<path d="m6 9 6 6 6-6"/>', 14),
+  hash: stroke('<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>'),
+  pin: stroke('<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>', 14),
+  cap: stroke('<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>', 14),
+};
+
+// --- derived, local to this page -------------------------------------------
+const byKey = Object.fromEntries(contactLinks.map((c) => [c.key, c]));
+const social = contactLinks.filter((c) => c.key === 'github' || c.key === 'linkedin' || c.key === 'x');
+const edu = education[0];
+const shortDegree = edu.degree
+  .replace('Bachelor of Science in ', 'BS ')
+  .replace('; Minor in ', ' · Minor ');
+const isCurrent = (period: string) => /present/i.test(period);
+const isWin = (placement: string) => /1st|winner/i.test(placement);
+const eyebrow = `CS + Math · University of Michigan · ${profile.location}`;
+const currentCount = stats.currentRoles.length;
+const iconFor: Record<string, string> = { email: ico.mail, github: ico.github, linkedin: ico.linkedin, x: ico.x, resume: ico.file };
+---
+<ProLayout title={`${profile.name} — ${profile.headline}`} bodyClass="p4-body">
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" />
+  </Fragment>
+
+  <div class="p4" id="top">
+    <!-- ===================== NAV ===================== -->
+    <header class="nav">
+      <div class="wrap nav__in">
+        <a class="wordmark mono" href="#top" aria-label={`${profile.name} — back to top`}>{profile.initials}</a>
+        <nav class="nav__links" aria-label="Sections">
+          {sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
+        </nav>
+        <div class="nav__actions">
+          <button type="button" class="btn btn--ghost btn--kbd" id="pal-btn" aria-haspopup="dialog" aria-controls="palette">
+            <span class="only-desk"><span class="btn--kbd__txt">Jump to</span><kbd data-kbd>⌘K</kbd></span>
+            <span class="only-mob">Menu</span>
+          </button>
+          <a class="btn btn--ghost btn--fun" href={FUN_HREF} aria-label="Fun mode: switch to the comic version of this site">
+            <span set:html={ico.sparkle} /><span class="only-desk">Fun mode</span>
+          </a>
+          <button type="button" class="btn btn--ghost btn--icon" data-theme-toggle aria-label="Toggle dark / light theme">
+            <span class="ico-sun" set:html={ico.sun} /><span class="ico-moon" set:html={ico.moon} />
+          </button>
+          <a class="btn btn--primary" href={profile.resumeHref} target="_blank" rel="noopener noreferrer">
+            <span class="only-desk" set:html={ico.file} />Résumé
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- ===================== HERO ===================== -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="wrap hero__grid">
+          <div class="hero__text">
+            <p class="mono lbl">{eyebrow}</p>
+            <h1 id="hero-title">{profile.shortName}<span class="h1-sub">{profile.tagline}</span></h1>
+            <p class="hero__summary">{profile.summary}</p>
+            <div class="hero__actions">
+              <span class="split">
+                <a class="btn btn--ghost" href={byKey.email.href}><span set:html={ico.mail} />Email</a>
+                <button type="button" class="btn btn--ghost btn--icon" data-copy={profile.email} aria-label="Copy email address">
+                  <span class="cp-copy" set:html={ico.copy} /><span class="cp-check" set:html={ico.check} />
+                  <span class="cp-toast" aria-live="polite"></span>
+                </button>
+              </span>
+              {social.map((c) => (
+                <a class="btn btn--ghost" href={c.href} target="_blank" rel="noopener noreferrer">
+                  <span set:html={iconFor[c.key]} />{c.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div class="bento" aria-label="At a glance">
+            <div class="card bento__photo">
+              <img src={profile.photo} alt={profile.photoAlt} width="480" height="480" decoding="async" fetchpriority="high" />
+            </div>
+            <div class="card bento__now">
+              <p class="mono lbl"><span class="dot dot--live" aria-hidden="true"></span>Now</p>
+              <ul class="now">
+                {stats.currentRoles.map((r) => (
+                  <li><strong>{r.company}</strong><span class="muted">{r.role}</span></li>
+                ))}
+              </ul>
+            </div>
+            <div class="card bento__stat">
+              <p class="mono lbl"><span set:html={ico.trophy} />Hackathons</p>
+              <p class="stat"><span class="stat__n">{stats.hackathonPlacements}</span> placements</p>
+              <p class="muted">{stats.hackathonWins} wins in the last year</p>
+            </div>
+            <div class="card bento__stat">
+              <p class="mono lbl"><span set:html={ico.cap} />Graduating</p>
+              <p class="stat"><span class="stat__n">{stats.graduation}</span></p>
+              <p class="muted">{shortDegree}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== EXPERIENCE ===================== -->
+      <section id="experience" class="sec wrap" tabindex="-1" aria-labelledby="h-experience">
+        <header class="sec__head">
+          <h2 id="h-experience">Experience</h2>
+          <p class="sec__sub">{stats.roles} roles, {currentCount} current. Details expand per role.</p>
+        </header>
+        <ol class="card xp">
+          {experience.map((e) => {
+            const cur = isCurrent(e.period);
+            return (
+              <li class="xp__row">
+                <div class="xp__meta">
+                  <p class="mono">{cur && <span class="dot dot--live" aria-label="Current"></span>}{e.period}</p>
+                  {e.location && <p class="muted">{e.location}</p>}
+                </div>
+                <div class="xp__body">
+                  <div class="xp__title">
+                    <h3>{e.url ? <a href={e.url} target="_blank" rel="noopener noreferrer" class="link">{e.company}<span set:html={ico.ext} /></a> : e.company}</h3>
+                    {e.badge && <span class="pill pill--accent">{e.badge}</span>}
+                    <span class="mono lbl">{e.kind}</span>
+                  </div>
+                  <p class="xp__role">{e.role}</p>
+                  <details class="disc" open={cur}>
+                    <summary><span class="disc__show">Show details</span><span class="disc__hide">Hide details</span><span set:html={ico.chevron} /></summary>
+                    <ul class="bullets">{e.bullets.map((b) => <li>{b}</li>)}</ul>
+                  </details>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+
+      <!-- ===================== PROJECTS ===================== -->
+      <section id="projects" class="sec wrap" tabindex="-1" aria-labelledby="h-projects">
+        <header class="sec__head">
+          <h2 id="h-projects">Projects</h2>
+          <p class="sec__sub">{featuredProjects.length} case studies, then everything else.</p>
+        </header>
+        <div class="cases">
+          {featuredProjects.map((p, i) => (
+            <article class="card case">
+              <p class="mono lbl">{String(i + 1).padStart(2, '0')} / {String(featuredProjects.length).padStart(2, '0')} · Featured</p>
+              <h3>{p.title}</h3>
+              <p class="case__desc">{p.description}</p>
+              <p class="case__stack"><span class="mono lbl">Stack</span><span class="chips">{p.tags.map((t) => <span class="chip mono">{t}</span>)}</span></p>
+              <div class="links">
+                {p.githubUrl && <a class="btn btn--ghost btn--sm" href={p.githubUrl} target="_blank" rel="noopener noreferrer"><span set:html={ico.github} />GitHub</a>}
+                {p.websiteUrl && <a class="btn btn--ghost btn--sm" href={p.websiteUrl} target="_blank" rel="noopener noreferrer"><span set:html={ico.ext} />Live site</a>}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <h3 class="sub-h">All projects <span class="muted mono">({moreProjects.length})</span></h3>
+        <ul class="tiles">
+          {moreProjects.map((p) => {
+            const primary = p.githubUrl ?? p.websiteUrl;
+            return (
+              <li class="card tile">
+                <h4><a class="link" href={primary} target="_blank" rel="noopener noreferrer">{p.title}</a></h4>
+                <p class="tile__desc">{p.description}</p>
+                <div class="tile__foot">
+                  <span class="mono muted tile__tags">{p.tags.slice(0, 3).join(' · ')}</span>
+                  <span class="tile__links">
+                    {p.githubUrl && <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} on GitHub`} set:html={ico.github} />}
+                    {p.websiteUrl && <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} live site`} set:html={ico.ext} />}
+                  </span>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      <!-- ===================== HACKATHONS ===================== -->
+      <section id="hackathons" class="sec wrap" tabindex="-1" aria-labelledby="h-hackathons">
+        <header class="sec__head">
+          <h2 id="h-hackathons">Hackathons</h2>
+          <p class="sec__sub">{stats.hackathonPlacements} placements, {stats.hackathonWins} wins, all in the last year.</p>
+        </header>
+        <ol class="hk-row">
+          {hackathonsWithProject.map((h, i) => (
+            <li class={`card hk${i === 0 ? ' hk--lead' : ''}`}>
+              <div class="hk__head">
+                <p class="mono lbl">{h.date}{i === 0 && <span class="hk__top">Top placement</span>}</p>
+                <h3>{h.event}</h3>
+                <p class="muted hk__org">{h.organizer}</p>
+                <p class={`hk__place${isWin(h.placement) ? ' hk__place--win' : ''}`}>
+                  <span set:html={ico.trophy} />{h.placement}{h.prize && <span class="muted"> · {h.prize}</span>}
+                </p>
+                <p class="hk__proj"><strong>{h.project}</strong></p>
+              </div>
+              <div class="hk__body">
+                <p class="hk__blurb">{h.blurb}</p>
+                {h.projectEntry && <p class="mono muted hk__tags">{h.projectEntry.tags.slice(0, 4).join(' · ')}</p>}
+                <div class="links hk__links">
+                  {h.repoUrl && <a class="btn btn--ghost btn--sm" href={h.repoUrl} target="_blank" rel="noopener noreferrer"><span set:html={ico.github} />Repo</a>}
+                  {h.siteUrl && <a class="btn btn--ghost btn--sm" href={h.siteUrl} target="_blank" rel="noopener noreferrer"><span set:html={ico.ext} />Site</a>}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <!-- ===================== SKILLS ===================== -->
+      <section id="skills" class="sec wrap" tabindex="-1" aria-labelledby="h-skills">
+        <header class="sec__head">
+          <h2 id="h-skills">Skills</h2>
+          <p class="sec__sub">Primary tools first. Expand a group for the full list.</p>
+        </header>
+        <ul class="sk-grid">
+          {skillGroups.map((g) => {
+            const rest = g.all.filter((s) => !g.featured.includes(s));
+            return (
+              <li class="card sk">
+                <h3 class="mono lbl">{g.label}</h3>
+                <ul class="pills">{g.featured.map((s) => <li class="pill">{s}</li>)}</ul>
+                {rest.length > 0 && (
+                  <details class="disc disc--sm">
+                    <summary><span class="disc__show">+{rest.length} more</span><span class="disc__hide">Show fewer</span><span set:html={ico.chevron} /></summary>
+                    <ul class="pills pills--rest">{rest.map((s) => <li class="pill pill--ghost">{s}</li>)}</ul>
+                  </details>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      <!-- ===================== EDUCATION ===================== -->
+      <section id="education" class="sec wrap" tabindex="-1" aria-labelledby="h-education">
+        <header class="sec__head">
+          <h2 id="h-education">Education</h2>
+        </header>
+        <div class="card edu">
+          <div>
+            <h3>{edu.degree}</h3>
+            <p>{edu.url ? <a class="link" href={edu.url} target="_blank" rel="noopener noreferrer">{edu.institution}<span set:html={ico.ext} /></a> : edu.institution}</p>
+          </div>
+          <div class="edu__meta">
+            <p class="mono">{edu.period}</p>
+            <p class="muted"><span set:html={ico.pin} />{edu.location}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== CONTACT ===================== -->
+      <section id="contact" class="sec wrap" tabindex="-1" aria-labelledby="h-contact">
+        <div class="card contact">
+          <p class="mono lbl">Contact</p>
+          <h2 id="h-contact">Let's talk</h2>
+          <p class="contact__avail">{profile.availability}</p>
+          <p class="contact__mail">
+            <a class="link" href={byKey.email.href}>{profile.email}</a>
+            <button type="button" class="btn btn--ghost btn--icon" data-copy={profile.email} aria-label="Copy email address">
+              <span class="cp-copy" set:html={ico.copy} /><span class="cp-check" set:html={ico.check} />
+              <span class="cp-toast" aria-live="polite"></span>
+            </button>
+          </p>
+          <ul class="contact__links">
+            {contactLinks.map((c) => (
+              <li>
+                <a class="btn btn--ghost" href={c.href} target={c.external ? '_blank' : undefined} rel={c.external ? 'noopener noreferrer' : undefined}>
+                  <span set:html={iconFor[c.key]} />{c.label}<span class="muted mono">{c.handle}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot wrap">
+      <p><span class="wordmark mono">{profile.initials}</span><span class="muted">© 2026 {profile.name}</span></p>
+      <nav aria-label="Footer">
+        <a class="link link--fun" href={FUN_HREF}><span set:html={ico.sparkle} />Fun mode</a>
+        <a class="link" href="#top"><span set:html={ico.up} />Top</a>
+      </nav>
+    </footer>
+
+    <!-- ===================== ⌘K PALETTE ===================== -->
+    <dialog id="palette" class="pal" aria-label="Command palette">
+      <div class="pal__head">
+        <span set:html={ico.cmd} />
+        <input type="search" placeholder="Jump to a section, link, or action…" aria-label="Search sections, links and actions" autocomplete="off" spellcheck="false" />
+        <kbd>esc</kbd>
+      </div>
+      <div class="pal__body">
+        <div class="pal__group">
+          <p class="mono lbl">Sections</p>
+          <ul>{sections.map((s) => <li><a href={`#${s.id}`}><span set:html={ico.hash} />{s.label}</a></li>)}</ul>
+        </div>
+        <div class="pal__group">
+          <p class="mono lbl">Contact</p>
+          <ul>
+            {contactLinks.map((c) => (
+              <li><a href={c.href} target={c.external ? '_blank' : undefined} rel={c.external ? 'noopener noreferrer' : undefined}><span set:html={iconFor[c.key]} />{c.label}<span class="muted mono">{c.handle}</span></a></li>
+            ))}
+          </ul>
+        </div>
+        <div class="pal__group">
+          <p class="mono lbl">Actions</p>
+          <ul>
+            <li><a href={FUN_HREF}><span set:html={ico.sparkle} />Fun mode<span class="muted mono">comic version</span></a></li>
+            <li><button type="button" data-theme-toggle><span class="ico-sun" set:html={ico.sun} /><span class="ico-moon" set:html={ico.moon} />Toggle theme</button></li>
+          </ul>
+        </div>
+      </div>
+    </dialog>
+  </div>
+
+  <OptionSwitcher />
+</ProLayout>
+
+<script is:inline>
+  (function () {
+    var root = document.documentElement, $ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+    // theme
+    $('[data-theme-toggle]').forEach(function (b) { b.addEventListener('click', function () {
+      var d = root.classList.toggle('dark'); try { localStorage.setItem('theme', d ? 'dark' : 'light'); } catch (e) {}
+    }); });
+    // copy email (falls back to mailto)
+    $('[data-copy]').forEach(function (b) { b.addEventListener('click', function () {
+      var v = b.getAttribute('data-copy'), t = b.querySelector('.cp-toast');
+      var ok = function () { b.classList.add('is-done'); t.textContent = 'Copied'; setTimeout(function () { b.classList.remove('is-done'); t.textContent = ''; }, 1600); };
+      var no = function () { location.href = 'mailto:' + v; };
+      navigator.clipboard ? navigator.clipboard.writeText(v).then(ok, no) : no();
+    }); });
+    // ⌘K palette: native <dialog>; JS only filters and moves focus
+    var dlg = document.getElementById('palette'), btn = document.getElementById('pal-btn'), q = dlg.querySelector('input');
+    var items = function () { return $('li:not([hidden]) > a, li:not([hidden]) > button', dlg); };
+    var filter = function () {
+      var s = q.value.trim().toLowerCase();
+      $('li', dlg).forEach(function (li) { li.hidden = !!s && li.textContent.toLowerCase().indexOf(s) < 0; });
+      $('.pal__group', dlg).forEach(function (g) { g.hidden = !g.querySelector('li:not([hidden])'); });
+    };
+    var open = function () { q.value = ''; filter(); dlg.showModal(); q.focus(); };
+    btn.addEventListener('click', open);
+    q.addEventListener('input', filter);
+    dlg.addEventListener('click', function (e) {
+      var a = e.target.closest('a,button'); if (e.target !== dlg && !a) return;
+      dlg.close();
+      var t = a && a.hash && a.origin === location.origin && document.getElementById(a.hash.slice(1));
+      if (t) setTimeout(function () { t.focus({ preventScroll: true }); }, 0);
+    });
+    dlg.addEventListener('keydown', function (e) {
+      var l = items(), i = l.indexOf(document.activeElement);
+      if (e.key === 'Escape') { e.preventDefault(); dlg.close(); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); (l[i + 1] || l[0] || q).focus(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); (i > 0 ? l[i - 1] : q).focus(); }
+      else if (e.key === 'Enter' && e.target === q) { e.preventDefault(); if (l[0]) l[0].click(); }
+      else if (e.key.length === 1 && e.target !== q && !e.metaKey && !e.ctrlKey && !e.altKey) { e.stopPropagation(); q.focus(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && !e.altKey && !e.shiftKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); dlg.open ? dlg.close() : open(); }
+    });
+    if (!/Mac|iPhone|iPad/.test(navigator.platform)) $('[data-kbd]').forEach(function (k) { k.textContent = 'Ctrl K'; });
+  })();
+</script>
+
+<style>
+  /* ---------- tokens ---------- */
+  :global(:root) {
+    --bg: #ffffff; --surface: #fafafa; --surface-2: #f4f4f5; --fg: #0a0a0a; --muted: #666666;
+    --border: #e5e5e5; --border-hi: #d4d4d4; --accent: #5b4bd6; --accent-txt: #5b4bd6; --accent-fg: #ffffff;
+    --accent-soft: rgba(91, 75, 214, .12); --success: #0a7d56; --success-soft: rgba(10, 125, 86, .12);
+    --glow: radial-gradient(60% 50% at 50% 0%, rgba(91, 75, 214, .14), transparent 70%);
+    --nav-bg: rgba(255, 255, 255, .8); --kbd-bg: #f4f4f5; --backdrop: rgba(0, 0, 0, .35);
+    --sans: 'Geist', Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  :global(:root.dark) {
+    color-scheme: dark;
+    --bg: #0a0a0a; --surface: #111111; --surface-2: #171717; --fg: #ededed; --muted: #a1a1a1;
+    --border: #262626; --border-hi: #3a3a3a; --accent: #7c6cf2; --accent-txt: #ab9fff; --accent-fg: #ffffff;
+    --accent-soft: rgba(124, 108, 242, .16); --success: #2dd4a0; --success-soft: rgba(45, 212, 160, .14);
+    --glow: radial-gradient(60% 50% at 50% 0%, rgba(124, 108, 242, .22), transparent 70%);
+    --nav-bg: rgba(10, 10, 10, .8); --kbd-bg: #1a1a1a; --backdrop: rgba(0, 0, 0, .6);
+  }
+  :global(body.p4-body) {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--sans); font-size: 15px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+
+  /* ---------- base ---------- */
+  .p4 { --pad: clamp(1rem, 4vw, 2rem); overflow-x: clip; }
+  .p4 :global(svg) { flex: none; display: inline-block; vertical-align: -3px; }
+  .p4 :global(:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .wrap { max-width: 1080px; margin-inline: auto; padding-inline: var(--pad); }
+  .mono { font-family: var(--mono); font-feature-settings: 'tnum'; }
+  .muted { color: var(--muted); }
+  .lbl { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); display: inline-flex; align-items: center; gap: .4rem; margin: 0; }
+  h1, h2, h3, h4, p, ul, ol { margin: 0; }
+  ul, ol { list-style: none; padding: 0; }
+  a { color: inherit; text-decoration: none; }
+  .link { color: var(--fg); text-decoration: underline; text-decoration-color: var(--border-hi); text-underline-offset: 3px; display: inline-flex; align-items: center; gap: .3rem; }
+  .link:hover { text-decoration-color: var(--accent); }
+  .link--fun { color: var(--accent-txt); text-decoration-color: transparent; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; transition: border-color 120ms ease; }
+  .card:hover { border-color: var(--border-hi); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); margin-right: .45rem; vertical-align: 1px; }
+  .dot--live { background: var(--success); box-shadow: 0 0 0 3px var(--success-soft); }
+  .pill { display: inline-flex; align-items: center; min-height: 26px; padding: 0 .6rem; border-radius: 999px; border: 1px solid var(--border); background: var(--bg); font-size: 13px; line-height: 1; white-space: nowrap; }
+  .pill--accent { background: var(--accent-soft); border-color: transparent; color: var(--accent-txt); font-weight: 500; }
+  .pill--ghost { background: transparent; color: var(--muted); }
+  .pills { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .chip { display: inline-block; padding: .1rem .45rem; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+  .chips { display: inline-flex; flex-wrap: wrap; gap: .3rem; }
+  .only-mob { display: none; }
+
+  /* buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 36px; padding: 0 .85rem; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--fg); font: inherit; font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; white-space: nowrap; transition: border-color 120ms ease, background-color 120ms ease; }
+  .btn:hover { border-color: var(--border-hi); background: var(--surface-2); }
+  .btn--primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+  .btn--primary:hover { background: var(--accent); border-color: var(--accent); filter: brightness(1.08); }
+  .btn--icon { width: 36px; padding: 0; position: relative; }
+  .btn--sm { min-height: 32px; font-size: 13px; padding: 0 .7rem; }
+  .btn--kbd kbd { font-family: var(--mono); font-size: 12px; background: var(--kbd-bg); border: 1px solid var(--border); border-radius: 5px; padding: .1rem .35rem; margin-left: .35rem; }
+  .btn--kbd .only-desk { display: inline-flex; align-items: center; }
+  .btn--kbd__txt { color: var(--muted); font-weight: 500; }
+  .btn--fun :global(svg) { color: var(--accent-txt); }
+  .split { display: inline-flex; }
+  .split .btn:first-child { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  .split .btn:last-child { border-top-left-radius: 0; border-bottom-left-radius: 0; margin-left: -1px; }
+  .cp-check, .is-done .cp-copy { display: none; }
+  .is-done .cp-check { display: inline-block; color: var(--success); }
+  .cp-toast { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); font-size: 12px; font-family: var(--mono); color: var(--success); pointer-events: none; }
+  .ico-moon, :global(html.dark) .ico-sun { display: none; }
+  :global(html.dark) .ico-moon { display: inline-block; }
+
+  /* ---------- nav ---------- */
+  .nav { position: sticky; top: 0; z-index: 50; height: 56px; background: var(--nav-bg); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .nav__in { height: 100%; display: flex; align-items: center; gap: 1rem; }
+  .wordmark { font-weight: 600; font-size: 15px; letter-spacing: .06em; }
+  .nav__links { display: flex; gap: .15rem; margin-inline: auto; }
+  .nav__links a { padding: .4rem .6rem; border-radius: 6px; font-size: 14px; color: var(--muted); }
+  .nav__links a:hover { color: var(--fg); background: var(--surface-2); }
+  .nav__actions { display: flex; align-items: center; gap: .5rem; margin-left: auto; }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; isolation: isolate; padding-block: clamp(3rem, 8vw, 5.5rem) 1rem; }
+  .hero::before { content: ''; position: absolute; inset: -56px 0 0; background: var(--glow); pointer-events: none; z-index: -1; }
+  .hero__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
+  .hero__text { grid-column: span 7; min-width: 0; }
+  .bento { grid-column: span 5; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; min-width: 0; }
+  h1 { font-size: clamp(2.2rem, 4.5vw, 3.25rem); font-weight: 600; letter-spacing: -.03em; line-height: 1.08; margin-top: .9rem; }
+  .h1-sub { display: block; color: var(--muted); font-weight: 500; font-size: clamp(1.15rem, 2vw, 1.5rem); letter-spacing: -.02em; line-height: 1.3; margin-top: .55rem; }
+  .hero__summary { margin-top: 1.25rem; font-size: 16px; max-width: 58ch; }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+  .bento .card { padding: 1rem; min-width: 0; }
+  .bento__photo { padding: 0; overflow: hidden; position: relative; min-height: 200px; }
+  .bento__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .now { margin-top: .7rem; display: grid; gap: .55rem; font-size: 13.5px; line-height: 1.35; }
+  .now li { display: grid; overflow-wrap: anywhere; }
+  .now strong { font-weight: 600; }
+  .bento__stat .stat { margin-top: .55rem; font-size: 14px; }
+  .stat__n { font-family: var(--mono); font-size: 28px; font-weight: 500; letter-spacing: -.02em; line-height: 1; margin-right: .2rem; }
+  .bento__stat .muted { font-size: 13px; line-height: 1.4; margin-top: .3rem; }
+
+  /* ---------- sections ---------- */
+  .sec { padding-top: 6rem; scroll-margin-top: 4.5rem; }
+  .sec:focus { outline: none; }
+  .sec__head { margin-bottom: 1.5rem; }
+  h2 { font-size: 26px; font-weight: 600; letter-spacing: -.02em; line-height: 1.2; }
+  .sec__sub { color: var(--muted); margin-top: .35rem; }
+  h3 { font-size: 16px; font-weight: 600; letter-spacing: -.01em; line-height: 1.35; }
+  .sub-h { margin-top: 2.5rem; margin-bottom: 1rem; display: flex; align-items: baseline; gap: .5rem; }
+
+  /* experience */
+  .xp__row { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 1rem 2rem; padding: 1.35rem clamp(1rem, 3vw, 1.5rem); border-top: 1px solid var(--border); }
+  .xp__row:first-child { border-top: 0; }
+  .xp__meta { font-size: 13px; display: grid; gap: .2rem; align-content: start; }
+  .xp__meta .mono { color: var(--fg); }
+  .xp__title { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .6rem; }
+  .xp__title h3 { overflow-wrap: anywhere; }
+  .xp__role { color: var(--muted); margin-top: .2rem; }
+  .bullets { margin-top: .75rem; display: grid; gap: .45rem; padding-left: 1.1rem; list-style: disc; color: var(--fg); }
+  .bullets li::marker { color: var(--muted); }
+  .disc { margin-top: .6rem; }
+  .disc summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: .3rem; min-height: 28px; padding: 0 .45rem; margin-left: -.45rem; border-radius: 6px; font-size: 13px; font-weight: 500; color: var(--muted); }
+  .disc summary::-webkit-details-marker { display: none; }
+  .disc summary:hover { color: var(--fg); background: var(--surface-2); }
+  .disc summary :global(svg) { transition: transform 150ms ease; }
+  .disc[open] > summary :global(svg) { transform: rotate(180deg); }
+  .disc__hide, .disc[open] > summary .disc__show { display: none; }
+  .disc[open] > summary .disc__hide { display: inline; }
+
+  /* projects */
+  .cases { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .case { padding: clamp(1.1rem, 3vw, 1.5rem); display: flex; flex-direction: column; gap: .7rem; }
+  .case h3 { font-size: 20px; letter-spacing: -.02em; }
+  .case__desc { color: var(--fg); }
+  .case__stack { display: flex; flex-direction: column; gap: .4rem; margin-top: .2rem; }
+  .links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: auto; padding-top: .35rem; }
+  .tiles { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .tile { padding: 1rem; display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
+  .tile h4 { font-size: 15px; font-weight: 600; }
+  .tile__desc { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+  .tile__foot { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: auto; padding-top: .4rem; }
+  .tile__tags { font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .tile__links { display: inline-flex; gap: .15rem; flex: none; }
+  .tile__links a { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; color: var(--muted); }
+  .tile__links a:hover { color: var(--fg); background: var(--surface-2); }
+
+  /* hackathons */
+  .hk-row { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--pad)); padding: 2px var(--pad) 1rem; scroll-padding-inline: var(--pad); -webkit-overflow-scrolling: touch; }
+  .hk { flex: 0 0 min(84vw, 320px); scroll-snap-align: start; padding: 1.1rem; display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
+  .hk__head, .hk__body { display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
+  .hk__body { flex: 1; }
+  .hk__top { margin-left: .5rem; padding: .15rem .45rem; border-radius: 999px; background: var(--success-soft); color: var(--success); letter-spacing: .06em; }
+  .hk h3 { margin-top: .2rem; }
+  .hk__org { font-size: 12.5px; line-height: 1.4; }
+  .hk__place { font-size: 13.5px; font-weight: 500; color: var(--fg); display: flex; align-items: flex-start; gap: .35rem; }
+  .hk__place--win { color: var(--success); }
+  .hk__place :global(svg) { margin-top: 3px; }
+  .hk__proj { font-size: 15px; }
+  .hk__blurb { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
+  .hk__tags { font-size: 11.5px; overflow-wrap: anywhere; }
+  .hk__links { margin-top: auto; padding-top: .5rem; }
+
+  /* skills */
+  .sk-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .sk { padding: 1rem; display: flex; flex-direction: column; gap: .7rem; min-width: 0; }
+  .sk h3 { color: var(--muted); font-weight: 400; }
+  .disc--sm { margin-top: 0; }
+  .pills--rest { margin-top: .6rem; }
+
+  /* education */
+  .edu { padding: 1.25rem clamp(1rem, 3vw, 1.5rem); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem; align-items: center; }
+  .edu p { margin-top: .25rem; }
+  .edu__meta { text-align: right; font-size: 14px; }
+  .edu__meta .muted { display: inline-flex; align-items: center; gap: .3rem; }
+
+  /* contact */
+  .contact { padding: clamp(1.75rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem); text-align: center; display: flex; flex-direction: column; align-items: center; gap: .8rem; }
+  .contact h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); letter-spacing: -.03em; }
+  .contact__avail { color: var(--muted); max-width: 46ch; }
+  .contact__mail { display: inline-flex; align-items: center; gap: .5rem; font-size: clamp(1.05rem, 3vw, 1.5rem); font-weight: 500; letter-spacing: -.01em; margin-top: .4rem; overflow-wrap: anywhere; max-width: 100%; }
+  .contact__mail .link { text-decoration-color: var(--accent); }
+  .contact__links { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-top: .6rem; }
+  .contact__links .muted { margin-left: .1rem; font-size: 12px; }
+
+  /* footer */
+  .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem 1.5rem; padding-block: 3rem 5rem; font-size: 13.5px; }
+  .foot p { display: inline-flex; align-items: center; gap: .75rem; }
+  .foot nav { display: flex; gap: 1.25rem; }
+  .foot .link { min-height: 40px; }
+
+  /* ---------- palette ---------- */
+  .pal { width: min(560px, calc(100vw - 2rem)); margin: 12vh auto auto; padding: 0; border: 1px solid var(--border-hi); border-radius: 12px; background: var(--surface); color: var(--fg); box-shadow: 0 24px 64px rgba(0, 0, 0, .35); }
+  .pal::backdrop { background: var(--backdrop); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+  .pal__head { display: flex; align-items: center; gap: .6rem; padding: .6rem .9rem; border-bottom: 1px solid var(--border); color: var(--muted); }
+  .pal__head input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--fg); font: inherit; font-size: 15px; padding: .45rem 0; }
+  .pal__head input:focus { outline: none; }
+  .pal__head input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+  .pal__head kbd { font-family: var(--mono); font-size: 11px; background: var(--kbd-bg); border: 1px solid var(--border); border-radius: 5px; padding: .15rem .4rem; }
+  .pal__body { padding: .5rem; max-height: min(60vh, 480px); overflow-y: auto; }
+  .pal__group { padding: .35rem .4rem .5rem; }
+  .pal__group .lbl { padding: .2rem .5rem .4rem; }
+  .pal__group li > a, .pal__group li > button { display: flex; width: 100%; align-items: center; gap: .6rem; min-height: 40px; padding: .4rem .6rem; border: 0; border-radius: 8px; background: transparent; color: var(--fg); font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
+  .pal__group li > a :global(svg), .pal__group li > button :global(svg) { color: var(--muted); }
+  .pal__group li > a:hover, .pal__group li > button:hover { background: var(--surface-2); }
+  .pal__group li > a:focus-visible, .pal__group li > button:focus-visible { background: var(--surface-2); outline: 2px solid var(--accent); outline-offset: -2px; }
+  .pal__group .muted { margin-left: auto; font-size: 12px; }
+
+  /* ---------- responsive ---------- */
+  @media (min-width: 560px) {
+    .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 720px) {
+    .hk-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; margin-inline: 0; padding: 0; }
+    .hk { flex: initial; }
+    .hk--lead { grid-column: 1 / -1; flex-direction: row; gap: clamp(1.5rem, 4vw, 3rem); padding: clamp(1.25rem, 3vw, 1.75rem); }
+    .hk--lead .hk__head { flex: 0 0 38%; }
+    .hk--lead .hk__blurb { font-size: 14.5px; max-width: 62ch; }
+    .hk--lead h3 { font-size: 20px; letter-spacing: -.02em; }
+  }
+  @media (min-width: 1000px) {
+    .hk-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  @media (min-width: 900px) {
+    .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .sk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1024px) {
+    .cases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sk-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  @media (max-width: 899px) {
+    .hero__text, .bento { grid-column: span 12; }
+    .hero__grid { align-items: start; }
+  }
+  @media (max-width: 959px) {
+    .nav__links { display: none; }
+    .only-desk { display: none !important; }
+    .only-mob { display: inline; }
+    .btn--fun { width: 36px; padding: 0; }
+  }
+  @media (max-width: 767px) {
+    .xp__row { grid-template-columns: 1fr; gap: .5rem; }
+    .xp__meta { grid-auto-flow: column; justify-content: start; gap: .75rem; }
+    .sec { padding-top: 4.5rem; }
+    .edu__meta { text-align: left; }
+  }
+  @media (max-width: 559px) {
+    .bento { grid-template-columns: 1fr; }
+    .bento__photo { aspect-ratio: 16 / 10; }
+    .hero__actions .btn, .contact__links .btn { min-height: 40px; }
+    .hk { flex-basis: min(84vw, 320px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .p4 *, .p4 *::before, .p4 *::after { transition: none !important; }
+  }
+</style>

@@ -1,0 +1,83 @@
+---
+// src/components/OptionSwitcher.astro
+// ponytail: temporary, delete after winner chosen
+// Floating switcher to flip between the 6 pro design options and the comic ("Fun") page.
+// Keyboard: `[` previous, `]` next (cycles 1..6, Fun). Ignored while typing in a field.
+import { FUN_HREF, OPTION_HREFS } from '../lib/profile';
+
+const items = [
+  ...OPTION_HREFS.map((href, i) => ({ href, label: String(i + 1), title: `Option ${i + 1}` })),
+  { href: FUN_HREF, label: 'Fun', title: 'Comic (fun) mode' },
+];
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) => (href.replace(/\/+$/, '') || '/') === path;
+---
+<nav class="opt-switch" aria-label="Design option switcher (temporary)" data-hrefs={JSON.stringify(items.map((i) => i.href))}>
+  <a class="opt-switch__gallery" href="/options" title="All options">⋯</a>
+  {items.map((it) => (
+    <a href={it.href} title={it.title} aria-current={isCurrent(it.href) ? 'page' : undefined}>{it.label}</a>
+  ))}
+</nav>
+
+<style>
+  .opt-switch {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2147483000;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 999px;
+    background: rgba(20, 20, 24, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    font: 600 12px/1 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    opacity: 0.85;
+    transition: opacity 120ms ease;
+  }
+  .opt-switch:hover, .opt-switch:focus-within { opacity: 1; }
+  .opt-switch a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 7px;
+    border-radius: 999px;
+    color: #f4f4f5;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  .opt-switch a:hover { background: rgba(255, 255, 255, 0.14); }
+  .opt-switch a:focus-visible { outline: 2px solid #ffffff; outline-offset: 1px; }
+  .opt-switch a[aria-current='page'] { background: #f4f4f5; color: #111114; }
+  .opt-switch__gallery { opacity: 0.7; }
+  @media (max-width: 400px) {
+    .opt-switch { right: 8px; bottom: 8px; }
+    .opt-switch a { min-width: 22px; height: 22px; padding: 0 5px; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var nav = document.querySelector('.opt-switch');
+    if (!nav) return;
+    var hrefs = JSON.parse(nav.getAttribute('data-hrefs') || '[]');
+    var norm = function (p) { return p.replace(/\/+$/, '') || '/'; };
+    var here = norm(location.pathname);
+    var idx = hrefs.map(norm).indexOf(here);
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== '[' && e.key !== ']') return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var t = e.target;
+      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      var n = hrefs.length;
+      var next = idx < 0 ? 0 : (idx + (e.key === ']' ? 1 : n - 1)) % n;
+      location.href = hrefs[next];
+    });
+  })();
+</script>

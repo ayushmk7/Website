@@ -9,6 +9,7 @@ import ExperienceLayouts from '../components/v2/ExperienceLayouts.astro';
 import ProjectLayouts from '../components/v2/ProjectLayouts.astro';
 import HackathonLayouts from '../components/v2/HackathonLayouts.astro';
 import StackLayouts from '../components/v2/StackLayouts.astro';
+import OptionSwitcher from '../components/OptionSwitcher.astro'; // ponytail: temporary, delete after winner chosen
 ---
 <ThemeLayout themeKey="comic" title="Ayush Madhav">
   <ComicHero client:load />
@@ -103,4 +104,5 @@ import StackLayouts from '../components/v2/StackLayouts.astro';
     })();
   </script>
 
+  <OptionSwitcher />
 </ThemeLayout>

@@ -1,0 +1,49 @@
+---
+// src/pages/options/index.astro — gallery of the 6 professional design candidates.
+// ponytail: temporary, delete after winner chosen
+import ProLayout from '../../layouts/ProLayout.astro';
+import OptionSwitcher from '../../components/OptionSwitcher.astro';
+import { profile, FUN_HREF, OPTION_HREFS } from '../../lib/profile';
+
+const options = [
+  { name: 'Ledger', pitch: 'Swiss editorial single column: one typeface, hairline rules, dates in the margin.' },
+  { name: 'Terminal', pitch: 'Dark monospace engineer page: prompt-style sections, tree-view projects, keyboard jumps.' },
+  { name: 'Dossier', pitch: 'Two-column résumé with a sticky identity sidebar; prints to a clean one-pager.' },
+  { name: 'Product', pitch: 'Linear/Vercel product aesthetic: bento hero, case-study projects, ⌘K command palette.' },
+  { name: 'Monograph', pitch: 'Classic serif academic CV on warm paper; numbered entries and small-caps labels.' },
+  { name: 'Scan', pitch: 'Dense recruiter dashboard: one-screen summary, timeline, skills matrix, expandable detail.' },
+].map((o, i) => ({ ...o, n: i + 1, href: OPTION_HREFS[i] }));
+---
+<ProLayout title={`Design options — ${profile.name}`}>
+  <main class="wrap">
+    <h1>Professional design options</h1>
+    <p class="lede">Six candidates for the main site. Same content, different direction. Press <kbd>[</kbd> / <kbd>]</kbd> on any page to cycle.</p>
+    <ol class="list">
+      {options.map((o) => (
+        <li>
+          <a href={o.href}><span class="num">{o.n}</span><span class="name">{o.name}</span></a>
+          <p>{o.pitch}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="fun"><a href={FUN_HREF}>Fun mode (current comic site)</a></p>
+  </main>
+  <OptionSwitcher />
+</ProLayout>
+
+<style>
+  .wrap { max-width: 44rem; margin: 0 auto; padding: 4rem 1.25rem 6rem; font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; color: #18181b; }
+  html.dark .wrap { color: #e4e4e7; }
+  h1 { font-size: 1.75rem; font-weight: 650; letter-spacing: -0.01em; margin: 0 0 0.5rem; }
+  .lede { margin: 0 0 2rem; opacity: 0.75; line-height: 1.5; }
+  kbd { font: 0.85em ui-monospace, monospace; padding: 0.05em 0.35em; border: 1px solid currentColor; border-radius: 4px; }
+  .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .list li { padding: 1rem 0; border-top: 1px solid rgba(127,127,127,0.35); }
+  .list a { display: flex; align-items: baseline; gap: 0.75rem; text-decoration: none; color: inherit; font-size: 1.15rem; font-weight: 600; }
+  .list a:hover .name { text-decoration: underline; }
+  .list a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+  .num { font-variant-numeric: tabular-nums; opacity: 0.5; font-weight: 500; }
+  .list p { margin: 0.35rem 0 0; opacity: 0.75; line-height: 1.5; }
+  .fun { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid rgba(127,127,127,0.35); }
+  .fun a { color: inherit; }
+</style>
