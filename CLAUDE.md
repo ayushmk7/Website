@@ -45,11 +45,13 @@ Notes:
 3. **Skills** (`resume.json`): add any new skill to the right category. Dedupe on
    the normalized key so `Scikit learn` == `Scikit-learn` (don't add a near-dup;
    fix the spelling on the existing one if needed). Keep every category **sorted
-   A→Z** (case-insensitive).
+   A→Z** (case-insensitive). The page shows only a curated subset: the
+   `featured` map in `src/components/v2/StackLayouts.astro`. Add a skill there
+   too if it should be visible (build fails if a pick isn't in `resume.json`).
 4. **Projects** (`projects.ts`) / **Hackathons** (`v2.ts`): append new ones;
    correct existing ones. Never drop curated entries that aren't in the résumé.
 5. Don't touch layout/theme (baked: Experience=accordion, Projects=carousel,
-   Hackathons=newspaper, Stack=carousel, newspaper card skin) unless asked.
+   Hackathons=newspaper, Stack=newspaper, newspaper card skin) unless asked.
 
 ## After any change — verify
 

@@ -1,6 +1,7 @@
 ---
-// Stack — auto-scrolling + manual carousel of category cards (comic scrollbar).
-// Groups rendered twice so the auto-scroll wraps seamlessly.
+// Stack — newspaper clippings (same skin as Hackathons).
+// ponytail: resume.json keeps every skill (golden rule); this only picks which
+// few show per category. New skills in resume.json won't appear until added here.
 import resumeData from '../../data/resume.json';
 
 const labels: Record<string, string> = {
@@ -12,15 +13,28 @@ const labels: Record<string, string> = {
   cybersecurity: 'Cybersecurity',
   coreCs: 'Core Computer Science',
 };
-const groups = Object.entries(resumeData.skills) as [string, string[]][];
+const featured: Record<string, string[]> = {
+  programmingLanguages: ['C', 'Go', 'Jac', 'Python', 'Rust', 'TypeScript'],
+  aiMl: ['LLMs', 'LoRA/QLoRA fine tuning', 'PyTorch', 'Quantization', 'RAG', 'vLLM'],
+  softwareDevelopment: ['FastAPI', 'GraphQL', 'Next.js', 'Node.js', 'React', 'WebSockets'],
+  databases: ['ETL pipelines', 'MongoDB', 'PostgreSQL', 'Redis', 'Vector databases'],
+  devOps: ['AWS Lambda', 'CI/CD pipelines', 'Docker', 'Kubernetes', 'Linux', 'Terraform'],
+  cybersecurity: ['PCAP forensics', 'Reverse engineering', 'TLS protocol analysis', 'YARA based malware triage'],
+  coreCs: ['Algorithms', 'Concurrency and Multithreading', 'Data Structures', 'Operating Systems Basics'],
+};
+const skills = resumeData.skills as Record<string, string[]>;
+// fail the build on a typo'd pick instead of silently dropping it
+for (const [key, picks] of Object.entries(featured))
+  for (const p of picks)
+    if (!skills[key]?.includes(p)) throw new Error(`StackLayouts: "${p}" not in resume.json skills.${key}`);
+const groups = Object.keys(skills).filter((k) => featured[k]).map((k) => [k, featured[k]] as const);
 ---
-<div class="cscroll" data-autoscroll tabindex="0" aria-label="Stack carousel — scroll to browse">
-  <div class="cscroll-track">
-    {[...groups, ...groups].map(([key, items]) => (
-      <div class="vcard">
-        <h3 class="vco" style="font-size:1.3rem;margin-bottom:0.55rem">{labels[key] ?? key}</h3>
-        <div style="display:flex;flex-wrap:wrap;gap:0.4rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
-      </div>
-    ))}
-  </div>
+<div class="hack-news">
+  {groups.map(([key, items], i) => (
+    <div class="news">
+      <div class="news-kicker"><span>Stack Report</span><span>No. {String(i + 1).padStart(2, '0')}</span></div>
+      <h3 class="news-head">{labels[key] ?? key}</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:0.4rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
+    </div>
+  ))}
 </div>
