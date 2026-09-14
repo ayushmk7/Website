@@ -52,8 +52,8 @@ Notes:
    correct existing ones. Never drop curated entries that aren't in the résumé.
    Projects shows 4 featured (`featuredTitles` in
    `src/components/v2/ProjectLayouts.astro`); the rest sit behind "Show more".
-5. Don't touch layout/theme (baked: Experience=accordion, Projects=newspaper + Show more,
-   Hackathons=newspaper, Stack=newspaper, newspaper card skin) unless asked.
+5. Don't touch layout/theme (baked: every section is a uniform
+   newspaper grid `.news-grid`; Projects adds a Show more) unless asked.
 
 ## After any change — verify
 

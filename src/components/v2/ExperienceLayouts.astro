@@ -1,12 +1,16 @@
 ---
-// Experience — accordion (all collapsed by default).
+// Experience — newspaper clippings (same skin as Projects / Hackathons / Stack).
 import { experience } from '../../data/v2';
+import ProjectLinks from './ProjectLinks.astro';
 ---
-<div class="lv-acc">
+<div class="news-grid">
   {experience.map((j) => (
-    <details>
-      <summary><span class="acc-co">{j.company}</span> <span class="vrole">{j.role}</span>{j.badge && <span class="vbadge">{j.badge}</span>}<span class="acc-period">{j.period}</span></summary>
-      <ul class="vbul">{j.bullets.map((b) => <li>{b}</li>)}</ul>
-    </details>
+    <div class="news">
+      <div class="news-kicker"><span>{j.kind}{j.location ? ` · ${j.location}` : ''}</span><span>{j.period}</span></div>
+      <h3 class="news-head">{j.company}</h3>
+      <p class="trophy-place" style="margin-bottom:0.4rem">{j.role}{j.badge && <span class="vbadge">{j.badge}</span>}</p>
+      <ul class="vbul news-body" style="margin-bottom:0.6rem">{j.bullets.map((b) => <li>{b}</li>)}</ul>
+      <ProjectLinks p={{ title: j.company, websiteUrl: j.url }} />
+    </div>
   ))}
 </div>

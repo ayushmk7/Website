@@ -15,21 +15,20 @@ const featured = featuredTitles.map((t) => {
 });
 const rest = list.filter((p) => !featuredTitles.includes(p.title));
 ---
-<div class="proj-top">
+<div class="news-grid">
   {featured.map((p) => <ProjectCard p={p} />)}
 </div>
 {rest.length > 0 && (
   <details class="proj-more">
     <summary class="comic-link-btn"><span class="closed">Show {rest.length} more</span><span class="open">Show less</span></summary>
-    <div class="hack-news" style="margin-top:1.25rem">
+    <div class="news-grid" style="margin-top:1.25rem">
       {rest.map((p) => <ProjectCard p={p} />)}
     </div>
   </details>
 )}
 
 <style>
-  /* grid, not columns: 4 featured in 3 columns stack 1/1/2 and leave a hole */
-  .proj-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); column-gap: 1.25rem; }
+  .proj-more { margin-top: 1.25rem; }
   .proj-more > summary { list-style: none; cursor: pointer; width: fit-content; }
   .proj-more > summary::-webkit-details-marker { display: none; }
   .proj-more[open] .closed, .proj-more:not([open]) .open { display: none; }

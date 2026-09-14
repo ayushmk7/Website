@@ -29,7 +29,7 @@ for (const [key, picks] of Object.entries(featured))
     if (!skills[key]?.includes(p)) throw new Error(`StackLayouts: "${p}" not in resume.json skills.${key}`);
 const groups = Object.keys(skills).filter((k) => featured[k]).map((k) => [k, featured[k]] as const);
 ---
-<div class="hack-news">
+<div class="news-grid">
   {groups.map(([key, items], i) => (
     <div class="news">
       <div class="news-kicker"><h3 style="font:inherit">{labels[key] ?? key}</h3><span style="white-space:nowrap">No. {String(i + 1).padStart(2, '0')}</span></div>

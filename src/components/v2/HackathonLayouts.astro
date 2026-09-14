@@ -3,7 +3,7 @@
 import { hackathons } from '../../data/v2';
 import HackLinks from './HackLinks.astro';
 ---
-<div class="hack-news">
+<div class="news-grid">
   {hackathons.map((h) => (
     <div class="news">
       <div class="news-kicker"><span>Hackathon Win</span><span>{h.date}</span></div>

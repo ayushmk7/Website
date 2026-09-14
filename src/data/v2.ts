@@ -51,7 +51,7 @@ export const hackathons: Hackathon[] = [
     event: "Jaseci Hackathon",
     organizer: "Jaseci, University of Michigan",
     date: "Apr 2026",
-    placement: "2nd Overall, Cash Prize",
+    placement: "2nd Overall",
     project: "GhostWatch",
     blurb:
       "Jac-powered security and PR review. Verified GitHub webhooks fire graph walkers that map the codebase, score dependency and blast-radius impact, and surface risk in a web control room. Built to advance open-source dev tooling.",

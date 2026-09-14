@@ -1,6 +1,6 @@
 /* ============================================================
-   Baked layouts: Experience=accordion · Projects, Hackathons, Stack =
-   newspaper. All cards wear a newspaper
+   Baked layouts: Experience, Projects, Hackathons, Stack = newspaper
+   grid (.news-grid). All cards wear a newspaper
    (paper + ink) skin that flips with light/dark.
    ============================================================ */
 
@@ -12,7 +12,6 @@ html.dark { --paper: #14181f; --ink: #e8e8e8; }
 /* every content card -> newspaper paper + ink */
 html[data-theme="comic"] .panel,
 html[data-theme="comic"] .panel--burst,
-.lv-acc details,
 .news {
   background: var(--paper);
   color: var(--ink);
@@ -36,22 +35,8 @@ html[data-theme="comic"] .cwm-pop-country,
 html[data-theme="comic"] .cwm-pop-sub { color: color-mix(in srgb, var(--ink) 65%, var(--paper)); }
 
 /* shared card text bits */
-.vperiod { font-size: 0.8rem; font-weight: 700; opacity: 0.8; }
-.vrole { font-weight: 700; }
-.vco { font-family: var(--font-display); line-height: 1.05; color: var(--accent); }
 .vbadge { display: inline-block; font-size: 0.7rem; font-weight: 800; background: var(--accent-2); color: #141414; border: 2px solid var(--outline); border-radius: 999px; padding: 0.05rem 0.5rem; margin-left: 0.4rem; vertical-align: middle; }
 .vbul { font-size: 0.875rem; display: flex; flex-direction: column; gap: 0.375rem; padding-left: 1.1rem; list-style: disc; }
-
-/* ---- Experience: accordion ---- */
-.lv-acc { display: flex; flex-direction: column; gap: 0.75rem; }
-.lv-acc details { border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 5px 5px 0 var(--panel-shadow); padding: 0.4rem 1.1rem; }
-.lv-acc summary { cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; padding: 0.6rem 0; }
-.lv-acc summary::-webkit-details-marker { display: none; }
-.lv-acc summary::before { content: '▸'; color: var(--accent); font-weight: 900; transition: transform 0.15s; }
-.lv-acc details[open] summary::before { transform: rotate(90deg); }
-.lv-acc .acc-co { font-family: var(--font-display); font-size: 1.5rem; color: var(--accent); }
-.lv-acc .acc-period { margin-left: auto; font-size: 0.78rem; font-weight: 700; opacity: 0.8; }
-.lv-acc .vbul { padding: 0 0 0.8rem 1.4rem; }
 
 /* ---- Map popup: banner (name left | weather right). Prefixed to beat the
    old comic.css .cwm-pop rules. Right padding leaves room for the close X. ---- */
@@ -83,10 +68,12 @@ html[data-theme="comic"] .cwm-leaflet { background: var(--map-bg); }
 html[data-theme="comic"] .cwm-leaflet .leaflet-container { background: var(--map-bg); }
 
 /* ---- Hackathons: newspaper clippings ---- */
-.hack-news { column-width: 18rem; column-gap: 1.25rem; }
-.news { --paper: #fbf7ea; --ink: #141414; break-inside: avoid; margin-bottom: 1.25rem; border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--panel-shadow); padding: 1rem 1.1rem; }
+/* one grid for every section: 2-up desktop, 1-up phone; cards in a row share
+   a height and links (margin-top:auto) pin to the bottom */
+.news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr)); gap: 1.25rem; }
+.news { --paper: #fbf7ea; --ink: #141414; display: flex; flex-direction: column; border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--panel-shadow); padding: 1rem 1.1rem; }
 html.dark .news { --paper: #14181f; --ink: #e8e8e8; }
-.news-kicker { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-bottom: 2px solid currentColor; padding-bottom: 0.3rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; gap: 0.5rem; }
+.news-kicker { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-bottom: 2px solid currentColor; padding-bottom: 0.3rem; margin-bottom: 0.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.1rem 0.5rem; }
 .news-head { font-family: var(--font-display); font-size: 1.55rem; line-height: 1; margin-bottom: 0.4rem; color: var(--accent); }
 .news-body { font-size: 0.82rem; }
 .trophy-place { font-weight: 800; font-size: 0.82rem; color: var(--accent); }
