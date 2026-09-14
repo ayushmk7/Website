@@ -109,20 +109,6 @@ export const experience: Experience[] = [
     ],
   },
   {
-    company: "CLAWS UM",
-    role: "AI Lead, formerly AI Software Developer",
-    period: "Aug 2025 to Present",
-    location: "Ann Arbor, MI",
-    kind: "Leadership",
-    badge: "NASA SUITS / RASC-AL",
-    bullets: [
-      "Lead the CLAWS AI team across the NASA SUITS and RASC-AL challenges.",
-      "Designed CORVUS, a dual-inference AI architecture for Project GEMINI, with edge transformers (TinyBERT, DistilBERT) on a Jetson Orin Nano via ONNX Runtime hitting sub-350ms deterministic responses.",
-      "Integrated DSPy for multi-step reasoning, Instructor and Pydantic for type-safe validation, and MongoDB/WebSocket sync for real-time telemetry, with command-routing microservices and fail-safe fallbacks for any network condition.",
-      "Led rover self-driving and sample-detection ML for the RASC-AL challenge.",
-    ],
-  },
-  {
     company: "Cactus",
     role: "Core Contributor",
     period: "Jan 2026 to Present",
