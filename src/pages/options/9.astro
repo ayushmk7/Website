@@ -1,0 +1,572 @@
+---
+// src/pages/options/9.astro — Option 9 "Spec": structure-led bands.
+// Seven full-bleed bands alternating pure black and pure white, all on one shared grid:
+// a numbered section label on the left, content rows (176px meta | body) on the right.
+// Dark mode flips the band phase. Content comes only from ../../lib/profile.
+import ProLayout from '../../layouts/ProLayout.astro';
+import OptionSwitcher from '../../components/OptionSwitcher.astro';
+import {
+  profile, contactLinks, sections, education,
+  experience, hackathonsWithProject, featuredProjects, moreProjects,
+  skillGroups, stats, FUN_HREF,
+} from '../../lib/profile';
+import type { Project } from '../../lib/profile';
+
+const isCurrent = (period: string) => /present/i.test(period);
+const isWin = (placement: string) => /1st|winner/i.test(placement);
+const primaryUrl = (p: Project) => p.githubUrl ?? p.websiteUrl;
+const skillTotal = skillGroups.reduce((n, g) => n + g.all.length, 0);
+const year = new Date().getFullYear();
+const edu = education[0];
+const byKey = Object.fromEntries(contactLinks.map((c) => [c.key, c]));
+const social = contactLinks.filter((c) => c.key === 'github' || c.key === 'linkedin' || c.key === 'x');
+
+/** Band index → zero-padded number for the label column and the rail. */
+const num = (i: number) => String(i).padStart(2, '0');
+const counts: Record<string, string> = {
+  experience: `${stats.roles} roles · ${stats.currentRoles.length} current`,
+  projects: `${featuredProjects.length} featured · ${moreProjects.length} more`,
+  hackathons: `${stats.hackathonPlacements} placements · ${stats.hackathonWins} wins`,
+  skills: `${skillTotal} skills · ${skillGroups.length} groups`,
+  education: `Class of ${stats.graduation.split(' ').pop()}`,
+  contact: profile.location,
+};
+---
+<ProLayout title={`${profile.name} — ${profile.headline}`} bodyClass="s9-body">
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" />
+  </Fragment>
+
+  <div class="s9" id="top">
+    <a class="s9-skip" href="#main">Skip to content</a>
+
+    <!-- Fixed rail: opaque, set in the inverse of the page tone (black in light, white in dark). -->
+    <header class="s9-rail">
+      <a class="s9-rail__name" href="#top" aria-label={`${profile.name}, back to top`}>
+        <span class="s9-rail__full">{profile.name}</span>
+        <span class="s9-rail__short" aria-hidden="true">{profile.initials}</span>
+      </a>
+      <nav class="s9-rail__nav" aria-label="Sections">
+        <ol>
+          {sections.map((s, i) => (
+            <li>
+              <a href={`#${s.id}`} aria-label={`${num(i + 1)} ${s.label}`}>
+                <span class="s9-rail__num">{num(i + 1)}</span>
+                <span class="s9-rail__lbl">{s.label}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+      <div class="s9-rail__tools">
+        <a href={FUN_HREF} title="Switch to the comic version of this site" aria-label="Fun mode: switch to the comic version of this site">
+          <span class="s9-rail__full">Fun mode</span><span class="s9-rail__short" aria-hidden="true">Fun</span><span aria-hidden="true"> ↗</span>
+        </a>
+        <button type="button" data-invert aria-label="Invert the page (toggle dark mode)">Invert</button>
+        <a href={profile.resumeHref} target="_blank" rel="noopener noreferrer">Résumé<span aria-hidden="true"> ↗</span></a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- 00 Profile -->
+      <section class="s9-band s9-hero" aria-labelledby="s9-name">
+        <div class="s9-band__in">
+          <div class="s9-label">
+            <img class="s9-photo" src={profile.photo} alt={profile.photoAlt} width="200" height="200" decoding="async" fetchpriority="high" />
+            <span class="s9-label__num" aria-hidden="true">00</span>
+            <span class="s9-label__name">Profile</span>
+            <span class="s9-label__count">{profile.location}</span>
+          </div>
+          <div class="s9-content">
+            <p class="s9-kicker">{profile.headline}</p>
+            <h1 id="s9-name">{profile.name}</h1>
+            <p class="s9-tagline">{profile.tagline}</p>
+            <p class="s9-summary">{profile.summary}</p>
+            <dl class="s9-spec">
+              <div class="s9-row">
+                <dt>Location</dt>
+                <dd>{profile.location}</dd>
+              </div>
+              <div class="s9-row">
+                <dt>Status</dt>
+                <dd>{profile.availability}</dd>
+              </div>
+              <div class="s9-row">
+                <dt>Email</dt>
+                <dd>
+                  <a href={byKey.email.href}>{profile.email}</a>
+                  <button type="button" class="s9-copy" data-copy={profile.email} aria-label={`Copy email address ${profile.email}`}>Copy</button>
+                </dd>
+              </div>
+              <div class="s9-row">
+                <dt>Links</dt>
+                <dd class="s9-inline">
+                  {social.map((c) => (
+                    <a href={c.href} target="_blank" rel="noopener noreferrer">{c.label}<span aria-hidden="true"> ↗</span></a>
+                  ))}
+                </dd>
+              </div>
+              <div class="s9-row">
+                <dt>Résumé</dt>
+                <dd><a href={profile.resumeHref} target="_blank" rel="noopener noreferrer">PDF<span aria-hidden="true"> ↗</span></a></dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- 01 Experience -->
+      <section id="experience" class="s9-band" aria-labelledby="h-experience">
+        <div class="s9-band__in">
+          <div class="s9-label">
+            <span class="s9-label__num" aria-hidden="true">01</span>
+            <h2 id="h-experience" class="s9-label__name">Experience</h2>
+            <span class="s9-label__count">{counts.experience}</span>
+          </div>
+          <ul class="s9-content s9-rows">
+            {experience.map((e) => (
+              <li class="s9-row">
+                <div class="s9-meta">
+                  <span>{isCurrent(e.period) && <span class="s9-mark" title="Current role" aria-label="Current role"></span>}{e.period}</span>
+                  {e.location && <span>{e.location}</span>}
+                  <span>{e.kind}{e.badge && ` · ${e.badge}`}</span>
+                </div>
+                <div class="s9-cell">
+                  <h3>{e.role}</h3>
+                  <p class="s9-sub">
+                    {e.url
+                      ? <a href={e.url} target="_blank" rel="noopener noreferrer">{e.company}<span aria-hidden="true"> ↗</span></a>
+                      : e.company}
+                  </p>
+                  <ul class="s9-bullets">
+                    {e.bullets.map((b) => <li>{b}</li>)}
+                  </ul>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- 02 Projects -->
+      <section id="projects" class="s9-band" aria-labelledby="h-projects">
+        <div class="s9-band__in">
+          <div class="s9-label">
+            <span class="s9-label__num" aria-hidden="true">02</span>
+            <h2 id="h-projects" class="s9-label__name">Projects</h2>
+            <span class="s9-label__count">{counts.projects}</span>
+          </div>
+          <div class="s9-content">
+            <ul class="s9-rows">
+              {featuredProjects.map((p) => (
+                <li class="s9-row">
+                  <div class="s9-meta">
+                    {p.tags.map((t) => <span>{t}</span>)}
+                  </div>
+                  <div class="s9-cell">
+                    <h3>{p.title}</h3>
+                    <p class="s9-desc">{p.description}</p>
+                    {(p.githubUrl || p.websiteUrl) && (
+                      <p class="s9-links">
+                        {p.githubUrl && <a href={p.githubUrl} target="_blank" rel="noopener noreferrer">GitHub<span aria-hidden="true"> ↗</span></a>}
+                        {p.websiteUrl && <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer">Site<span aria-hidden="true"> ↗</span></a>}
+                      </p>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <details class="s9-more">
+              <summary><span class="s9-more__sign" aria-hidden="true"></span>{moreProjects.length} more projects</summary>
+              <ul class="s9-rows s9-rows--compact">
+                {moreProjects.map((p) => (
+                  <li class="s9-row">
+                    <div class="s9-meta">
+                      {p.tags.slice(0, 3).map((t) => <span>{t}</span>)}
+                    </div>
+                    <div class="s9-cell">
+                      <h3 class="s9-h3--sm">
+                        {primaryUrl(p)
+                          ? <a href={primaryUrl(p)} target="_blank" rel="noopener noreferrer">{p.title}<span aria-hidden="true"> ↗</span></a>
+                          : p.title}
+                        {p.githubUrl && p.websiteUrl && (
+                          <a class="s9-alt" href={p.websiteUrl} target="_blank" rel="noopener noreferrer">Site<span aria-hidden="true"> ↗</span></a>
+                        )}
+                      </h3>
+                      <p class="s9-desc">{p.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 Hackathons -->
+      <section id="hackathons" class="s9-band" aria-labelledby="h-hackathons">
+        <div class="s9-band__in">
+          <div class="s9-label">
+            <span class="s9-label__num" aria-hidden="true">03</span>
+            <h2 id="h-hackathons" class="s9-label__name">Hackathons</h2>
+            <span class="s9-label__count">{counts.hackathons}</span>
+          </div>
+          <ol class="s9-content s9-rows">
+            {hackathonsWithProject.map((h) => (
+              <li class="s9-row">
+                <div class="s9-meta">
+                  <span>{h.date}</span>
+                  <span>{h.organizer}</span>
+                </div>
+                <div class="s9-cell">
+                  <h3>{h.event}</h3>
+                  <p class="s9-placement">
+                    {isWin(h.placement) && <span class="s9-mark" title="Win" aria-label="Win"></span>}
+                    <strong>{h.placement}</strong>{h.prize && <span> · {h.prize}</span>}
+                  </p>
+                  <p class="s9-sub s9-mono">{h.project}{h.projectEntry?.tags?.length ? ` — ${h.projectEntry.tags.slice(0, 4).join(' / ')}` : ''}</p>
+                  <p class="s9-desc">{h.blurb}</p>
+                  {(h.repoUrl || h.siteUrl) && (
+                    <p class="s9-links">
+                      {h.repoUrl && <a href={h.repoUrl} target="_blank" rel="noopener noreferrer">Repository<span aria-hidden="true"> ↗</span></a>}
+                      {h.siteUrl && <a href={h.siteUrl} target="_blank" rel="noopener noreferrer">Site<span aria-hidden="true"> ↗</span></a>}
+                    </p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <!-- 04 Skills -->
+      <section id="skills" class="s9-band" aria-labelledby="h-skills">
+        <div class="s9-band__in">
+          <div class="s9-label">
+            <span class="s9-label__num" aria-hidden="true">04</span>
+            <h2 id="h-skills" class="s9-label__name">Skills</h2>
+            <span class="s9-label__count">{counts.skills}</span>
+          </div>
+          <ul class="s9-content s9-rows">
+            {skillGroups.map((g) => {
+              const rest = g.all.filter((s) => !g.featured.includes(s));
+              return (
+                <li class="s9-row">
+                  <div class="s9-meta">
+                    <h3 class="s9-h3--meta">{g.shortLabel}</h3>
+                  </div>
+                  <div class="s9-cell">
+                    <ul class="s9-skills" aria-label={`${g.label}, primary`}>
+                      {g.featured.map((s) => <li>{s}</li>)}
+                    </ul>
+                    {rest.length > 0 && (
+                      <details class="s9-more s9-more--inline">
+                        <summary><span class="s9-more__sign" aria-hidden="true"></span>{rest.length} more</summary>
+                        <ul class="s9-skills s9-skills--rest" aria-label={`${g.label}, all`}>
+                          {rest.map((s) => <li>{s}</li>)}
+                        </ul>
+                      </details>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
+      <!-- 05 Education -->
+      <section id="education" class="s9-band" aria-labelledby="h-education">
+        <div class="s9-band__in">
+          <div class="s9-label">
+            <span class="s9-label__num" aria-hidden="true">05</span>
+            <h2 id="h-education" class="s9-label__name">Education</h2>
+            <span class="s9-label__count">{counts.education}</span>
+          </div>
+          <ul class="s9-content s9-rows">
+            <li class="s9-row">
+              <div class="s9-meta">
+                <span>{edu.period}</span>
+                <span>{edu.location}</span>
+              </div>
+              <div class="s9-cell">
+                <h3>{edu.degree}</h3>
+                <p class="s9-sub">
+                  {edu.url
+                    ? <a href={edu.url} target="_blank" rel="noopener noreferrer">{edu.institution}<span aria-hidden="true"> ↗</span></a>
+                    : edu.institution}
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 06 Contact -->
+      <section id="contact" class="s9-band" aria-labelledby="h-contact">
+        <div class="s9-band__in">
+          <div class="s9-label">
+            <span class="s9-label__num" aria-hidden="true">06</span>
+            <h2 id="h-contact" class="s9-label__name">Contact</h2>
+            <span class="s9-label__count">{counts.contact}</span>
+          </div>
+          <div class="s9-content">
+            <p class="s9-tagline">{profile.availability}</p>
+            <ul class="s9-rows s9-contact">
+              {contactLinks.map((c) => (
+                <li class="s9-row">
+                  <div class="s9-meta"><span>{c.label}</span></div>
+                  <div class="s9-cell">
+                    {c.external
+                      ? <a href={c.href} target="_blank" rel="noopener noreferrer">{c.handle}<span aria-hidden="true"> ↗</span></a>
+                      : <a href={c.href}>{c.handle}</a>}
+                    {c.key === 'email' && (
+                      <button type="button" class="s9-copy" data-copy={profile.email} aria-label={`Copy email address ${profile.email}`}>Copy</button>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <footer class="s9-foot">
+              <span>© {year} {profile.name}</span>
+              <a href={FUN_HREF} title="Switch to the comic version of this site">Fun mode<span aria-hidden="true"> ↗</span></a>
+              <button type="button" data-invert aria-label="Invert the page (toggle dark mode)">Invert</button>
+              <a href="#top">Top<span aria-hidden="true"> ↑</span></a>
+            </footer>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <OptionSwitcher />
+</ProLayout>
+
+<!-- Global so `html.dark` compound selectors work; every rule is prefixed with .s9 / .s9-body. -->
+<style is:global>
+  /* ---- tokens: --a is the "page" tone, --b its inverse; dark mode swaps them ---- */
+  html:has(> body.s9-body) { background: #fff; }
+  html.dark:has(> body.s9-body) { background: #000; }
+  .s9-body {
+    --a: #fff;
+    --b: #000;
+    --font: 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --gutter: clamp(16px, 4vw, 48px);
+    --meta-col: 176px;
+    margin: 0;
+    background: var(--a);
+    color: var(--b);
+    font: 400 17px/1.6 var(--font);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  html.dark .s9-body { --a: #000; --b: #fff; }
+
+  /* ---- resets (low specificity so class rules win) ---- */
+  .s9 :where(h1, h2, h3, p, ul, ol, dl, dd, dt, figure) { margin: 0; }
+  .s9 :where(ul, ol) { padding: 0; list-style: none; }
+  .s9 :where(a) { color: inherit; text-decoration: none; }
+  .s9 :where(button) { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  .s9 :where(img) { display: block; max-width: 100%; height: auto; }
+  .s9 :where(a, button, summary):focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+  .s9 :where(a, button, summary):focus:not(:focus-visible) { outline: none; }
+  .s9 a:hover { text-decoration: underline; text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+
+  .s9-skip {
+    position: absolute; left: var(--gutter); top: -100px; z-index: 60;
+    padding: 8px 12px; background: #000; color: #fff; font: 500 13px/1 var(--mono);
+  }
+  .s9-skip:focus { top: 8px; outline: 2px solid #fff; outline-offset: 2px; }
+
+  /* ---- rail: fixed, difference-blended so it inverts over every band by itself ---- */
+  .s9-rail {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    height: 48px; padding: 0 var(--gutter);
+    display: flex; align-items: center; gap: 24px;
+    background: var(--b); color: var(--a);
+    font: 500 12.5px/1 var(--mono); text-transform: uppercase; letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--a);
+    pointer-events: none;
+  }
+  .s9-rail a, .s9-rail button { pointer-events: auto; display: inline-flex; align-items: center; min-height: 40px; }
+  .s9-rail button { text-transform: inherit; letter-spacing: inherit; }
+  .s9-rail__name { flex: 0 0 auto; font-weight: 500; }
+  .s9-rail__short { display: none; }
+  .s9-rail__nav { flex: 1 1 auto; min-width: 0; overflow: hidden; }
+  .s9-rail__nav ol { display: flex; gap: 18px; flex-wrap: nowrap; }
+  .s9-rail__nav a { gap: 6px; white-space: nowrap; }
+  .s9-rail__num { font-weight: 400; }
+  .s9-rail__tools { flex: 0 0 auto; display: flex; gap: 18px; margin-left: auto; }
+
+  /* ---- bands ---- */
+  .s9-band { background: var(--a); color: var(--b); scroll-margin-top: 48px; }
+  .s9-band:nth-of-type(even) { background: var(--b); color: var(--a); }
+  .s9-band__in {
+    max-width: 1200px; margin: 0 auto;
+    padding: clamp(56px, 8vw, 104px) var(--gutter);
+    display: grid; grid-template-columns: 200px minmax(0, 1fr); column-gap: 56px; align-items: start;
+  }
+  .s9-hero .s9-band__in { padding-top: calc(48px + clamp(40px, 6vw, 80px)); }
+  .s9-content { min-width: 0; overflow-wrap: anywhere; }
+
+  /* label column */
+  .s9-label { position: sticky; top: 72px; display: flex; flex-direction: column; gap: 4px; }
+  .s9-label__num { font: 400 clamp(2.75rem, 5vw, 3.75rem)/1 var(--mono); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+  .s9-label__name { font: 600 13px/1.4 var(--font); text-transform: uppercase; letter-spacing: 0.14em; margin-top: 8px; }
+  .s9-label__count { font: 400 12.5px/1.5 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+  .s9-photo { width: 200px; aspect-ratio: 1; object-fit: cover; margin-bottom: 20px; border: 1px solid currentColor; filter: grayscale(1) contrast(1.05); }
+
+  /* ---- hero ---- */
+  .s9-kicker { font: 500 12.5px/1.5 var(--mono); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px; }
+  .s9 h1 { font: 700 clamp(2.6rem, 7.5vw, 5.75rem)/0.95 var(--font); letter-spacing: -0.03em; margin-bottom: 28px; text-wrap: balance; }
+  .s9-tagline { font: 500 clamp(1.125rem, 1.4vw, 1.375rem)/1.4 var(--font); letter-spacing: -0.01em; max-width: 40ch; margin-bottom: 20px; }
+  .s9-summary { max-width: 62ch; margin-bottom: 40px; }
+
+  /* ---- rows: the shared 176px | 1fr structure ---- */
+  .s9-row {
+    display: grid; grid-template-columns: var(--meta-col) minmax(0, 1fr); column-gap: 32px;
+    padding: 24px 0; border-top: 1px solid currentColor;
+  }
+  .s9-rows > .s9-row:last-child, .s9-spec > .s9-row:last-child { border-bottom: 1px solid currentColor; }
+  .s9-meta, .s9-spec dt {
+    display: flex; flex-direction: column; gap: 4px; min-width: 0;
+    font: 400 12.5px/1.6 var(--mono); text-transform: uppercase; letter-spacing: 0.06em;
+    padding-top: 5px; overflow-wrap: anywhere;
+  }
+  .s9-spec dt { font-weight: 500; }
+  .s9-spec dd { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; min-width: 0; overflow-wrap: anywhere; }
+  .s9-spec dd a { text-decoration: underline; text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  .s9-inline { gap: 6px 20px; }
+  .s9-cell { min-width: 0; }
+  .s9 :where(h3) { font: 600 22px/1.25 var(--font); letter-spacing: -0.015em; }
+  .s9-h3--sm { font-size: 18px; display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; }
+  .s9-h3--meta { font: inherit; text-transform: inherit; letter-spacing: inherit; }
+  .s9-alt { font: 400 12.5px/1.6 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+  .s9-sub { margin-top: 4px; font-weight: 500; }
+  .s9-sub a, .s9-links a, .s9-h3--sm a, .s9-contact a { text-decoration: underline; text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  .s9-mono { font: 400 12.5px/1.7 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 8px; }
+  .s9-desc { margin-top: 10px; max-width: 66ch; }
+  .s9-links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px 20px; font: 500 12.5px/1.6 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+  .s9-bullets { margin-top: 12px; display: grid; gap: 8px; max-width: 70ch; }
+  .s9-bullets li { padding-left: 20px; position: relative; }
+  .s9-bullets li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 8px; height: 1px; background: currentColor; }
+  .s9-placement { margin-top: 6px; display: flex; align-items: center; flex-wrap: wrap; gap: 0 6px; }
+  .s9-mark { display: inline-block; width: 9px; height: 9px; background: currentColor; margin-right: 8px; vertical-align: 0.05em; }
+  .s9-rows--compact .s9-row { padding: 18px 0; }
+  .s9-rows--compact .s9-desc { margin-top: 6px; font-size: 15.5px; }
+  .s9-rows--compact .s9-meta { padding-top: 3px; }
+
+  /* skills */
+  .s9-skills { display: flex; flex-wrap: wrap; gap: 6px 0; font: 500 15px/1.5 var(--mono); }
+  .s9-skills li { display: inline; }
+  .s9-skills li:not(:last-child)::after { content: '/'; margin: 0 10px; font-weight: 400; }
+  .s9-skills--rest { font-weight: 400; margin-top: 10px; }
+
+  /* disclosures */
+  .s9-more { margin-top: 0; }
+  .s9-more > summary {
+    list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
+    min-height: 40px; font: 500 12.5px/1 var(--mono); text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .s9-more > summary::-webkit-details-marker { display: none; }
+  .s9-more > summary:hover { text-decoration: underline; text-underline-offset: 0.18em; }
+  .s9-more__sign { position: relative; width: 12px; height: 12px; flex: 0 0 auto; }
+  .s9-more__sign::before, .s9-more__sign::after { content: ''; position: absolute; background: currentColor; }
+  .s9-more__sign::before { left: 0; right: 0; top: 5px; height: 2px; }
+  .s9-more__sign::after { top: 0; bottom: 0; left: 5px; width: 2px; }
+  .s9-more[open] > summary .s9-more__sign::after { display: none; }
+  .s9-more:not(.s9-more--inline) > summary { margin-top: 24px; }
+  .s9-more:not(.s9-more--inline)[open] > summary { margin-bottom: 8px; }
+  .s9-more--inline { margin-top: 6px; }
+  .s9-more--inline > summary { min-height: 32px; }
+
+  /* copy button: 1px box in currentColor, fills on hover; text swaps to "Copied" via JS */
+  .s9-copy {
+    display: inline-flex; align-items: center; min-height: 32px; padding: 0 10px;
+    border: 1px solid currentColor; font: 500 12px/1 var(--mono); text-transform: uppercase; letter-spacing: 0.08em;
+    margin-left: 12px; vertical-align: middle;
+  }
+  .s9-copy:hover { background: currentColor; }
+  .s9-band:nth-of-type(odd) .s9-copy:hover { color: var(--a); background: var(--b); }
+  .s9-band:nth-of-type(even) .s9-copy:hover { color: var(--b); background: var(--a); }
+
+  /* contact + footer */
+  .s9-contact .s9-cell { font: 600 clamp(1.25rem, 2.4vw, 1.75rem)/1.3 var(--font); letter-spacing: -0.015em; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 0; }
+  .s9-contact .s9-meta { padding-top: 0; align-self: center; }
+  .s9-foot {
+    margin-top: 56px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center;
+    font: 500 12.5px/1.6 var(--mono); text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .s9-foot a, .s9-foot button { min-height: 40px; display: inline-flex; align-items: center; text-transform: inherit; letter-spacing: inherit; }
+  .s9-foot > span { margin-right: auto; }
+
+  /* ---- responsive ---- */
+  @media (max-width: 899px) {
+    .s9-band__in { grid-template-columns: minmax(0, 1fr); row-gap: 28px; }
+    .s9-label {
+      position: static; flex-direction: row; align-items: baseline; flex-wrap: wrap; gap: 6px 16px;
+      padding-bottom: 12px; border-bottom: 2px solid currentColor;
+    }
+    .s9-label__num { font-size: 2rem; }
+    .s9-label__name { margin-top: 0; }
+    .s9-label__count { margin-left: auto; }
+    .s9-hero .s9-label { flex-wrap: wrap; }
+    .s9-photo { width: 120px; margin: 0; flex: 0 0 auto; order: 1; margin-left: auto; }
+    .s9-hero .s9-label__count { margin-left: 0; }
+    .s9-rail__lbl { display: none; }
+    .s9-rail__nav ol { gap: 14px; }
+    .s9-rail { gap: 16px; }
+    .s9-rail__tools { gap: 14px; }
+  }
+  @media (max-width: 699px) {
+    .s9-body { font-size: 16px; }
+    .s9-row { grid-template-columns: minmax(0, 1fr); row-gap: 8px; padding: 20px 0; }
+    .s9-meta, .s9-spec dt { flex-direction: row; flex-wrap: wrap; gap: 2px 14px; padding-top: 0; }
+    .s9-spec dd { margin-top: 2px; }
+    .s9 :where(h3) { font-size: 20px; }
+    .s9-contact .s9-cell { font-size: 1.2rem; }
+    .s9-rail__full { display: none; }
+    .s9-rail__short { display: inline; }
+    .s9-rail__nav ol { gap: 10px; }
+    .s9-rail__tools a:last-child { display: none; }
+  }
+  @media (max-width: 419px) {
+    .s9-rail { padding: 0 12px; gap: 10px; font-size: 11.5px; letter-spacing: 0.04em; }
+    .s9-rail__nav ol { gap: 7px; }
+    .s9-rail__tools { gap: 10px; }
+    .s9-photo { width: 96px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html:has(> body.s9-body) { scroll-behavior: smooth; }
+  }
+  @media print {
+    .s9-rail, .opt-switch, .s9-copy, [data-invert] { display: none !important; }
+    .s9-band, .s9-band:nth-of-type(even) { background: #fff; color: #000; }
+    .s9-band__in { padding: 24px 0; }
+    .s9-label { position: static; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+    document.querySelectorAll('[data-invert]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var dark = root.classList.toggle('dark');
+        try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {}
+      });
+    });
+    document.querySelectorAll('[data-copy]').forEach(function (b) {
+      var label = b.textContent;
+      b.addEventListener('click', function () {
+        var text = b.getAttribute('data-copy') || '';
+        var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = label; }, 1500); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () { location.href = 'mailto:' + text; });
+        else location.href = 'mailto:' + text;
+      });
+    });
+  })();
+</script>

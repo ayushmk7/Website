@@ -14,12 +14,13 @@ const options = [
   { name: 'Scan', pitch: 'Dense recruiter dashboard: one-screen summary, timeline, skills matrix, expandable detail.' },
   { name: 'Original', pitch: 'The first site, before fun mode: brutalist black, white and blue minimal, with today\'s content.' },
   { name: 'Index', pitch: 'Typographic index: oversized name, one rule grid, every item a numbered row that opens inline. Pure black and white.' },
+  { name: 'Spec', pitch: 'Full-bleed bands alternating pure black and white on one shared grid, like a spec sheet; dark mode flips the bands.' },
 ].map((o, i) => ({ ...o, n: i + 1, href: OPTION_HREFS[i] }));
 ---
 <ProLayout title={`Design options — ${profile.name}`}>
   <main class="wrap">
     <h1>Professional design options</h1>
-    <p class="lede">Seven candidates for the main site. Same content, different direction. Press <kbd>[</kbd> / <kbd>]</kbd> on any page to cycle.</p>
+    <p class="lede">Nine candidates for the main site. Same content, different direction. Press <kbd>[</kbd> / <kbd>]</kbd> on any page to cycle.</p>
     <ol class="list">
       {options.map((o) => (
         <li>

@@ -17,7 +17,7 @@ export type { Experience, Hackathon, Project, Place };
 export const FUN_HREF = '/';
 
 /** Routes of the candidate designs, in switcher order (7 = the original pre-comic site). */
-export const OPTION_HREFS = [1, 2, 3, 4, 5, 6, 7].map((n) => `/options/${n}`);
+export const OPTION_HREFS = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `/options/${n}`);
 
 // ---------------------------------------------------------------------------
 // Identity / copy
