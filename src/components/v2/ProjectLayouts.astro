@@ -1,15 +1,36 @@
 ---
-// Projects — auto-scrolling + manual carousel with a comic-pop scrollbar.
-// Cards rendered twice so the auto-scroll wraps seamlessly (see index.astro script).
+// Projects — newspaper clippings: a few featured up top, the rest behind a
+// native <details> "Show more". Hackathon projects are hidden (shown there).
 import { projects } from '../../data/projects';
 import { hackathons } from '../../data/v2';
 import ProjectCard from './ProjectCard.astro';
 
+const featuredTitles = ['Jac ML Studio', 'NightShift', 'Domain Portfolio Manager', 'Inferno'];
 const list = projects.filter((p) => !hackathons.some((h) => h.project === p.title));
+// fail the build on a typo'd title instead of silently dropping it
+const featured = featuredTitles.map((t) => {
+  const p = list.find((x) => x.title === t);
+  if (!p) throw new Error(`ProjectLayouts: featured "${t}" not in projects.ts (or is a hackathon project)`);
+  return p;
+});
+const rest = list.filter((p) => !featuredTitles.includes(p.title));
 ---
-<div class="cscroll" data-autoscroll tabindex="0" aria-label="Projects carousel — scroll to browse">
-  <div class="cscroll-track">
-    {list.map((p, i) => <ProjectCard p={p} i={i} />)}
-    {list.map((p, i) => <ProjectCard p={p} i={i} />)}
-  </div>
+<div class="proj-top">
+  {featured.map((p) => <ProjectCard p={p} />)}
 </div>
+{rest.length > 0 && (
+  <details class="proj-more">
+    <summary class="comic-link-btn"><span class="closed">Show {rest.length} more</span><span class="open">Show less</span></summary>
+    <div class="hack-news" style="margin-top:1.25rem">
+      {rest.map((p) => <ProjectCard p={p} />)}
+    </div>
+  </details>
+)}
+
+<style>
+  /* grid, not columns: 4 featured in 3 columns stack 1/1/2 and leave a hole */
+  .proj-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); column-gap: 1.25rem; }
+  .proj-more > summary { list-style: none; cursor: pointer; width: fit-content; }
+  .proj-more > summary::-webkit-details-marker { display: none; }
+  .proj-more[open] .closed, .proj-more:not([open]) .open { display: none; }
+</style>

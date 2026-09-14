@@ -50,7 +50,9 @@ Notes:
    too if it should be visible (build fails if a pick isn't in `resume.json`).
 4. **Projects** (`projects.ts`) / **Hackathons** (`v2.ts`): append new ones;
    correct existing ones. Never drop curated entries that aren't in the résumé.
-5. Don't touch layout/theme (baked: Experience=accordion, Projects=carousel,
+   Projects shows 4 featured (`featuredTitles` in
+   `src/components/v2/ProjectLayouts.astro`); the rest sit behind "Show more".
+5. Don't touch layout/theme (baked: Experience=accordion, Projects=newspaper + Show more,
    Hackathons=newspaper, Stack=newspaper, newspaper card skin) unless asked.
 
 ## After any change — verify

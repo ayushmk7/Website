@@ -1,6 +1,6 @@
 /* ============================================================
-   Baked layouts: Experience=accordion · Projects=carousel ·
-   Hackathons=newspaper · Stack=carousel. All cards wear a newspaper
+   Baked layouts: Experience=accordion · Projects, Hackathons, Stack =
+   newspaper. All cards wear a newspaper
    (paper + ink) skin that flips with light/dark.
    ============================================================ */
 
@@ -12,7 +12,6 @@ html.dark { --paper: #14181f; --ink: #e8e8e8; }
 /* every content card -> newspaper paper + ink */
 html[data-theme="comic"] .panel,
 html[data-theme="comic"] .panel--burst,
-.vcard,
 .lv-acc details,
 .news {
   background: var(--paper);
@@ -42,7 +41,6 @@ html[data-theme="comic"] .cwm-pop-sub { color: color-mix(in srgb, var(--ink) 65%
 .vco { font-family: var(--font-display); line-height: 1.05; color: var(--accent); }
 .vbadge { display: inline-block; font-size: 0.7rem; font-weight: 800; background: var(--accent-2); color: #141414; border: 2px solid var(--outline); border-radius: 999px; padding: 0.05rem 0.5rem; margin-left: 0.4rem; vertical-align: middle; }
 .vbul { font-size: 0.875rem; display: flex; flex-direction: column; gap: 0.375rem; padding-left: 1.1rem; list-style: disc; }
-.vcard { border: 3px solid var(--ink); border-radius: var(--radius); box-shadow: 5px 5px 0 var(--panel-shadow); padding: 1.25rem 1.5rem; }
 
 /* ---- Experience: accordion ---- */
 .lv-acc { display: flex; flex-direction: column; gap: 0.75rem; }
@@ -54,17 +52,6 @@ html[data-theme="comic"] .cwm-pop-sub { color: color-mix(in srgb, var(--ink) 65%
 .lv-acc .acc-co { font-family: var(--font-display); font-size: 1.5rem; color: var(--accent); }
 .lv-acc .acc-period { margin-left: auto; font-size: 0.78rem; font-weight: 700; opacity: 0.8; }
 .lv-acc .vbul { padding: 0 0 0.8rem 1.4rem; }
-
-/* ---- Projects / Stack: carousel (auto-move + manual, comic scrollbar) ---- */
-/* no scroll-snap: it fights the per-frame auto-scroll (snaps the nudges back) */
-.cscroll { overflow-x: auto; overflow-y: hidden; padding-bottom: 0.9rem; scrollbar-color: var(--accent) var(--surface); }
-.cscroll-track { display: flex; gap: 1rem; width: max-content; }
-.cscroll-track > * { flex: 0 0 min(85vw, 22rem); }
-.cscroll-track .vcard { display: flex; flex-direction: column; }
-.cscroll::-webkit-scrollbar { height: 18px; }
-.cscroll::-webkit-scrollbar-track { background: var(--surface); border: 3px solid var(--outline); border-radius: 999px; }
-.cscroll::-webkit-scrollbar-thumb { background: var(--accent); border: 3px solid var(--outline); border-radius: 999px; }
-.cscroll::-webkit-scrollbar-thumb:hover { background: var(--comic-blue); }
 
 /* ---- Map popup: banner (name left | weather right). Prefixed to beat the
    old comic.css .cwm-pop rules. Right padding leaves room for the close X. ---- */
