@@ -10,7 +10,6 @@ const options = [
   { name: 'Dossier', pitch: 'Two-column résumé with a sticky identity sidebar; prints to a clean one-pager.' },
   { name: 'Product', pitch: 'Flat black and white with one blue accent: bento hero, case-study projects, ⌘K palette, BB-8 theme switch.' },
   { name: 'Original', pitch: 'The first site, before fun mode: brutalist black, white and blue minimal, with today\'s content.' },
-  { name: 'Original, refined', pitch: 'The original design after an engineer, a recruiter and a UI/UX review.' },
 ].map((o, i) => ({ ...o, n: i + 1, href: OPTION_HREFS[i] }));
 ---
 <ProLayout title={`Design options — ${profile.name}`}>

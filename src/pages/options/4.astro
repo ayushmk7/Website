@@ -21,7 +21,7 @@ const iconFor: Record<string, 'github' | 'linkedin'> = { github: 'github', linke
 // Hero copy: verbatim from the original HeroSection.astro (40a5f35), punctuation included.
 const aboutMe = [
   'Full-stack software developer with a focus on systems programming and AI infrastructure.',
-  'Currently helping accelerate the development of on-device AI at Cactus (YC S25). Passionate software developer with experience in modern web technologies and machine learning. I love building innovative solutions that solve real-world problems .',
+  'Currently helping accelerate the development of on-device AI at Cactus (YC S25). Passionate software developer with experience in modern web technologies and machine learning. I love building innovative solutions that solve real-world problems.',
 ];
 
 // Shared class strings (the original used clsx/twMerge; plain strings do the same job here).
@@ -118,7 +118,7 @@ const blue = 'text-blue-600 dark:text-blue-400';
                         </h4>
                         <p class={blue}>{job.role}</p>
                       </div>
-                      <span class="text-muted-foreground text-sm shrink-0">{job.period}</span>
+                      <span class="text-muted-foreground text-sm shrink-0">{job.period.replace(/\s+to\s+/g, " – ")}</span>
                     </div>
                     <p class="text-muted-foreground text-sm mb-3">{job.location ? `${job.location} · ` : ''}{job.kind}</p>
                     <ul class="space-y-2 list-none">
@@ -154,7 +154,7 @@ const blue = 'text-blue-600 dark:text-blue-400';
                         </h4>
                         <p class={blue}>{ed.degree}</p>
                       </div>
-                      <span class="text-muted-foreground text-sm shrink-0">{ed.period}</span>
+                      <span class="text-muted-foreground text-sm shrink-0">{ed.period.replace(/\s+to\s+/g, " – ")}</span>
                     </div>
                     {ed.location && <p class="text-muted-foreground text-sm mt-2">{ed.location}</p>}
                   </div>
