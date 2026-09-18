@@ -3,6 +3,8 @@
 // Static markup + inline script instead of a React island: the checked state
 // depends on client-only localStorage, and an SSR'd *controlled* React input
 // can't set that without a post-hydration flash. Plain HTML sets it pre-paint.
+import '../pro/opt4/bb8.css';
+
 interface Props { size?: string }
 const { size = '6.5px' } = Astro.props;
 ---

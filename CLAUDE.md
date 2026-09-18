@@ -1,8 +1,15 @@
 # Updating this site from a résumé
 
-Ayush's portfolio — Astro static site, single page (`src/pages/index.astro`),
-comic-pop theme with a newspaper card skin. When the user drops a `resume.tex`
-(or PDF/any résumé) and asks to update the site, follow this.
+Ayush's portfolio — Astro static site, two pages:
+
+- `/` (`src/pages/index.astro`) — the main site: neo-brutalist broadsheet,
+  white/black/electric-blue, newspaper clippings on one grid. Content comes only
+  from `src/lib/profile.ts`, which re-exports/derives from `src/data/*`.
+- `/fun` (`src/pages/fun.astro`) — the comic-pop version, newspaper card skin.
+  Reads the raw `src/data/*` files directly.
+
+When the user drops a `resume.tex` (or PDF/any résumé) and asks to update the
+site, follow this.
 
 ## GOLDEN RULE — never remove, only add or change
 
@@ -52,14 +59,17 @@ Notes:
    correct existing ones. Never drop curated entries that aren't in the résumé.
    Projects shows 4 featured (`featuredTitles` in
    `src/components/v2/ProjectLayouts.astro`); the rest sit behind "Show more".
-5. Don't touch layout/theme (baked: every section is a uniform
-   newspaper grid `.news-grid`; Projects adds a Show more) unless asked.
+5. Don't touch layout/theme unless asked. `/fun` is baked: every section is a
+   uniform newspaper grid `.news-grid`. `/` renders the same data as clippings on
+   one `.clip-grid`, sections in order experience → projects → hackathons →
+   skills → contact; new data flows into both pages automatically.
 
 ## After any change — verify
 
 - `npm run build` must pass clean.
 - If links changed, check none 404 (curl each `githubUrl`/`websiteUrl`/`repoUrl`/
   `siteUrl`; LinkedIn returning `999` is bot-blocking, not broken).
-- Preview locally with `npm run dev` (http://localhost:4321/). If the map
-  vanishes in dev it's a stale Vite cache — `rm -rf node_modules/.vite && npm run dev`.
+- Preview locally with `npm run dev` — `/` and `/fun` (http://localhost:4321/).
+  If the map vanishes in dev it's a stale Vite cache —
+  `rm -rf node_modules/.vite && npm run dev`.
 - Commit. Push only if the user asks (push to `main` auto-deploys via Vercel).

@@ -76,4 +76,8 @@ html.dark .news { --paper: #14181f; --ink: #e8e8e8; }
 .news-kicker { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-bottom: 2px solid currentColor; padding-bottom: 0.3rem; margin-bottom: 0.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.1rem 0.5rem; }
 .news-head { font-family: var(--font-display); font-size: 1.55rem; line-height: 1; margin-bottom: 0.4rem; color: var(--accent); }
 .news-body { font-size: 0.82rem; }
-.trophy-place { font-weight: 800; font-size: 0.82rem; color: var(--accent); }
+/* --accent (#ff3b3b) is a fill colour; as 13px text on paper it is only 3.3:1, so
+   small text uses a darkened variant that clears 4.5:1 in both themes. */
+:where(html) { --accent-text: #d32020; }
+html.dark { --accent-text: #ff6b6b; }
+.trophy-place { font-weight: 800; font-size: 0.82rem; color: var(--accent-text); }

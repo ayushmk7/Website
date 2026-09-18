@@ -1,26 +1,27 @@
 ---
 // src/layouts/ProLayout.astro
-// Minimal, theme-free HTML shell for the professional pages.
+// Minimal, theme-free HTML shell for the main page.
 // Deliberately imports NO comic CSS (no global.css / _base.css / comic.css).
 // Tailwind preflight + utilities are auto-injected by @astrojs/tailwind on every page.
 //
 // Props:
 //   title        — <title> and og:title
 //   description  — meta description (defaults to profile.metaDescription)
-//   bodyClass    — optional class on <body> (options may hang their scope class here)
+//   bodyClass    — optional class on <body> (the page hangs its scope class here)
 // Slots:
-//   head         — extra <head> content (Google Fonts <link>s, per-option meta)
+//   head         — extra <head> content (Google Fonts <link>s, extra meta)
 //   default      — page body
 //
 // Dark mode: before paint, <html> gets class "dark" if localStorage.theme === 'dark',
-// or if there's no saved value and the OS prefers dark. Options may style with
-// `html.dark` (and optionally add their own toggle that writes localStorage.theme).
+// or if there's no saved value and the OS prefers dark. Pages style with `html.dark`;
+// the BB-8 toggle writes localStorage.theme.
 import Analytics from '@vercel/analytics/astro';
 import { profile } from '../lib/profile';
 
 interface Props { title: string; description?: string; bodyClass?: string }
 const { title, description = profile.metaDescription, bodyClass } = Astro.props;
 const ogImage = new URL('/og.png', Astro.site).href;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -31,6 +32,8 @@ const ogImage = new URL('/og.png', Astro.site).href;
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
     <title>{title}</title>
+    <link rel="canonical" href={canonical} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -52,6 +55,8 @@ const ogImage = new URL('/og.png', Astro.site).href;
     </script>
   </head>
   <body class={bodyClass}>
-    <slot />
+    <main>
+      <slot />
+    </main>
   </body>
 </html>

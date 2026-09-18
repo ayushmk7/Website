@@ -12,8 +12,8 @@ npm run dev
 
 Open the local site in your browser:
 
-- Actual portfolio: `http://localhost:4321/`
-- UX sandbox copy: `http://localhost:4321/reference`
+- Main site: `http://localhost:4321/`
+- Fun mode (comic version): `http://localhost:4321/fun`
 
 To test the production build locally:
 

@@ -1,26 +1,29 @@
 {
-    "name": "ayush-portfolio",
-    "type": "module",
-    "version": "1.0.0",
-    "scripts": {
-        "dev": "astro dev",
-        "build": "astro build",
-        "preview": "astro preview",
-        "astro": "astro"
-    },
-    "dependencies": {
-        "@astrojs/react": "^4.4.2",
-        "@astrojs/tailwind": "^6.0.2",
-        "@vercel/analytics": "^1.6.1",
-        "astro": "^5.14.1",
-        "leaflet": "^1.9.4",
-        "react": "^19.2.3",
-        "react-dom": "^19.2.3",
-        "tailwindcss": "^3.4.15"
-    },
-    "devDependencies": {
-        "@types/leaflet": "^1.9.21",
-        "@types/node": "^22.10.5",
-        "typescript": "^5.7.3"
-    }
+  "name": "ayush-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.4.2",
+    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/tailwind": "^6.0.2",
+    "@vercel/analytics": "^1.6.1",
+    "astro": "^5.14.1",
+    "leaflet": "^1.9.4",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "tailwindcss": "^3.4.15"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.21",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }

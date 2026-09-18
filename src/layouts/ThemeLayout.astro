@@ -4,22 +4,23 @@ import '../styles/global.css';
 import './../styles/themes/_base.css';
 import Analytics from '@vercel/analytics/astro';
 import ThemeNav from '../components/v2/ThemeNav.astro';
-import { themeByKey } from '../lib/themes';
 
-interface Props { themeKey: string; title: string; description?: string }
-const { themeKey, title, description = 'Ayush Madhav Kumar. CS and Math @UMichigan. Systems programming, AI infrastructure, on-device inference, and hackathon wins.' } = Astro.props;
-const def = themeByKey(themeKey);
+interface Props { title: string; description?: string }
+const { title, description = 'Ayush Madhav Kumar. CS and Math @UMichigan. Systems programming, AI infrastructure, on-device inference, and hackathon wins.' } = Astro.props;
 // absolute URL so social crawlers that reject relative image paths still resolve it
 const ogImage = new URL('/og.png', Astro.site).href;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <!DOCTYPE html>
-<html lang="en" data-theme={themeKey} data-pop="banner">
+<html lang="en" data-theme="comic" data-pop="banner">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
     <title>{title}</title>
+    <link rel="canonical" href={canonical} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -29,7 +30,7 @@ const ogImage = new URL('/og.png', Astro.site).href;
     <meta property="og:image:alt" content="Ayush Madhav Kumar — CS & Math @ Michigan" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
-    {def?.fontHrefs.map((href) => <link rel="stylesheet" href={href} />)}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito+Sans:wght@400;700;800&display=swap" />
     <Analytics />
     <script is:inline>
       // dark/light init: apply saved or system preference before paint
@@ -41,9 +42,21 @@ const ogImage = new URL('/og.png', Astro.site).href;
     </script>
   </head>
   <body class="bg-[var(--bg)] text-[var(--text)] min-h-screen antialiased" style="font-family: var(--font-body); font-weight: var(--w-body);">
+    <a class="skip-link" href="#experience">Skip to content</a>
     <ThemeNav />
     <main>
       <slot />
     </main>
   </body>
 </html>
+
+<style is:global>
+  /* keyboard-only escape from the fixed nav; matches the main site's skip link */
+  .skip-link {
+    position: absolute; left: 1rem; top: -4rem; z-index: 1001;
+    padding: 0.5rem 0.8rem; font-size: 0.8rem; font-weight: 800;
+    background: var(--ink, #141414); color: var(--paper, #fbf7ea);
+    text-decoration: none; border: 3px solid currentColor;
+  }
+  .skip-link:focus { top: 1rem; }
+</style>

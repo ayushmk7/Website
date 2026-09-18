@@ -89,6 +89,7 @@ export const experience: Experience[] = [
     period: "May 2026 to Present",
     location: "Ann Arbor, MI",
     kind: "Work",
+    url: "https://www.jasecilabs.com/",
     bullets: [
       "Engineering a domain-specialized coding agent for the Jac language, fine-tuning Gemma 4 26B with Unsloth and 4-bit QLoRA on an object-spatial superset of Python where general-purpose models have no usable priors.",
       "Architecting a multi-recipe synthetic-data pipeline (Python to Jac translation, adversarial DPO negatives, evol-instruct, self-distillation) targeting 300k+ examples behind a compiler and unit-test hard-gate.",
@@ -102,6 +103,7 @@ export const experience: Experience[] = [
     location: "Ann Arbor, MI",
     kind: "Research",
     badge: "NSF, $300K",
+    url: "https://jaseci.engin.umich.edu/",
     bullets: [
       "PhD-level research as an undergrad on NSF Phase I POSE, growing an open-source ecosystem around the data-spatial Jac language.",
       "Building the project's digital infrastructure, docs site, CI, and contributor onboarding tooling to lower the barrier to entry and grow a distributed contributor community.",
@@ -129,6 +131,7 @@ export const experience: Experience[] = [
     location: "Dublin, Ireland",
     kind: "Founder",
     badge: "Patch accelerator",
+    url: "https://www.joinpatch.org/",
     bullets: [
       "Co-founded a wearable and app system for seniors with cognitive difficulties, built on-site at the Patch entrepreneurship accelerator.",
       "Piloted with 5+ families and reached 20,000+ people on social media, and pitched venture possibilities to NGOs and care homes.",

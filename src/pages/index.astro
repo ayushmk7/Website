@@ -1,108 +1,607 @@
 ---
-// src/pages/index.astro
-import ThemeLayout from '../layouts/ThemeLayout.astro';
-import '../styles/themes/comic.css';
-import '../styles/layout-variants.css';
-import ComicHero from '../components/v2/ComicHero';
-import ComicWorldMap from '../components/v2/ComicWorldMap';
-import ExperienceLayouts from '../components/v2/ExperienceLayouts.astro';
-import ProjectLayouts from '../components/v2/ProjectLayouts.astro';
-import HackathonLayouts from '../components/v2/HackathonLayouts.astro';
-import StackLayouts from '../components/v2/StackLayouts.astro';
-import OptionSwitcher from '../components/OptionSwitcher.astro'; // ponytail: temporary, delete after winner chosen
+// src/pages/index.astro — the site, as a neo-brutalist broadsheet.
+// White / black / electric blue only. Plain solid page background; depth comes from borders and
+// hard offset shadows. Every box is a newspaper clipping: kicker rule row (only where it carries
+// real information — period, location, organizer, date), display headline, small body, links
+// pinned to the bottom, all on ONE grid: repeat(auto-fill, minmax(min(100%, 26rem), 1fr)).
+// Content comes only from ../lib/profile (the shared contract), nothing from the raw data files.
+import ProLayout from '../layouts/ProLayout.astro';
+import Icon from '../components/pro/opt4/Icon.astro';
+// BB-8 theme switch (it brings its own CSS, scoped to .bb8-toggle*).
+import BB8Toggle from '../components/v2/BB8Toggle.astro';
+import {
+  profile, contactLinks, experience, hackathonsWithProject,
+  featuredProjects, moreProjects, skillGroups, FUN_HREF,
+} from '../lib/profile';
+
+// ponytail: the class-string constants were one-line aliases for one-word class names — inlined.
+// Hero row: mail + the three social accounts. (The theme switch is docked top-right, not in the row.)
+const social = contactLinks.filter((l) => ['github', 'linkedin', 'x'].includes(l.key));
+const iconFor: Record<string, 'github' | 'linkedin' | 'x'> = { github: 'github', linkedin: 'linkedin', x: 'x' };
+const allProjects = [...featuredProjects, ...moreProjects];
+// ponytail: emphasis only — option 4 re-orders what profile.ts exports, it never re-words or drops anything.
+const lead = (keys: string[], key: (x: any) => string) => (a: any, b: any) => {
+  const rank = (x: any) => { const i = keys.indexOf(key(x)); return i < 0 ? keys.length : i; };
+  return rank(a) - rank(b);
+};
+const orderedSkillGroups = [...skillGroups].sort(lead(['cybersecurity', 'aiMl'], (g) => g.key));
+const orderedProjects = [...allProjects].sort(
+  lead(['Jac ML Studio', 'NASA SUITS Challenge', 'Inferno', 'NightShift'], (p) => p.title),
+);
+const dates = (s: string) => s.replace(/\s+to\s+/g, ' – ');
+// "Email is fastest." is dropped here only; lib/profile.ts is shared with the other options.
+const availability = profile.availability.replace(/\s*Email is fastest\.?$/i, '');
 ---
-<ThemeLayout themeKey="comic" title="Ayush Madhav">
-  <ComicHero client:load />
+<ProLayout title={`${profile.name} — ${profile.headline}`} bodyClass="opt7">
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@300;500;700&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700&display=swap"
+    />
+  </Fragment>
 
-  <section id="experience" class="max-w-6xl mx-auto py-16" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
-    <div class="section-heading">
-      <h2 class="text-6xl text-[var(--comic-blue)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Experience</h2>
-    </div>
-    <ExperienceLayouts />
-  </section>
+  <a class="skip" href="#resume">Skip to content</a>
 
-  <section id="projects" class="max-w-6xl mx-auto py-16" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
-    <div class="section-heading">
-      <h2 class="text-6xl text-[var(--accent)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Projects</h2>
-    </div>
-    <ProjectLayouts />
-  </section>
+  <!-- theme switch, docked top-right, clear of the skip link (top-left) -->
+  <div class="bb8-dock"><BB8Toggle size="7.5px" /></div>
 
-  <section id="hackathons" class="max-w-6xl mx-auto py-16" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
-    <div class="section-heading">
-      <h2 class="text-6xl text-[var(--comic-blue)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Hackathons</h2>
-    </div>
-    <HackathonLayouts />
-  </section>
+  <div class="min-h-screen brut-root">
+    <!-- Hero: one centred column — name, one line, actions. The photo lives on /fun. -->
+    <section class="brut-hero min-h-screen flex flex-col justify-center items-center px-4 py-16 md:px-8 md:py-20" aria-label={profile.name}>
+      <div class="hero-text">
+        <h1 class="brut-h1">{profile.name}</h1>
+        <p class="brut-lede">Full-stack software developer with a focus on AI/ML and cybersecurity.</p>
 
-  <section id="skills" class="max-w-6xl mx-auto py-16" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
-    <div class="section-heading">
-      <h2 class="text-6xl text-[var(--accent)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Stack</h2>
-    </div>
-    <StackLayouts />
-  </section>
+        <div class="hero-actions" role="group" aria-label="Contact links">
+          <button type="button" class="brut-icon copy-btn relative" aria-label={`Copy email address ${profile.email}`} data-copy={profile.email}>
+            <span class="copy-idle"><Icon name="mail" class="w-6 h-6" /></span>
+            <span class="copy-done"><Icon name="copy" class="w-6 h-6" /></span>
+            <span class="copy-flag" aria-hidden="true">Copied</span>
+          </button>
+          <span class="sr-only" role="status" aria-live="polite" data-copy-status></span>
+          {social.map((l) => (
+            <a href={l.href} target="_blank" rel="noopener noreferrer" class="brut-icon" aria-label={l.label}>
+              <Icon name={iconFor[l.key]} class="w-6 h-6" />
+            </a>
+          ))}
+        </div>
 
-  <section id="places" class="max-w-6xl mx-auto py-16" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
-    <div class="section-heading">
-      <h2 class="text-6xl text-[var(--comic-blue)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Places I have been</h2>
-    </div>
-    <p class="mb-6" style="font-weight:700">Tap a pin for live weather.</p>
-    <ComicWorldMap client:visible />
-  </section>
-
-  <footer id="contact" class="max-w-6xl mx-auto py-20 text-center" style="padding-left:clamp(1rem,4vw,2rem);padding-right:clamp(1rem,4vw,2rem)">
-    <div class="section-heading justify-center" style="margin-bottom:2.5rem">
-      <h2 class="text-6xl text-[var(--accent)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Contact</h2>
-    </div>
-    <div class="panel panel--burst" style="max-width:50rem;margin:0 auto;padding:clamp(1.5rem,4vw,2.5rem);text-align:center">
-      <h3 style="font-family:var(--font-display);font-size:clamp(2rem,5.5vw,3.5rem);line-height:1;margin-bottom:0.6rem;color:var(--accent)">Let's build something</h3>
-      <p style="font-weight:700;margin-bottom:1.5rem;color:var(--text)">Open to internships and collabs. Email's fastest.</p>
-      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:center">
-        <button id="copy-email" type="button" class="comic-link-btn" data-email="contactayushmadhav@gmail.com" aria-label="Copy email address" style="height:2.7rem;cursor:pointer">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          <span class="copy-email-label" aria-live="polite">Copy email</span>
-        </button>
-        <a class="comic-link-btn" href="https://github.com/ayushmk7" target="_blank" rel="noopener noreferrer" style="height:2.7rem">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-          GitHub
-        </a>
-        <a class="comic-link-btn" href="https://www.linkedin.com/in/ayushmk" target="_blank" rel="noopener noreferrer" style="height:2.7rem">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          LinkedIn
-        </a>
-        <a class="comic-link-btn" href="https://x.com/ayushmk_007" target="_blank" rel="noopener noreferrer" aria-label="X profile" style="width:2.7rem;height:2.7rem;padding:0;justify-content:center">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </a>
-        <a class="comic-link-btn" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" style="height:2.7rem">Résumé</a>
+        <nav class="hero-jump" aria-label="Jump to section">
+          <a href={profile.resumeHref} target="_blank" rel="noopener noreferrer" class="brut-pill">
+            Resume<Icon name="external" class="w-4 h-4" />
+          </a>
+          <a href="#projects" class="brut-pill">Projects</a>
+        </nav>
       </div>
-    </div>
-  </footer>
 
-  <script is:inline>
-    (function () {
-      var btn = document.getElementById('copy-email');
-      if (!btn) return;
-      var label = btn.querySelector('.copy-email-label');
-      // capture the idle text once: re-reading it per click meant a second click
-      // during the 1.8s window latched "Copied to clipboard" in as the idle label
-      var idle = label.textContent;
+      <a class="scroll-cue" href="#experience" aria-label="Scroll to experience">
+        <Icon name="chevron-down" class="w-6 h-6 animate-bounce motion-reduce:animate-none" />
+      </a>
+    </section>
+
+    <!-- ponytail: one wrapper instead of three — the old div/section/div nest repeated the
+         padding and carried a space-y-12 that only ever had one child. -->
+    <section id="resume" class="max-w-7xl mx-auto flex flex-col gap-8 p-4 py-12 md:p-8 md:py-16">
+      <!-- Experience -->
+      <section id="experience" class="brut-card" aria-labelledby="experience-heading">
+        <header class="sect-head">
+          <h2 id="experience-heading" class="brut-h3">Experience</h2>
+          <span class="sect-links">
+            <a class="brut-link" href={profile.resumeHref} target="_blank" rel="noopener noreferrer">Résumé ↗</a>
+            <a class="brut-link" href={profile.cvHref} target="_blank" rel="noopener noreferrer">CV ↗</a>
+          </span>
+        </header>
+        <ul class="clip-grid">
+          {experience.map((job) => (
+            <li class="clip">
+              <div class="clip-kicker">
+                <span>{job.location}</span>
+                <span>{dates(job.period)}</span>
+              </div>
+              <h3 class="clip-head">
+                {job.url
+                  ? <a href={job.url} target="_blank" rel="noopener noreferrer" class="brut-titlelink">{job.company}</a>
+                  : job.company}
+              </h3>
+              <p class="clip-sub"><span class="brut-blue">{job.role}</span></p>
+              <ul class="clip-body space-y-2 list-none">
+                {job.bullets.map((item) => (
+                  <li class="brut-bullet">
+                    <span class="brut-dot" aria-hidden="true"></span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- Projects. One uniform clipping grid, as the original ProjectsList: only the first row
+           is visible until "Show More Projects". Featured projects come first. -->
+      <section id="projects" class="brut-card" aria-labelledby="projects-heading">
+        <header class="sect-head">
+          <h2 id="projects-heading" class="brut-h3">Projects</h2>
+        </header>
+        <ul id="more-projects" class="proj-grid clip-grid">
+          {orderedProjects.map((p) => (
+            <li class="clip">
+              <h3 class="clip-head">{p.title}</h3>
+              <p class="clip-body">{p.description}</p>
+              <div class="clip-foot">
+                <div class="clip-foot__tags">
+                  {p.tags.map((tag) => <span class="brut-tag">{tag}</span>)}
+                </div>
+                {(p.websiteUrl || p.githubUrl) && (
+                  <div class="clip-foot__links">
+                    {p.websiteUrl && (
+                      <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" class="brut-icon-sm" aria-label={`Visit ${p.title} website`}><Icon name="external" class="w-4 h-4" /></a>
+                    )}
+                    {p.githubUrl && (
+                      <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="brut-icon-sm" aria-label={`View ${p.title} on GitHub`}><Icon name="github" class="w-4 h-4" /></a>
+                    )}
+                  </div>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div class="more-row">
+          <button type="button" class="group brut-pill" data-more-toggle aria-expanded="false" aria-controls="more-projects">
+            <span class="more-idle">Show More Projects <Icon name="chevron-down" class="w-5 h-5 group-hover:translate-y-1 transition-transform" /></span>
+            <span class="more-open">Show Less <Icon name="chevron-up" class="w-5 h-5 group-hover:-translate-y-1 transition-transform" /></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Hackathons -->
+      <section id="hackathons" class="brut-card" aria-labelledby="hackathons-heading">
+        <header class="sect-head">
+          <h2 id="hackathons-heading" class="brut-h3">Hackathons</h2>
+        </header>
+        <ol class="clip-grid">
+          {hackathonsWithProject.map((h) => (
+            <li class="clip">
+              <div class="clip-kicker">
+                <span>{h.placement}{h.prize && ` · ${h.prize}`}</span>
+                <span>{h.date}</span>
+              </div>
+              <h3 class="clip-head">{h.event}</h3>
+              <p class="clip-sub">{h.organizer}</p>
+              <ul class="clip-body space-y-2 list-none">
+                <li class="brut-bullet">
+                  <span class="brut-dot" aria-hidden="true"></span>
+                  <span><strong class="brut-strong">{h.project}</strong> — {h.blurb}</span>
+                </li>
+              </ul>
+              <div class="clip-foot">
+                <div class="clip-foot__tags">
+                  {h.projectEntry?.tags?.map((tag) => <span class="brut-tag">{tag}</span>)}
+                </div>
+                {(h.siteUrl || h.repoUrl) && (
+                  <div class="clip-foot__links">
+                    {h.siteUrl && (
+                      <a href={h.siteUrl} target="_blank" rel="noopener noreferrer" class="brut-icon-sm" aria-label={`Visit ${h.project} website`}><Icon name="external" class="w-4 h-4" /></a>
+                    )}
+                    {h.repoUrl && (
+                      <a href={h.repoUrl} target="_blank" rel="noopener noreferrer" class="brut-icon-sm" aria-label={`View ${h.project} on GitHub`}><Icon name="github" class="w-4 h-4" /></a>
+                    )}
+                  </div>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <!-- Technical Skills (collapsible, as the original) -->
+      <section id="skills" class="skills-article is-expanded brut-card" aria-labelledby="skills-heading">
+        <h2 class="brut-h3 sect-head">
+          <button type="button" class="skills-trigger" aria-expanded="true" aria-controls="skills-content">
+            <span id="skills-heading">Technical Skills</span>
+            <span class="skills-expand-hint" aria-hidden="true">
+              <span class="animate-bounce motion-reduce:animate-none">Expand</span>
+              <Icon name="chevron-down" class="w-4 h-4 animate-bounce motion-reduce:animate-none" />
+            </span>
+            <span class="skills-collapse-hint" aria-hidden="true">
+              <span>Collapse</span>
+              <Icon name="chevron-up" class="w-4 h-4" />
+            </span>
+          </button>
+        </h2>
+        <div id="skills-content" class="skills-content" role="region" aria-labelledby="skills-heading">
+          <div class="clip-grid">
+            {orderedSkillGroups.map((g) => (
+              <div class="clip">
+                <div class="clip-kicker"><h3 class="clip-kicker__h">{g.label}</h3></div>
+                <p class="skill-line">
+                  {g.all.map((skill, i) => (
+                    <><span class="skill-sep" aria-hidden="true">{i ? ' · ' : ''}</span>{skill}</>
+                  ))}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact: the original ContactFooter ("Let's connect at … [copy]"), the availability line,
+           and the "Fun mode ↗" link, set as the back-page clipping. -->
+      <footer id="contact" class="brut-card" aria-labelledby="contact-heading">
+        <header class="sect-head">
+          <h2 id="contact-heading" class="brut-h3">Contact</h2>
+        </header>
+        <p class="contact-avail">{availability}</p>
+        <p class="brut-connect">
+          <span>Let's connect at</span>
+          <a href={`mailto:${profile.email}`} class="brut-mail">{profile.email}</a>
+          <button type="button" class="copy-btn brut-copy relative" data-copy={profile.email} aria-label={`Copy email address ${profile.email}`}>
+            <span class="copy-idle"><Icon name="copy" class="w-5 h-5" /></span>
+            <span class="copy-done"><Icon name="check" class="w-5 h-5" /></span>
+            <span class="copy-flag" aria-hidden="true">Copied</span>
+          </button>
+        </p>
+        <ul class="contact-socials">
+          {social.map((l) => (
+            <li>
+              <a href={l.href} target="_blank" rel="noopener noreferrer" class="contact-social" aria-label={`${l.label} — ${l.handle}`}>
+                <Icon name={iconFor[l.key]} class="w-5 h-5" />
+                <span>{l.handle}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="clip-foot">
+          <a class="brut-link" href={profile.resumeHref} target="_blank" rel="noopener noreferrer">Résumé ↗</a>
+          <a class="brut-link" href={profile.cvHref} target="_blank" rel="noopener noreferrer">CV ↗</a>
+          <a class="brut-link" href={FUN_HREF} title="Switch to the comic version of this site">Fun mode ↗</a>
+        </div>
+      </footer>
+    </section>
+  </div>
+
+</ProLayout>
+
+<style is:global>
+  /* ====================================================================================
+     OPTION 4. Every selector is prefixed body.opt7 so nothing leaks to a sibling option.
+     ==================================================================================== */
+
+  body.opt7 {
+    --font-display: 'Archivo Black', 'Space Grotesk', system-ui, sans-serif;
+    --font-sub: 'Space Grotesk', system-ui, sans-serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+    /* white / black / ONE electric blue. Nothing else. */
+    --paper: #ffffff;      /* the page: one flat colour, nothing layered on it */
+    --surface: #ffffff;    /* section sheets — separated by 4px ink borders + hard offset shadows */
+    --stock: #f2f2f2;      /* newsprint stock for the clippings, so they sit off the sheet white */
+    /* ponytail: --ink is also the hard-shadow colour — the old --shadow token held the same
+       value as --ink in BOTH themes, so it was a second name for one thing. */
+    --ink: #0a0a0a;
+    --electric: #0f2bff;
+    --electric-ink: #0f2bff;   /* the blue as *text*: lightened in dark mode to stay ≥4.5:1 */
+    --muted-foreground: #4a4a45;
+    --ok: #0f7a2e;
+    --ok-soft: #e8f6ec;
+
+    color-scheme: light;
+    margin: 0;
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+  }
+  html.dark body.opt7 {
+    --paper: #000000;
+    --surface: #0f0f0f;
+    --stock: #1a1a1a;
+    --ink: #ffffff;
+    --electric: #2438ff;
+    --electric-ink: #7a93ff;
+    --muted-foreground: #a9a9a2;
+    --ok: #46d17b;
+    --ok-soft: #0e2417;
+    color-scheme: dark;
+  }
+
+  html:has(body.opt7) { scroll-behavior: smooth; background: #ffffff; }
+  html.dark:has(body.opt7) { background: #000000; }
+  @media (prefers-reduced-motion: reduce) { html:has(body.opt7) { scroll-behavior: auto; } }
+  body.opt7 .brut-root { position: relative; }
+  body.opt7 :is(section, footer)[id] { scroll-margin-top: 2rem; }
+
+  /* ---------- type: 900 display against 300 body ---------- */
+  body.opt7 :is(p, li, span) { letter-spacing: 0.01em; }
+  body.opt7 p { font-size: 1rem; line-height: 1.6; font-weight: 300; }
+  body.opt7 button { font-family: var(--font-sub); font-size: 1rem; line-height: 1.5; font-weight: 700; }
+  body.opt7 :is(.brut-h1, .brut-h3, .clip-head) {
+    font-family: var(--font-display); font-weight: 400;  /* Archivo Black is a single 900-weight face */
+    text-transform: uppercase; color: var(--ink); margin: 0;
+  }
+  body.opt7 .brut-h1 { font-size: clamp(2.1rem, 6.4vw, 4.25rem); line-height: 0.98; letter-spacing: -0.025em; text-wrap: balance; }
+  body.opt7 .brut-h3 { font-size: clamp(1.55rem, 3.6vw, 2.4rem); line-height: 0.92; letter-spacing: -0.04em; }
+  body.opt7 .clip-head { font-size: clamp(1.15rem, 2.2vw, 1.5rem); line-height: 0.98; letter-spacing: -0.035em; margin-bottom: 0.4rem; }
+  body.opt7 .brut-blue { color: var(--electric-ink); font-weight: 500; }
+  body.opt7 .brut-strong { font-family: var(--font-sub); font-weight: 700; }
+
+  /* ponytail: ONE mono-caps rule — same family, size and tracking for every small label on the
+     page: kicker rows, footer links, the portrait caption, the copy flag, the social handles,
+     the skip link and the skills hints. They used to be five sizes and three trackings. */
+  body.opt7 :is(.clip-kicker, .brut-link, .skip, .copy-flag,
+                .contact-social span, .skills-expand-hint, .skills-collapse-hint) {
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+
+  /* ---------- section sheets ---------- */
+  body.opt7 .brut-card {
+    background: var(--surface); border: 4px solid var(--ink);
+    border-radius: 1.5rem; box-shadow: 7px 7px 0 var(--ink);
+  }
+  /* ponytail: one max-width here keeps every section sheet the same size, whatever its parent. */
+  body.opt7 .brut-card { width: 100%; max-width: 72rem; margin-inline: auto; padding: 1.5rem; }
+  @media (min-width: 768px) { body.opt7 .brut-card { padding: 2rem; } }
+  /* ponytail: same trick the skills header uses — the extras ride the heading row's free space. */
+  body.opt7 .sect-links { margin-left: auto; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  body.opt7 .sect-head {
+    display: flex; align-items: center; width: 100%;
+    margin-bottom: 1.5rem; padding-bottom: 0.9rem; border-bottom: 3px solid var(--ink);
+  }
+
+  /* ---------- hero: one centred column ---------- */
+  /* ponytail: everything centres off this one flex column, and one gap sets the whole
+     rhythm — name → lede → icons → pills. No per-element centring or margins. */
+  body.opt7 .brut-hero { position: relative; }
+  body.opt7 .hero-text {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    gap: 1.75rem; width: 100%; max-width: 64rem; margin-inline: auto;
+  }
+  body.opt7 .hero-text > * { margin: 0; }
+  body.opt7 .brut-lede { max-width: 40rem; line-height: 1.75; }
+  body.opt7 :is(.hero-actions, .hero-jump) { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem; }
+  body.opt7 .hero-actions { gap: 1.25rem; }
+  body.opt7 .scroll-cue {
+    position: absolute; bottom: 2.25rem; left: 50%; transform: translateX(-50%);
+    display: inline-flex; align-items: center; justify-content: center; padding: 0.4rem;
+    color: var(--muted-foreground); border-radius: 999px; transition: color 0.12s linear;
+  }
+  body.opt7 .scroll-cue:hover { color: var(--ink); }
+
+  /* ---------- ONE clipping grid for every section ---------- */
+  body.opt7 .clip-grid {
+    display: grid; gap: 1.25rem; list-style: none; margin: 0; padding: 0;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+  }
+
+  /* ---------- the clipping: kicker / headline / body / pinned footer ---------- */
+  body.opt7 .clip {
+    display: flex; flex-direction: column;
+    background: var(--stock); color: var(--ink);
+    border: 3px solid var(--ink); border-radius: 0.9rem; padding: 1rem 1.1rem;
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+  body.opt7 .clip > :last-child { margin-bottom: 0; }
+  body.opt7 .clip-kicker {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline;
+    gap: 0.1rem 0.75rem; border-bottom: 2px solid currentColor; color: var(--ink);
+    padding-bottom: 0.35rem; margin-bottom: 0.55rem;
+  }
+  body.opt7 .clip-kicker__h { font: inherit; margin: 0; letter-spacing: inherit; }
+  body.opt7 .clip-sub { font-size: 0.9rem; font-weight: 500; margin: 0 0 0.6rem; }
+  body.opt7 :is(.clip-body, .skill-line) { font-size: 0.85rem; line-height: 1.6; font-weight: 300; margin: 0; }
+  body.opt7 .brut-bullet { display: flex; gap: 0.55rem; }
+  body.opt7 .brut-dot::before { content: '–'; }
+  body.opt7 :is(.brut-dot, .skill-sep) { flex-shrink: 0; color: var(--muted-foreground); }
+  /* the footer is pinned to the bottom of every clipping: tags left, icon links right */
+  body.opt7 .clip-foot {
+    margin-top: auto; padding-top: 0.9rem;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem;
+  }
+  body.opt7 .clip-foot__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  body.opt7 .clip-foot__links { display: flex; gap: 0.5rem; flex-shrink: 0; margin-left: auto; }
+
+  /* ---------- links: never underlined — colour, weight and bordered chrome instead ---------- */
+  /* ponytail: a tag and a footer link are the same pill doing two jobs. */
+  body.opt7 :is(.brut-tag, .brut-link) {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.15rem 0.6rem; border: 2px solid currentColor; border-radius: 999px;
+  }
+  body.opt7 .brut-tag {
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; letter-spacing: 0.04em;
+    color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, var(--stock));
+  }
+  body.opt7 .brut-link { color: var(--electric-ink); text-decoration: none; white-space: nowrap; }
+  body.opt7 .brut-titlelink { color: inherit; text-decoration: none; }
+  /* break-word, not anywhere: the address keeps its min-content width, so it takes a whole flex
+     line of its own on a phone instead of being shrunk and split mid-domain. */
+  body.opt7 .brut-mail { color: var(--electric-ink); font-weight: 700; text-decoration: none; overflow-wrap: break-word; }
+
+  /* ---------- buttons: one border, one radius, one hover ---------- */
+  body.opt7 :is(.brut-icon, .brut-icon-sm, .brut-pill, .brut-copy, .contact-social) {
+    display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+    border: 2px solid var(--ink); border-radius: 0.6rem; color: var(--ink); text-decoration: none;
+    transition: transform 0.12s steps(2, end), box-shadow 0.12s steps(2, end), background-color 0.12s linear, color 0.12s linear;
+  }
+  body.opt7 :is(.brut-icon, .brut-pill, .contact-social) { background: var(--surface); box-shadow: 3px 3px 0 var(--ink); }
+  body.opt7 .brut-icon { padding: 0.6rem; }
+  body.opt7 .brut-icon-sm { padding: 0.4rem; background: var(--stock); flex-shrink: 0; }
+  body.opt7 .brut-pill { gap: 0.5rem; padding: 0.6rem 1.35rem; border-radius: 999px; font-family: var(--font-sub); font-size: 0.9rem; font-weight: 500; }
+  body.opt7 .brut-copy { padding: 0.45rem; background: var(--electric); color: #ffffff; }
+  body.opt7 .contact-social { gap: 0.6rem; padding: 0.5rem 0.85rem; }
+  /* ponytail: hero pair only — the Show More button shares .brut-pill and sizes to its own label. */
+  body.opt7 .hero-jump .brut-pill { min-width: 9rem; }
+  /* one hover for all of them: invert and snap up-left */
+  body.opt7 :is(.brut-icon, .brut-pill, .contact-social):hover {
+    background: var(--ink); border-color: var(--ink); color: var(--surface);
+    transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink);
+  }
+  body.opt7 .brut-icon-sm:hover { background: var(--electric); border-color: var(--electric); color: #ffffff; transform: translate(-2px, -2px); }
+  body.opt7 .brut-copy:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink); }
+  /* where there is no pointer to aim with, every control is at least a 44px target */
+  @media (max-width: 640px) {
+    body.opt7 :is(.brut-icon-sm, .brut-copy, .contact-social, .scroll-cue, .brut-link) { min-width: 44px; min-height: 44px; }
+  }
+
+  /* ---------- contact: a single centred sheet ---------- */
+  /* ponytail: one rule centres every row in it, one more gives every row the same rhythm. */
+  body.opt7 #contact { text-align: center; }
+  body.opt7 #contact :is(.sect-head, .brut-connect, .contact-socials, .clip-foot) { justify-content: center; }
+  body.opt7 #contact > :is(p, ul, div) { margin: 1.1rem 0 0; padding-top: 0; }
+  body.opt7 .contact-avail { color: var(--muted-foreground); }
+  body.opt7 .brut-connect { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+  body.opt7 .contact-socials { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; list-style: none; padding: 0; }
+
+  /* ---------- skip link + focus ---------- */
+  body.opt7 .skip {
+    position: absolute; left: 1rem; top: -4rem; z-index: 60;
+    padding: 0.5rem 0.8rem; background: var(--electric); color: #ffffff;
+    text-decoration: none; border: 3px solid var(--ink);
+  }
+  body.opt7 .skip:focus { top: 0.75rem; }
+  /* --electric-ink is the theme-aware blue, so one rule holds in both themes */
+  body.opt7 :is(a, button, input):focus-visible { outline: 3px solid var(--electric-ink); outline-offset: 3px; }
+
+  /* ---------- BB-8 theme switch, docked top-right (artwork left exactly as shipped) ---------- */
+  /* ponytail: absolute, not fixed — it sits at the top of the page and scrolls away, so it can
+     never sit on top of a card on a narrow screen. --p4-blue is the focus ring bb8.css draws. */
+  body.opt7 .bb8-dock {
+    position: absolute; top: 0.85rem; right: 0.85rem; z-index: 40;
+    display: inline-flex; line-height: 0; --p4-blue: var(--electric-ink);
+  }
+  body.opt7 .bb8-dock .bb8-toggle__container { box-shadow: 0 0 0 2px var(--ink); }
+  @media (max-width: 700px) {
+    body.opt7 .bb8-dock { top: 0.55rem; right: 0.55rem; }
+    /* padding grows the tap target to 44px; the negative margin keeps the artwork where it was */
+    body.opt7 .bb8-dock .bb8-toggle { font-size: 5.2px; padding: 8px; margin: -8px; }
+  }
+
+  /* ---------- copy buttons: the icon itself is the confirmation ---------- */
+  /* ponytail: a green tick in place of the icon and one flag BELOW the button — no popover, so
+     nothing can overlap the copy above it, and both copy buttons behave identically. */
+  body.opt7 .copy-done { display: none; }
+  body.opt7 .copy-btn[data-done] .copy-idle { display: none; }
+  body.opt7 .copy-btn[data-done] .copy-done { display: inline-flex; }
+  body.opt7 .copy-btn[data-done] { color: var(--ok); border-color: var(--ok); background: var(--ok-soft); }
+  body.opt7 .copy-flag {
+    display: none; position: absolute; top: calc(100% + 0.4rem); left: 50%; transform: translateX(-50%);
+    color: var(--ok); white-space: nowrap; pointer-events: none;
+  }
+  body.opt7 .copy-btn[data-done] .copy-flag { display: block; }
+
+  /* ---------- show more projects: only the first row until expanded ---------- */
+  /* ponytail: the fold is applied BY the script (.has-fold / .is-folded), so with JS off every
+     project is visible and the button — which could do nothing — is hidden instead. */
+  body.opt7 #projects:not(.has-fold) .more-row { display: none; }
+  body.opt7 #projects.is-folded .proj-grid > li:nth-child(n + 2) { display: none; }
+  @media (min-width: 900px) {
+    /* the 26rem grid fits two clippings per row from roughly here up */
+    body.opt7 #projects.is-folded .proj-grid > li:nth-child(n + 2) { display: flex; }
+    body.opt7 #projects.is-folded .proj-grid > li:nth-child(n + 3) { display: none; }
+  }
+  body.opt7 .more-row { display: flex; justify-content: center; margin-top: 2rem; }
+  body.opt7 :is(.more-idle, .more-open) { display: inline-flex; align-items: center; gap: 0.5rem; }
+  body.opt7 .more-open,
+  body.opt7 [data-more-toggle][aria-expanded='true'] .more-idle { display: none; }
+  body.opt7 [data-more-toggle][aria-expanded='true'] .more-open { display: inline-flex; }
+
+  /* ---------- skills collapsible ---------- */
+  body.opt7 .skills-trigger {
+    flex: 1; display: flex; align-items: center; gap: 0.85rem; cursor: pointer;
+    font: inherit; letter-spacing: inherit; color: inherit; background: none; border: 0; padding: 0;
+    text-transform: inherit;   /* preflight resets it on <button>, and the heading is inside one */
+  }
+  body.opt7 :is(.skills-expand-hint, .skills-collapse-hint) { display: inline-flex; align-items: center; gap: 0.3rem; margin-left: auto; }
+  body.opt7 .skills-collapse-hint,
+  body.opt7 .skills-article.is-expanded .skills-expand-hint { display: none; }
+  body.opt7 .skills-article.is-expanded .skills-collapse-hint { display: inline-flex; }
+  /* collapsed, the rule under the heading has nothing to separate — drop it, centre the pair */
+  body.opt7 .skills-article:not(.is-expanded) .sect-head { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+  body.opt7 .skills-article:not(.is-expanded) .skills-trigger { display: grid; grid-template-columns: 1fr auto 1fr; }
+  body.opt7 .skills-article:not(.is-expanded) #skills-heading { grid-column: 2; }
+  body.opt7 .skills-article:not(.is-expanded) .skills-expand-hint { grid-column: 3; justify-self: end; margin-left: 0; }
+  body.opt7 .skills-content {
+    display: grid; grid-template-rows: 0fr; opacity: 0;
+    transition: grid-template-rows 0.35s ease-out, opacity 0.3s ease-out;
+  }
+  body.opt7 .skills-content > * { min-height: 0; overflow: hidden; }
+  body.opt7 .skills-article.is-expanded .skills-content { grid-template-rows: 1fr; opacity: 1; }
+
+  /* ponytail: nothing animates in — the only motion left is hover and the skills collapse. */
+  @media (prefers-reduced-motion: reduce) {
+    body.opt7 *, body.opt7 *::before, body.opt7 *::after {
+      transition-duration: 0.001ms !important; animation: none !important;
+    }
+  }
+
+  @media print {
+    /* ink on paper, whatever the screen theme was */
+    html.dark body.opt7 {
+      --paper: #ffffff; --surface: #ffffff; --stock: #f2f2f2; --ink: #0a0a0a;
+      --electric: #0f2bff; --electric-ink: #0f2bff; --muted-foreground: #4a4a45;
+    }
+    body.opt7 :is(.skip, .bb8-dock, .scroll-cue, .more-row, .skills-expand-hint, .skills-collapse-hint) { display: none !important; }
+    body.opt7 .brut-hero { min-height: 0; }
+    body.opt7 .proj-grid > li { display: flex !important; }
+    body.opt7 .skills-content { grid-template-rows: 1fr; opacity: 1; }
+    body.opt7 :is(.brut-card, .clip, .brut-icon, .brut-pill, .contact-social) { box-shadow: none !important; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    // Theme is owned by the BB-8 switch (src/components/v2/BB8Toggle.astro): it sets its own knob
+    // pre-paint from the class ProLayout applied, then writes html.dark + localStorage.theme.
+
+    // Copy-to-clipboard buttons: the icon becomes a green tick for two seconds (fall back to mailto).
+    var status = document.querySelector('[data-copy-status]');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function (b) {
       var timer;
-      btn.addEventListener('click', function () {
-        var email = btn.getAttribute('data-email');
-        // navigator.clipboard is undefined on non-localhost HTTP / old browsers —
-        // calling .writeText would throw synchronously, before any .catch.
-        var canCopy = navigator.clipboard && navigator.clipboard.writeText;
-        if (!canCopy) { window.location.href = 'mailto:' + email; return; }
-        navigator.clipboard.writeText(email).then(function () {
-          label.textContent = 'Copied to clipboard';
-          clearTimeout(timer);
-          timer = setTimeout(function () { label.textContent = idle; }, 1800);
-        }).catch(function () {
-          window.location.href = 'mailto:' + email;
-        });
+      b.addEventListener('click', function () {
+        var email = b.getAttribute('data-copy');
+        var no = function () { location.href = 'mailto:' + email; };
+        var ok = function () {
+          b.setAttribute('data-done', '');
+          if (status) status.textContent = 'Email address copied';
+          clearTimeout(timer);   // a second click restarts the two seconds instead of cutting them short
+          timer = setTimeout(function () {
+            b.removeAttribute('data-done');
+            if (status) status.textContent = '';
+          }, 2000);
+        };
+        navigator.clipboard ? navigator.clipboard.writeText(email).then(ok, no) : no();
       });
-    })();
-  </script>
+    });
 
-  <OptionSwitcher />
-</ThemeLayout>
+    // Technical Skills collapse (remembers state for the session, like the original).
+    var KEY = 'resume-skills-expanded';
+    var article = document.getElementById('skills');
+    var trigger = document.querySelector('.skills-trigger');
+    // ponytail: open unless this session explicitly folded it away.
+    try {
+      if (sessionStorage.getItem(KEY) === 'false') { article.classList.remove('is-expanded'); trigger.setAttribute('aria-expanded', 'false'); }
+    } catch (e) {}
+    trigger.addEventListener('click', function () {
+      var open = article.classList.toggle('is-expanded');
+      trigger.setAttribute('aria-expanded', String(open));
+      try { sessionStorage.setItem(KEY, String(open)); } catch (e) {}
+    });
+
+    // Show More Projects. The fold is applied here, not in the markup: with this script gone all
+    // 19 projects stay on the page and the button that could not work is hidden by CSS instead.
+    var projects = document.getElementById('projects');
+    var moreBtn = projects.querySelector('[data-more-toggle]');
+    projects.classList.add('has-fold', 'is-folded');
+    moreBtn.addEventListener('click', function () {
+      var folded = projects.classList.toggle('is-folded');
+      moreBtn.setAttribute('aria-expanded', String(!folded));
+      if (folded) projects.scrollIntoView({ block: 'start' });
+    });
+  })();
+</script>
