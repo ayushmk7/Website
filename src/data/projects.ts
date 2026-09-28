@@ -8,6 +8,12 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "MK-OSINT",
+    description: "A real-time geospatial intelligence platform that plots live public feeds (military aircraft transponders, the ISS, USGS earthquakes, Safecast radiation sensors, airport control zones) on a CesiumJS 3D globe with toggleable layers, entity history, and CRT/night-vision/FLIR filters. A TypeScript backend runs a declarative ingestion engine: each source is one YAML file (fetch, parse JSON/GeoJSON/XML/CSV, map fields), polled with retry/backoff, stored in SQLite, and pushed over WebSocket with an OpenAPI-documented REST API. Also ships as a spec-driven AI-agent workshop kit, including an agent skill that turns any public data URL into a source definition.",
+    tags: ["TypeScript", "CesiumJS", "React", "Redux Toolkit", "Material UI", "SQLite", "WebSockets", "OpenAPI", "YAML", "GitHub Actions"],
+    githubUrl: "https://github.com/ayushmk7/mk-osint"
+  },
+  {
     title: "Inferno",
     description: "Scalable backend service for hosting and serving ML models via REST APIs using Flask, RabbitMQ, MongoDB, and Docker.",
     tags: ["Python", "Flask", "TensorFlow", "PyTorch", "Celery", "Redis", "MongoDB", "Kubernetes"],

@@ -145,8 +145,10 @@ export const experience: Experience[] = [
     kind: "Work",
     url: "https://giitsolutions.com/",
     bullets: [
-      "Built and maintained CI/CD-based deployments on AWS.",
-      "Wrote Python tooling scripts to automate backend processes and reduce manual overhead.",
+      "Maintained CI/CD pipelines on AWS, automating deployments across 12+ microservices and improving reliability by 28%.",
+      "Developed Python scripts to streamline backend processes, reducing manual overhead by 40% and saving 15+ hours weekly.",
+      "Optimized cloud infrastructure with senior devs, achieving a 35% cost reduction through resource management.",
+      "Deployed cloud-native solutions with AWS CI/CD tools, improving scalability and achieving 99.7% uptime.",
     ],
   },
 ];
