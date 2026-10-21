@@ -32,7 +32,7 @@ const dates = (s: string) => s.replace(/\s+to\s+/g, ' – ');
 // "Email is fastest." is dropped here only; lib/profile.ts is shared with the other options.
 const availability = profile.availability.replace(/\s*Email is fastest\.?$/i, '');
 ---
-<ProLayout title={`${profile.name} — ${profile.headline}`} bodyClass="opt7">
+<ProLayout title={profile.name} bodyClass="opt7">
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
