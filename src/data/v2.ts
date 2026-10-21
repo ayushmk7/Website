@@ -16,6 +16,16 @@ export interface Hackathon {
 // Most impressive / most recent first.
 export const hackathons: Hackathon[] = [
   {
+    event: "MHacks 2026",
+    organizer: "MHacks, Major League Hacking",
+    date: "Oct 2026",
+    placement: "Winner, MLH Best Use of Solana + Judged by an LLM",
+    project: "NoBadgeActors",
+    blurb:
+      "BadgeOS, custom C++ and Lua firmware that turns the ESP32-S3 Solana badge into a hardware wallet. It has its own shell, a permissioned app platform, and a wallet core that checks payees against on-chain attestations, proves presence over ESP-NOW, and signs only on a screen apps can't touch.",
+    repoUrl: "https://github.com/ayushmk7/NoBadgeActors",
+  },
+  {
     event: "Red Bull Kappa Theta Pi Hackathon",
     organizer: "Kappa Theta Pi, University of Michigan",
     date: "Mar 2026",
