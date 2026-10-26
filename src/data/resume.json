@@ -126,13 +126,14 @@
       "RAG",
       "Reinforcement Learning",
       "RLHF/DPO",
-      "Scikit-learn",
+      "scikit-learn",
       "TensorFlow",
       "Unsloth",
       "vLLM"
     ],
     "softwareDevelopment": [
       "APIs",
+      "CesiumJS",
       "Dart",
       "Django",
       "Express",
@@ -150,8 +151,10 @@
       "Progressive Web Apps",
       "React",
       "React Native",
+      "Redux Toolkit",
       "REST",
       "Tailwind CSS",
+      "Vite",
       "Vue",
       "WebSockets"
     ],
@@ -160,9 +163,11 @@
       "ETL pipelines",
       "MongoDB",
       "MySQL",
+      "NumPy",
       "Pandas",
       "PostgreSQL",
       "Redis",
+      "SQLite",
       "Vector databases"
     ],
     "devOps": [

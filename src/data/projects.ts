@@ -9,7 +9,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     title: "MK-OSINT",
-    description: "A real-time geospatial intelligence platform that plots live public feeds (military aircraft transponders, the ISS, USGS earthquakes, Safecast radiation sensors, airport control zones) on a CesiumJS 3D globe with toggleable layers, entity history, and CRT/night-vision/FLIR filters. A TypeScript backend runs a declarative ingestion engine: each source is one YAML file (fetch, parse JSON/GeoJSON/XML/CSV, map fields), polled with retry/backoff, stored in SQLite, and pushed over WebSocket with an OpenAPI-documented REST API. Also ships as a spec-driven AI-agent workshop kit, including an agent skill that turns any public data URL into a source definition.",
+    description: "A real-time geospatial intelligence platform that plots live public feeds (military aircraft transponders, the ISS, USGS earthquakes, Safecast radiation sensors, airport control zones) on a CesiumJS 3D globe with toggleable layers, entity history, and CRT/night-vision/FLIR filters. A TypeScript backend runs a declarative ingestion engine: each source is one YAML file (fetch, parse JSON/GeoJSON/XML/CSV, map fields), polled with retry/backoff, stored in SQLite, and pushed over WebSocket with an OpenAPI-documented REST API. Also ships as a spec-driven AI-agent workshop kit, including an agent skill that turns any public data URL into a source definition. A deterministic observation ID and unique natural-key index eliminated a 372K-row duplication bug across 31K entities, and one batched BillboardCollection with delta-only updates keeps tens of thousands of live markers interactive on integrated GPUs.",
     tags: ["TypeScript", "CesiumJS", "React", "Redux Toolkit", "Material UI", "SQLite", "WebSockets", "OpenAPI", "YAML", "GitHub Actions"],
     githubUrl: "https://github.com/ayushmk7/mk-osint"
   },
@@ -165,9 +165,15 @@ export const projects: Project[] = [
   },
   {
     title: "NASA SUITS Challenge",
-    description: "AI Lead for CLAWS UM's NASA SUITS entry. Autonomous lunar-EVA navigation with A*/Jump Point Search over a 3-layer occupancy grid, 17-ray LiDAR fusion, and RSSI trilateration; PyTorch obstacle detection (temporal ResidualBeamCNN, BEV cross-attention transformer) behind a hot-swappable inference framework; and a voice pipeline streaming 16 kHz audio over WebSocket to faster-whisper and a neural intent classifier.",
+    description: "AI Lead (team of 10) for CLAWS UM's NASA SUITS and RASC-AL entries. Autonomous lunar-EVA navigation at 96.8% waypoint accuracy with A*/Jump Point Search over a 3-layer occupancy grid, 17-ray LiDAR fusion, and RSSI trilateration; PyTorch obstacle detection (temporal ResidualBeamCNN, BEV cross-attention transformer) behind a hot-swappable inference framework; and a voice pipeline streaming 16 kHz audio over WebSocket to faster-whisper and a neural intent classifier at 200ms end to end.",
     tags: ["Python", "PyTorch", "A*/JPS", "LiDAR Fusion", "faster-whisper", "WebSockets", "Unity"],
     websiteUrl: "https://www.nasa.gov/learning-resources/spacesuit-user-interface-technologies-for-students/",
     githubUrl: "https://github.com/ayushmk7/NASA_ML_ModelArchitecture"
+  },
+  {
+    title: "Marketing Agent Studio",
+    description: "An autonomous content agent built under a $300K NSF Phase I POSE grant for the Jaseci ecosystem: 55 Jac modules, 18.8K lines, 166 tests, 9 trend pollers that surface what to write about, and a human approval queue before anything ships.",
+    tags: ["Jac", "Python", "LLMs", "Agentic systems"],
+    githubUrl: "https://github.com/jaseci-labs/Jaseci-Marketing-Agent-Studio"
   }
 ];

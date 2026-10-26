@@ -32,7 +32,7 @@ export const profile = {
   headline: 'CS and Math @ University of Michigan',
   /** 2–3 sentence bio for hero/about. Grounded in v2.ts experience. */
   summary:
-    'Computer Science and Mathematics undergraduate at the University of Michigan. I work on systems and AI infrastructure: fine-tuning a domain-specialized coding model at Jaseci Labs, ARM SIMD inference kernels at Cactus (YC S25), and NSF-funded open-source ecosystem research. Five hackathon placements in the last year.',
+    'Computer Science and Mathematics undergraduate at the University of Michigan. I work on systems and AI infrastructure: fine-tuning a Jac coding agent at Jaseci Labs, fixing on-device inference bugs at Cactus (YC S25), and building agent tooling for NSF-funded open-source ecosystem research. Six hackathon placements in the last year.',
   location: 'Ann Arbor, MI',
   availability: 'Open to internships and collaborations. Email is fastest.',
   site: 'https://ayushmadhav.com',
