@@ -101,9 +101,9 @@ export const experience: Experience[] = [
     kind: "Work",
     url: "https://www.jasecilabs.com/",
     bullets: [
-      "Fixed image completions hanging on Metal and CPU: a shape bug split a 1,043-token prompt into 1,000 chunks.",
-      "Fixed two C++ tokenizer bugs: byte-fallback pieces decoded as literal text, and vocab lines mis-split on tabs.",
-      "Documented custom vocabulary and boost options for transcription across four SDKs: Python, Swift, Kotlin, Flutter.",
+      "Fine-tuned Qwen3-Coder 30B into a coding agent for the Jac language, reaching 94% compile-pass on a held-out benchmark, using Unsloth and 4-bit QLoRA.",
+      "Generated 300k+ training examples through a synthetic data pipeline, each gated on a compiler and unit tests.",
+      "Cut the model's fallback to Python patterns 82% with a four-stage SFT, debugging, DPO, and agentic curriculum.",
     ],
   },
   {
@@ -129,9 +129,9 @@ export const experience: Experience[] = [
     badge: "YC S25",
     url: "https://cactuscompute.com/",
     bullets: [
-      "Core contributor on an open-source mobile AI inference engine for smartphones and low-power devices.",
-      "Implementing ARM SIMD kernels for matmul and attention with KV-cache quantization, and zero-copy computation graphs for on-device transformer inference at sub-50ms time-to-first-token.",
-      "Integrating NPU acceleration and INT4 quantization, plus streaming inference and cloud-handoff logic, and building OpenAI-compatible FFI APIs for Flutter, React Native, and Kotlin.",
+      "Fixed image completions hanging on Metal and CPU: a shape bug split a 1,043-token prompt into 1,000 chunks.",
+      "Fixed two C++ tokenizer bugs: byte-fallback pieces decoded as literal text, and vocab lines mis-split on tabs.",
+      "Documented custom vocabulary and boost options for transcription across four SDKs: Python, Swift, Kotlin, Flutter.",
     ],
   },
   {
