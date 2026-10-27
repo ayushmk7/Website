@@ -6,11 +6,8 @@
 
 \documentclass[letterpaper,11pt]{article}
 
-\usepackage{latexsym}
 \usepackage[empty]{fullpage}
 \usepackage{titlesec}
-\usepackage[usenames,dvipsnames]{color}
-\usepackage{verbatim}
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \hypersetup{
@@ -19,17 +16,10 @@
   pdfsubject={Software Engineering Resume},
   pdfkeywords={software engineering, machine learning, systems, internship}
 }
-\usepackage{fancyhdr}
 \usepackage[english]{babel}
-\usepackage{tabularx}
-\usepackage{multicol}
 \ifdefined\pdfgentounicode\input{glyphtounicode}\fi
 
-\pagestyle{fancy}
-\fancyhf{}
-\fancyfoot{}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
+\pagestyle{empty}
 
 % Tight margins
 \addtolength{\oddsidemargin}{-0.3in}
@@ -41,10 +31,9 @@
 \urlstyle{same}
 \raggedbottom
 \raggedright
-\setlength{\tabcolsep}{0in}
 
 \titleformat{\section}{
-  \vspace{-10pt}\scshape\raggedright\large\bfseries
+  \vspace{-10pt}\raggedright\large\bfseries
 }{}{0em}{}[\titlerule \vspace{-7pt}]
 
 \ifdefined\pdfgentounicode\pdfgentounicode=1\fi

@@ -26,7 +26,7 @@ const lead = (keys: string[], key: (x: any) => string) => (a: any, b: any) => {
 };
 const orderedSkillGroups = [...skillGroups].sort(lead(['cybersecurity', 'aiMl'], (g) => g.key));
 const orderedProjects = [...allProjects].sort(
-  lead(['Jac ML Studio', 'NASA SUITS Challenge', 'Inferno', 'NightShift'], (p) => p.title),
+  lead(['WolvCTF 2026 Challenge Authoring', 'Jac ML Studio', 'NASA SUITS Challenge', 'Inferno', 'NightShift'], (p) => p.title),
 );
 const dates = (s: string) => s.replace(/\s+to\s+/g, ' – ');
 // "Email is fastest." is dropped here only; lib/profile.ts is shared with the other options.

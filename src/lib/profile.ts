@@ -72,12 +72,12 @@ export const hackathonsWithProject: HackathonWithProject[] = hackathons.map((h) 
 // ---------------------------------------------------------------------------
 
 /** Mirror of ProjectLayouts.featuredTitles (curation, not data). Keep in sync. */
-const featuredProjectTitles = ['Jac ML Studio', 'NightShift', 'Domain Portfolio Manager', 'NASA SUITS Challenge'];
+const featuredProjectTitles = ['WolvCTF 2026 Challenge Authoring', 'Jac ML Studio', 'NightShift', 'Domain Portfolio Manager', 'NASA SUITS Challenge'];
 
 /** Projects minus the ones that are shown under Hackathons. Original order preserved. */
 const visibleProjects: Project[] = projects.filter((p) => !hackathons.some((h) => h.project === p.title));
 
-/** The 4 featured projects, in featuredProjectTitles order. Build fails on a typo. */
+/** Featured projects, in featuredProjectTitles order. Build fails on a typo. */
 export const featuredProjects: Project[] = featuredProjectTitles.map((t) => {
   const p = visibleProjects.find((x) => x.title === t);
   if (!p) throw new Error(`profile.ts: featured project "${t}" not in projects.ts (or is a hackathon project)`);
