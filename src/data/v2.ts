@@ -121,6 +121,19 @@ export const experience: Experience[] = [
     ],
   },
   {
+    company: "WolvSec, University of Michigan Cybersecurity Club",
+    role: "Vice President; previously Developer and Member",
+    period: "Aug 2025 to Present",
+    location: "Ann Arbor, MI",
+    kind: "Leadership",
+    bullets: [
+      "Elected Vice President in Mar 2026 after serving as Developer; lead weekly training and competition preparation.",
+      "Represented Michigan in 12 CTFs, with two first-place finishes and 50+ solved challenges across web and API exploitation, reverse engineering, packet forensics, and cryptography.",
+      "Authored 12 WolvCTF 2026 challenge submissions from beginner to hard: 5 binary exploitation, 5 web and application security, 1 cryptography, and 1 forensics.",
+      "Built player handouts and author solutions or writeups; hosted submissions include jailed KCTF services and solver-backed healthchecks, with local solves and selected blind playtests reported in the PRs.",
+    ],
+  },
+  {
     company: "Cactus",
     role: "Open Source Contributor",
     period: "Jan 2026 to Present",

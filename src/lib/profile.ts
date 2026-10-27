@@ -72,7 +72,7 @@ export const hackathonsWithProject: HackathonWithProject[] = hackathons.map((h) 
 // ---------------------------------------------------------------------------
 
 /** Mirror of ProjectLayouts.featuredTitles (curation, not data). Keep in sync. */
-const featuredProjectTitles = ['WolvCTF 2026 Challenge Authoring', 'Jac ML Studio', 'NightShift', 'Domain Portfolio Manager', 'NASA SUITS Challenge'];
+const featuredProjectTitles = ['Jac ML Studio', 'NightShift', 'Domain Portfolio Manager', 'NASA SUITS Challenge'];
 
 /** Projects minus the ones that are shown under Hackathons. Original order preserved. */
 const visibleProjects: Project[] = projects.filter((p) => !hackathons.some((h) => h.project === p.title));
@@ -111,7 +111,7 @@ const featuredSkillPicks: Record<SkillCategoryKey, string[]> = {
   softwareDevelopment: ['FastAPI', 'GraphQL', 'Next.js', 'Node.js', 'React', 'WebSockets'],
   databases: ['ETL pipelines', 'MongoDB', 'PostgreSQL', 'Redis', 'Vector databases'],
   devOps: ['AWS Lambda', 'CI/CD pipelines', 'Docker', 'Kubernetes', 'Linux', 'Terraform'],
-  cybersecurity: ['PCAP forensics', 'Reverse engineering', 'TLS protocol analysis', 'YARA based malware triage'],
+  cybersecurity: ['CTF authoring', 'PCAP forensics', 'Reverse engineering', 'TLS protocol analysis', 'YARA based malware triage'],
   coreCs: ['Algorithms', 'Concurrency and Multithreading', 'Data Structures', 'Operating Systems Basics'],
 };
 

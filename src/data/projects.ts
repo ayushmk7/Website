@@ -8,11 +8,6 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: "WolvCTF 2026 Challenge Authoring",
-    description: "Authored 12 WolvCTF 2026 challenge submissions across binary exploitation, web security, cryptography, and forensics. For hosted tasks, built jailed services and solver-backed KCTF healthchecks; the PRs report local solve validation.",
-    tags: ["CTF", "Binary Exploitation", "Web Security", "Cryptography", "Forensics", "KCTF"],
-  },
-  {
     title: "MK-OSINT",
     description: "A real-time geospatial intelligence platform that plots live public feeds (military aircraft transponders, the ISS, USGS earthquakes, Safecast radiation sensors, airport control zones) on a CesiumJS 3D globe with toggleable layers, entity history, and CRT/night-vision/FLIR filters. A TypeScript backend runs a declarative ingestion engine: each source is one YAML file (fetch, parse JSON/GeoJSON/XML/CSV, map fields), polled with retry/backoff, stored in SQLite, and pushed over WebSocket with an OpenAPI-documented REST API. Also ships as a spec-driven AI-agent workshop kit, including an agent skill that turns any public data URL into a source definition. A deterministic observation ID and unique natural-key index eliminated a 372K-row duplication bug across 31K entities, and one batched BillboardCollection with delta-only updates keeps tens of thousands of live markers interactive on integrated GPUs.",
     tags: ["TypeScript", "CesiumJS", "React", "Redux Toolkit", "Material UI", "SQLite", "WebSockets", "OpenAPI", "YAML", "GitHub Actions"],
