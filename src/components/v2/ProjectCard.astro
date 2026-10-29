@@ -4,8 +4,8 @@ import ProjectLinks from './ProjectLinks.astro';
 const { p } = Astro.props;
 ---
 <div class="news">
-  <div class="news-kicker"><span>{p.tags.slice(0, 3).join(' · ')}</span></div>
   <h3 class="news-head">{p.title}</h3>
   <p class="news-body" style="margin-bottom:0.6rem">{p.description}</p>
+  <p class="news-meta">{p.tags.slice(0, 3).join(' · ')}</p>
   <ProjectLinks p={p} />
 </div>

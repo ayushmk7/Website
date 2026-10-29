@@ -18,7 +18,7 @@ const links = [
     <a href="#" class="theme-nav-brand px-4 py-1.5 mr-1 text-sm font-semibold" aria-label="Back to top">AMK</a>
     <span class="theme-nav-sep"></span>
     {links.map((l) => (
-      <a href={l.href} class="theme-nav-link hidden sm:inline-block px-3 py-1.5 text-sm transition-colors">{l.label}</a>
+      <a href={l.href} class="theme-nav-link hidden sm:inline-block px-3 py-1.5 text-sm">{l.label}</a>
     ))}
     <span class="theme-nav-sep hidden sm:inline-block"></span>
     <BB8Toggle size="5px" />
@@ -60,7 +60,6 @@ const links = [
     border-radius: 999px;
     text-decoration: none;
   }
-  .theme-nav-link:hover { background: var(--accent); color: #fff; }
   .theme-nav-sep {
     width: 2px;
     height: 1.25rem;

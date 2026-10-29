@@ -1,5 +1,3 @@
-// New-site data. Kept separate from resume.json/projects.ts so the live v1 site is untouched.
-// College-only honors per request: hackathons only, no high-school olympiads.
 
 export interface Hackathon {
   event: string;
@@ -22,7 +20,7 @@ export const hackathons: Hackathon[] = [
     placement: "Winner, MLH Best Use of Solana + Judged by an LLM",
     project: "NoBadgeActors",
     blurb:
-      "BadgeOS, custom C++ and Lua firmware that turns the ESP32-S3 Solana badge into a hardware wallet. It has its own shell, a permissioned app platform, and a wallet core that checks payees against on-chain attestations, proves presence over ESP-NOW, and signs only on a screen apps can't touch.",
+      "Turned the ESP32-S3 Solana badge into a hardware wallet with custom firmware. The wallet checks payees and requires approval on a screen apps cannot control before it signs.",
     repoUrl: "https://github.com/ayushmk7/NoBadgeActors",
   },
   {
@@ -32,7 +30,7 @@ export const hackathons: Hackathon[] = [
     placement: "1st Overall, Education Track",
     project: "ConceptPilot",
     blurb:
-      "Turns exam results and concept maps into readiness insights. It clusters struggling students, traces root-cause concepts, and gives instructors an interactive prerequisite graph that shows dependencies and gaps at a glance.",
+      "Turns exam results and a prerequisite graph into a clear view of which concepts students are missing and what instructors should reteach.",
     repoUrl: "https://github.com/ayushmk7/ConceptPilot",
   },
   {
@@ -42,7 +40,7 @@ export const hackathons: Hackathon[] = [
     placement: "Winner, ElevenLabs Track",
     project: "SaveSurance",
     blurb:
-      "A multimodal medical-bill parser with a dual-path backend. It returns structured line items, savings signals, and financial-aid screening, generates editable PDF appeal packets, and runs a live call assistant over WebSocket.",
+      "Breaks medical bills into line items, flags potential savings, drafts editable appeals, and helps patients follow up with a live call assistant.",
     repoUrl: "https://github.com/UAgarwal7/SaveSurance",
     siteUrl: "https://savesurance.tech",
   },
@@ -53,7 +51,7 @@ export const hackathons: Hackathon[] = [
     placement: "Winner, Audited AI Track",
     project: "SiteSense",
     blurb:
-      "A browser extension that reads privacy policies, cookie notices, and extension permissions, assigns a privacy-risk score with Claude, and surfaces the warnings that matter so users can see how their data is handled.",
+      "Checks privacy policies, cookie notices, and extension permissions, then surfaces the findings most likely to affect a user's data.",
     repoUrl: "https://github.com/ayushmk7/SiteSense",
     siteUrl: "https://your-site-sense.vercel.app",
   },
@@ -64,7 +62,7 @@ export const hackathons: Hackathon[] = [
     placement: "2nd Overall",
     project: "GhostWatch",
     blurb:
-      "Jac-powered security and PR review. Verified GitHub webhooks fire graph walkers that map the codebase, score dependency and blast-radius impact, and surface risk in a web control room. Built to advance open-source dev tooling.",
+      "Runs security reviews from verified GitHub webhooks, mapping dependencies and flagging changes with a large blast radius.",
     prize: "Cash prize",
     repoUrl: "https://github.com/ayushmk7/GhostWatch",
   },
@@ -75,7 +73,7 @@ export const hackathons: Hackathon[] = [
     placement: "Top 5 Finish",
     project: "PreReq",
     blurb:
-      "An AI concept-readiness platform for instructors and students. Instructors upload exam scores and a concept graph and get a class heatmap with root-cause traces. Students get a personal report with a prerequisite-ordered study plan.",
+      "Uses exam scores and a concept graph to build class heatmaps for instructors and personal study plans for students.",
     repoUrl: "https://github.com/ayushmk7/PreReq",
   },
 ];
@@ -108,16 +106,16 @@ export const experience: Experience[] = [
   },
   {
     company: "University of Michigan, College of Engineering",
-    role: "Undergraduate Researcher, PhD Level (NSF POSE)",
+    role: "Undergraduate Researcher (NSF POSE)",
     period: "May 2026 to Present",
     location: "Ann Arbor, MI",
     kind: "Research",
     badge: "NSF, $300K",
     url: "https://jaseci.engin.umich.edu/",
     bullets: [
-      "Built Marketing Agent Studio, an autonomous content agent under a $300K NSF Phase I POSE grant: 55 Jac modules, 18.8K lines, 166 tests, 9 trend pollers, and a human approval queue.",
+      "Built Marketing Agent Studio under a $300K NSF grant. Nine trend pollers suggest topics, and a person approves each piece before it is published.",
       "Shipped NightShift, an unattended harness that audits repos nightly and opens draft PRs under a spend cap.",
-      "Traced 13+ bugs where a check exited clean without running, then gated every change behind a fail-closed CI mirror and mutation-tested all 41 tripwires.",
+      "Found 13+ cases where a check exited successfully without running. Added a CI mirror to catch them and mutation-tested 41 tripwires.",
     ],
   },
   {
@@ -168,10 +166,9 @@ export const experience: Experience[] = [
     kind: "Work",
     url: "https://giitsolutions.com/",
     bullets: [
-      "Maintained CI/CD pipelines on AWS, automating deployments across 12+ microservices and improving reliability by 28%.",
-      "Developed Python scripts to streamline backend processes, reducing manual overhead by 40% and saving 15+ hours weekly.",
-      "Optimized cloud infrastructure with senior devs, achieving a 35% cost reduction through resource management.",
-      "Deployed cloud-native solutions with AWS CI/CD tools, improving scalability and achieving 99.7% uptime.",
+      "Automated deployments across 12+ AWS microservices and improved reliability by 28%.",
+      "Wrote Python scripts that removed 15+ hours of manual work each week.",
+      "Helped reduce cloud costs by 35%; services reached 99.7% uptime.",
     ],
   },
 ];

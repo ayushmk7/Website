@@ -1,12 +1,8 @@
 ---
-// src/components/pro/opt4/Icon.astro — inline SVG icon set for Option 4 "Original".
-// Stand-in for the lucide-react icons the original site used (same 24px stroke grammar).
-// Decorative: always aria-hidden; the surrounding control carries the label.
 interface Props {
   name:
-    | 'mail' | 'github' | 'linkedin' | 'x' | 'moon' | 'sun' | 'copy' | 'check'
-    | 'external' | 'chevron-down' | 'chevron-up' | 'briefcase' | 'graduation'
-    | 'code' | 'trophy' | 'sparkles';
+    | 'mail' | 'github' | 'linkedin' | 'x' | 'copy' | 'check'
+    | 'external' | 'chevron-down' | 'chevron-up';
   class?: string;
 }
 const { name, class: cls = 'w-5 h-5' } = Astro.props;
@@ -33,12 +29,6 @@ const stroke = {
 {name === 'x' && (
   <svg class={cls} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
 )}
-{name === 'moon' && (
-  <svg class={cls} {...stroke}><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-)}
-{name === 'sun' && (
-  <svg class={cls} {...stroke}><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-)}
 {name === 'copy' && (
   <svg class={cls} {...stroke}><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
 )}
@@ -53,19 +43,4 @@ const stroke = {
 )}
 {name === 'chevron-up' && (
   <svg class={cls} {...stroke}><path d="m18 15-6-6-6 6"/></svg>
-)}
-{name === 'briefcase' && (
-  <svg class={cls} {...stroke}><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-)}
-{name === 'graduation' && (
-  <svg class={cls} {...stroke}><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
-)}
-{name === 'code' && (
-  <svg class={cls} {...stroke}><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-)}
-{name === 'trophy' && (
-  <svg class={cls} {...stroke}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-)}
-{name === 'sparkles' && (
-  <svg class={cls} {...stroke}><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/></svg>
 )}

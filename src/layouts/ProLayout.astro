@@ -5,12 +5,12 @@
 // Tailwind preflight + utilities are auto-injected by @astrojs/tailwind on every page.
 //
 // Props:
-//   title        — <title> and og:title
-//   description  — meta description (defaults to profile.metaDescription)
-//   bodyClass    — optional class on <body> (the page hangs its scope class here)
+//   title        - <title> and og:title
+//   description  - meta description (defaults to profile.metaDescription)
+//   bodyClass    - optional class on <body> (the page hangs its scope class here)
 // Slots:
-//   head         — extra <head> content (Google Fonts <link>s, extra meta)
-//   default      — page body
+//   head         - extra <head> content (Google Fonts <link>s, extra meta)
+//   default      - page body
 //
 // Dark mode: before paint, <html> gets class "dark" if localStorage.theme === 'dark',
 // or if there's no saved value and the OS prefers dark. Pages style with `html.dark`;
@@ -40,7 +40,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${profile.name} — ${profile.headline}`} />
+    <meta property="og:image:alt" content={`${profile.name}, ${profile.headline}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
     <slot name="head" />

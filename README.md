@@ -1,19 +1,19 @@
 # Portfolio Website
 
-- Portfolio website built with Astro and Tailwind CSS.
-- email for feedback at contactayushmadhav@gmail.com
+Astro portfolio with a main page (`/`) and comic page (`/fun`). Both use
+`src/data/` for experience, projects, hackathons, places, and skills.
+`src/lib/profile.ts` holds the shared curation for the main page and skill lists.
+Keep existing portfolio entries when updating the résumé; correct or add entries
+instead of dropping them.
 
-## Local Deployment
+## Local development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the local site in your browser:
-
-- Main site: `http://localhost:4321/`
-- Fun mode (comic version): `http://localhost:4321/fun`
+Open `http://localhost:4321/` or `http://localhost:4321/fun`.
 
 To test the production build locally:
 

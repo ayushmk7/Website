@@ -1,5 +1,5 @@
 ---
-// src/pages/fun.astro — the comic ("fun") site.
+// src/pages/fun.astro - the comic ("fun") site.
 import ThemeLayout from '../layouts/ThemeLayout.astro';
 import '../styles/themes/comic.css';
 import '../styles/layout-variants.css';
@@ -9,6 +9,7 @@ import ExperienceLayouts from '../components/v2/ExperienceLayouts.astro';
 import ProjectLayouts from '../components/v2/ProjectLayouts.astro';
 import HackathonLayouts from '../components/v2/HackathonLayouts.astro';
 import StackLayouts from '../components/v2/StackLayouts.astro';
+import { profile } from '../lib/profile';
 ---
 <ThemeLayout title="Ayush Madhav Kumar">
   <ComicHero client:visible />
@@ -54,8 +55,8 @@ import StackLayouts from '../components/v2/StackLayouts.astro';
       <h2 class="text-6xl text-[var(--accent)]" style="font-family:var(--font-display);-webkit-text-stroke:2px var(--outline)">Contact</h2>
     </div>
     <div class="panel panel--burst" style="max-width:50rem;margin:0 auto;padding:clamp(1.5rem,4vw,2.5rem);text-align:center">
-      <h3 style="font-family:var(--font-display);font-size:clamp(2rem,5.5vw,3.5rem);line-height:1;margin-bottom:0.6rem;color:var(--accent)">Let's build something</h3>
-      <p style="font-weight:700;margin-bottom:1.5rem;color:var(--text)">Open to internships and collabs. Email's fastest.</p>
+      <h3 style="font-family:var(--font-display);font-size:clamp(2rem,5.5vw,3.5rem);line-height:1;margin-bottom:0.6rem;color:var(--accent)">Reach me by email</h3>
+      <p style="font-weight:700;margin-bottom:1.5rem;color:var(--text)">{profile.availability}</p>
       <div style="display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:center">
         <button id="copy-email" type="button" class="comic-link-btn" data-email="contactayushmadhav@gmail.com" aria-label="Copy email address" style="height:2.7rem;cursor:pointer">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -73,7 +74,7 @@ import StackLayouts from '../components/v2/StackLayouts.astro';
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
         <a class="comic-link-btn" href="/AyushMadhavResume.pdf" target="_blank" rel="noopener noreferrer" style="height:2.7rem">Résumé</a>
-        <a class="comic-link-btn" href="/" title="Back to the main site" style="height:2.7rem">Main site</a>
+        <a class="comic-link-btn" href="/" style="height:2.7rem">Main site</a>
       </div>
     </div>
   </footer>
@@ -89,7 +90,7 @@ import StackLayouts from '../components/v2/StackLayouts.astro';
       var timer;
       btn.addEventListener('click', function () {
         var email = btn.getAttribute('data-email');
-        // navigator.clipboard is undefined on non-localhost HTTP / old browsers —
+        // navigator.clipboard is undefined on non-localhost HTTP / old browsers.
         // calling .writeText would throw synchronously, before any .catch.
         var canCopy = navigator.clipboard && navigator.clipboard.writeText;
         if (!canCopy) { window.location.href = 'mailto:' + email; return; }

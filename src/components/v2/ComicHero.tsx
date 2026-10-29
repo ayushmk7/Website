@@ -15,9 +15,6 @@ const linkedinSvg = (
 const mailSvg = (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m2 6 10 7 10-7" /></svg>
 );
-const copySvg = (
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
-);
 const checkSvg = (
   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
 );
@@ -26,12 +23,7 @@ export default function ComicHero() {
   const [open, setOpen] = useState(false);
   const [imgOk, setImgOk] = useState(true); // photo loaded? gate the lightbox on it
   const [copied, setCopied] = useState(false);
-  const [tip, setTip] = useState(false);
-  const copiedTimer = useRef<number>();
-  const tipTimer = useRef<number>();
-
-  const showTip = () => { clearTimeout(tipTimer.current); setTip(true); };
-  const hideTipDelayed = () => { clearTimeout(tipTimer.current); tipTimer.current = window.setTimeout(() => setTip(false), 2000); };
+  const copiedTimer = useRef<number | undefined>(undefined);
 
   const copyEmail = () => {
     const fallback = () => { window.location.href = 'mailto:' + EMAIL; };
@@ -92,31 +84,13 @@ export default function ComicHero() {
         <h1 style={{ fontFamily: 'var(--font-display)', WebkitTextStroke: '2px var(--outline)', paintOrder: 'stroke fill', color: 'var(--accent)', fontSize: 'clamp(2.6rem,10vw,7.5rem)', lineHeight: 1, width: '100%', maxWidth: '20ch', padding: '0 0.5rem', overflowWrap: 'break-word' }}>Ayush Madhav</h1>
 
         <div className="bubble" style={{ padding: '0.45rem 1.2rem' }}><p style={{ fontWeight: 800, fontSize: 'clamp(0.85rem,2.2vw,1.1rem)' }}>{role}</p></div>
-        <p style={{ fontFamily: 'var(--font-body)', fontWeight: 800, letterSpacing: '0.02em' }}>&gt; NSF-backed research</p>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', flexWrap: 'wrap', justifyContent: 'center' }}>
           <a className="panel panel--burst" href={RESUME} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-display)', background: 'var(--accent-2)', color: '#141414', height: '2.7rem', margin: 0, padding: '0 1.4rem', fontSize: '1.35rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxShadow: '4px 4px 0 var(--panel-shadow)' }}>Résumé</a>
           <a className="comic-link-btn" href={GH} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" style={{ width: '2.7rem', height: '2.7rem', margin: 0, padding: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>{githubSvg}</a>
           <a className="comic-link-btn" href={LI} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" style={{ width: '2.7rem', height: '2.7rem', margin: 0, padding: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>{linkedinSvg}</a>
-          <span
-            style={{ position: 'relative', display: 'inline-flex' }}
-            onMouseEnter={showTip}
-            onMouseLeave={hideTipDelayed}
-            onFocus={showTip}
-            onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) hideTipDelayed(); }}
-          >
-            <button type="button" className="comic-link-btn" onClick={copyEmail} aria-label={`Copy email: ${EMAIL}`} style={{ width: '2.7rem', height: '2.7rem', margin: 0, padding: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>{mailSvg}</button>
-            {tip && (
-              // padding-bottom, not a margin/offset: keeps the hover area contiguous
-              // with the button so moving the pointer into the popup doesn't close it
-              <span style={{ position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)', paddingBottom: '0.55rem', zIndex: 5 }}>
-                <span role="tooltip" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.3rem 0.4rem 0.3rem 0.7rem', whiteSpace: 'nowrap', fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontWeight: 700, background: 'var(--surface)', color: 'var(--text)', border: '3px solid var(--outline)', borderRadius: '6px', boxShadow: '4px 4px 0 var(--panel-shadow)' }}>
-                  <span aria-live="polite">{copied ? 'Copied to clipboard' : EMAIL}</span>
-                  <button type="button" onClick={copyEmail} aria-label="Copy email address" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '1.6rem', height: '1.6rem', padding: 0, border: '2px solid var(--outline)', borderRadius: '4px', background: copied ? 'var(--accent)' : 'transparent', color: copied ? '#fff' : 'var(--text)', cursor: 'pointer' }}>{copied ? checkSvg : copySvg}</button>
-                </span>
-              </span>
-            )}
-          </span>
+          <button type="button" className="comic-link-btn" onClick={copyEmail} aria-label={`Copy email: ${EMAIL}`} style={{ width: '2.7rem', height: '2.7rem', margin: 0, padding: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>{copied ? checkSvg : mailSvg}</button>
+          <span className="sr-only" role="status" aria-live="polite">{copied ? 'Email copied to clipboard' : ''}</span>
         </div>
       </div>
     </section>

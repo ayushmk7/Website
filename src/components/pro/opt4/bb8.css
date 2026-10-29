@@ -450,20 +450,9 @@
   transform: rotate(225deg);
 }
 
-.bb8-toggle__checkbox:hover + .bb8-toggle__container .bb8__head::before { left: 100%; }
-.bb8-toggle__checkbox:not(:checked):hover + .bb8-toggle__container .bb8__antenna:nth-child(1) { right: 1.5em; }
-.bb8-toggle__checkbox:hover + .bb8-toggle__container .bb8__antenna:nth-child(2) { left: 0.938em; }
-.bb8-toggle__checkbox:hover + .bb8-toggle__container .bb8__head::after { background-position: 1.375em 0; }
-.bb8-toggle__checkbox:checked:hover + .bb8-toggle__container .bb8__head::before { left: 0; }
-.bb8-toggle__checkbox:checked:hover + .bb8-toggle__container .bb8__antenna:nth-child(2) { left: calc(100% - 0.938em); }
-.bb8-toggle__checkbox:checked:hover + .bb8-toggle__container .bb8__head::after { background-position: -1.375em 0; }
 .bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
 .bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
 
-.bb8:hover .bb8__head::before,
-.bb8:hover .bb8__antenna:nth-child(2) { left: 50% !important; }
-.bb8:hover .bb8__antenna:nth-child(1) { right: 0.938em !important; }
-.bb8:hover .bb8__head::after { background-position: 0 0 !important; }
 
 /* ---- keep the checkbox focusable for keyboard users (the original hides it with display:none) ---- */
 .bb8-toggle { position: relative; }

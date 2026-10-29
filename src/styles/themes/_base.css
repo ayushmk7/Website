@@ -12,7 +12,7 @@
   --radius: 1rem; --border: 2px solid currentColor;
 }
 
-/* Keyboard focus visibility — applies across every theme (a11y) */
+/* Keyboard focus visibility - applies across every theme (a11y) */
 [data-theme] a:focus-visible,
 [data-theme] button:focus-visible,
 [data-theme] input:focus-visible,

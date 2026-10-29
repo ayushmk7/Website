@@ -61,7 +61,7 @@ html[data-theme="comic"] .cwm-pop-wrap a.leaflet-popup-close-button { top: 3px; 
 
 /* ocean-colored margin around the world so edge pins aren't clipped at the frame */
 :where(html) { --map-bg: #d4dadc; }  /* = carto light_nolabels ocean, sampled */
-/* match carto dark_nolabels ocean so the padded margin blends in — no visible
+/* match carto dark_nolabels ocean so the padded margin blends in - no visible
    ring/border in dark mode, while padding still keeps edge pins from clipping */
 html.dark { --map-bg: #262626; }  /* = carto dark_nolabels *ocean* (#090909 is its land), so any revealed margin is invisible */
 html[data-theme="comic"] .cwm-leaflet { background: var(--map-bg); }
@@ -71,11 +71,10 @@ html[data-theme="comic"] .cwm-leaflet .leaflet-container { background: var(--map
 /* one grid for every section: 2-up desktop, 1-up phone; cards in a row share
    a height and links (margin-top:auto) pin to the bottom */
 .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr)); gap: 1.25rem; }
-.news { --paper: #fbf7ea; --ink: #141414; display: flex; flex-direction: column; border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--panel-shadow); padding: 1rem 1.1rem; }
-html.dark .news { --paper: #14181f; --ink: #e8e8e8; }
-.news-kicker { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-bottom: 2px solid currentColor; padding-bottom: 0.3rem; margin-bottom: 0.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.1rem 0.5rem; }
+.news { display: flex; flex-direction: column; border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--panel-shadow); padding: 1rem 1.1rem; }
 .news-head { font-family: var(--font-display); font-size: 1.55rem; line-height: 1; margin-bottom: 0.4rem; color: var(--accent); }
 .news-body { font-size: 0.82rem; }
+.news-meta { font-size: 0.82rem; font-weight: 700; color: color-mix(in srgb, var(--ink) 70%, var(--paper)); margin: 0 0 0.6rem; }
 /* --accent (#ff3b3b) is a fill colour; as 13px text on paper it is only 3.3:1, so
    small text uses a darkened variant that clears 4.5:1 in both themes. */
 :where(html) { --accent-text: #d32020; }

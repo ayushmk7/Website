@@ -104,7 +104,7 @@ export default function ComicWorldMap() {
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const coarse = window.matchMedia('(pointer: coarse)').matches;
-      // touch-primary device (phone/tablet) — a hybrid laptop with a mouse keeps
+      // touch-primary device (phone/tablet) - a hybrid laptop with a mouse keeps
       // normal one-finger dragging
       const touchOnly = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
@@ -115,7 +115,7 @@ export default function ComicWorldMap() {
         zoomSnap: 0,
         // wheel over the map used to swallow page scroll (Leaflet preventDefaults
         // it), so you got stuck zooming instead of scrolling past the section.
-        // Wheel zoom is now opt-in via ctrl/⌘ + wheel — handled by hand below.
+        // Wheel zoom is now opt-in via ctrl/⌘ + wheel - handled by hand below.
         scrollWheelZoom: false,
         zoomDelta: 0.6,
         // hard pan limit exactly at the world edge so you never overscroll into
@@ -128,13 +128,14 @@ export default function ComicWorldMap() {
         attributionControl: true, // CARTO free tier requires visible CARTO + OSM credit
       });
       map.attributionControl.setPrefix('');
+      map.zoomControl.getContainer()?.querySelectorAll('[title]').forEach((el) => el.removeAttribute('title'));
 
       // light basemap in light mode, dark basemap in dark mode; swap on theme toggle
       const tileOpts = {
         subdomains: 'abcd',
         // 512px (@2x) tiles instead of 256px. The frame shows the world at a
         // fractional zoom (zoomSnap:0), which makes Chromium composite each tile
-        // separately and leave a ~1px light hairline wherever two tiles meet —
+        // separately and leave a ~1px light hairline wherever two tiles meet.
         // that was the cross of lines through the middle of the default view.
         // At 512 the whole default view is ONE tile, so there is no seam to draw.
         // detectRetina flips 2x screens back to 256px @2x tiles (same pixel
@@ -160,7 +161,7 @@ export default function ComicWorldMap() {
 
       // Theme swap. Every swap gets a generation id: a stale 'load' (two quick
       // toggles, slow first layer) must not remove the newer layer and leave the
-      // wrong basemap on screen — the old code compared object identity only.
+      // wrong basemap on screen - the old code compared object identity only.
       let gen = 0;
       themeObs = new MutationObserver(() => {
         const d = document.documentElement.classList.contains('dark');
@@ -199,7 +200,7 @@ export default function ComicWorldMap() {
 
       places.forEach((p, i) => {
         const label = `${p.name}, ${p.country}`;
-        const m = L.marker([p.lat, p.lng], { icon, title: label, alt: label, riseOnHover: true }).addTo(map);
+        const m = L.marker([p.lat, p.lng], { icon, alt: label }).addTo(map);
         m.bindPopup(popupHtml(p, { status: 'Loading weather…' }), {
           // never wider than the frame it lives in (mobile popups used to run to the edge)
           maxWidth: Math.max(180, Math.min(340, (elRef.current?.clientWidth ?? 340) - 36)),
@@ -207,17 +208,12 @@ export default function ComicWorldMap() {
           className: 'cwm-pop-wrap',
           autoPanPadding: [18, 18],
         });
-        // hover/keyboard-focus label. Skipped on touch, where Leaflet also opens
-        // tooltips on tap and you'd get the tooltip and the popup at once.
-        if (!touchOnly) m.bindTooltip(p.name, { direction: 'top', offset: [0, -hit / 2 - 2], className: 'cwm-tip', opacity: 1 });
         // Name the pin for screen readers (a divIcon carries no alt text of its
-        // own). The icon element does not exist yet — the map has no view at this
-        // point, so Leaflet defers every layer's onAdd until it does — hence the
+        // own). The icon element does not exist yet - the map has no view at this
+        // point, so Leaflet defers every layer's onAdd until it does - hence the
         // 'add' listener rather than touching getElement() straight away.
-        const name = () => m.getElement()?.setAttribute('aria-label', `${label} — show local weather`);
+        const name = () => m.getElement()?.setAttribute('aria-label', `${label}: show local weather`);
         m.on('add', name); name();
-        // warm the cache before the click lands, so the popup usually opens with data
-        m.on('mouseover', () => { getWeather(p, ac.signal).catch(() => {}); });
         m.on('popupopen', () => {
           const hitCache = wxCache.get(keyOf(p));
           if (hitCache && Date.now() - hitCache.at < WX_TTL_MS) paint(m, p, hitCache.parts);
@@ -230,14 +226,14 @@ export default function ComicWorldMap() {
       // 'home': snap back to the whole world flush in the frame (box aspect
       // 1.49:1 == the world's mercator aspect, so no padding, no ocean ring).
       // 'keep': re-measure but hold the view the user chose. Any resize used to
-      // force a full re-fit, which threw their zoom/pan away — and on mobile the
+      // force a full re-fit, which threw their zoom/pan away - and on mobile the
       // URL bar hiding fires resize on every scroll, so the map reset mid-gesture.
       // If they never left the world view we still re-home, so expand/collapse
       // and rotate keep showing the whole world.
       let homeZoom = 0;
       let atHome = true;
       // NB: worldBounds.getCenter() is the *arithmetic* lat/lng midpoint, which
-      // is not the mercator midpoint of [-58, 84] — using it put the map ~30°
+      // is not the mercator midpoint of [-58, 84] - using it put the map ~30°
       // off centre. fitBounds computes the real one; read it back afterwards.
       let homeCenter = worldBounds.getCenter();
       const fit = (mode: 'home' | 'keep') => {
@@ -267,8 +263,6 @@ export default function ComicWorldMap() {
       map.on('moveend zoomend', syncOffHome);
 
       mapRef.current = map;
-      // dev-only handle so the map can be poked from the console (window.__cwm)
-      if ((import.meta as any).env?.DEV) (window as any).__cwm = map;
       fitRef.current = fit;
       focusPlaceRef.current = (i: number) => {
         const p = places[i];
@@ -319,7 +313,7 @@ export default function ComicWorldMap() {
       }, { passive: false, signal: ac.signal });
 
       if (touchOnly) {
-        // One finger scrolls the page — a full-bleed map used to swallow the
+        // One finger scrolls the page - a full-bleed map used to swallow the
         // swipe and strand you mid-page. Two fingers still pan AND pinch-zoom:
         // Leaflet's touchZoom handler moves the centre by the midpoint delta,
         // so nothing is lost by turning one-finger dragging off entirely.
@@ -333,7 +327,7 @@ export default function ComicWorldMap() {
           if (e.touches.length !== 1) return;
           const dx = Math.abs(e.touches[0].clientX - sx);
           const dy = Math.abs(e.touches[0].clientY - sy);
-          // sideways swipe = a pan attempt, not page scrolling — say why nothing moved
+          // sideways swipe = a pan attempt, not page scrolling - say why nothing moved
           if (dx > 14 && dx > dy) showHint('Use two fingers to move the map');
         }, { passive: true, signal: ac.signal });
       }
@@ -388,7 +382,7 @@ export default function ComicWorldMap() {
         {hint && <div className="cwm-hint" role="status">{hint}</div>}
         <div className="cwm-tools">
           {offHome && (
-            <button type="button" className="cwm-tool-btn" onClick={() => fitRef.current?.('home')} aria-label="Reset map to the whole world" title="Reset view">
+            <button type="button" className="cwm-tool-btn" onClick={() => fitRef.current?.('home')} aria-label="Reset map to the whole world">
               {globeIcon}
             </button>
           )}

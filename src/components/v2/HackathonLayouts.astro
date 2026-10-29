@@ -1,14 +1,14 @@
 ---
-// Hackathons — newspaper clippings.
+// Hackathons - newspaper clippings.
 import { hackathons } from '../../data/v2';
 import HackLinks from './HackLinks.astro';
 ---
 <div class="news-grid">
   {hackathons.map((h) => (
     <div class="news">
-      <div class="news-kicker"><span>Hackathon Win</span><span>{h.date}</span></div>
       <h3 class="news-head">{h.event}</h3>
       <p class="trophy-place" style="margin-bottom:0.3rem">{h.placement}{h.prize ? ` · ${h.prize}` : ''}</p>
+      <p class="news-meta">{h.date}</p>
       <p class="news-body">{h.blurb}</p>
       <HackLinks h={h} />
     </div>

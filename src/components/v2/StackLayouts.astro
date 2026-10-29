@@ -1,39 +1,11 @@
 ---
-// Stack — newspaper clippings (same skin as Hackathons).
-// ponytail: resume.json keeps every skill (golden rule); this only picks which
-// few show per category. New skills in resume.json won't appear until added here.
-import resumeData from '../../data/resume.json';
-
-const labels: Record<string, string> = {
-  programmingLanguages: 'Programming Languages',
-  aiMl: 'AI and ML',
-  softwareDevelopment: 'Software Development',
-  databases: 'Databases and Data Engineering',
-  devOps: 'DevOps and Cloud Infrastructure',
-  cybersecurity: 'Cybersecurity',
-  coreCs: 'Core Computer Science',
-};
-const featured: Record<string, string[]> = {
-  programmingLanguages: ['C', 'Go', 'Jac', 'Python', 'Rust', 'TypeScript'],
-  aiMl: ['LLMs', 'LoRA/QLoRA fine tuning', 'PyTorch', 'Quantization', 'RAG', 'vLLM'],
-  softwareDevelopment: ['FastAPI', 'GraphQL', 'Next.js', 'Node.js', 'React', 'WebSockets'],
-  databases: ['ETL pipelines', 'MongoDB', 'PostgreSQL', 'Redis', 'Vector databases'],
-  devOps: ['AWS Lambda', 'CI/CD pipelines', 'Docker', 'Kubernetes', 'Linux', 'Terraform'],
-  cybersecurity: ['CTF authoring', 'PCAP forensics', 'Reverse engineering', 'TLS protocol analysis', 'YARA based malware triage'],
-  coreCs: ['Algorithms', 'Concurrency and Multithreading', 'Data Structures', 'Operating Systems Basics'],
-};
-const skills = resumeData.skills as Record<string, string[]>;
-// fail the build on a typo'd pick instead of silently dropping it
-for (const [key, picks] of Object.entries(featured))
-  for (const p of picks)
-    if (!skills[key]?.includes(p)) throw new Error(`StackLayouts: "${p}" not in resume.json skills.${key}`);
-const groups = Object.keys(skills).filter((k) => featured[k]).map((k) => [k, featured[k]] as const);
+import { skillGroups } from '../../lib/profile';
 ---
 <div class="news-grid">
-  {groups.map(([key, items], i) => (
+  {skillGroups.map((group) => (
     <div class="news">
-      <div class="news-kicker"><h3 style="font:inherit">{labels[key] ?? key}</h3><span style="white-space:nowrap">No. {String(i + 1).padStart(2, '0')}</span></div>
-      <div style="display:flex;flex-wrap:wrap;gap:0.4rem">{items.map((s) => <span class="skill-tag">{s}</span>)}</div>
+      <h3 class="news-head">{group.label}</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:0.4rem">{group.featured.map((s) => <span class="skill-tag">{s}</span>)}</div>
     </div>
   ))}
 </div>

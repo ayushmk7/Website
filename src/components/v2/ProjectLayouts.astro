@@ -1,11 +1,11 @@
 ---
-// Projects — newspaper clippings: a few featured up top, the rest behind a
+// Projects - newspaper clippings: a few featured up top, the rest behind a
 // native <details> "Show more". Hackathon projects are hidden (shown there).
 import { projects } from '../../data/projects';
 import { hackathons } from '../../data/v2';
 import ProjectCard from './ProjectCard.astro';
 
-const featuredTitles = ['MK-OSINT', 'Jac ML Studio', 'NightShift', 'NASA SUITS Challenge'];
+const featuredTitles = ['MK-OSINT', 'NASA SUITS Challenge', 'Internship Tracker', 'Jac ML Studio'];
 const list = projects.filter((p) => !hackathons.some((h) => h.project === p.title));
 // fail the build on a typo'd title instead of silently dropping it
 const featured = featuredTitles.map((t) => {

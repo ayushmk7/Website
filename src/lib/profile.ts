@@ -1,19 +1,10 @@
-// src/lib/profile.ts
-// Single source of truth for the main page (src/pages/index.astro).
-// Everything here is re-exported or DERIVED from src/data/* — never duplicate data.
+// Shared portfolio content and curation for both pages.
 
 import { experience, hackathons } from '../data/v2';
-import type { Experience, Hackathon } from '../data/v2';
+import type { Hackathon } from '../data/v2';
 import { projects } from '../data/projects';
 import type { Project } from '../data/projects';
-import { places } from '../data/places';
-import type { Place } from '../data/places';
 import resume from '../data/resume.json';
-
-export type { Experience, Hackathon, Project, Place };
-
-/** The comic ("fun") page. */
-export const FUN_HREF = '/fun';
 
 // ---------------------------------------------------------------------------
 // Identity / copy
@@ -22,19 +13,15 @@ export const FUN_HREF = '/fun';
 export interface ContactLink {
   key: 'email' | 'github' | 'linkedin' | 'x' | 'resume' | 'cv';
   label: string;   // "GitHub"
-  handle: string;  // "ayushmk7" — short text to show next to the label
+  handle: string;  // "ayushmk7" - short text to show next to the label
   href: string;
-  external: boolean;
 }
 
 export const profile = {
   name: 'Ayush Madhav Kumar',
   headline: 'CS and Math @ University of Michigan',
-  /** 2–3 sentence bio for hero/about. Grounded in v2.ts experience. */
-  summary:
-    'Computer Science and Mathematics undergraduate at the University of Michigan. I work on systems and AI infrastructure: fine-tuning a Jac coding agent at Jaseci Labs, fixing on-device inference bugs at Cactus (YC S25), and building agent tooling for NSF-funded open-source ecosystem research. Six hackathon placements in the last year.',
   location: 'Ann Arbor, MI',
-  availability: 'Open to internships and collaborations. Email is fastest.',
+  availability: 'I am looking for software engineering internships and research collaborations.',
   site: 'https://ayushmadhav.com',
   email: 'contactayushmadhav@gmail.com',
   resumeHref: '/AyushMadhavResume.pdf',
@@ -44,19 +31,19 @@ export const profile = {
 } as const;
 
 export const contactLinks: ContactLink[] = [
-  { key: 'email', label: 'Email', handle: profile.email, href: `mailto:${profile.email}`, external: false },
-  { key: 'github', label: 'GitHub', handle: 'ayushmk7', href: 'https://github.com/ayushmk7', external: true },
-  { key: 'linkedin', label: 'LinkedIn', handle: 'ayushmk', href: 'https://www.linkedin.com/in/ayushmk', external: true },
-  { key: 'x', label: 'X', handle: '@ayushmk_007', href: 'https://x.com/ayushmk_007', external: true },
-  { key: 'resume', label: 'Résumé', handle: 'PDF', href: profile.resumeHref, external: true },
-  { key: 'cv', label: 'CV', handle: 'PDF', href: profile.cvHref, external: true },
+  { key: 'email', label: 'Email', handle: profile.email, href: `mailto:${profile.email}` },
+  { key: 'github', label: 'GitHub', handle: 'ayushmk7', href: 'https://github.com/ayushmk7' },
+  { key: 'linkedin', label: 'LinkedIn', handle: 'ayushmk', href: 'https://www.linkedin.com/in/ayushmk' },
+  { key: 'x', label: 'X', handle: '@ayushmk_007', href: 'https://x.com/ayushmk_007' },
+  { key: 'resume', label: 'Résumé', handle: 'PDF', href: profile.resumeHref },
+  { key: 'cv', label: 'CV', handle: 'PDF', href: profile.cvHref },
 ];
 
 // ---------------------------------------------------------------------------
-// Experience / Hackathons / Places — straight re-exports (already curated & ordered)
+// Experience / Hackathons / Places - straight re-exports (already curated & ordered)
 // ---------------------------------------------------------------------------
 
-export { experience, hackathons, places };
+export { experience, hackathons };
 
 /** Hackathon + the matching project entry (for tags / extra links), when one exists. */
 export interface HackathonWithProject extends Hackathon {
@@ -68,10 +55,10 @@ export const hackathonsWithProject: HackathonWithProject[] = hackathons.map((h) 
 }));
 
 // ---------------------------------------------------------------------------
-// Projects — same curation as src/components/v2/ProjectLayouts.astro
+// Projects - same curation as src/components/v2/ProjectLayouts.astro
 // ---------------------------------------------------------------------------
 
-/** Mirror of ProjectLayouts.featuredTitles (curation, not data). Keep in sync. */
+// The main and comic pages intentionally feature different projects.
 const featuredProjectTitles = ['Jac ML Studio', 'NightShift', 'Domain Portfolio Manager', 'NASA SUITS Challenge'];
 
 /** Projects minus the ones that are shown under Hackathons. Original order preserved. */
@@ -88,7 +75,7 @@ export const featuredProjects: Project[] = featuredProjectTitles.map((t) => {
 export const moreProjects: Project[] = visibleProjects.filter((p) => !featuredProjectTitles.includes(p.title));
 
 // ---------------------------------------------------------------------------
-// Skills — same labels + featured picks as src/components/v2/StackLayouts.astro
+// Skills shared by both pages
 // ---------------------------------------------------------------------------
 
 export type SkillCategoryKey =
@@ -104,7 +91,6 @@ const skillLabels: Record<SkillCategoryKey, string> = {
   coreCs: 'Core Computer Science',
 };
 
-/** Mirror of StackLayouts.featured (curation, not data). Keep in sync. */
 const featuredSkillPicks: Record<SkillCategoryKey, string[]> = {
   programmingLanguages: ['C', 'Go', 'Jac', 'Python', 'Rust', 'TypeScript'],
   aiMl: ['LLMs', 'LoRA/QLoRA fine tuning', 'PyTorch', 'Quantization', 'RAG', 'vLLM'],
