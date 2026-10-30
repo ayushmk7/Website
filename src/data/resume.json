@@ -17,9 +17,11 @@
       "period": "May 2026 – Present",
       "location": "Ann Arbor, Michigan",
       "achievements": [
-        "Part of NSF Phase I POSE research ($300K) to grow an open-source ecosystem around the data spatial Jac language",
-        "Enhancing the project's digital infrastructure, documentation site, CI, and contributor onboarding tooling to lower the barrier to entry for new developers and grow an active, distributed Jac contributor community",
-        "Authoring tutorials, code samples, and educational materials, and analyzing developer feedback and usage telemetry to refine onboarding workflows and inform governance models for long-term ecosystem sustainability"
+        "Researching compiler and runtime support for executing Jac's graph-native walker programs on NVIDIA GPUs as part of NSF Phase I POSE research ($300K) around the data spatial Jac language",
+        "Lowering a supported subset of walker abilities through LLVM IR and the NVPTX backend into PTX, one walker per GPU thread, with a runtime that packs graphs into structure-of-arrays fields and compressed sparse row adjacency",
+        "Investigating whether Jac's traversal and cursor semantics can guide physical node placement for better GPU memory access, while preserving traversal order, shared-node identity, exact int64 arithmetic, and failure behavior",
+        "Running controlled, Nsight Systems-timed experiments validated against serial Jac and CPU oracles: access-order layout gave a 1.75x kernel speedup on 256-cubed matrix multiplication, and generated kernels matched checked handwritten CUDA across 17 subtree workloads",
+        "Also built Marketing Agent Studio, a 55-module Jac content agent, and NightShift, which audits the 365K-line Jac compiler nightly and opens draft PRs behind a fail-closed CI mirror"
       ]
     },
     {
@@ -157,6 +159,19 @@
       "Vite",
       "Vue",
       "WebSockets"
+    ],
+    "compilersGpu": [
+      "Compiler optimization pipelines",
+      "CSR graph layouts",
+      "CUDA",
+      "Data layout optimization",
+      "GPU kernel benchmarking",
+      "LLVM IR",
+      "Memory coalescing",
+      "Nsight Systems",
+      "NVPTX",
+      "PTX",
+      "Structure-of-arrays storage"
     ],
     "databases": [
       "Data modeling",

@@ -113,9 +113,10 @@ export const experience: Experience[] = [
     badge: "NSF, $300K",
     url: "https://jaseci.engin.umich.edu/",
     bullets: [
-      "Built Marketing Agent Studio under a $300K NSF grant. Nine trend pollers suggest topics, and a person approves each piece before it is published.",
-      "Shipped NightShift, an unattended harness that audits repos nightly and opens draft PRs under a spend cap.",
-      "Found 13+ cases where a check exited successfully without running. Added a CI mirror to catch them and mutation-tested 41 tripwires.",
+      "Researching how to run Jac's graph-native walker programs on NVIDIA GPUs, lowering them through LLVM IR and NVPTX into PTX with one walker per GPU thread.",
+      "Testing whether Jac's traversal order can guide where graph nodes sit in memory, while keeping exact int64 results, overflow checks, and failure behavior intact.",
+      "Access-order layout gave a 1.75x kernel speedup on 256-cubed matmul, and generated kernels matched checked handwritten CUDA on 17 subtree workloads.",
+      "Also built Marketing Agent Studio, a 55-module Jac agent, and NightShift, which audits the Jac compiler nightly and opens draft PRs.",
     ],
   },
   {

@@ -22,9 +22,9 @@
 \pagestyle{empty}
 
 % Tight margins
-\addtolength{\oddsidemargin}{-0.3in}
-\addtolength{\evensidemargin}{-0.3in}
-\addtolength{\textwidth}{0.65in}
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.0in}
 \addtolength{\topmargin}{-0.55in}
 \addtolength{\textheight}{1.6in}
 
@@ -117,11 +117,11 @@ Ann Arbor, MI {$|$}
 
 \resumeSubheading
   {\href{https://www.engin.umich.edu/}{NSF Pathways to Open Source Ecosystems}}{May 2026 -- Present}
-  {Undergraduate Researcher $|$ PhD Level Researcher}{Ann Arbor, MI}
+  {Undergraduate Researcher}{Ann Arbor, MI}
 \resumeItemListStart
-  \resumeItem{Built \href{https://github.com/jaseci-labs/Jaseci-Marketing-Agent-Studio}{Marketing Agent Studio}, an autonomous content agent under a \$300K NSF Phase I grant: 55 Jac modules, 18.8K lines, 166 tests, 9 trend pollers, and a human approval queue}
-  \resumeItem{Shipped \href{https://github.com/ayushmk7/NightShift}{NightShift}, an unattended harness that audits repos nightly and opens draft PRs under a spend cap}
-  \resumeItem{Traced 13+ bugs where a check exited clean without running, then gated every change behind a fail-closed CI mirror and mutation-tested all 41 tripwires}
+  \resumeItem{Researching a compiler and runtime path that runs Jac's graph-native walker programs on NVIDIA GPUs, lowering abilities through \href{https://llvm.org}{LLVM} IR and NVPTX to PTX with one walker per thread and SoA and CSR graph packing}
+  \resumeItem{Isolating layout from compiler effects in fixed-PTX, \href{https://developer.nvidia.com/nsight-systems}{Nsight}-timed experiments: access-order placement gave a 1.75$\times$ kernel speedup on 256$^3$ matmul, and generated kernels matched checked handwritten CUDA on 17 subtree queries}
+  \resumeItem{Built \href{https://github.com/jaseci-labs/Jaseci-Marketing-Agent-Studio}{Marketing Agent Studio} (55 Jac modules) and \href{https://github.com/ayushmk7/NightShift}{NightShift}, a nightly compiler-audit agent that opens PRs}
 \resumeItemListEnd
 
 \resumeSubheading
@@ -147,7 +147,7 @@ Ann Arbor, MI {$|$}
 \section{Projects}
 \resumeSubHeadingListStart
 \resumeProjectHeading
-{\href{https://claws.engin.umich.edu/}{\textbf{NASA SUITS and RASC-AL Challenges}} $|$ \emph{AI Lead, team of 10; Python, PyTorch, Unity}}{}
+{\href{https://claws.engin.umich.edu/}{\textbf{NASA SUITS Challenge}} $|$ \emph{AI Lead, team of 6; Python, PyTorch, Unity}}{}
 \resumeItemListStart
 \resumeItem{Led the AI subteam on autonomous lunar EVA navigation to 96.8\% waypoint accuracy, with A*/JPS planning over a 3-layer occupancy grid and 17-ray LiDAR fusion}
 \resumeItem{Trained the obstacle detection models served in real time behind a hot-swappable backend: a temporal ResidualBeamCNN and a BEV cross-attention transformer}
@@ -168,6 +168,7 @@ Ann Arbor, MI {$|$}
 \section{Technical Skills}
 \resumeItemListStart
   \resumeItem{\textbf{Languages:} \href{https://www.python.org}{Python}, \href{https://isocpp.org}{C++}, \href{https://en.cppreference.com/w/c}{C}, \href{https://www.oracle.com/java/}{Java}, \href{https://www.typescriptlang.org}{TypeScript}, \href{https://developer.mozilla.org/en-US/docs/Web/JavaScript}{JavaScript}, \href{https://www.rust-lang.org}{Rust}, \href{https://www.iso.org/standard/76583.html}{SQL}, \href{https://www.jac-lang.org}{Jac}}
+  \resumeItem{\textbf{Compilers and GPU:} \href{https://llvm.org/docs/LangRef.html}{LLVM IR}, \href{https://llvm.org/docs/NVPTXUsage.html}{NVPTX}, \href{https://docs.nvidia.com/cuda/parallel-thread-execution/}{PTX}, \href{https://developer.nvidia.com/cuda-toolkit}{CUDA}, \href{https://developer.nvidia.com/nsight-systems}{Nsight Systems}, SoA and CSR graph layouts}
   \resumeItem{\textbf{Machine Learning:} \href{https://pytorch.org}{PyTorch}, \href{https://www.tensorflow.org}{TensorFlow}, \href{https://huggingface.co/docs/transformers}{HuggingFace Transformers}, \href{https://unsloth.ai}{Unsloth}, \href{https://arxiv.org/abs/2305.14314}{LoRA/QLoRA}, \href{https://arxiv.org/abs/2305.18290}{DPO}, \href{https://docs.vllm.ai}{vLLM}, \href{https://onnxruntime.ai}{ONNX Runtime}, \href{https://scikit-learn.org}{scikit-learn}, \href{https://arxiv.org/abs/2005.11401}{RAG}, quantization}
   \resumeItem{\textbf{Backend and Infrastructure:} \href{https://fastapi.tiangolo.com}{FastAPI}, \href{https://flask.palletsprojects.com}{Flask}, \href{https://www.djangoproject.com}{Django}, \href{https://nodejs.org}{Node.js}, \href{https://expressjs.com}{Express}, \href{https://developer.mozilla.org/en-US/docs/Glossary/REST}{REST}, \href{https://grpc.io}{gRPC}, \href{https://graphql.org}{GraphQL}, \href{https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API}{WebSockets}, \href{https://www.rabbitmq.com}{RabbitMQ}, \href{https://www.docker.com}{Docker}, \href{https://kubernetes.io}{Kubernetes}, \href{https://www.kernel.org}{Linux}, \href{https://aws.amazon.com}{Amazon Web Services}, \href{https://www.terraform.io}{Terraform}, \href{https://github.com/features/actions}{GitHub Actions}}
   \resumeItem{\textbf{Data and Frontend:} \href{https://www.postgresql.org}{PostgreSQL}, \href{https://www.mysql.com}{MySQL}, \href{https://www.mongodb.com}{MongoDB}, \href{https://redis.io}{Redis}, \href{https://www.sqlite.org}{SQLite}, \href{https://pandas.pydata.org}{Pandas}, \href{https://numpy.org}{NumPy}, \href{https://react.dev}{React}, \href{https://nextjs.org}{Next.js}, \href{https://reactnative.dev}{React Native}, \href{https://redux.js.org/redux-toolkit}{Redux Toolkit}, \href{https://cesium.com/platform/cesiumjs/}{CesiumJS}, \href{https://vite.dev}{Vite}, \href{https://flutter.dev}{Flutter}}

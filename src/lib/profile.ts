@@ -79,11 +79,12 @@ export const moreProjects: Project[] = visibleProjects.filter((p) => !featuredPr
 // ---------------------------------------------------------------------------
 
 export type SkillCategoryKey =
-  | 'programmingLanguages' | 'aiMl' | 'softwareDevelopment' | 'databases' | 'devOps' | 'cybersecurity' | 'coreCs';
+  | 'programmingLanguages' | 'aiMl' | 'compilersGpu' | 'softwareDevelopment' | 'databases' | 'devOps' | 'cybersecurity' | 'coreCs';
 
 const skillLabels: Record<SkillCategoryKey, string> = {
   programmingLanguages: 'Programming Languages',
   aiMl: 'AI and ML',
+  compilersGpu: 'Compilers and GPU Systems',
   softwareDevelopment: 'Software Development',
   databases: 'Databases and Data Engineering',
   devOps: 'DevOps and Cloud Infrastructure',
@@ -94,6 +95,7 @@ const skillLabels: Record<SkillCategoryKey, string> = {
 const featuredSkillPicks: Record<SkillCategoryKey, string[]> = {
   programmingLanguages: ['C', 'Go', 'Jac', 'Python', 'Rust', 'TypeScript'],
   aiMl: ['LLMs', 'LoRA/QLoRA fine tuning', 'PyTorch', 'Quantization', 'RAG', 'vLLM'],
+  compilersGpu: ['CUDA', 'LLVM IR', 'Memory coalescing', 'Nsight Systems', 'NVPTX', 'PTX'],
   softwareDevelopment: ['FastAPI', 'GraphQL', 'Next.js', 'Node.js', 'React', 'WebSockets'],
   databases: ['ETL pipelines', 'MongoDB', 'PostgreSQL', 'Redis', 'Vector databases'],
   devOps: ['AWS Lambda', 'CI/CD pipelines', 'Docker', 'Kubernetes', 'Linux', 'Terraform'],
@@ -113,7 +115,7 @@ export interface SkillGroup {
 const skillSource = resume.skills as Record<string, string[]>;
 const categoryOrder = Object.keys(skillSource) as SkillCategoryKey[];
 
-/** Ordered as in resume.json: languages, aiMl, software, databases, devOps, coreCs, cybersecurity. */
+/** Ordered as in resume.json: languages, aiMl, software, compilersGpu, databases, devOps, coreCs, cybersecurity. */
 export const skillGroups: SkillGroup[] = categoryOrder.map((key) => {
   const all = skillSource[key] ?? [];
   const featured = featuredSkillPicks[key] ?? [];

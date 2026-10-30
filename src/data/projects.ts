@@ -165,7 +165,7 @@ export const projects: Project[] = [
   },
   {
     title: "NASA SUITS Challenge",
-    description: "I led AI development for a 10-person NASA SUITS team. Our lunar navigation system reached 96.8% waypoint accuracy; I also built obstacle detection and voice command pipelines.",
+    description: "I led AI development for a 6-person NASA SUITS team. Our lunar navigation system reached 96.8% waypoint accuracy; I also built obstacle detection and voice command pipelines.",
     tags: ["Python", "PyTorch", "A*/JPS", "LiDAR Fusion", "faster-whisper", "WebSockets", "Unity"],
     websiteUrl: "https://www.nasa.gov/learning-resources/spacesuit-user-interface-technologies-for-students/",
     githubUrl: "https://github.com/ayushmk7/NASA_ML_ModelArchitecture"
