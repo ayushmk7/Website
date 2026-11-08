@@ -1,6 +1,19 @@
 {
   "experience": [
     {
+      "title": "Professor Misc. (Temp.) / Student Researcher",
+      "company": "Pathways for Open Source Ecosystems (POSE) Research",
+      "period": "May 2026 – Present",
+      "location": "Ann Arbor, Michigan",
+      "achievements": [
+        "Built the benchmark suites for Jac's experimental GPU walker compiler as part of NSF Phase I POSE research ($300K), measuring on an RTX 3090 when its kernels beat serial Jac",
+        "Designed a layout benchmark that runs identical PTX under random and access-order node placement, timed in Nsight Systems: up to 1.75x faster kernels on 256-cubed matrix multiplication across 3 seeds",
+        "Wrote six graph application benchmarks timing the full run_walkers GPU call: 29-94x over serial Jac on shared graphs, but only about 2x when each walker owns its nodes",
+        "Checked every CPU and GPU output against independent oracles over 15 randomized rounds, and traced speedup to visits per node, pointing to Python graph packing as the likely bottleneck",
+        "Also built Marketing Agent Studio, a 55-module Jac content agent, and NightShift, which audits the 365K-line Jac compiler nightly and opens draft PRs behind a fail-closed CI mirror"
+      ]
+    },
+    {
       "title": "Software Engineering Intern",
       "company": "Jaseci Labs",
       "period": "May 2026 – Present",
@@ -9,19 +22,6 @@
         "Engineering a domain-specialized coding agent for the Jac programming language, fine tuning Gemma 4 26B with Unsloth and 4-bit QLoRA on an object-spatial superset of Python where general-purpose models lack usable priors",
         "Architecting a multi-recipe synthetic data pipeline with Python-to-Jac parallel translation, adversarial DPO negatives, evol-instruct, and self-distillation, targeting 300k+ examples verified behind a compiler and unit-test hard-gate",
         "Designing a four-stage training curriculum spanning core SFT, debugging and reasoning, DPO alignment, and multi-turn agentic data to prevent Python-pattern fallback and lock in idiomatic walker, node, and edge constructs"
-      ]
-    },
-    {
-      "title": "Professor Misc. (Temp.) / Student Researcher",
-      "company": "Pathways for Open Source Ecosystems (POSE) Research",
-      "period": "May 2026 – Present",
-      "location": "Ann Arbor, Michigan",
-      "achievements": [
-        "Researching compiler and runtime support for executing Jac's graph-native walker programs on NVIDIA GPUs as part of NSF Phase I POSE research ($300K) around the data spatial Jac language",
-        "Lowering a supported subset of walker abilities through LLVM IR and the NVPTX backend into PTX, one walker per GPU thread, with a runtime that packs graphs into structure-of-arrays fields and compressed sparse row adjacency",
-        "Investigating whether Jac's traversal and cursor semantics can guide physical node placement for better GPU memory access, while preserving traversal order, shared-node identity, exact int64 arithmetic, and failure behavior",
-        "Running controlled, Nsight Systems-timed experiments validated against serial Jac and CPU oracles: access-order layout gave a 1.75x kernel speedup on 256-cubed matrix multiplication, and generated kernels matched checked handwritten CUDA across 17 subtree workloads",
-        "Also built Marketing Agent Studio, a 55-module Jac content agent, and NightShift, which audits the 365K-line Jac compiler nightly and opens draft PRs behind a fail-closed CI mirror"
       ]
     },
     {
@@ -161,15 +161,12 @@
       "WebSockets"
     ],
     "compilersGpu": [
-      "Compiler optimization pipelines",
       "CSR graph layouts",
       "CUDA",
       "Data layout optimization",
       "GPU kernel benchmarking",
-      "LLVM IR",
       "Memory coalescing",
       "Nsight Systems",
-      "NVPTX",
       "PTX",
       "Structure-of-arrays storage"
     ],

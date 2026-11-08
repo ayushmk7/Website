@@ -92,6 +92,22 @@ export interface Experience {
 // Full picture from the LinkedIn profile. The v1 site only showed a fraction of this.
 export const experience: Experience[] = [
   {
+    company: "University of Michigan, College of Engineering",
+    role: "Undergraduate Researcher (NSF POSE)",
+    period: "May 2026 to Present",
+    location: "Ann Arbor, MI",
+    kind: "Research",
+    badge: "NSF, $300K",
+    url: "https://jaseci.engin.umich.edu/",
+    bullets: [
+      "Built the benchmark suites for Jac's experimental GPU walker compiler, measuring on an RTX 3090 when its kernels beat serial Jac.",
+      "Layout benchmark: identical PTX with access-order node placement ran up to 1.75x faster on 256-cubed matmul, consistent across 3 seeds.",
+      "Six graph application benchmarks timing the full GPU call: 29-94x over serial Jac on shared graphs, about 2x when each walker owns its nodes.",
+      "Checked every output against independent oracles and traced speedup to visits per node, pointing to Python graph packing as the likely bottleneck.",
+      "Also built Marketing Agent Studio, a 55-module Jac agent, and NightShift, which audits the Jac compiler nightly and opens draft PRs.",
+    ],
+  },
+  {
     company: "Jaseci Labs",
     role: "Software Engineering Intern",
     period: "May 2026 to Aug 2026",
@@ -102,21 +118,6 @@ export const experience: Experience[] = [
       "Fine-tuned Qwen3-Coder 30B into a coding agent for the Jac language, reaching 94% compile-pass on a held-out benchmark, using Unsloth and 4-bit QLoRA.",
       "Generated 300k+ training examples through a synthetic data pipeline, each gated on a compiler and unit tests.",
       "Cut the model's fallback to Python patterns 82% with a four-stage SFT, debugging, DPO, and agentic curriculum.",
-    ],
-  },
-  {
-    company: "University of Michigan, College of Engineering",
-    role: "Undergraduate Researcher (NSF POSE)",
-    period: "May 2026 to Present",
-    location: "Ann Arbor, MI",
-    kind: "Research",
-    badge: "NSF, $300K",
-    url: "https://jaseci.engin.umich.edu/",
-    bullets: [
-      "Researching how to run Jac's graph-native walker programs on NVIDIA GPUs, lowering them through LLVM IR and NVPTX into PTX with one walker per GPU thread.",
-      "Testing whether Jac's traversal order can guide where graph nodes sit in memory, while keeping exact int64 results, overflow checks, and failure behavior intact.",
-      "Access-order layout gave a 1.75x kernel speedup on 256-cubed matmul, and generated kernels matched checked handwritten CUDA on 17 subtree workloads.",
-      "Also built Marketing Agent Studio, a 55-module Jac agent, and NightShift, which audits the Jac compiler nightly and opens draft PRs.",
     ],
   },
   {

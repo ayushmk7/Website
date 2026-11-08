@@ -95,7 +95,7 @@ const skillLabels: Record<SkillCategoryKey, string> = {
 const featuredSkillPicks: Record<SkillCategoryKey, string[]> = {
   programmingLanguages: ['C', 'Go', 'Jac', 'Python', 'Rust', 'TypeScript'],
   aiMl: ['LLMs', 'LoRA/QLoRA fine tuning', 'PyTorch', 'Quantization', 'RAG', 'vLLM'],
-  compilersGpu: ['CUDA', 'LLVM IR', 'Memory coalescing', 'Nsight Systems', 'NVPTX', 'PTX'],
+  compilersGpu: ['CUDA', 'PTX', 'Nsight Systems', 'GPU kernel benchmarking', 'Memory coalescing', 'Data layout optimization'],
   softwareDevelopment: ['FastAPI', 'GraphQL', 'Next.js', 'Node.js', 'React', 'WebSockets'],
   databases: ['ETL pipelines', 'MongoDB', 'PostgreSQL', 'Redis', 'Vector databases'],
   devOps: ['AWS Lambda', 'CI/CD pipelines', 'Docker', 'Kubernetes', 'Linux', 'Terraform'],
