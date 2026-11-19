@@ -59,7 +59,7 @@ export const hackathonsWithProject: HackathonWithProject[] = hackathons.map((h) 
 // ---------------------------------------------------------------------------
 
 // The main and comic pages intentionally feature different projects.
-const featuredProjectTitles = ['Jac ML Studio', 'NightShift', 'Domain Portfolio Manager', 'NASA SUITS Challenge'];
+const featuredProjectTitles = ['Virgule', 'Jac ML Studio', 'NightShift', 'Domain Portfolio Manager', 'NASA SUITS Challenge'];
 
 /** Projects minus the ones that are shown under Hackathons. Original order preserved. */
 const visibleProjects: Project[] = projects.filter((p) => !hackathons.some((h) => h.project === p.title));

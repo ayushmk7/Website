@@ -8,6 +8,13 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Virgule",
+    description: "A native Mac editor for LaTeX, Markdown, and plain text. Markdown gets a full-width Write mode and a rendered Read view; LaTeX builds a PDF locally beside the source.",
+    tags: ["Swift", "SwiftUI", "AppKit", "PDFKit", "LaTeX", "Markdown", "Pandoc"],
+    websiteUrl: "https://virgule.ayushmadhav.com/",
+    githubUrl: "https://github.com/ayushmk7/Virgule"
+  },
+  {
     title: "MK-OSINT",
     description: "I mapped public aircraft, earthquake, radiation, and ISS feeds on a live 3D globe. A YAML-driven service makes new sources easy to add. I also fixed a bug that had created 372,000 duplicate rows and batched marker updates so tens of thousands of points stay interactive.",
     tags: ["TypeScript", "CesiumJS", "React", "Redux Toolkit", "Material UI", "SQLite", "WebSockets", "OpenAPI", "YAML", "GitHub Actions"],

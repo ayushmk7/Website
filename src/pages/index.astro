@@ -16,7 +16,7 @@ const lead = (keys: string[], key: (x: any) => string) => (a: any, b: any) => {
 };
 const orderedSkillGroups = [...skillGroups].sort(lead(['cybersecurity', 'aiMl', 'compilersGpu'], (g) => g.key));
 const orderedProjects = [...allProjects].sort(
-  lead(['MK-OSINT', 'NASA SUITS Challenge', 'Internship Tracker', 'Jac ML Studio', 'Inferno', 'NightShift'], (p) => p.title),
+  lead(['Virgule', 'MK-OSINT', 'NASA SUITS Challenge', 'Internship Tracker', 'Jac ML Studio', 'Inferno', 'NightShift'], (p) => p.title),
 );
 const dates = (s: string) => s.replace(/\s+to\s+/g, ' – ');
 ---
