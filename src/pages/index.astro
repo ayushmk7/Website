@@ -16,7 +16,7 @@ const lead = (keys: string[], key: (x: any) => string) => (a: any, b: any) => {
 };
 const orderedSkillGroups = [...skillGroups].sort(lead(['cybersecurity', 'aiMl', 'compilersGpu'], (g) => g.key));
 const orderedProjects = [...allProjects].sort(
-  lead(['Virgule', 'MK-OSINT', 'NASA SUITS Challenge', 'Internship Tracker', 'Jac ML Studio', 'Inferno', 'NightShift'], (p) => p.title),
+  lead(['MK-OSINT', 'NASA SUITS Challenge', 'Internship Tracker', 'Jac ML Studio', 'Inferno', 'NightShift', 'Domain Portfolio Manager', 'Virgule'], (p) => p.title),
 );
 const dates = (s: string) => s.replace(/\s+to\s+/g, ' – ');
 ---
@@ -453,11 +453,18 @@ const dates = (s: string) => s.replace(/\s+to\s+/g, ' – ');
   /* ---------- show more projects: only the first row until expanded ---------- */
   /* Fold only after the script runs so every project remains visible without JS. */
   body.opt7 #projects:not(.has-fold) .more-row { display: none; }
+  /* Explicit columns keep the fold breakpoints in sync with the row length. */
+  body.opt7 .proj-grid { grid-template-columns: 1fr; }
   body.opt7 #projects.is-folded .proj-grid > li:nth-child(n + 2) { display: none; }
   @media (min-width: 900px) {
-    /* the 26rem grid fits two clippings per row from roughly here up */
+    body.opt7 .proj-grid { grid-template-columns: repeat(2, 1fr); }
     body.opt7 #projects.is-folded .proj-grid > li:nth-child(n + 2) { display: flex; }
     body.opt7 #projects.is-folded .proj-grid > li:nth-child(n + 3) { display: none; }
+  }
+  @media (min-width: 1200px) {
+    body.opt7 .proj-grid { grid-template-columns: repeat(3, 1fr); }
+    body.opt7 #projects.is-folded .proj-grid > li:nth-child(n + 3) { display: flex; }
+    body.opt7 #projects.is-folded .proj-grid > li:nth-child(n + 4) { display: none; }
   }
   body.opt7 .more-row { display: flex; justify-content: center; margin-top: 2rem; }
   body.opt7 :is(.more-idle, .more-open) { display: inline-flex; align-items: center; gap: 0.5rem; }
